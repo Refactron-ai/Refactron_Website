@@ -132,8 +132,8 @@ const TermsOfService: React.FC = () => {
               </p>
               <div className="flex items-center gap-3 text-primary-600 font-medium">
                 <Mail className="w-5 h-5" />
-                <a href="mailto:legal@refactron.ai" className="hover:text-primary-700 transition-colors duration-300">
-                  legal@refactron.ai
+                <a href="mailto:legal.refactron@gmail.com" className="hover:text-primary-700 transition-colors duration-300">
+                  legal.refactron@gmail.com
                 </a>
               </div>
             </section>
