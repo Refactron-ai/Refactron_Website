@@ -236,8 +236,8 @@ const EarlyAccessForm: React.FC = () => {
                 <div className="space-y-4">
                   <p className="text-sm text-gray-500">
                     Questions? Reach out to us at{' '}
-                    <a href="mailto:hello@refactron.ai" className="text-primary-600 hover:text-primary-700 font-medium">
-                      hello@refactron.ai
+                    <a href="mailto:hello.refactron@gmail.com" className="text-primary-600 hover:text-primary-700 font-medium">
+                      hello.refactron@gmail.com
                     </a>
                   </p>
                   
