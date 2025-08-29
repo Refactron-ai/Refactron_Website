@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
     {
       name: 'Email',
       icon: Mail,
-      url: 'mailto:hello.refactron@gmail.com',
+      url: 'mailto:hello@refactron.us.kg',
       color: 'hover:text-primary-600'
     }
   ];
@@ -103,10 +103,10 @@ const Footer: React.FC = () => {
               <h4 className="text-lg font-semibold text-gray-900 mb-6">Get In Touch</h4>
               <div className="space-y-4 mb-6 max-w-sm">
                 <a 
-                  href="mailto:hello.refactron@gmail.com"
+                  href="mailto:hello@refactron.us.kg"
                   className="block text-primary-600 hover:text-primary-700 transition-colors duration-300 text-base font-medium"
                 >
-                  hello.refactron@gmail.com
+                  hello@refactron.us.kg
                 </a>
                 <p className="text-gray-600 text-sm">
                   Ready to revolutionize your code?
