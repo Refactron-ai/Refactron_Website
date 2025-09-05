@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import HeroSection from './components/HeroSection';
 import WhatWeDoSection from './components/WhatWeDoSection';
 import ComingSoonSection from './components/ComingSoonSection';
@@ -28,6 +29,7 @@ function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
       </Routes>
+      <Analytics />
     </Router>
   );
 }
