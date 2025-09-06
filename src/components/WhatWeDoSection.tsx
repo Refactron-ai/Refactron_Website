@@ -37,11 +37,11 @@ const WhatWeDoSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-24 px-6 bg-gray-50 relative">
-      {/* Background Effects */}
+    <section className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 bg-gray-50 relative">
+      {/* Background Effects - Reduced on mobile */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40" style={{ animationDelay: '2s' }}></div>
+        <div className="hidden sm:block absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
+        <div className="hidden sm:block absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40" style={{ animationDelay: '2s' }}></div>
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -51,19 +51,19 @@ const WhatWeDoSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-12 sm:mb-16 md:mb-20"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-8 text-gray-900">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-gray-900">
             What We Do
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
             Refactron leverages cutting-edge AI technology to transform how developers approach code optimization. 
             We don't just refactor code—we revolutionize the entire development experience.
           </p>
         </motion.div>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 mb-12 sm:mb-16 md:mb-20">
           {features.map((feature, index) => (
             <motion.div
               key={index}
@@ -73,14 +73,14 @@ const WhatWeDoSection: React.FC = () => {
               viewport={{ once: true }}
               className="group"
             >
-              <div className="bg-white rounded-xl p-8 h-full transition-all duration-300 hover:transform hover:scale-105 shadow-sm border border-gray-100 hover:shadow-lg">
-                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <feature.icon className="w-8 h-8 text-white" />
+              <div className="bg-white rounded-xl p-4 sm:p-6 md:p-8 h-full transition-all duration-300 hover:transform hover:scale-105 shadow-sm border border-gray-100 hover:shadow-lg">
+                <div className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <feature.icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-4 text-gray-900">
+                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -96,16 +96,16 @@ const WhatWeDoSection: React.FC = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <div className="bg-white rounded-2xl p-12 max-w-4xl mx-auto shadow-sm border border-gray-100">
-            <h3 className="text-3xl font-bold mb-6 text-gray-900">
+          <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-12 max-w-4xl mx-auto shadow-sm border border-gray-100">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-gray-900">
               The Future of Code Optimization
             </h3>
-            <p className="text-lg text-gray-600 leading-relaxed mb-8">
+            <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 sm:mb-8 px-2">
               Imagine a world where every developer has access to an AI assistant that not only understands their code 
               but can intelligently improve it. That's what Refactron brings to the table—a revolutionary approach 
               to code quality that scales with your team and grows with your projects.
             </p>
-            <div className="flex items-center justify-center gap-6 text-sm text-gray-500">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
                 <span>AI-Powered</span>

@@ -56,7 +56,7 @@ const HeroSection: React.FC = () => {
       {/* Main Hero Content with Logo and Countdown */}
       <div className="relative z-10 min-h-screen px-4">
         {/* Logo and Countdown Row */}
-        <div className="pt-8 pb-12 flex items-center justify-between max-w-7xl mx-auto">
+        <div className="pt-4 sm:pt-8 pb-8 sm:pb-12 px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto gap-4 sm:gap-0">
           {/* Logo - Top Left */}
           <motion.img
             initial={{ opacity: 0, x: -20 }}
@@ -64,7 +64,7 @@ const HeroSection: React.FC = () => {
             transition={{ duration: 0.6 }}
             src="/refactron-logo.png"
             alt="Refactron"
-            className="h-16 w-auto"
+            className="h-12 sm:h-16 w-auto"
           />
 
           {/* Countdown Card - Top Right */}
@@ -72,26 +72,26 @@ const HeroSection: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white rounded-lg p-4 shadow-sm border border-gray-200"
+            className="bg-white rounded-lg p-3 sm:p-4 shadow-sm border border-gray-200 w-full sm:w-auto"
           >
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center justify-center sm:justify-start gap-2 mb-3">
               <Clock className="w-4 h-4 text-primary-500" />
               <span className="text-sm font-medium text-gray-700">Launch in</span>
             </div>
             
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-4">
               <div className="text-center">
-                <div className="text-xl font-bold text-gray-900">{timeLeft.days}</div>
+                <div className="text-lg sm:text-xl font-bold text-gray-900">{timeLeft.days}</div>
                 <div className="text-xs text-gray-500">Days</div>
               </div>
-              <div className="text-gray-300 text-lg">:</div>
+              <div className="text-gray-300 text-sm sm:text-lg">:</div>
               <div className="text-center">
-                <div className="text-xl font-bold text-gray-900">{timeLeft.hours.toString().padStart(2, '0')}</div>
+                <div className="text-lg sm:text-xl font-bold text-gray-900">{timeLeft.hours.toString().padStart(2, '0')}</div>
                 <div className="text-xs text-gray-500">Hours</div>
               </div>
-              <div className="text-gray-300 text-lg">:</div>
+              <div className="text-gray-300 text-sm sm:text-lg">:</div>
               <div className="text-center">
-                <div className="text-xl font-bold text-gray-900">{timeLeft.minutes.toString().padStart(2, '0')}</div>
+                <div className="text-lg sm:text-xl font-bold text-gray-900">{timeLeft.minutes.toString().padStart(2, '0')}</div>
                 <div className="text-xs text-gray-500">Minutes</div>
               </div>
             </div>
@@ -99,17 +99,17 @@ const HeroSection: React.FC = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex items-center justify-center flex-1">
+        <div className="flex items-center justify-center flex-1 px-4 sm:px-6">
           <div className="text-center max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="mb-6"
+              className="mb-4 sm:mb-6"
             >
-              <div className="inline-flex items-center gap-2 bg-primary-50 border border-primary-200 rounded-full px-4 py-2 mb-6">
+              <div className="inline-flex items-center gap-2 bg-primary-50 border border-primary-200 rounded-full px-3 sm:px-4 py-2 mb-4 sm:mb-6">
                 <Sparkles className="w-4 h-4 text-primary-500" />
-                <span className="text-primary-600 text-sm font-medium">AI-Powered Code Refactoring</span>
+                <span className="text-primary-600 text-xs sm:text-sm font-medium">AI-Powered Code Refactoring</span>
               </div>
             </motion.div>
 
@@ -117,7 +117,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-5xl md:text-7xl font-bold mb-6"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
             >
               <span className="gradient-text">Revolutionizing</span>
               <br />
@@ -129,7 +129,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.0 }}
-              className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed"
+              className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed"
             >
               Refactor. Optimize. Automate.
             </motion.p>
@@ -138,7 +138,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.2 }}
-              className="text-lg text-gray-500 mb-8 max-w-3xl mx-auto leading-relaxed"
+              className="text-base sm:text-lg text-gray-500 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2"
             >
               Experience the future of AI-driven code refactoring. Transform legacy code into optimized, maintainable solutions.
             </motion.p>
@@ -150,10 +150,10 @@ const HeroSection: React.FC = () => {
             >
               <button 
                 onClick={scrollToEarlyAccess}
-                className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 glow-border shadow-lg cursor-pointer"
+                className="group relative inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 transform hover:scale-105 glow-border shadow-lg cursor-pointer text-sm sm:text-base"
               >
                 <span>Get Early Access</span>
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
               </button>
             </motion.div>
 
@@ -161,7 +161,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1.6 }}
-              className="mt-12 text-gray-500 text-sm"
+              className="mt-8 sm:mt-12 text-gray-500 text-xs sm:text-sm"
             >
               <p>Join thousands of developers already on the waitlist</p>
             </motion.div>
@@ -169,16 +169,16 @@ const HeroSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Floating Elements */}
+      {/* Floating Elements - Hidden on mobile for better performance */}
       <motion.div
         animate={{ y: [0, -20, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/3 right-10 w-2 h-2 bg-primary-400 rounded-full opacity-60"
+        className="hidden sm:block absolute top-1/3 right-10 w-2 h-2 bg-primary-400 rounded-full opacity-60"
       ></motion.div>
       <motion.div
         animate={{ y: [0, 20, 0] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        className="absolute bottom-1/3 left-10 w-3 h-3 bg-primary-300 rounded-full opacity-40"
+        className="hidden sm:block absolute bottom-1/3 left-10 w-3 h-3 bg-primary-300 rounded-full opacity-40"
       ></motion.div>
     </section>
   );
