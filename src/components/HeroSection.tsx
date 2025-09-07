@@ -119,9 +119,9 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.8 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
             >
-              <span className="gradient-text">Revolutionizing</span>
+              <span className="gradient-text">AI-Powered Code Refactoring</span>
               <br />
-              <span className="text-gray-800">Code Optimization</span>
+              <span className="text-gray-800">Revolutionizing Development</span>
             </motion.h1>
 
             {/* Tagline moved to main hero content */}
@@ -140,7 +140,7 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 1.2 }}
               className="text-base sm:text-lg text-gray-500 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2"
             >
-              Experience the future of AI-driven code refactoring. Transform legacy code into optimized, maintainable solutions.
+              Experience the future of automated code optimization. Transform legacy code into clean, maintainable solutions with our AI-powered refactoring tools. Join thousands of developers using intelligent code modernization.
             </motion.p>
 
             <motion.div

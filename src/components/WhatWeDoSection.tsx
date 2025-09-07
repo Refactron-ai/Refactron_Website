@@ -54,11 +54,11 @@ const WhatWeDoSection: React.FC = () => {
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-gray-900">
-            What We Do
+            AI-Powered Code Refactoring Solutions
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
-            Refactron leverages cutting-edge AI technology to transform how developers approach code optimization. 
-            We don't just refactor code—we revolutionize the entire development experience.
+            Refactron leverages cutting-edge artificial intelligence to transform how developers approach automated code optimization. 
+            Our intelligent refactoring tools don't just improve code—they revolutionize the entire development workflow with AI-driven code modernization.
           </p>
         </motion.div>
 

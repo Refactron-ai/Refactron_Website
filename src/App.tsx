@@ -12,10 +12,12 @@ import TermsOfService from './components/TermsOfService';
 const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white text-gray-700">
-      <HeroSection />
-      <WhatWeDoSection />
-      <ComingSoonSection />
-      <EarlyAccessForm />
+      <main>
+        <HeroSection />
+        <WhatWeDoSection />
+        <ComingSoonSection />
+        <EarlyAccessForm />
+      </main>
       <Footer />
     </div>
   );

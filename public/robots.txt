@@ -1,3 +1,18 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Allow: /
+
+# Sitemap
+Sitemap: https://refactron.us.kg/sitemap.xml
+
+# Disallow admin or private areas (if any)
+# Disallow: /admin/
+# Disallow: /private/
+
+# Allow all crawlers to access all content
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /static/
+
+# Crawl-delay (optional - only if needed)
+# Crawl-delay: 1
