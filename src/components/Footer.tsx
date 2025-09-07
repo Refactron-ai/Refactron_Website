@@ -47,7 +47,7 @@ const Footer: React.FC = () => {
               className="flex flex-col items-center sm:items-start text-center sm:text-left"
             >
               <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
-                <span className="gradient-text">Refactron</span>
+                <span className="gradient-text">Refactron™</span>
               </h3>
               <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 sm:mb-6 max-w-sm">
                 Refactor. Optimize. Automate. 
@@ -155,7 +155,7 @@ const Footer: React.FC = () => {
             <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
               <div className="text-center sm:text-left">
                 <p className="text-gray-500 text-xs sm:text-sm">
-                  © {currentYear} Refactron. All rights reserved.
+                  © {currentYear} Refactron™. All rights reserved.
                 </p>
               </div>
               
@@ -164,7 +164,7 @@ const Footer: React.FC = () => {
                 <span className="hidden sm:inline">•</span>
                 <a href="/terms-of-service" className="hover:text-primary-600 transition-colors duration-300">Terms of Service</a>
                 <span className="hidden sm:inline">•</span>
-                <span className="text-center sm:text-left">Refactron is currently in development</span>
+                <span className="text-center sm:text-left">Refactron™ is currently in development</span>
               </div>
             </div>
 
