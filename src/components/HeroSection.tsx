@@ -62,7 +62,7 @@ const HeroSection: React.FC = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            src="/refactron-logo.png"
+            src="/Refactron_Logo_TM-removebg-preview.png"
             alt="Refactron"
             className="h-12 sm:h-16 w-auto"
           />
