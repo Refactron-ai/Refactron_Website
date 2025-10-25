@@ -45,6 +45,45 @@ const WhatWeDoSection: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
+        {/* Product Announcement */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-8 sm:mb-12"
+        >
+          <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto">
+            <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 rounded-full px-4 py-2 mb-4 text-sm font-medium">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              Product Release
+            </div>
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 text-gray-900">
+              Refactron Library v0.1.0 is Now Live!
+            </h3>
+            <p className="text-base sm:text-lg text-gray-600 mb-4 max-w-2xl mx-auto">
+              Our first product is officially available on PyPI. Install it today and start transforming your Python code with AI-powered refactoring.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 mb-4">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span>98 Tests Passing</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span>90% Coverage</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span>Production Ready</span>
+              </div>
+            </div>
+            <div className="bg-gray-900 text-green-400 rounded-lg p-3 font-mono text-sm max-w-md mx-auto">
+              <span className="text-gray-400">$</span> pip install refactron
+            </div>
+          </div>
+        </motion.div>
+
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

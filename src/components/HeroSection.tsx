@@ -1,39 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight, Clock } from 'lucide-react';
+import { Sparkles, ArrowRight } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
-
-  // Set launch date to 30 days from now
-  const launchDate = useMemo(() => {
-    const date = new Date();
-    date.setDate(date.getDate() + 30);
-    return date;
-  }, []);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = launchDate.getTime() - now;
-
-      if (distance > 0) {
-        setTimeLeft({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000)
-        });
-      }
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [launchDate]);
 
   const scrollToEarlyAccess = () => {
     const earlyAccessSection = document.querySelector('[data-section="early-access"]');
@@ -67,34 +36,15 @@ const HeroSection: React.FC = () => {
             className="h-12 sm:h-16 w-auto"
           />
 
-          {/* Countdown Card - Top Right */}
+          {/* Status Badge - Top Right */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white rounded-lg p-3 sm:p-4 shadow-sm border border-gray-200 w-full sm:w-auto"
+            className="flex items-center gap-2"
           >
-            <div className="flex items-center justify-center sm:justify-start gap-2 mb-3">
-              <Clock className="w-4 h-4 text-primary-500" />
-              <span className="text-sm font-medium text-gray-700">Launch in</span>
-            </div>
-            
-            <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-4">
-              <div className="text-center">
-                <div className="text-lg sm:text-xl font-bold text-gray-900">{timeLeft.days}</div>
-                <div className="text-xs text-gray-500">Days</div>
-              </div>
-              <div className="text-gray-300 text-sm sm:text-lg">:</div>
-              <div className="text-center">
-                <div className="text-lg sm:text-xl font-bold text-gray-900">{timeLeft.hours.toString().padStart(2, '0')}</div>
-                <div className="text-xs text-gray-500">Hours</div>
-              </div>
-              <div className="text-gray-300 text-sm sm:text-lg">:</div>
-              <div className="text-center">
-                <div className="text-lg sm:text-xl font-bold text-gray-900">{timeLeft.minutes.toString().padStart(2, '0')}</div>
-                <div className="text-xs text-gray-500">Minutes</div>
-              </div>
-            </div>
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-sm font-medium text-green-700">v0.1.0</span>
           </motion.div>
         </div>
 
@@ -107,9 +57,9 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="mb-4 sm:mb-6"
             >
-              <div className="inline-flex items-center gap-2 bg-primary-50 border border-primary-200 rounded-full px-3 sm:px-4 py-2 mb-4 sm:mb-6">
-                <Sparkles className="w-4 h-4 text-primary-500" />
-                <span className="text-primary-600 text-xs sm:text-sm font-medium">AI-Powered Code Refactoring</span>
+              <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-3 sm:px-4 py-2 mb-4 sm:mb-6">
+                <Sparkles className="w-4 h-4 text-green-600" />
+                <span className="text-green-700 text-xs sm:text-sm font-medium">Now Available - Refactron Library v0.1.0</span>
               </div>
             </motion.div>
 
@@ -147,12 +97,22 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.4 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4"
             >
-              <button 
-                onClick={scrollToEarlyAccess}
+              <a 
+                href="https://pypi.org/project/refactron/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group relative inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 transform hover:scale-105 glow-border shadow-lg cursor-pointer text-sm sm:text-base"
               >
-                <span>Get Early Access</span>
+                <span>Try Refactron Library</span>
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
+              </a>
+              <button 
+                onClick={scrollToEarlyAccess}
+                className="group relative inline-flex items-center gap-2 sm:gap-3 bg-white border-2 border-primary-500 text-primary-600 hover:bg-primary-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg cursor-pointer text-sm sm:text-base"
+              >
+                <span>Get Updates</span>
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
               </button>
             </motion.div>
@@ -163,7 +123,7 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 1, delay: 1.6 }}
               className="mt-8 sm:mt-12 text-gray-500 text-xs sm:text-sm"
             >
-              <p>Join thousands of developers already on the waitlist</p>
+              <p>Join thousands of developers already using Refactron</p>
             </motion.div>
           </div>
         </div>
@@ -185,3 +145,4 @@ const HeroSection: React.FC = () => {
 };
 
 export default HeroSection; 
+

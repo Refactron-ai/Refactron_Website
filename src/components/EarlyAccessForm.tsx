@@ -119,11 +119,11 @@ const EarlyAccessForm: React.FC = () => {
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-gray-900">
-            Get Early Access
+            Stay Updated
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
-            Be among the first to experience the future of AI-powered code refactoring. 
-            Join our exclusive early access program and shape the future of development.
+            Get the latest updates on Refactron features, new releases, and AI-powered development tools. 
+            Join our community of developers transforming code with intelligent automation.
           </p>
         </motion.div>
 
@@ -175,14 +175,14 @@ const EarlyAccessForm: React.FC = () => {
                     </div>
                   ) : (
                     <div className="flex items-center justify-center gap-2 sm:gap-3">
-                      <span>Join Early Access</span>
+                      <span>Get Updates</span>
                       <Send className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
                     </div>
                   )}
                 </button>
 
                 <p className="text-xs sm:text-sm text-gray-500 text-center">
-                  We'll notify you as soon as Refactron is ready. No spam, ever.
+                  Get updates on new features and releases. No spam, ever.
                 </p>
               </form>
             ) : (
@@ -200,10 +200,10 @@ const EarlyAccessForm: React.FC = () => {
                 
                 <div className="space-y-3 sm:space-y-4">
                   <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                    Welcome to Refactron! 
+                    You're All Set! 
                   </h3>
                   <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-md mx-auto px-2">
-                    You've successfully joined our exclusive early access program. We're excited to have you on board!
+                    You've successfully joined our community. We'll keep you updated on the latest Refactron features and releases!
                   </p>
                 </div>
 
@@ -216,19 +216,19 @@ const EarlyAccessForm: React.FC = () => {
                       <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
                         <span className="text-primary-600 font-semibold text-xs">1</span>
                       </div>
-                      <span>You'll receive a welcome email within 24 hours</span>
+                      <span>You'll receive a welcome email with installation guide</span>
                     </div>
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
                         <span className="text-primary-600 font-semibold text-xs">2</span>
                       </div>
-                      <span>Exclusive updates and feature previews</span>
+                      <span>Updates on new features and improvements</span>
                     </div>
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
                         <span className="text-primary-600 font-semibold text-xs">3</span>
                       </div>
-                      <span>Priority access when we launch</span>
+                      <span>Access to community resources and support</span>
                     </div>
                   </div>
                 </div>
