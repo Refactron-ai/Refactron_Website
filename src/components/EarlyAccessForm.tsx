@@ -31,47 +31,63 @@ const EarlyAccessForm: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // EmailJS configuration - you'll need to set these up
+      // EmailJS configuration
       const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID || 'your_service_id';
-      const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'your_template_id';
+      const welcomeTemplateId = process.env.REACT_APP_EMAILJS_WELCOME_TEMPLATE_ID || 'your_welcome_template_id';
+      const notificationTemplateId = process.env.REACT_APP_EMAILJS_NOTIFICATION_TEMPLATE_ID || 'your_notification_template_id';
       const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || 'your_public_key';
-
-      // Debug: Log configuration (remove in production)
-      console.log('EmailJS Config:', {
-        serviceId,
-        templateId,
-        publicKey: publicKey.substring(0, 10) + '...',
-        hasServiceId: !!serviceId && serviceId !== 'your_service_id',
-        hasTemplateId: !!templateId && templateId !== 'your_template_id',
-        hasPublicKey: !!publicKey && publicKey !== 'your_public_key',
-      });
+      const fromEmail = process.env.REACT_APP_FROM_EMAIL || 'hello@refactron.us.kg';
+      const notificationEmail = process.env.REACT_APP_NOTIFICATION_EMAIL || 'hello@refactron.us.kg';
 
       // Check if environment variables are properly set
-      if (serviceId === 'your_service_id' || templateId === 'your_template_id' || publicKey === 'your_public_key') {
+      if (serviceId === 'your_service_id' || welcomeTemplateId === 'your_welcome_template_id' || 
+          notificationTemplateId === 'your_notification_template_id' || publicKey === 'your_public_key') {
         throw new Error('EmailJS environment variables not configured. Please check your .env file.');
       }
 
-      // Send email using EmailJS with correct template parameters
-      const result = await emailjs.send(
+      // Prepare email data
+      const emailData = {
+        user_email: email,
+        user_name: email.split('@')[0], // Use email prefix as name if no name provided
+        signup_date: new Date().toLocaleDateString(),
+        user_agent: navigator.userAgent,
+        timestamp: new Date().toISOString(),
+        from_email: fromEmail,
+        reply_to: fromEmail,
+      };
+
+      // Send welcome email to user
+      const welcomeResult = await emailjs.send(
         serviceId,
-        templateId,
+        welcomeTemplateId,
         {
-          user_email: email,
-          signup_date: new Date().toLocaleDateString(),
-          user_agent: navigator.userAgent,
-          email: email, // For reply-to functionality
-          name: 'Early Access User', // For from name
+          ...emailData,
+          to_email: email,
         },
         publicKey
       );
 
-      console.log('Email sent successfully:', result);
+      // Send notification email to you
+      const notificationResult = await emailjs.send(
+        serviceId,
+        notificationTemplateId,
+        {
+          ...emailData,
+          to_email: notificationEmail,
+        },
+        publicKey
+      );
+
+      console.log('Welcome email sent successfully:', welcomeResult);
+      console.log('Notification email sent successfully:', notificationResult);
       
-      // Also log to console for development
+      // Log to console for development
       console.log('New early access signup:', {
         email,
         timestamp: new Date().toISOString(),
         userAgent: navigator.userAgent,
+        welcomeEmailSent: welcomeResult.status === 200,
+        notificationEmailSent: notificationResult.status === 200,
       });
       
       setIsSubmitted(true);

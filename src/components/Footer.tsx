@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, Heart, MapPin } from 'lucide-react';
+import { Github, Linkedin, Mail, Heart, MapPin, Settings } from 'lucide-react';
+import CookiePreferencesModal from './CookiePreferencesModal';
+import { useCookieConsent, CookiePreferences } from '../hooks/useCookieConsent';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
+  const { preferences, savePreferences } = useCookieConsent();
+  const [showCookieModal, setShowCookieModal] = useState(false);
+
+  const handleSavePreferences = (newPreferences: CookiePreferences) => {
+    savePreferences(newPreferences);
+  };
 
   const socialLinks = [
     {
@@ -164,6 +172,14 @@ const Footer: React.FC = () => {
                 <span className="hidden sm:inline">•</span>
                 <a href="/terms-of-service" className="hover:text-primary-600 transition-colors duration-300">Terms of Service</a>
                 <span className="hidden sm:inline">•</span>
+                <button 
+                  onClick={() => setShowCookieModal(true)}
+                  className="hover:text-primary-600 transition-colors duration-300 flex items-center gap-1"
+                >
+                  <Settings className="w-3 h-3" />
+                  Cookie Settings
+                </button>
+                <span className="hidden sm:inline">•</span>
                 <span className="text-center sm:text-left">Refactron™ is currently in development</span>
               </div>
             </div>
@@ -179,6 +195,14 @@ const Footer: React.FC = () => {
 
       {/* Background decoration */}
       <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary-500/50 to-transparent"></div>
+      
+      {/* Cookie Preferences Modal */}
+      <CookiePreferencesModal
+        isOpen={showCookieModal}
+        onClose={() => setShowCookieModal(false)}
+        onSave={handleSavePreferences}
+        currentPreferences={preferences}
+      />
     </footer>
   );
 };

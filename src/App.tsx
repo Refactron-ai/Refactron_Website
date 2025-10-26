@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import ProductReleasePopup from './components/ProductReleasePopup';
+import CookieManager from './components/CookieManager';
 
 const LandingPage: React.FC = () => {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path="/terms-of-service" element={<TermsOfService />} />
       </Routes>
       <ProductReleasePopup />
+      <CookieManager />
       <Analytics />
     </Router>
   );

@@ -99,14 +99,45 @@ const PrivacyPolicy: React.FC = () => {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">4. Third-Party Tools</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">4. Cookies and Tracking Technologies</h2>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                We use cookies and similar tracking technologies to enhance your experience on our website. You can control cookie preferences through our cookie settings.
+              </p>
+              
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Types of Cookies We Use:</h3>
+              <ul className="space-y-3 text-gray-700 mb-4">
+                <li className="flex items-start gap-3">
+                  <span className="text-primary-600 font-semibold">•</span>
+                  <span><strong>Necessary Cookies:</strong> Essential for website functionality, security, and user preferences. These cannot be disabled.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary-600 font-semibold">•</span>
+                  <span><strong>Analytics Cookies:</strong> Help us understand website usage through anonymous data collection (e.g., page views, user behavior).</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary-600 font-semibold">•</span>
+                  <span><strong>Marketing Cookies:</strong> Used for targeted advertising and campaign tracking across websites.</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary-600 font-semibold">•</span>
+                  <span><strong>Functional Cookies:</strong> Enable enhanced features like language preferences and personalized settings.</span>
+                </li>
+              </ul>
+              
+              <p className="text-gray-700 leading-relaxed">
+                You can manage your cookie preferences at any time by clicking "Cookie Settings" in our footer or by adjusting your browser settings.
+              </p>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">5. Third-Party Tools</h2>
               <p className="text-gray-700 leading-relaxed">
                 We may use third-party analytics and authentication providers (e.g., Google Analytics, GitHub OAuth). These providers may collect data under their own privacy policies.
               </p>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">5. Your Rights</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">6. Your Rights</h2>
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start gap-3">
                   <span className="text-primary-600 font-semibold">•</span>
@@ -120,18 +151,22 @@ const PrivacyPolicy: React.FC = () => {
                   <span className="text-primary-600 font-semibold">•</span>
                   <span>Opt-out of marketing communications.</span>
                 </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-primary-600 font-semibold">•</span>
+                  <span>Manage cookie preferences and tracking settings.</span>
+                </li>
               </ul>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">6. Data Retention</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Data Retention</h2>
               <p className="text-gray-700 leading-relaxed">
                 Your data is retained only as long as necessary to provide services or comply with legal obligations.
               </p>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Contact Us</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">8. Contact Us</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 If you have questions or concerns about privacy, contact us at:
               </p>
