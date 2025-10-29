@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://refactron.us.kg/sitemap.xml
+Sitemap: https://refactron.dev/sitemap.xml
 
 # Disallow admin or private areas (if any)
 # Disallow: /admin/
