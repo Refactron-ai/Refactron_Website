@@ -6,34 +6,40 @@ const WhatWeDoSection: React.FC = () => {
   const features = [
     {
       icon: Brain,
-      title: "AI-Powered Code Refactoring",
-      description: "Advanced machine learning algorithms that understand your codebase and suggest intelligent refactoring strategies."
+      title: 'AI-Powered Code Refactoring',
+      description:
+        'Advanced machine learning algorithms that understand your codebase and suggest intelligent refactoring strategies.',
     },
     {
       icon: Zap,
-      title: "Performance Optimization",
-      description: "Automatically identify and fix performance bottlenecks, reducing execution time and resource usage."
+      title: 'Performance Optimization',
+      description:
+        'Automatically identify and fix performance bottlenecks, reducing execution time and resource usage.',
     },
     {
       icon: Shield,
-      title: "Maintainability Improvements",
-      description: "Transform complex, hard-to-maintain code into clean, readable, and well-structured solutions."
+      title: 'Maintainability Improvements',
+      description:
+        'Transform complex, hard-to-maintain code into clean, readable, and well-structured solutions.',
     },
     {
       icon: TrendingUp,
-      title: "Developer Productivity",
-      description: "Save hours of manual refactoring with automated suggestions that follow industry best practices."
+      title: 'Developer Productivity',
+      description:
+        'Save hours of manual refactoring with automated suggestions that follow industry best practices.',
     },
     {
       icon: Code,
-      title: "Legacy Code Modernization",
-      description: "Safely modernize outdated codebases while maintaining functionality and improving architecture."
+      title: 'Legacy Code Modernization',
+      description:
+        'Safely modernize outdated codebases while maintaining functionality and improving architecture.',
     },
     {
       icon: Rocket,
-      title: "Seamless Integration",
-      description: "Works with your existing development workflow and integrates with popular IDEs and CI/CD pipelines."
-    }
+      title: 'Seamless Integration',
+      description:
+        'Works with your existing development workflow and integrates with popular IDEs and CI/CD pipelines.',
+    },
   ];
 
   return (
@@ -41,7 +47,10 @@ const WhatWeDoSection: React.FC = () => {
       {/* Background Effects - Reduced on mobile */}
       <div className="absolute inset-0">
         <div className="hidden sm:block absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
-        <div className="hidden sm:block absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40" style={{ animationDelay: '2s' }}></div>
+        <div
+          className="hidden sm:block absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40"
+          style={{ animationDelay: '2s' }}
+        ></div>
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -62,7 +71,9 @@ const WhatWeDoSection: React.FC = () => {
               Refactron Library v0.1.0 is Now Live!
             </h3>
             <p className="text-base sm:text-lg text-gray-600 mb-4 max-w-2xl mx-auto">
-              Our first product is officially available on PyPI. Install it today and start transforming your Python code with AI-powered refactoring.
+              Our first product is officially available on PyPI. Install it
+              today and start transforming your Python code with AI-powered
+              refactoring.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 mb-4">
               <div className="flex items-center gap-2">
@@ -96,8 +107,11 @@ const WhatWeDoSection: React.FC = () => {
             AI-Powered Code Refactoring Solutions
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
-            Refactron leverages cutting-edge artificial intelligence to transform how developers approach automated code optimization. 
-            Our intelligent refactoring tools don't just improve code—they revolutionize the entire development workflow with AI-driven code modernization.
+            Refactron leverages cutting-edge artificial intelligence to
+            transform how developers approach automated code optimization. Our
+            intelligent refactoring tools don't just improve code—they
+            revolutionize the entire development workflow with AI-driven code
+            modernization.
           </p>
         </motion.div>
 
@@ -140,9 +154,11 @@ const WhatWeDoSection: React.FC = () => {
               The Future of Code Optimization
             </h3>
             <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 sm:mb-8 px-2">
-              Imagine a world where every developer has access to an AI assistant that not only understands their code 
-              but can intelligently improve it. That's what Refactron brings to the table—a revolutionary approach 
-              to code quality that scales with your team and grows with your projects.
+              Imagine a world where every developer has access to an AI
+              assistant that not only understands their code but can
+              intelligently improve it. That's what Refactron brings to the
+              table—a revolutionary approach to code quality that scales with
+              your team and grows with your projects.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">
@@ -165,4 +181,4 @@ const WhatWeDoSection: React.FC = () => {
   );
 };
 
-export default WhatWeDoSection; 
+export default WhatWeDoSection;

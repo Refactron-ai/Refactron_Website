@@ -116,11 +116,33 @@ REACT_APP_ANALYTICS_ID=your_analytics_id
 
 ## 🤝 Contributing
 
+We welcome contributions from the community! Please see our detailed guides:
+
+- **[Contributing Guide](CONTRIBUTING.md)** - Full contribution guidelines
+- **[Quick Start for Contributors](.github/CONTRIBUTORS_GUIDE.md)** - Fast setup guide
+- **[Maintainers Guide](.github/MAINTAINERS_GUIDE.md)** - For maintainers
+- **[Workflows Documentation](.github/WORKFLOWS.md)** - GitHub Actions workflows
+
+### Quick Start
+
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature-name`
-3. Commit changes: `git commit -m 'Add feature'`
+3. Commit changes: `git commit -m 'feat: add feature'` (use semantic commits)
 4. Push to branch: `git push origin feature-name`
 5. Submit a pull request
+
+### Automated Workflows
+
+This repository includes comprehensive CI/CD workflows:
+- ✅ Automated testing and building
+- 🔒 Security scanning (CodeQL, Dependabot)
+- 🏷️ Automatic PR labeling
+- 👋 First-time contributor greetings
+- 📦 Dependency updates
+- 🔗 Link checking
+- 📝 Stale issue management
+
+See [Workflows Documentation](.github/WORKFLOWS.md) for details.
 
 ## 📄 License
 

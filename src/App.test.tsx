@@ -5,7 +5,7 @@ import App from './App';
 jest.mock(
   '@vercel/analytics/react',
   () => ({
-    Analytics: () => null
+    Analytics: () => null,
   }),
   { virtual: true }
 );
@@ -35,12 +35,18 @@ jest.mock('framer-motion', () => {
       {},
       {
         get: (_: unknown, tag: string) =>
-          React.forwardRef(({ children, ...rest }: any, ref: React.Ref<HTMLElement>) =>
-            React.createElement(tag, { ref, ...sanitizeProps(rest) }, children)
-          )
+          React.forwardRef(
+            ({ children, ...rest }: any, ref: React.Ref<HTMLElement>) =>
+              React.createElement(
+                tag,
+                { ref, ...sanitizeProps(rest) },
+                children
+              )
+          ),
       }
     ),
-    AnimatePresence: ({ children }: { children: React.ReactNode }) => React.createElement(React.Fragment, null, children)
+    AnimatePresence: ({ children }: { children: React.ReactNode }) =>
+      React.createElement(React.Fragment, null, children),
   };
 });
 
@@ -48,7 +54,7 @@ test('renders Refactron hero headline', () => {
   render(<App />);
   const headline = screen.getByRole('heading', {
     name: /AI-Powered Code Refactoring/i,
-    level: 1
+    level: 1,
   });
   expect(headline).toBeInTheDocument();
 });

@@ -15,7 +15,8 @@ const DEFAULT_PREFERENCES: CookiePreferences = {
 };
 
 export const useCookieConsent = () => {
-  const [preferences, setPreferences] = useState<CookiePreferences>(DEFAULT_PREFERENCES);
+  const [preferences, setPreferences] =
+    useState<CookiePreferences>(DEFAULT_PREFERENCES);
   const [hasConsent, setHasConsent] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -36,7 +37,7 @@ export const useCookieConsent = () => {
       try {
         const savedConsent = localStorage.getItem('cookie-consent');
         const savedPreferences = localStorage.getItem('cookie-preferences');
-        
+
         if (savedConsent) {
           setHasConsent(true);
           if (savedPreferences) {
@@ -58,29 +59,38 @@ export const useCookieConsent = () => {
   }, []);
 
   // Save preferences to localStorage
-  const savePreferences = useCallback((newPreferences: CookiePreferences) => {
-    try {
-      localStorage.setItem('cookie-preferences', JSON.stringify(newPreferences));
-      localStorage.setItem('cookie-consent', 'true');
-      localStorage.setItem('cookie-consent-date', new Date().toISOString());
-      
-      setPreferences(newPreferences);
-      setHasConsent(true);
-      
-      // Trigger analytics based on preferences
-      handleAnalyticsConsent(newPreferences.analytics);
-      
-      return true;
-    } catch (error) {
-      console.error('Error saving cookie preferences:', error);
-      return false;
-    }
-  }, [handleAnalyticsConsent]);
+  const savePreferences = useCallback(
+    (newPreferences: CookiePreferences) => {
+      try {
+        localStorage.setItem(
+          'cookie-preferences',
+          JSON.stringify(newPreferences)
+        );
+        localStorage.setItem('cookie-consent', 'true');
+        localStorage.setItem('cookie-consent-date', new Date().toISOString());
+
+        setPreferences(newPreferences);
+        setHasConsent(true);
+
+        // Trigger analytics based on preferences
+        handleAnalyticsConsent(newPreferences.analytics);
+
+        return true;
+      } catch (error) {
+        console.error('Error saving cookie preferences:', error);
+        return false;
+      }
+    },
+    [handleAnalyticsConsent]
+  );
 
   // Check if a specific cookie category is enabled
-  const isCategoryEnabled = useCallback((category: keyof CookiePreferences) => {
-    return preferences[category];
-  }, [preferences]);
+  const isCategoryEnabled = useCallback(
+    (category: keyof CookiePreferences) => {
+      return preferences[category];
+    },
+    [preferences]
+  );
 
   // Reset consent (for testing or user request)
   const resetConsent = useCallback(() => {
@@ -88,13 +98,13 @@ export const useCookieConsent = () => {
       localStorage.removeItem('cookie-consent');
       localStorage.removeItem('cookie-preferences');
       localStorage.removeItem('cookie-consent-date');
-      
+
       setHasConsent(false);
       setPreferences(DEFAULT_PREFERENCES);
-      
+
       // Disable all tracking
       disableAnalytics();
-      
+
       return true;
     } catch (error) {
       console.error('Error resetting cookie consent:', error);
@@ -121,7 +131,7 @@ const enableAnalytics = () => {
       ad_storage: 'granted',
     });
   }
-  
+
   // Enable other analytics services here
   console.log('Analytics enabled');
 };
@@ -134,7 +144,7 @@ const disableAnalytics = () => {
       ad_storage: 'denied',
     });
   }
-  
+
   // Disable other analytics services here
   console.log('Analytics disabled');
 };
@@ -142,28 +152,33 @@ const disableAnalytics = () => {
 // Cookie utility functions
 export const cookieUtils = {
   // Set a cookie with proper attributes
-  setCookie: (name: string, value: string, days: number = 365, secure: boolean = true) => {
+  setCookie: (
+    name: string,
+    value: string,
+    days: number = 365,
+    secure: boolean = true
+  ) => {
     const expires = new Date();
-    expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-    
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+
     const cookieString = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax${
       secure ? ';Secure' : ''
     }`;
-    
+
     document.cookie = cookieString;
   },
 
   // Get a cookie value
   getCookie: (name: string): string | null => {
-    const nameEQ = name + "=";
+    const nameEQ = name + '=';
     const ca = document.cookie.split(';');
-    
+
     for (let i = 0; i < ca.length; i++) {
       let c = ca[i];
       while (c.charAt(0) === ' ') c = c.substring(1, c.length);
       if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
     }
-    
+
     return null;
   },
 

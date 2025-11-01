@@ -3,13 +3,14 @@ import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
-
   const scrollToEarlyAccess = () => {
-    const earlyAccessSection = document.querySelector('[data-section="early-access"]');
+    const earlyAccessSection = document.querySelector(
+      '[data-section="early-access"]'
+    );
     if (earlyAccessSection) {
-      earlyAccessSection.scrollIntoView({ 
+      earlyAccessSection.scrollIntoView({
         behavior: 'smooth',
-        block: 'start'
+        block: 'start',
       });
     }
   };
@@ -19,7 +20,10 @@ const HeroSection: React.FC = () => {
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40" style={{ animationDelay: '2s' }}></div>
+        <div
+          className="absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40"
+          style={{ animationDelay: '2s' }}
+        ></div>
       </div>
 
       {/* Main Hero Content with Logo and Countdown */}
@@ -59,7 +63,9 @@ const HeroSection: React.FC = () => {
             >
               <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-3 sm:px-4 py-2 mb-4 sm:mb-6">
                 <Sparkles className="w-4 h-4 text-green-600" />
-                <span className="text-green-700 text-xs sm:text-sm font-medium">Now Available - Refactron Library v0.1.0</span>
+                <span className="text-green-700 text-xs sm:text-sm font-medium">
+                  Now Available - Refactron Library v0.1.0
+                </span>
               </div>
             </motion.div>
 
@@ -90,7 +96,10 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 1.2 }}
               className="text-base sm:text-lg text-gray-500 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2"
             >
-              Experience the future of automated code optimization. Transform legacy code into clean, maintainable solutions with our AI-powered refactoring tools. Join thousands of developers using intelligent code modernization.
+              Experience the future of automated code optimization. Transform
+              legacy code into clean, maintainable solutions with our AI-powered
+              refactoring tools. Join thousands of developers using intelligent
+              code modernization.
             </motion.p>
 
             <motion.div
@@ -99,7 +108,7 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 1.4 }}
               className="flex flex-col sm:flex-row items-center justify-center gap-4"
             >
-              <a 
+              <a
                 href="https://pypi.org/project/refactron/"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -108,7 +117,7 @@ const HeroSection: React.FC = () => {
                 <span>Try Refactron Library</span>
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
               </a>
-              <button 
+              <button
                 onClick={scrollToEarlyAccess}
                 className="group relative inline-flex items-center gap-2 sm:gap-3 bg-white border-2 border-primary-500 text-primary-600 hover:bg-primary-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg cursor-pointer text-sm sm:text-base"
               >
@@ -132,17 +141,21 @@ const HeroSection: React.FC = () => {
       {/* Floating Elements - Hidden on mobile for better performance */}
       <motion.div
         animate={{ y: [0, -20, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
         className="hidden sm:block absolute top-1/3 right-10 w-2 h-2 bg-primary-400 rounded-full opacity-60"
       ></motion.div>
       <motion.div
         animate={{ y: [0, 20, 0] }}
-        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: 'easeInOut',
+          delay: 1,
+        }}
         className="hidden sm:block absolute bottom-1/3 left-10 w-3 h-3 bg-primary-300 rounded-full opacity-40"
       ></motion.div>
     </section>
   );
 };
 
-export default HeroSection; 
-
+export default HeroSection;
