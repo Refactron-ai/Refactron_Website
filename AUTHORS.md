@@ -4,7 +4,7 @@ This file lists the contributors to the Refactron Website project.
 
 ## Project Maintainers
 
-- Refactron Team <hello@refactron.ai>
+- Refactron Team <hello@refactron.dev>
 
 ## Contributors
 
