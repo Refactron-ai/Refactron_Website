@@ -66,5 +66,13 @@
     "typescript"
   ],
   "author": "Refactron Team",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Refactron-ai/Refactron_Website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Refactron-ai/Refactron_Website/issues"
+  },
+  "homepage": "https://refactron.dev"
 }
