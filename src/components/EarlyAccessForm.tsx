@@ -36,8 +36,8 @@ const EarlyAccessForm: React.FC = () => {
       const welcomeTemplateId = process.env.REACT_APP_EMAILJS_WELCOME_TEMPLATE_ID || 'your_welcome_template_id';
       const notificationTemplateId = process.env.REACT_APP_EMAILJS_NOTIFICATION_TEMPLATE_ID || 'your_notification_template_id';
       const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || 'your_public_key';
-      const fromEmail = process.env.REACT_APP_FROM_EMAIL || 'hello@refactron.us.kg';
-      const notificationEmail = process.env.REACT_APP_NOTIFICATION_EMAIL || 'hello@refactron.us.kg';
+      const fromEmail = process.env.REACT_APP_FROM_EMAIL || 'hello@refactron.dev';
+      const notificationEmail = process.env.REACT_APP_NOTIFICATION_EMAIL || 'hello@refactron.dev';
 
       // Check if environment variables are properly set
       if (serviceId === 'your_service_id' || welcomeTemplateId === 'your_welcome_template_id' || 
@@ -252,8 +252,8 @@ const EarlyAccessForm: React.FC = () => {
                 <div className="space-y-3 sm:space-y-4">
                   <p className="text-xs sm:text-sm text-gray-500 px-2">
                     Questions? Reach out to us at{' '}
-                    <a href="mailto:hello@refactron.us.kg" className="text-primary-600 hover:text-primary-700 font-medium break-all">
-                      hello@refactron.us.kg
+                    <a href="mailto:hello@refactron.dev" className="text-primary-600 hover:text-primary-700 font-medium break-all">
+                      hello@refactron.dev
                     </a>
                   </p>
                   

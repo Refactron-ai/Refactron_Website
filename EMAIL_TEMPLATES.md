@@ -58,7 +58,7 @@
 
     <!-- Footer -->
     <div style="text-align: center; border-top: 1px solid #eee; padding-top: 20px; color: #666; font-size: 14px;">
-        <p>Questions? Reach out to us at <a href="mailto:hello@refactron.us.kg" style="color: #20B2AA;">hello@refactron.us.kg</a></p>
+        <p>Questions? Reach out to us at <a href="mailto:hello@refactron.dev" style="color: #20B2AA;">hello@refactron.dev</a></p>
         <p>© 2024 Refactron. All rights reserved.</p>
         <p style="font-size: 12px; margin-top: 20px;">
             <a href="{{unsubscribe_url}}" style="color: #999;">Unsubscribe</a> | 
@@ -115,8 +115,8 @@ REACT_APP_EMAILJS_NOTIFICATION_TEMPLATE_ID=notification_template_id_here
 REACT_APP_EMAILJS_PUBLIC_KEY=your_public_key_here
 
 # Email Configuration
-REACT_APP_FROM_EMAIL=hello@refactron.us.kg
-REACT_APP_NOTIFICATION_EMAIL=hello@refactron.us.kg
+REACT_APP_FROM_EMAIL=hello@refactron.dev
+REACT_APP_NOTIFICATION_EMAIL=hello@refactron.dev
 ```
 
 ## Template Variables
