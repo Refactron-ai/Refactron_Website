@@ -1,0 +1,27 @@
+# Auto-assign configuration
+# Set assignees and reviewers for pull requests and issues
+
+# Assignees for pull requests
+addAssignees: author
+
+# Reviewers for pull requests (customize with actual usernames)
+addReviewers: true
+reviewers:
+  - Refactron-ai
+
+# Number of reviewers to assign
+numberOfReviewers: 1
+
+# Skip keywords in PR title to avoid auto-assignment
+skipKeywords:
+  - wip
+  - WIP
+  - draft
+
+# Assignees for issues (customize with actual usernames)
+addIssueAssignees: false
+issueAssignees:
+  - Refactron-ai
+
+# Number of issue assignees
+numberOfIssueAssignees: 1
