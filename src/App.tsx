@@ -31,9 +31,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/docs" element={<DocsPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
-        <Route path="/docs" element={<DocsPage />} />
       </Routes>
       <ProductReleasePopup />
       <CookieManager />

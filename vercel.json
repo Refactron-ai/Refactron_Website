@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "docs.refactron.dev"
+        }
+      ],
+      "destination": "/docs/$1"
+    }
+  ]
+}
+

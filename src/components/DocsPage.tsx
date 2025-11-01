@@ -79,6 +79,25 @@ docker compose run refactron apply --recipe eliminate-dead-code --dry-run
 `
 };
 
+const securityItems = [
+  {
+    title: 'Zero data retention by default',
+    copy: 'Self-host connectors keep code within your VPC. Cloud runs are transient with encrypted storage.'
+  },
+  {
+    title: 'SOC 2 in motion',
+    copy: 'SOC 2 Type II audit underway. GDPR compliant, with data residency in the US and EU.'
+  },
+  {
+    title: 'Secrets hygiene',
+    copy: 'API keys are scoped by environment. Rotate via CLI.'
+  },
+  {
+    title: 'Audit exports',
+    copy: 'Stream run metadata to SIEM tools via webhooks, Azure Event Hub, or Amazon Kinesis.'
+  }
+];
+
 const DocsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -242,8 +261,7 @@ const DocsPage: React.FC = () => {
                   </div>
                   <h2 className="text-2xl font-semibold text-slate-50">Enterprise ready by default</h2>
                   <ul className="space-y-4 text-sm text-slate-400">
-                    {[{ title: 'Zero data retention by default', copy: 'Self-host connectors keep code within your VPC. Cloud runs are transient with encrypted storage.' }, { title: 'SOC 2 in motion', copy: 'SOC 2 Type II audit underway. GDPR compliant, with data residency in the US and EU.' }, { title: 'Secrets hygiene', copy: 'API keys are scoped by environment. Rotate via CLI.
-' }, { title: 'Audit exports', copy: 'Stream run metadata to SIEM tools via webhooks, Azure Event Hub, or Amazon Kinesis.' }].map((item) => (
+                    {securityItems.map((item) => (
                       <li key={item.title} className="bg-slate-950/60 border border-slate-800 rounded-2xl p-6">
                         <h3 className="text-base font-medium text-slate-100 mb-1">{item.title}</h3>
                         <p className="leading-relaxed">{item.copy}</p>
