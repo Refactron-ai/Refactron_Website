@@ -8,10 +8,11 @@ updates:
       day: "monday"
       time: "09:00"
     open-pull-requests-limit: 10
-    reviewers:
-      - "Refactron-ai/maintainers"
-    assignees:
-      - "Refactron-ai/maintainers"
+    # Uncomment and replace with actual GitHub usernames or team names
+    # reviewers:
+    #   - "maintainer-username"
+    # assignees:
+    #   - "maintainer-username"
     labels:
       - "dependencies"
       - "automated"

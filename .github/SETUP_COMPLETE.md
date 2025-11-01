@@ -81,9 +81,11 @@ This repository now has a comprehensive set of GitHub Actions workflows and temp
 ## 🔧 Configuration Required
 
 ### Immediate Actions
-1. **Update Reviewer Names**
+1. **Update Reviewer Names (IMPORTANT)**
    - Edit `.github/auto-assign.yml`
-   - Replace `Refactron-ai` with actual usernames
+   - Uncomment and add actual GitHub usernames
+   - Edit `.github/dependabot.yml` 
+   - Uncomment and add reviewers/assignees
 
 2. **Enable Branch Protection**
    - Go to Settings → Branches
