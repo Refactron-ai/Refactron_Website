@@ -43,31 +43,45 @@ const sections = [
     icon: ShieldCheck,
     description:
       'How we secure your code, handle data residency, and comply with enterprise-grade standards.'
+  },
+  {
+    id: 'product-metrics',
+    title: 'Product Metrics & Roadmap',
+    icon: Rocket,
+    description:
+      'Release cadence, current scorecard, and the Phase 3 roadmap that powers Refactron v1.0.0 and beyond.'
+  },
+  {
+    id: 'contributing',
+    title: 'Contributing & Community',
+    icon: BookOpen,
+    description:
+      'Guides, quick starts, and community standards that help new contributors ship improvements in minutes.'
   }
 ];
 
-const codeSamples = {
-  install: `# Python
-pip install refactron
+const pythonApiSample = `from refactron import Refactron
 
-# Node.js
-npm install @refactron/ai
-`,
-  tsIntegration: `import { RefactronClient } from '@refactron/ai';
+ref = Refactron()
+analysis = ref.analyze("src/")
 
-const client = new RefactronClient({
-  apiKey: process.env.REACT_APP_REFACTRON_KEY,
-});
+print(f"Files: {analysis.summary['files_analyzed']}")
+print(f"Total issues: {analysis.summary['total_issues']}")
 
-const result = await client.refactor({
-  project: 'backend-services',
-  target: 'src/payments/service.ts',
-  recipe: 'improve-async-ergonomics',
-  dryRun: true,
-});
+critical = [i for i in analysis.issues if i.level.value == "CRITICAL"]
+for issue in critical:
+    print(f"❗ {issue.message} (line {issue.line_number})")
 
-console.log(result.summary);
-`,
+result = ref.refactor(
+    "app.py",
+    preview=True,
+    types=["extract_constant", "add_docstring"]
+)
+
+for op in result.operations:
+    print(f"{op.operation_type} (risk {op.risk_score:.2f})")`;
+
+const cliSamples = {
   cli: `# Authenticate once
 refactron login --token $REFACTRON_TOKEN
 
@@ -143,10 +157,26 @@ const DocsPage: React.FC = () => {
                   </div>
                   <h2 className="text-2xl font-semibold text-slate-50">Why Refactron</h2>
                   <p className="text-slate-300 leading-relaxed">
-                    Refactron brings structure to continuous refactoring. The AI analyzes large codebases, prioritizes impact, and applies safe transformations with human oversight. Connect your repositories, pick the refactoring strategy, and use our review workflows to approve changes with confidence.
+                    Refactron is an intelligent refactoring transformer for Python. It analyses codebases for security risks, code smells, complexity, and maintainability, then surfaces risk-scored fixes with before/after previews. The v1.0.0 release combines 135 automated tests, 84% coverage, and 100% detection of intentional security flaws across 5,800+ real lines of code.
                   </p>
                   <div className="grid md:grid-cols-3 gap-6 mt-6">
-                    {[{ icon: Cpu, title: 'AI-first Architecture', copy: 'Adaptive language models tuned for static analysis and refactoring heuristics.' }, { icon: Workflow, title: 'CI/CD Native', copy: 'GitHub Actions, GitLab CI, and CircleCI integrations with progressive rollouts.' }, { icon: ShieldCheck, title: 'Safety Net', copy: 'Deterministic dry-runs, diff previews, guardrail policies, and regression checks.' }].map((item) => (
+                    {[
+                      {
+                        icon: Cpu,
+                        title: 'Comprehensive Analysis',
+                        copy: 'Security scanning, code smells, dependency hygiene, complexity metrics, and type-hint coverage in one pass.'
+                      },
+                      {
+                        icon: Workflow,
+                        title: 'Intelligent Refactoring',
+                        copy: 'Extract constants, add docstrings, reduce parameters, simplify conditionals, and preview multi-step refactors safely.'
+                      },
+                      {
+                        icon: ShieldCheck,
+                        title: 'Enterprise Safety',
+                        copy: 'Risk scoring (0.0–1.0), backups, dry-runs, guardrails, and a battle-tested workflow that reported zero production criticals.'
+                      }
+                    ].map((item) => (
                       <div key={item.title} className="bg-slate-950/60 border border-slate-800 rounded-2xl p-5">
                         <item.icon className="h-5 w-5 text-teal-300 mb-4" />
                         <h3 className="text-lg font-medium text-slate-100 mb-2">{item.title}</h3>
@@ -165,20 +195,35 @@ const DocsPage: React.FC = () => {
                   </div>
                   <h2 className="text-2xl font-semibold text-slate-50">Install & Authenticate</h2>
                   <p className="text-slate-300 leading-relaxed">
-                    The SDK is available on both PyPI and npm. Install the package, export your API key, and you are ready to run the Refactron client in dry-run mode. Dry-runs produce comprehensive diff previews, metrics, and guardrail reports without writing to your repository.
+                    Install from PyPI, analyse your project in seconds, and preview risk-scored refactorings before applying them. Everything works offline—no external APIs or accounts required.
                   </p>
                   <div className="grid lg:grid-cols-2 gap-6">
                     <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-6 font-mono text-sm text-slate-200 overflow-auto">
-                      <pre className="whitespace-pre-wrap leading-relaxed">{codeSamples.install}</pre>
+                      <pre className="whitespace-pre-wrap leading-relaxed">{`# Install
+pip install refactron
+
+# Python API
+from refactron import Refactron
+
+ref = Refactron()
+analysis = ref.analyze("src/")
+print(analysis.report())
+
+result = ref.refactor("app.py", preview=True)
+result.show_diff()`}</pre>
                     </div>
                     <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-6 font-mono text-sm text-slate-200 overflow-auto">
-                      <pre className="whitespace-pre-wrap leading-relaxed">{codeSamples.tsIntegration}</pre>
+                      <pre className="whitespace-pre-wrap leading-relaxed">{`# CLI quick start
+refactron init                       # create .refactron.yaml
+refactron analyze src/ --summary     # analyse entire project
+refactron refactor app.py --preview  # preview suggested fixes
+refactron report src/ --format json -o report.json`}</pre>
                     </div>
                   </div>
                   <div className="bg-teal-500/10 border border-teal-400/20 rounded-2xl p-6">
-                    <h3 className="text-lg font-medium text-teal-100 mb-2">Environment Variables</h3>
+                    <h3 className="text-lg font-medium text-teal-100 mb-2">Configuration Tips</h3>
                     <p className="text-sm text-teal-100/80 leading-relaxed">
-                      Export <code className="text-teal-200">REFACTRON_API_KEY</code> in your CI/CD provider. We support GitHub Actions secrets, AWS Parameter Store, HashiCorp Vault, and Doppler. Keys are scoped per workspace with granular project access policies.
+                      Tune analyzers and thresholds via <code className="text-teal-200">.refactron.yaml</code>. Defaults enable security, code smell, complexity, type hint, dead code, and dependency analyzers with opinionated limits (50 lines per function, ≤5 parameters, nesting depth ≤3).
                     </p>
                   </div>
                 </div>
@@ -190,9 +235,22 @@ const DocsPage: React.FC = () => {
                     <Layers className="h-5 w-5" />
                     <span className="text-sm font-medium uppercase tracking-wide text-teal-200/80">Core Concepts</span>
                   </div>
-                  <h2 className="text-2xl font-semibold text-slate-50">Projects, Snapshots, Recipes</h2>
+                  <h2 className="text-2xl font-semibold text-slate-50">Analysis, Refactoring, Reporting</h2>
                   <div className="grid md:grid-cols-3 gap-6">
-                    {[{ title: 'Projects', copy: 'Map each repository or monorepo workspace to a project. Configure language parsers, branch permissions, and reporting preferences.' }, { title: 'Snapshots', copy: 'Point-in-time captures of your codebase with metrics, dependency graph diffs, and regression test results.' }, { title: 'Recipes', copy: 'Composable refactoring blueprints—rename APIs, migrate frameworks, enforce patterns—and ship them across teams.' }].map((item) => (
+                    {[
+                      {
+                        title: 'Comprehensive Analysis',
+                        copy: 'Security scanning (eval/exec, injections, secrets), complexity checks, code smells, dependency hygiene, type hints, and dead-code detection run in a single pass.'
+                      },
+                      {
+                        title: 'Intelligent Refactoring',
+                        copy: 'Risk-scored operations such as extract constant, reduce parameters, add docstrings, simplify conditionals, and extract method with before/after previews.'
+                      },
+                      {
+                        title: 'Rich Reporting',
+                        copy: 'Text, JSON, and HTML reports quantify technical debt, provide issue breakdowns, and feed CI/CD pipelines with machine-readable insights.'
+                      }
+                    ].map((item) => (
                       <div key={item.title} className="bg-slate-950/60 border border-slate-800 rounded-2xl p-6">
                         <h3 className="text-lg font-medium text-slate-100 mb-2">{item.title}</h3>
                         <p className="text-sm text-slate-400 leading-relaxed">{item.copy}</p>
@@ -208,13 +266,12 @@ const DocsPage: React.FC = () => {
                     <Code2 className="h-5 w-5" />
                     <span className="text-sm font-medium uppercase tracking-wide text-teal-200/80">API Reference</span>
                   </div>
-                  <h2 className="text-2xl font-semibold text-slate-50">Type-safe Client</h2>
+                  <h2 className="text-2xl font-semibold text-slate-50">Python SDK & Data Models</h2>
                   <p className="text-slate-300 leading-relaxed">
-                    The Refactron SDK ships TypeScript definitions and runtime validation. Responses contain human-readable summaries, structured diff metadata, and guardrail outcomes to gate automated merges.
+                    The Python package exposes a typed client with structured `AnalysisResult`, `CodeIssue`, and `RefactoringOperation` models. Each issue carries category, severity, rule ID, and remediation hints, while refactoring operations include before/after code, reasoning, and risk scores so you can gate automated merges confidently.
                   </p>
                   <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-6 font-mono text-sm text-slate-200 overflow-auto">
-                    <pre className="whitespace-pre-wrap leading-relaxed">{codeSamples.cli}
-</pre>
+                    <pre className="whitespace-pre-wrap leading-relaxed">{pythonApiSample}</pre>
                   </div>
                   <ul className="grid md:grid-cols-2 gap-4 text-sm text-slate-400">
                     <li className="flex items-start gap-3 bg-slate-950/60 border border-slate-800 rounded-2xl p-5">
@@ -248,7 +305,7 @@ const DocsPage: React.FC = () => {
                     The CLI packages Refactron capabilities for scripting and CI. Run audits nightly, orchestrate multi-service refactors, and export detailed changelog reports for stakeholder review.
                   </p>
                   <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-6 font-mono text-sm text-slate-200 overflow-auto">
-                    <pre className="whitespace-pre-wrap leading-relaxed">{codeSamples.cli}</pre>
+                    <pre className="whitespace-pre-wrap leading-relaxed">{cliSamples.cli}</pre>
                   </div>
                 </div>
               </section>
@@ -272,6 +329,73 @@ const DocsPage: React.FC = () => {
                     <p className="text-sm text-teal-100/80">
                       Need deeper documentation? Contact <a href="mailto:security@refactron.dev" className="font-medium text-teal-200 hover:text-teal-100">security@refactron.dev</a> for enterprise whitepapers, DPA details, and on-prem deployment options.
                     </p>
+                  </div>
+                </div>
+              </section>
+
+              <section id="product-metrics" className="bg-slate-900/60 border border-slate-800 rounded-3xl p-8 backdrop-blur">
+                <div className="flex flex-col gap-6">
+                  <div className="inline-flex items-center gap-3 text-teal-200">
+                    <Rocket className="h-5 w-5" />
+                    <span className="text-sm font-medium uppercase tracking-wide text-teal-200/80">Product Metrics & Roadmap</span>
+                  </div>
+                  <h2 className="text-2xl font-semibold text-slate-50">Refactron v1.0.0 at a Glance</h2>
+                  <p className="text-slate-300 leading-relaxed">
+                    The 1.0.0 stable release ships comprehensive automation with zero-cost analyzers and a Phase 3 plan focused on rule-based auto-fix, pattern detection, multi-file refactoring, and a custom rule engine. The roadmap keeps optional AI plugins as a BYO-key enhancement so the core experience remains fast, private, and free to run.
+                  </p>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {[{
+                      title: 'Quality Scorecard',
+                      value: '135 tests · 84% coverage · 0 prod criticals',
+                      copy: 'Real-world dogfooding across 5,800+ lines demonstrated 100% detection of intentional security flaws and 94% lint issue reduction.'
+                    }, {
+                      title: 'Performance Benchmarks',
+                      value: '≈4,300 LOC/sec',
+                      copy: 'Small file analysis <0.2s, medium ≈0.2s, large (2000 LOC) ≈1.8s on commodity hardware—ideal for CI and pre-commit.'
+                    }, {
+                      title: 'Roadmap Highlights',
+                      value: 'Phase 3 → Phase 4',
+                      copy: 'Next up: rule-based auto-fix, pattern library, multi-file refactors, YAML rule engine, then IDE plugins, CI native integration, and team collaboration tooling.'
+                    }].map((item) => (
+                      <div key={item.title} className="bg-slate-950/60 border border-slate-800 rounded-2xl p-6">
+                        <h3 className="text-base font-medium text-teal-200 mb-2">{item.title}</h3>
+                        <p className="text-xl font-semibold text-slate-50 mb-2">{item.value}</p>
+                        <p className="text-sm text-slate-400 leading-relaxed">{item.copy}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              <section id="contributing" className="bg-slate-900/60 border border-slate-800 rounded-3xl p-8 backdrop-blur">
+                <div className="flex flex-col gap-6">
+                  <div className="inline-flex items-center gap-3 text-teal-200">
+                    <BookOpen className="h-5 w-5" />
+                    <span className="text-sm font-medium uppercase tracking-wide text-teal-200/80">Contributing & Community</span>
+                  </div>
+                  <h2 className="text-2xl font-semibold text-slate-50">Ship Improvements in Minutes</h2>
+                  <p className="text-slate-300 leading-relaxed">
+                    Refactron welcomes community contributions. The five-minute quick start installs dependencies, pre-commit hooks, and the full test suite so pull requests ship with 95%+ coverage expectations. Use the quick reference to format with Black/isort, lint with flake8, and type-check with mypy before opening a PR.
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="bg-slate-950/60 border border-slate-800 rounded-2xl p-6">
+                      <h3 className="text-lg font-medium text-slate-100 mb-2">Essential Docs</h3>
+                      <ul className="space-y-3 text-sm text-slate-400">
+                        <li><a className="text-teal-200 hover:text-teal-100" href="https://github.com/Refactron-ai/Refactron_lib/blob/main/CONTRIBUTING_QUICKSTART.md" target="_blank" rel="noopener noreferrer">Quick Start Guide – 5 minute onboarding</a></li>
+                        <li><a className="text-teal-200 hover:text-teal-100" href="https://github.com/Refactron-ai/Refactron_lib/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Full Contributing Guide – coding standards & PR checklist</a></li>
+                        <li><a className="text-teal-200 hover:text-teal-100" href="https://github.com/Refactron-ai/Refactron_lib/blob/main/GETTING_STARTED_DEV.md" target="_blank" rel="noopener noreferrer">Developer Setup – environment, CLI demos, debugging tips</a></li>
+                        <li><a className="text-teal-200 hover:text-teal-100" href="https://github.com/Refactron-ai/Refactron_lib/blob/main/CODE_OF_CONDUCT.md" target="_blank" rel="noopener noreferrer">Code of Conduct – inclusive community guidelines</a></li>
+                      </ul>
+                    </div>
+                    <div className="bg-slate-950/60 border border-slate-800 rounded-2xl p-6">
+                      <h3 className="text-lg font-medium text-slate-100 mb-2">How to Get Involved</h3>
+                      <ul className="space-y-3 text-sm text-slate-400">
+                        <li>Start with issues labelled <span className="text-teal-200">good first issue</span> or <span className="text-teal-200">help wanted</span>.</li>
+                        <li>Run <code className="text-teal-200">pytest</code>, <code className="text-teal-200">black</code>, <code className="text-teal-200">flake8</code>, and <code className="text-teal-200">mypy</code> before opening a PR.</li>
+                        <li>Share feedback via GitHub Discussions or email <a className="text-teal-200 hover:text-teal-100" href="mailto:hello@refactron.dev">hello@refactron.dev</a>.</li>
+                        <li>Review the Phase 3 plan to align contributions with auto-fix, pattern detection, and multi-file refactoring initiatives.</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </section>
