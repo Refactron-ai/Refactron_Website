@@ -172,6 +172,8 @@ const Footer: React.FC = () => {
                 <span className="hidden sm:inline">•</span>
                 <a href="/terms-of-service" className="hover:text-primary-600 transition-colors duration-300">Terms of Service</a>
                 <span className="hidden sm:inline">•</span>
+                <a href="/docs" className="hover:text-primary-600 transition-colors duration-300">Docs</a>
+                <span className="hidden sm:inline">•</span>
                 <button 
                   onClick={() => setShowCookieModal(true)}
                   className="hover:text-primary-600 transition-colors duration-300 flex items-center gap-1"

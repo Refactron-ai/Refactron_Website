@@ -10,6 +10,7 @@ import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import ProductReleasePopup from './components/ProductReleasePopup';
 import CookieManager from './components/CookieManager';
+import DocsPage from './components/DocsPage';
 
 const LandingPage: React.FC = () => {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-service" element={<TermsOfService />} />
+        <Route path="/docs" element={<DocsPage />} />
       </Routes>
       <ProductReleasePopup />
       <CookieManager />
