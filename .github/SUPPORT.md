@@ -48,14 +48,14 @@ For general questions, discussions, or ideas:
 
 For other inquiries:
 
-- **Email:** hello@refactron.ai
+- **Email:** hello@refactron.dev
 - **Website:** [refactron.dev](https://refactron.dev)
 
 ## 🔒 Security Issues
 
 **Please do not report security vulnerabilities through public GitHub issues.**
 
-Instead, please report them via email to **hello@refactron.ai**
+Instead, please report them via email to **hello@refactron.dev**
 
 See our [Security Policy](../SECURITY.md) for more details.
 
