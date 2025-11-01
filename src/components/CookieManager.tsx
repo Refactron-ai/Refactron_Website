@@ -4,7 +4,8 @@ import CookiePreferencesModal from './CookiePreferencesModal';
 import { useCookieConsent, CookiePreferences } from '../hooks/useCookieConsent';
 
 const CookieManager: React.FC = () => {
-  const { preferences, hasConsent, isLoading, savePreferences } = useCookieConsent();
+  const { preferences, hasConsent, isLoading, savePreferences } =
+    useCookieConsent();
   const [showPreferencesModal, setShowPreferencesModal] = useState(false);
 
   const handleAccept = (newPreferences: CookiePreferences) => {
@@ -47,7 +48,7 @@ const CookieManager: React.FC = () => {
         onCustomize={handleCustomize}
         onCancel={handleCancel}
       />
-      
+
       <CookiePreferencesModal
         isOpen={showPreferencesModal}
         onClose={() => setShowPreferencesModal(false)}

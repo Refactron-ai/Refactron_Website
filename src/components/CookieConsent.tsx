@@ -15,7 +15,12 @@ interface CookieConsentProps {
   onCancel: () => void;
 }
 
-const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onReject, onCustomize, onCancel }) => {
+const CookieConsent: React.FC<CookieConsentProps> = ({
+  onAccept,
+  onReject,
+  onCustomize,
+  onCancel,
+}) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -65,7 +70,7 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onReject, onCus
     <>
       {/* Backdrop with blur effect */}
       <div className="fixed inset-0 z-40 bg-black bg-opacity-20 backdrop-blur-sm transition-all duration-300 ease-out" />
-      
+
       {/* Cookie popup */}
       <div className="fixed bottom-4 right-4 z-50 bg-white border border-gray-100 shadow-sm rounded-2xl max-w-xs transform transition-all duration-300 ease-out">
         {/* Close button */}
@@ -76,52 +81,57 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ onAccept, onReject, onCus
         >
           <X className="h-4 w-4 text-gray-400" />
         </button>
-      
-      <div className="p-6">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
-            <Shield className="h-4 w-4 text-primary-600" />
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900">Cookie Preferences</h3>
-            <p className="text-xs text-gray-500">Manage your privacy</p>
-          </div>
-        </div>
-        
-        {/* Description */}
-        <p className="text-gray-600 text-xs leading-relaxed mb-4">
-          We use cookies to enhance your experience and analyze site usage.{' '}
-          <a href="/privacy-policy" className="text-primary-600 hover:text-primary-700 underline font-medium">
-            Learn more
-          </a>
-        </p>
 
-        {/* Action buttons */}
-        <div className="space-y-2">
-          <button
-            onClick={handleAcceptAll}
-            className="w-full px-4 py-2.5 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-xl transition-all duration-300 shadow-sm"
-          >
-            Accept All Cookies
-          </button>
-          <div className="flex gap-2">
-            <button
-              onClick={handleRejectAll}
-              className="flex-1 px-3 py-2 text-xs font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200"
+        <div className="p-6">
+          {/* Header */}
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
+              <Shield className="h-4 w-4 text-primary-600" />
+            </div>
+            <div>
+              <h3 className="text-sm font-semibold text-gray-900">
+                Cookie Preferences
+              </h3>
+              <p className="text-xs text-gray-500">Manage your privacy</p>
+            </div>
+          </div>
+
+          {/* Description */}
+          <p className="text-gray-600 text-xs leading-relaxed mb-4">
+            We use cookies to enhance your experience and analyze site usage.{' '}
+            <a
+              href="/privacy-policy"
+              className="text-primary-600 hover:text-primary-700 underline font-medium"
             >
-              Decline
-            </button>
+              Learn more
+            </a>
+          </p>
+
+          {/* Action buttons */}
+          <div className="space-y-2">
             <button
-              onClick={onCustomize}
-              className="flex-1 px-3 py-2 text-xs font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200 flex items-center justify-center gap-1"
+              onClick={handleAcceptAll}
+              className="w-full px-4 py-2.5 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-xl transition-all duration-300 shadow-sm"
             >
-              <Settings className="h-3 w-3" />
-              Settings
+              Accept All Cookies
             </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleRejectAll}
+                className="flex-1 px-3 py-2 text-xs font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200"
+              >
+                Decline
+              </button>
+              <button
+                onClick={onCustomize}
+                className="flex-1 px-3 py-2 text-xs font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200 flex items-center justify-center gap-1"
+              >
+                <Settings className="h-3 w-3" />
+                Settings
+              </button>
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </>
   );

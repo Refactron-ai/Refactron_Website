@@ -63,11 +63,24 @@ src/
 # Run the development server
 npm start
 
-# In another terminal, run tests
+# In another terminal, run lint and format checks
+npm run lint
+npm run format:check
+
+# Run tests
 npm test
 
 # Build the project
 npm run build
+```
+
+**Fix formatting issues:**
+```bash
+# Auto-fix ESLint issues
+npm run lint:fix
+
+# Auto-format code with Prettier
+npm run format
 ```
 
 ### 6. Commit Your Changes
@@ -105,7 +118,9 @@ Then go to GitHub and click "Compare & pull request"
 
 Before submitting your PR, make sure:
 
-- [ ] Code follows the project style
+- [ ] Code follows the project style (run `npm run lint` and `npm run format:check`)
+- [ ] No linting errors (`npm run lint`)
+- [ ] Code is properly formatted (`npm run format:check`)
 - [ ] Tests pass locally (`npm test`)
 - [ ] Build succeeds (`npm run build`)
 - [ ] PR title follows semantic format: `type: description`
@@ -121,7 +136,7 @@ Before submitting your PR, make sure:
 
 When you open a PR, several automated checks will run:
 
-1. **CI Workflow** - Tests and builds your code
+1. **CI Workflow** - Tests, linting, formatting checks, and builds your code
 2. **PR Validation** - Checks PR title format
 3. **CodeQL** - Security scanning
 4. **Dependency Review** - Checks for vulnerable dependencies

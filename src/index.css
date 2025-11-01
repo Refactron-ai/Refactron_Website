@@ -7,7 +7,7 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
     font-family: 'Inter', system-ui, sans-serif;
     background-color: #ffffff;
@@ -15,7 +15,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  
+
   /* Mobile-specific optimizations */
   @media (max-width: 640px) {
     body {
@@ -29,63 +29,65 @@
   .gradient-bg {
     background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
   }
-  
+
   .gradient-text {
-    background: linear-gradient(135deg, #20B2AA 0%, #48D1CC 50%, #7FCDCD 100%);
+    background: linear-gradient(135deg, #20b2aa 0%, #48d1cc 50%, #7fcdcd 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
+
   .glow-border {
     border: 1px solid rgba(32, 178, 170, 0.3);
     box-shadow: 0 0 20px rgba(32, 178, 170, 0.1);
   }
-  
+
   .glass-effect {
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(32, 178, 170, 0.1);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   }
-  
+
   .card-shadow {
-    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow:
+      0 10px 25px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
-  
+
   /* Mobile-specific utilities */
   .mobile-padding {
     @apply px-4 sm:px-6;
   }
-  
+
   .mobile-text-sm {
     @apply text-sm sm:text-base;
   }
-  
+
   .mobile-text-lg {
     @apply text-lg sm:text-xl;
   }
-  
+
   .mobile-text-xl {
     @apply text-xl sm:text-2xl;
   }
-  
+
   .mobile-text-2xl {
     @apply text-2xl sm:text-3xl;
   }
-  
+
   .mobile-text-3xl {
     @apply text-3xl sm:text-4xl;
   }
-  
+
   .mobile-text-4xl {
     @apply text-4xl sm:text-5xl;
   }
-  
+
   .mobile-text-5xl {
     @apply text-5xl sm:text-6xl;
   }
-  
+
   .mobile-text-6xl {
     @apply text-6xl sm:text-7xl;
   }

@@ -28,7 +28,8 @@ const LandingPage: React.FC = () => {
 
 function App() {
   const isDocsHost =
-    typeof window !== 'undefined' && window.location.hostname.startsWith('docs.');
+    typeof window !== 'undefined' &&
+    window.location.hostname.startsWith('docs.');
 
   return (
     <Router>

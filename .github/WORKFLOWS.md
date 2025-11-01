@@ -23,6 +23,8 @@ This document describes all the GitHub Actions workflows configured for the Refa
 **What it does:**
 - Tests on Node.js 16.x, 18.x, and 20.x
 - Installs dependencies
+- Runs ESLint for code quality checks
+- Runs Prettier for code formatting verification
 - Runs tests
 - Builds the project
 - Uploads build artifacts for Node 20.x

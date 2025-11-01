@@ -18,20 +18,20 @@ const Footer: React.FC = () => {
       name: 'GitHub',
       icon: Github,
       url: 'https://github.com/Refactron-ai',
-      color: 'hover:text-gray-700'
+      color: 'hover:text-gray-700',
     },
     {
       name: 'LinkedIn',
       icon: Linkedin,
       url: 'https://linkedin.com/company/refactron',
-      color: 'hover:text-blue-600'
+      color: 'hover:text-blue-600',
     },
     {
       name: 'Email',
       icon: Mail,
       url: 'mailto:hello@refactron.dev',
-      color: 'hover:text-primary-600'
-    }
+      color: 'hover:text-primary-600',
+    },
   ];
 
   return (
@@ -39,9 +39,12 @@ const Footer: React.FC = () => {
       {/* Background Effects - Hidden on mobile */}
       <div className="absolute inset-0">
         <div className="hidden sm:block absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
-        <div className="hidden sm:block absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40" style={{ animationDelay: '2s' }}></div>
+        <div
+          className="hidden sm:block absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40"
+          style={{ animationDelay: '2s' }}
+        ></div>
       </div>
-      
+
       <div className="relative z-10 py-8 sm:py-10 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           {/* Main Footer Content */}
@@ -58,8 +61,8 @@ const Footer: React.FC = () => {
                 <span className="gradient-text">Refactron™</span>
               </h3>
               <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 sm:mb-6 max-w-sm">
-                Refactor. Optimize. Automate. 
-                Building the future of developer productivity with AI-powered code optimization.
+                Refactor. Optimize. Automate. Building the future of developer
+                productivity with AI-powered code optimization.
               </p>
               <div className="flex items-center justify-center sm:justify-start gap-2 text-gray-500 text-xs sm:text-sm">
                 <span>Made with</span>
@@ -76,7 +79,9 @@ const Footer: React.FC = () => {
               viewport={{ once: true }}
               className="flex flex-col items-center sm:items-start text-center sm:text-left"
             >
-              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Connect With Us</h4>
+              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
+                Connect With Us
+              </h4>
               <div className="flex justify-center sm:justify-start gap-3 sm:gap-4 mb-4 sm:mb-6">
                 {socialLinks.map((social, index) => (
                   <motion.a
@@ -108,9 +113,11 @@ const Footer: React.FC = () => {
               viewport={{ once: true }}
               className="flex flex-col items-center sm:items-start text-center sm:text-left"
             >
-              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Get In Touch</h4>
+              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
+                Get In Touch
+              </h4>
               <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 max-w-sm">
-                <a 
+                <a
                   href="mailto:hello@refactron.dev"
                   className="block text-primary-600 hover:text-primary-700 transition-colors duration-300 text-sm sm:text-base font-medium break-all"
                 >
@@ -133,13 +140,19 @@ const Footer: React.FC = () => {
               viewport={{ once: true }}
               className="flex flex-col items-center sm:items-start text-center sm:text-left"
             >
-              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">Our Location</h4>
+              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
+                Our Location
+              </h4>
               <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 max-w-sm">
                 <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3">
                   <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary-500 flex-shrink-0" />
                   <div className="text-center sm:text-left">
-                    <p className="text-gray-600 font-medium text-sm sm:text-base">Bengaluru, India</p>
-                    <p className="text-xs sm:text-sm text-gray-500">Asia Pacific</p>
+                    <p className="text-gray-600 font-medium text-sm sm:text-base">
+                      Bengaluru, India
+                    </p>
+                    <p className="text-xs sm:text-sm text-gray-500">
+                      Asia Pacific
+                    </p>
                   </div>
                 </div>
                 <p className="text-gray-600 text-xs sm:text-sm">
@@ -166,7 +179,7 @@ const Footer: React.FC = () => {
                   © {currentYear} Refactron™. All rights reserved.
                 </p>
               </div>
-              
+
               <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 text-xs sm:text-sm text-gray-500">
                 <a
                   href="https://docs.refactron.dev"
@@ -175,11 +188,21 @@ const Footer: React.FC = () => {
                   Documentation
                 </a>
                 <span className="hidden sm:inline">•</span>
-                <a href="/privacy-policy" className="hover:text-primary-600 transition-colors duration-300">Privacy Policy</a>
+                <a
+                  href="/privacy-policy"
+                  className="hover:text-primary-600 transition-colors duration-300"
+                >
+                  Privacy Policy
+                </a>
                 <span className="hidden sm:inline">•</span>
-                <a href="/terms-of-service" className="hover:text-primary-600 transition-colors duration-300">Terms of Service</a>
+                <a
+                  href="/terms-of-service"
+                  className="hover:text-primary-600 transition-colors duration-300"
+                >
+                  Terms of Service
+                </a>
                 <span className="hidden sm:inline">•</span>
-                <button 
+                <button
                   onClick={() => setShowCookieModal(true)}
                   className="hover:text-primary-600 transition-colors duration-300 flex items-center gap-1"
                 >
@@ -187,7 +210,9 @@ const Footer: React.FC = () => {
                   Cookie Settings
                 </button>
                 <span className="hidden sm:inline">•</span>
-                <span className="text-center sm:text-left">Refactron™ is currently in development</span>
+                <span className="text-center sm:text-left">
+                  Refactron™ is currently in development
+                </span>
               </div>
             </div>
 
@@ -202,7 +227,7 @@ const Footer: React.FC = () => {
 
       {/* Background decoration */}
       <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary-500/50 to-transparent"></div>
-      
+
       {/* Cookie Preferences Modal */}
       <CookiePreferencesModal
         isOpen={showCookieModal}
@@ -214,4 +239,4 @@ const Footer: React.FC = () => {
   );
 };
 
-export default Footer; 
+export default Footer;
