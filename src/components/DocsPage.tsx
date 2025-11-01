@@ -176,7 +176,7 @@ const DocsPage: React.FC = () => {
 
       <main className="relative overflow-hidden flex-1">
         <div className="absolute inset-0 bg-gradient-to-br from-teal-100/60 via-white to-sky-100/60 blur-3xl" />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
           <header className="max-w-3xl">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 mb-6">
               Build with Refactron in minutes, scale to enterprise-grade refactoring pipelines.
@@ -186,7 +186,22 @@ const DocsPage: React.FC = () => {
             </p>
           </header>
 
-          <div className="mt-16 grid lg:grid-cols-[280px_1fr] gap-12">
+          <nav className="mt-10 mb-12 lg:hidden">
+            <div className="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory">
+              {sections.map((section) => (
+                <a
+                  key={section.id}
+                  href={`#${section.id}`}
+                  className="flex-shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-teal-500/20 bg-white/90 text-sm text-gray-600 backdrop-blur-sm shadow-sm snap-start hover:border-teal-500/40 hover:text-teal-600 transition-all"
+                >
+                  <section.icon className="h-4 w-4" />
+                  <span className="whitespace-nowrap">{section.title}</span>
+                </a>
+              ))}
+            </div>
+          </nav>
+
+          <div className="mt-12 sm:mt-16 grid lg:grid-cols-[280px_1fr] gap-10 lg:gap-12">
             <nav className="hidden lg:block sticky top-24 h-fit bg-white/90 border border-gray-200 rounded-2xl p-6 backdrop-blur-sm shadow-xl">
               <ul className="space-y-3 text-sm text-gray-600">
                 {sections.map((section) => (
@@ -203,8 +218,8 @@ const DocsPage: React.FC = () => {
               </ul>
             </nav>
 
-            <div className="space-y-24">
-              <section id="overview" className="bg-white/95 border border-gray-200 rounded-3xl p-8 shadow-xl backdrop-blur-sm">
+            <div className="space-y-16 sm:space-y-20 lg:space-y-24">
+              <section id="overview" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <BookOpen className="h-5 w-5" />
@@ -242,7 +257,7 @@ const DocsPage: React.FC = () => {
                 </div>
               </section>
 
-              <section id="quick-start" className="bg-white/95 border border-gray-200 rounded-3xl p-8 shadow-xl backdrop-blur-sm">
+              <section id="quick-start" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <Rocket className="h-5 w-5" />
@@ -284,7 +299,7 @@ refactron report src/ --format json -o report.json`}</pre>
                 </div>
               </section>
 
-              <section id="tutorials" className="bg-white/95 border border-gray-200 rounded-3xl p-8 shadow-xl backdrop-blur-sm">
+              <section id="tutorials" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <GraduationCap className="h-5 w-5" />
@@ -351,7 +366,7 @@ result.show_diff()`}</pre>
                 </div>
               </section>
 
-              <section id="core-concepts" className="bg-white/95 border border-gray-200 rounded-3xl p-8 shadow-xl backdrop-blur-sm">
+              <section id="core-concepts" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <Layers className="h-5 w-5" />
@@ -382,7 +397,7 @@ result.show_diff()`}</pre>
                 </div>
               </section>
 
-              <section id="api-reference" className="bg-white/95 border border-gray-200 rounded-3xl p-8 shadow-xl backdrop-blur-sm">
+              <section id="api-reference" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <Code2 className="h-5 w-5" />
@@ -416,7 +431,7 @@ result.show_diff()`}</pre>
                 </div>
               </section>
 
-              <section id="cli-workflows" className="bg-white/95 border border-gray-200 rounded-3xl p-8 shadow-xl backdrop-blur-sm">
+              <section id="cli-workflows" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <Workflow className="h-5 w-5" />
@@ -432,7 +447,7 @@ result.show_diff()`}</pre>
                 </div>
               </section>
 
-              <section id="security" className="bg-white/95 border border-gray-200 rounded-3xl p-8 shadow-xl backdrop-blur-sm">
+              <section id="security" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <ShieldCheck className="h-5 w-5" />
@@ -455,7 +470,7 @@ result.show_diff()`}</pre>
                 </div>
               </section>
 
-              <section id="product-metrics" className="bg-white/95 border border-gray-200 rounded-3xl p-8 shadow-xl backdrop-blur-sm">
+              <section id="product-metrics" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <Rocket className="h-5 w-5" />
@@ -489,7 +504,7 @@ result.show_diff()`}</pre>
                 </div>
               </section>
 
-              <section id="contributing" className="bg-white/95 border border-gray-200 rounded-3xl p-8 shadow-xl backdrop-blur-sm">
+              <section id="contributing" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <BookOpen className="h-5 w-5" />
