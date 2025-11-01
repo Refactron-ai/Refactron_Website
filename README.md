@@ -129,7 +129,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 For support or questions:
-- Email: hello@refactron.ai
+- Email: hello@refactron.dev
 - GitHub: [Create an issue](https://github.com/refactron/landing/issues)
 
 ## 🎯 Next Steps
