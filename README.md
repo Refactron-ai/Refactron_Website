@@ -1,5 +1,10 @@
 # Refactron Landing Page
 
+[![CI](https://github.com/Refactron-ai/Refactron_Website/actions/workflows/ci.yml/badge.svg)](https://github.com/Refactron-ai/Refactron_Website/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Code of Conduct](https://img.shields.io/badge/Code%20of%20Conduct-Contributor%20Covenant-blue.svg)](CODE_OF_CONDUCT.md)
+
 A modern, professional landing page for Refactron - an AI-powered code refactoring and optimization platform. Built with React, TypeScript, Tailwind CSS, and Framer Motion.
 
 ## 🚀 Features
