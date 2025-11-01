@@ -290,7 +290,7 @@ const DocsPage: React.FC = () => {
           </header>
 
           <nav className="mt-10 mb-12 lg:hidden">
-            <div className="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory">
+            <div className="flex gap-3 overflow-x-auto pb-1 -mx-4 px-4 snap-x snap-mandatory">
               {sections.map((section) => (
                 <a
                   key={section.id}
@@ -322,7 +322,10 @@ const DocsPage: React.FC = () => {
             </nav>
 
             <div className="space-y-16 sm:space-y-20 lg:space-y-24">
-              <section id="overview" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
+              <section
+                id="overview"
+                className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm scroll-mt-28"
+              >
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <BookOpen className="h-5 w-5" />
@@ -360,7 +363,10 @@ const DocsPage: React.FC = () => {
                 </div>
               </section>
 
-              <section id="quick-start" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
+              <section
+                id="quick-start"
+                className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm scroll-mt-28"
+              >
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <Rocket className="h-5 w-5" />
@@ -402,7 +408,10 @@ refactron report src/ --format json -o report.json`}</pre>
                 </div>
               </section>
 
-              <section id="tutorials" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
+              <section
+                id="tutorials"
+                className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm scroll-mt-28"
+              >
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <GraduationCap className="h-5 w-5" />
@@ -469,7 +478,10 @@ result.show_diff()`}</pre>
                 </div>
               </section>
 
-              <section id="core-concepts" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
+              <section
+                id="core-concepts"
+                className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm scroll-mt-28"
+              >
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <Layers className="h-5 w-5" />
@@ -500,7 +512,10 @@ result.show_diff()`}</pre>
                 </div>
               </section>
 
-              <section id="api-reference" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
+              <section
+                id="api-reference"
+                className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm scroll-mt-28"
+              >
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <Code2 className="h-5 w-5" />
@@ -534,7 +549,10 @@ result.show_diff()`}</pre>
                 </div>
               </section>
 
-              <section id="cli-workflows" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
+              <section
+                id="cli-workflows"
+                className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm scroll-mt-28"
+              >
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <Workflow className="h-5 w-5" />
@@ -550,7 +568,10 @@ result.show_diff()`}</pre>
                 </div>
               </section>
 
-              <section id="security" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
+              <section
+                id="security"
+                className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm scroll-mt-28"
+              >
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <ShieldCheck className="h-5 w-5" />
@@ -573,7 +594,10 @@ result.show_diff()`}</pre>
                 </div>
               </section>
 
-              <section id="product-metrics" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
+              <section
+                id="product-metrics"
+                className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm scroll-mt-28"
+              >
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <Rocket className="h-5 w-5" />
@@ -607,7 +631,10 @@ result.show_diff()`}</pre>
                 </div>
               </section>
 
-              <section id="contributing" className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm">
+              <section
+                id="contributing"
+                className="bg-white/95 border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-xl backdrop-blur-sm scroll-mt-28"
+              >
                 <div className="flex flex-col gap-6">
                   <div className="inline-flex items-center gap-3 text-teal-600">
                     <BookOpen className="h-5 w-5" />
