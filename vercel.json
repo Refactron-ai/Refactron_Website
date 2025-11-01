@@ -8,7 +8,7 @@
           "value": "docs.refactron.dev"
         }
       ],
-      "destination": "/docs/$1"
+      "destination": "/$1"
     }
   ]
 }

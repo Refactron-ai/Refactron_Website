@@ -168,7 +168,12 @@ const Footer: React.FC = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 text-xs sm:text-sm text-gray-500">
-                <a href="/docs" className="hover:text-primary-600 transition-colors duration-300">Documentation</a>
+                <a
+                  href="https://docs.refactron.dev"
+                  className="hover:text-primary-600 transition-colors duration-300"
+                >
+                  Documentation
+                </a>
                 <span className="hidden sm:inline">•</span>
                 <a href="/privacy-policy" className="hover:text-primary-600 transition-colors duration-300">Privacy Policy</a>
                 <span className="hidden sm:inline">•</span>
