@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Code2, Layers, Rocket, Workflow, Cpu, ShieldCheck, PlugZap, BookOpen, Github, Linkedin, Mail, Heart, MapPin, Settings, GraduationCap } from 'lucide-react';
+import { Code2, Layers, Rocket, Workflow, Cpu, ShieldCheck, PlugZap, BookOpen, Github, Linkedin, Mail, Heart, MapPin, Settings, GraduationCap, Menu, X } from 'lucide-react';
 import CookiePreferencesModal from './CookiePreferencesModal';
 import { useCookieConsent, CookiePreferences } from '../hooks/useCookieConsent';
 
@@ -126,6 +126,7 @@ const DocsPage: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const { preferences, savePreferences } = useCookieConsent();
   const [showCookieModal, setShowCookieModal] = React.useState(false);
+  const [showMobileNav, setShowMobileNav] = React.useState(false);
 
   const handleSavePreferences = (newPreferences: CookiePreferences) => {
     savePreferences(newPreferences);
@@ -152,8 +153,100 @@ const DocsPage: React.FC = () => {
     }
   ];
 
+  React.useEffect(() => {
+    if (showMobileNav) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showMobileNav]);
+
   return (
     <div className="min-h-screen bg-white text-gray-700 flex flex-col">
+      {showMobileNav && (
+        <div className="fixed inset-0 z-40 lg:hidden">
+          <div
+            className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm"
+            onClick={() => setShowMobileNav(false)}
+          />
+          <div className="absolute inset-y-0 right-0 w-full max-w-xs sm:max-w-sm bg-white border-l border-gray-200 shadow-2xl flex flex-col">
+            <div className="px-5 py-4 flex items-center justify-between border-b border-gray-100">
+              <span className="text-base font-semibold text-teal-600">Navigate Docs</span>
+              <button
+                type="button"
+                onClick={() => setShowMobileNav(false)}
+                className="inline-flex items-center justify-center rounded-full p-2 text-gray-500 hover:text-teal-600 hover:bg-teal-50 transition-colors"
+                aria-label="Close navigation"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-5 py-4">
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Sections</span>
+                  <ul className="space-y-2">
+                    {sections.map((section) => (
+                      <li key={section.id}>
+                        <a
+                          href={`#${section.id}`}
+                          onClick={() => setShowMobileNav(false)}
+                          className="flex items-center gap-3 px-3 py-2 rounded-xl border border-teal-500/10 bg-white hover:border-teal-500/30 hover:text-teal-600 transition-all"
+                        >
+                          <section.icon className="w-4 h-4 text-teal-500" />
+                          <span className="text-sm font-medium text-gray-700">{section.title}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="space-y-3">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Links</span>
+                  <ul className="space-y-2 text-sm text-gray-600">
+                    <li>
+                      <a
+                        href="https://refactron.ai"
+                        className="block px-3 py-2 rounded-xl border border-gray-100 hover:border-teal-200 hover:text-teal-600 transition-colors"
+                        onClick={() => setShowMobileNav(false)}
+                      >
+                        Home
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="https://github.com/Refactron-ai/Refactron_lib"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block px-3 py-2 rounded-xl border border-gray-100 hover:border-teal-200 hover:text-teal-600 transition-colors"
+                        onClick={() => setShowMobileNav(false)}
+                      >
+                        GitHub
+                      </a>
+                    </li>
+                    <li>
+                      <button
+                        onClick={() => {
+                          setShowMobileNav(false);
+                          setShowCookieModal(true);
+                        }}
+                        className="w-full text-left px-3 py-2 rounded-xl border border-gray-100 hover:border-teal-200 hover:text-teal-600 transition-colors"
+                      >
+                        Cookie Preferences
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <header className="border-b border-gray-200 bg-white/90 backdrop-blur-sm relative z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -169,6 +262,16 @@ const DocsPage: React.FC = () => {
               className="inline-flex items-center gap-1 text-xs text-gray-500 hover:text-teal-600 transition-colors"
             >
               <Settings className="w-3.5 h-3.5" /> Cookie Preferences
+            </button>
+          </div>
+          <div className="md:hidden">
+            <button
+              type="button"
+              onClick={() => setShowMobileNav(true)}
+              className="inline-flex items-center justify-center rounded-full border border-teal-500/30 bg-white px-3 py-2 text-teal-600 shadow-sm hover:border-teal-500/60 hover:text-teal-700 transition-colors"
+              aria-label="Open navigation"
+            >
+              <Menu className="w-5 h-5" />
             </button>
           </div>
         </div>
