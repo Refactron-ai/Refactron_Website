@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Code2, Layers, Rocket, Workflow, Cpu, ShieldCheck, PlugZap, BookOpen, Github, Linkedin, Mail, Heart, MapPin, Settings } from 'lucide-react';
+import { Code2, Layers, Rocket, Workflow, Cpu, ShieldCheck, PlugZap, BookOpen, Github, Linkedin, Mail, Heart, MapPin, Settings, GraduationCap } from 'lucide-react';
 import CookiePreferencesModal from './CookiePreferencesModal';
 import { useCookieConsent, CookiePreferences } from '../hooks/useCookieConsent';
 
@@ -18,6 +18,13 @@ const sections = [
     icon: Rocket,
     description:
       'Install the Refactron library, authenticate, and run your first refactoring pipeline in under five minutes.'
+  },
+  {
+    id: 'tutorials',
+    title: 'Tutorials & Commands',
+    icon: GraduationCap,
+    description:
+      'Step-by-step tutorial, CLI quick reference, and Python snippets so you can master Refactron workflows quickly.'
   },
   {
     id: 'core-concepts',
@@ -151,10 +158,6 @@ const DocsPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="text-lg font-semibold text-teal-600">Refactron Docs</span>
-            <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-wide uppercase text-teal-600 bg-teal-100/80 border border-teal-300/60 px-3 py-1 rounded-full">
-              <PlugZap className="h-3.5 w-3.5" />
-              docs.refactron.dev
-            </span>
           </div>
           <div className="hidden md:flex items-center gap-6 text-sm text-gray-600">
             <a href="https://refactron.ai" className="hover:text-teal-600 transition-colors">Home</a>
@@ -175,10 +178,6 @@ const DocsPage: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-teal-100/60 via-white to-sky-100/60 blur-3xl" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <header className="max-w-3xl">
-            <p className="inline-flex items-center gap-2 text-xs font-semibold tracking-wide uppercase text-teal-600 bg-teal-100/80 border border-teal-300/60 px-3 py-1 rounded-full mb-6">
-              <PlugZap className="h-3.5 w-3.5" />
-              docs.refactron.dev
-            </p>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 mb-6">
               Build with Refactron in minutes, scale to enterprise-grade refactoring pipelines.
             </h1>
@@ -280,6 +279,73 @@ refactron report src/ --format json -o report.json`}</pre>
                     <h3 className="text-lg font-medium text-teal-700 mb-2">Configuration Tips</h3>
                     <p className="text-sm text-teal-700 leading-relaxed">
                       Tune analyzers and thresholds via <code className="text-teal-600">.refactron.yaml</code>. Defaults enable security, code smell, complexity, type hint, dead code, and dependency analyzers with opinionated limits (50 lines per function, ≤5 parameters, nesting depth ≤3).
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <section id="tutorials" className="bg-white/95 border border-gray-200 rounded-3xl p-8 shadow-xl backdrop-blur-sm">
+                <div className="flex flex-col gap-6">
+                  <div className="inline-flex items-center gap-3 text-teal-600">
+                    <GraduationCap className="h-5 w-5" />
+                    <span className="text-sm font-medium uppercase tracking-wide text-teal-600/80">Tutorials & Commands</span>
+                  </div>
+                  <h2 className="text-2xl font-semibold text-gray-900">Learn by Following the Guided Tutorial</h2>
+                  <p className="text-gray-600 leading-relaxed">
+                    The Refactron library ships with a hands-on tutorial and quick reference so you can go from installation to confident refactoring in minutes. Follow the workflow, run the CLI recipes, and adapt the Python snippets to automate your own pipelines.
+                  </p>
+                  <div className="grid lg:grid-cols-3 gap-6">
+                    <div className="bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl p-6 shadow-md">
+                      <h3 className="text-lg font-medium text-gray-900 mb-4">Tutorial Milestones</h3>
+                      <ol className="list-decimal list-inside space-y-2 text-sm text-gray-600 leading-relaxed">
+                        <li>Analyze a sample file and review the generated summary.</li>
+                        <li>Inspect issues by category, severity, and remediation hint.</li>
+                        <li>Preview refactorings with risk scores and before/after diffs.</li>
+                        <li>Apply approved operations with automatic backups and rollback utilities.</li>
+                        <li>Customize analyzers and refactorers via <code className="text-teal-600">.refactron.yaml</code>.</li>
+                        <li>Scale to multi-file analysis and export JSON for CI pipelines.</li>
+                      </ol>
+                    </div>
+                    <div className="bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl p-6 font-mono text-sm text-gray-800 overflow-auto shadow-md">
+                      <h3 className="text-base font-medium text-gray-900 mb-3">CLI Quick Reference</h3>
+                      <pre className="whitespace-pre-wrap leading-relaxed">{`# Initialize configuration
+refactron init
+
+# Analyze code with details
+refactron analyze src/ --detailed
+
+# Preview refactorings
+refactron refactor app.py --preview
+
+# Apply specific refactorers
+refactron refactor app.py -t extract_constant -t add_docstring
+
+# Export JSON report
+refactron report src/ --format json -o report.json`}</pre>
+                    </div>
+                    <div className="bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl p-6 font-mono text-sm text-gray-800 overflow-auto shadow-md">
+                      <h3 className="text-base font-medium text-gray-900 mb-3">Python API Workflow</h3>
+                      <pre className="whitespace-pre-wrap leading-relaxed">{`from refactron import Refactron
+from refactron.core.config import RefactronConfig
+
+config = RefactronConfig.from_file(".refactron.yaml")
+client = Refactron(config)
+
+analysis = client.analyze("src/")
+critical = [i for i in analysis.issues if i.level.value == "CRITICAL"]
+
+result = client.refactor(
+    "app.py",
+    preview=True,
+    types=["extract_constant", "add_docstring"]
+)
+result.show_diff()`}</pre>
+                    </div>
+                  </div>
+                  <div className="bg-teal-50 border border-teal-100 rounded-2xl p-6">
+                    <h3 className="text-lg font-medium text-teal-700 mb-2">Keep the Momentum</h3>
+                    <p className="text-sm text-teal-700 leading-relaxed">
+                      Dive into the full tutorial, quick reference, and architecture guides in the Refactron library repository for advanced patterns, configuration tips, and real-world demos.
                     </p>
                   </div>
                 </div>
