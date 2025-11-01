@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import HeroSection from './components/HeroSection';
 import WhatWeDoSection from './components/WhatWeDoSection';
@@ -26,15 +26,24 @@ const LandingPage: React.FC = () => {
   );
 };
 
+function AppRoutes() {
+  const isDocsHost =
+    typeof window !== 'undefined' && window.location.hostname.startsWith('docs.');
+
+  return (
+    <Routes>
+      <Route path="/" element={isDocsHost ? <Navigate to="/docs" replace /> : <LandingPage />} />
+      <Route path="/docs" element={<DocsPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms-of-service" element={<TermsOfService />} />
+    </Routes>
+  );
+}
+
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/docs" element={<DocsPage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/terms-of-service" element={<TermsOfService />} />
-      </Routes>
+      <AppRoutes />
       <ProductReleasePopup />
       <CookieManager />
       <Analytics />
