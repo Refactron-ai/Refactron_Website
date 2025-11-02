@@ -22,11 +22,11 @@
 ## 🔄 Immediate Next Steps (Week 1)
 
 ### Technical Setup
-- [ ] Set up Google Search Console for refactron.us.kg
+- [ ] Set up Google Search Console for refactron.dev
 - [ ] Configure Google Analytics 4
-- [ ] Submit sitemap (https://refactron.us.kg/sitemap.xml) to Google Search Console
+- [ ] Submit sitemap (https://refactron.dev/sitemap.xml) to Google Search Console
 - [ ] Test structured data with Google's Rich Results Test
-- [ ] Verify robots.txt is accessible at https://refactron.us.kg/robots.txt
+- [ ] Verify robots.txt is accessible at https://refactron.dev/robots.txt
 - [ ] Check mobile-friendliness with Google's Mobile-Friendly Test
 - [ ] Run PageSpeed Insights test
 - [ ] Test Core Web Vitals

@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemap Location
-Sitemap: https://refactron.us.kg/sitemap.xml
+Sitemap: https://refactron.dev/sitemap.xml
 
 # Allow all crawlers to access all content
 Allow: /css/

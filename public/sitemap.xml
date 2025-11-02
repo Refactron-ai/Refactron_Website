@@ -5,19 +5,19 @@
   
   <!-- Homepage -->
   <url>
-    <loc>https://refactron.us.kg/</loc>
+    <loc>https://refactron.dev/</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://refactron.us.kg/Refactron-logo-TM.png</image:loc>
+      <image:loc>https://refactron.dev/Refactron-logo-TM.png</image:loc>
       <image:title>Refactron - AI-Powered Code Refactoring</image:title>
     </image:image>
   </url>
 
   <!-- Privacy Policy -->
   <url>
-    <loc>https://refactron.us.kg/privacy-policy</loc>
+    <loc>https://refactron.dev/privacy-policy</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -25,7 +25,7 @@
 
   <!-- Terms of Service -->
   <url>
-    <loc>https://refactron.us.kg/terms-of-service</loc>
+    <loc>https://refactron.dev/terms-of-service</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
