@@ -1,12 +1,9 @@
+# Refactron Website - Robots.txt
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://refactron.dev/sitemap.xml
-
-# Disallow admin or private areas (if any)
-# Disallow: /admin/
-# Disallow: /private/
+# Sitemap Location
+Sitemap: https://refactron.us.kg/sitemap.xml
 
 # Allow all crawlers to access all content
 Allow: /css/
@@ -14,5 +11,20 @@ Allow: /js/
 Allow: /images/
 Allow: /static/
 
+# Disallow admin or private areas (if any in future)
+# Disallow: /admin/
+# Disallow: /private/
+
 # Crawl-delay (optional - only if needed)
 # Crawl-delay: 1
+
+# Specific bot instructions
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Block bad bots (optional)
+# User-agent: BadBot
+# Disallow: /

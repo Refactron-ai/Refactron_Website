@@ -11,6 +11,9 @@ import TermsOfService from './components/TermsOfService';
 import ProductReleasePopup from './components/ProductReleasePopup';
 import CookieManager from './components/CookieManager';
 import DocsPage from './components/DocsPage';
+import NotFoundPage from './components/NotFoundPage';
+import ErrorBoundary from './components/ErrorBoundary';
+import usePerformanceMonitoring from './hooks/usePerformanceMonitoring';
 
 const LandingPage: React.FC = () => {
   return (
@@ -27,29 +30,35 @@ const LandingPage: React.FC = () => {
 };
 
 function App() {
+  // Monitor performance metrics
+  usePerformanceMonitoring();
+
   const isDocsHost =
     typeof window !== 'undefined' &&
     window.location.hostname.startsWith('docs.');
 
   return (
-    <Router>
-      {isDocsHost ? (
-        <Routes>
-          <Route path="/*" element={<DocsPage />} />
-        </Routes>
-      ) : (
-        <>
+    <ErrorBoundary>
+      <Router>
+        {isDocsHost ? (
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/*" element={<DocsPage />} />
           </Routes>
-          <ProductReleasePopup />
-          <CookieManager />
-        </>
-      )}
-      <Analytics />
-    </Router>
+        ) : (
+          <>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+            <ProductReleasePopup />
+            <CookieManager />
+          </>
+        )}
+        <Analytics />
+      </Router>
+    </ErrorBoundary>
   );
 }
 
