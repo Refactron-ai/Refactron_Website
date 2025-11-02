@@ -13,12 +13,14 @@ import CookieManager from './components/CookieManager';
 import DocsPage from './components/DocsPage';
 import NotFoundPage from './components/NotFoundPage';
 import ErrorBoundary from './components/ErrorBoundary';
+import SkipToMain from './components/SkipToMain';
 import usePerformanceMonitoring from './hooks/usePerformanceMonitoring';
+import useAccessibility from './hooks/useAccessibility';
 
 const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white text-gray-700">
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <HeroSection />
         <WhatWeDoSection />
         <ProductShowcaseSection />
@@ -32,6 +34,9 @@ const LandingPage: React.FC = () => {
 function App() {
   // Monitor performance metrics
   usePerformanceMonitoring();
+  
+  // Enable accessibility features
+  useAccessibility();
 
   const isDocsHost =
     typeof window !== 'undefined' &&
@@ -39,6 +44,7 @@ function App() {
 
   return (
     <ErrorBoundary>
+      <SkipToMain />
       <Router>
         {isDocsHost ? (
           <Routes>
