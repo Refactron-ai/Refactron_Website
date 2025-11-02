@@ -68,7 +68,7 @@ const WhatWeDoSection: React.FC = () => {
               Product Release
             </div>
             <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 text-gray-900">
-              Refactron Library v0.1.0 is Now Live!
+              Refactron Library v1.0.0 is Now Live!
             </h3>
             <p className="text-base sm:text-lg text-gray-600 mb-4 max-w-2xl mx-auto">
               Our first product is officially available on PyPI. Install it

@@ -27,7 +27,7 @@ const ProductShowcaseSection: React.FC = () => {
   const stats = [
     { label: 'Tests Passing', value: '98', icon: CheckCircle },
     { label: 'Code Coverage', value: '90%', icon: Star },
-    { label: 'Production Ready', value: 'v0.1.0', icon: Download },
+    { label: 'Production Ready', value: 'v1.0.0', icon: Download },
   ];
 
   return (
