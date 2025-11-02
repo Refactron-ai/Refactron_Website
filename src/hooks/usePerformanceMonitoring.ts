@@ -55,12 +55,10 @@ const usePerformanceMonitoring = () => {
         metrics.paintTiming = paintTiming as PerformancePaintTiming[];
 
         const fcp = paintTiming.find((entry) => entry.name === 'first-contentful-paint');
-        const lcp = paintTiming.find((entry) => entry.name === 'largest-contentful-paint');
 
         if (process.env.NODE_ENV === 'development' && fcp) {
           console.log('🎨 Paint Metrics:', {
             'First Contentful Paint (FCP)': `${Math.round(fcp.startTime)}ms`,
-            'Largest Contentful Paint (LCP)': lcp ? `${Math.round(lcp.startTime)}ms` : 'N/A',
           });
         }
       }

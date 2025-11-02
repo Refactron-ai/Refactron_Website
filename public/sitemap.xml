@@ -31,13 +31,13 @@
     <priority>0.5</priority>
   </url>
 
-  <!-- Documentation (if available) -->
-  <url>
+  <!-- Documentation (if available - include only when docs subdomain is deployed) -->
+  <!-- <url>
     <loc>https://docs.refactron.dev</loc>
     <lastmod>2025-01-02</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>
+  </url> -->
 
 </urlset>
 
