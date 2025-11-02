@@ -90,19 +90,31 @@ The landing page is fully responsive with breakpoints:
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
-1. Install Vercel CLI: `npm i -g vercel`
-2. Deploy: `vercel`
-3. Follow the prompts
+This project is deployed to production at [refactron.dev](https://refactron.dev).
 
-### Netlify
-1. Build the project: `npm run build`
-2. Drag the `build` folder to Netlify
-3. Configure custom domain if needed
+**Automatic Deployment:**
+- Deployments happen automatically when code is merged to `main`
+- Handled by Vercel Git integration or GitHub Actions
 
-### Other Platforms
-1. Build: `npm run build`
-2. Upload the `build` folder to your hosting provider
+**Manual Deployment:**
+- Via Vercel Dashboard: Redeploy latest build
+- Via GitHub Actions: Run "Deploy to Vercel" workflow
+- Via CLI: `vercel --prod`
+
+📖 **For detailed deployment instructions, troubleshooting, and configuration, see [DEPLOYMENT.md](DEPLOYMENT.md)**
+
+### Quick Deploy
+
+**Using Vercel CLI:**
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+**Using GitHub Actions:**
+1. Ensure deployment secrets are configured
+2. Go to Actions → Deploy to Vercel
+3. Click "Run workflow"
 
 ## 🔧 Environment Variables
 
