@@ -48,7 +48,7 @@ const HeroSection: React.FC = () => {
             className="flex items-center gap-2"
           >
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-sm font-medium text-green-700">v0.1.0</span>
+            <span className="text-sm font-medium text-green-700">v1.0.0</span>
           </motion.div>
         </div>
 
@@ -64,7 +64,7 @@ const HeroSection: React.FC = () => {
               <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-3 sm:px-4 py-2 mb-4 sm:mb-6">
                 <Sparkles className="w-4 h-4 text-green-600" />
                 <span className="text-green-700 text-xs sm:text-sm font-medium">
-                  Now Available - Refactron Library v0.1.0
+                  Now Available - Refactron Library v1.0.0
                 </span>
               </div>
             </motion.div>

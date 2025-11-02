@@ -86,7 +86,7 @@ const ProductReleasePopup: React.FC = () => {
                 <div className="p-6">
                   <p className="text-gray-600 mb-4 leading-relaxed">
                     We're excited to announce that{' '}
-                    <strong>Refactron Library v0.1.0</strong> is now available
+                    <strong>Refactron Library v1.0.0</strong> is now available
                     on PyPI! Start transforming your Python code with AI-powered
                     refactoring today.
                   </p>
@@ -103,7 +103,7 @@ const ProductReleasePopup: React.FC = () => {
                     </div>
                     <div className="text-center p-3 bg-gray-50 rounded-lg">
                       <div className="text-lg font-bold text-purple-600">
-                        v0.1.0
+                        v1.0.0
                       </div>
                       <div className="text-xs text-gray-500">Version</div>
                     </div>
