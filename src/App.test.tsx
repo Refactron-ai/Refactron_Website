@@ -15,15 +15,15 @@ jest.mock('framer-motion', () => {
 
   const sanitizeProps = (props: Record<string, unknown>) => {
     const {
-      animate,
-      initial,
-      exit,
-      transition,
-      whileInView,
-      viewport,
-      variants,
-      layout,
-      layoutId,
+      animate: _animate,
+      initial: _initial,
+      exit: _exit,
+      transition: _transition,
+      whileInView: _whileInView,
+      viewport: _viewport,
+      variants: _variants,
+      layout: _layout,
+      layoutId: _layoutId,
       ...domProps
     } = props;
     return domProps;

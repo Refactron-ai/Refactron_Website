@@ -37,6 +37,7 @@ const usePerformanceMonitoring = () => {
           navigationTiming.loadEventEnd - navigationTiming.fetchStart;
 
         if (process.env.NODE_ENV === 'development') {
+          // eslint-disable-next-line no-console
           console.log('⚡ Performance Metrics:', {
             'Time to First Byte (TTFB)': `${Math.round(ttfb)}ms`,
             'DOM Content Loaded': `${Math.round(domLoad)}ms`,
@@ -65,6 +66,7 @@ const usePerformanceMonitoring = () => {
         );
 
         if (process.env.NODE_ENV === 'development' && fcp) {
+          // eslint-disable-next-line no-console
           console.log('🎨 Paint Metrics:', {
             'First Contentful Paint (FCP)': `${Math.round(fcp.startTime)}ms`,
           });
@@ -81,6 +83,7 @@ const usePerformanceMonitoring = () => {
           .slice(0, 5);
 
         if (process.env.NODE_ENV === 'development') {
+          // eslint-disable-next-line no-console
           console.log(
             '📦 Slowest Resources:',
             slowestResources.map(r => ({
@@ -109,6 +112,7 @@ const usePerformanceMonitoring = () => {
           const lastEntry = entries[entries.length - 1];
 
           if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-console
             console.log('📊 LCP:', `${Math.round(lastEntry.startTime)}ms`);
           }
 
@@ -127,6 +131,7 @@ const usePerformanceMonitoring = () => {
             const fid = entry.processingStart - entry.startTime;
 
             if (process.env.NODE_ENV === 'development') {
+              // eslint-disable-next-line no-console
               console.log(
                 '⚡ FID (First Input Delay):',
                 `${Math.round(fid)}ms`
@@ -147,6 +152,7 @@ const usePerformanceMonitoring = () => {
           }
 
           if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-console
             console.log(
               '📐 CLS (Cumulative Layout Shift):',
               clsScore.toFixed(3)

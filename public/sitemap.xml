@@ -6,7 +6,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://refactron.dev/</loc>
-    <lastmod>2025-01-02</lastmod>
+    <lastmod>2025-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -18,7 +18,7 @@
   <!-- Privacy Policy -->
   <url>
     <loc>https://refactron.dev/privacy-policy</loc>
-    <lastmod>2025-01-02</lastmod>
+    <lastmod>2025-11-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -26,7 +26,7 @@
   <!-- Terms of Service -->
   <url>
     <loc>https://refactron.dev/terms-of-service</loc>
-    <lastmod>2025-01-02</lastmod>
+    <lastmod>2025-11-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

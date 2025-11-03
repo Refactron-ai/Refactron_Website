@@ -133,7 +133,10 @@ const enableAnalytics = () => {
   }
 
   // Enable other analytics services here
-  console.log('Analytics enabled');
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.log('Analytics enabled');
+  }
 };
 
 const disableAnalytics = () => {
@@ -146,7 +149,10 @@ const disableAnalytics = () => {
   }
 
   // Disable other analytics services here
-  console.log('Analytics disabled');
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.log('Analytics disabled');
+  }
 };
 
 // Cookie utility functions

@@ -92,17 +92,21 @@ const EarlyAccessForm: React.FC = () => {
         publicKey
       );
 
-      console.log('Welcome email sent successfully:', welcomeResult);
-      console.log('Notification email sent successfully:', notificationResult);
-
-      // Log to console for development
-      console.log('New early access signup:', {
-        email,
-        timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent,
-        welcomeEmailSent: welcomeResult.status === 200,
-        notificationEmailSent: notificationResult.status === 200,
-      });
+      // Development logging (disable in production)
+      if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
+        console.log('Welcome email sent successfully:', welcomeResult);
+        // eslint-disable-next-line no-console
+        console.log('Notification email sent successfully:', notificationResult);
+        // eslint-disable-next-line no-console
+        console.log('New early access signup:', {
+          email,
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          welcomeEmailSent: welcomeResult.status === 200,
+          notificationEmailSent: notificationResult.status === 200,
+        });
+      }
 
       setIsSubmitted(true);
       setEmail('');
@@ -192,18 +196,26 @@ const EarlyAccessForm: React.FC = () => {
                     type="email"
                     id="email"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={e => {
+                      setEmail(e.target.value);
+                      if (error) setError(''); // Clear error on input change
+                    }}
                     placeholder="Enter your email address"
                     className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
                     disabled={isLoading}
+                    required
+                    aria-describedby={error ? 'email-error' : undefined}
+                    aria-invalid={error ? 'true' : 'false'}
                   />
                   {error && (
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
+                      id="email-error"
+                      role="alert"
                       className="flex items-center gap-2 text-red-500 text-xs sm:text-sm mt-2 sm:mt-3"
                     >
-                      <AlertCircle className="w-4 h-4" />
+                      <AlertCircle className="w-4 h-4" aria-hidden="true" />
                       {error}
                     </motion.div>
                   )}

@@ -36,8 +36,11 @@ const HeroSection: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             src="/Refactron-logo-TM.png"
-            alt="Refactron"
+            alt="Refactron - AI-Powered Code Refactoring Platform"
             className="h-12 sm:h-16 w-auto"
+            loading="eager"
+            width="auto"
+            height="64"
           />
 
           {/* Status Badge - Top Right */}
