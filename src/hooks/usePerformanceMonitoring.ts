@@ -21,14 +21,20 @@ const usePerformanceMonitoring = () => {
       const metrics: PerformanceMetrics = {};
 
       // Navigation Timing
-      const navigationTiming = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const navigationTiming = performance.getEntriesByType(
+        'navigation'
+      )[0] as PerformanceNavigationTiming;
       if (navigationTiming) {
         metrics.navigationTiming = navigationTiming;
 
         // Calculate key metrics
-        const ttfb = navigationTiming.responseStart - navigationTiming.requestStart;
-        const domLoad = navigationTiming.domContentLoadedEventEnd - navigationTiming.fetchStart;
-        const windowLoad = navigationTiming.loadEventEnd - navigationTiming.fetchStart;
+        const ttfb =
+          navigationTiming.responseStart - navigationTiming.requestStart;
+        const domLoad =
+          navigationTiming.domContentLoadedEventEnd -
+          navigationTiming.fetchStart;
+        const windowLoad =
+          navigationTiming.loadEventEnd - navigationTiming.fetchStart;
 
         if (process.env.NODE_ENV === 'development') {
           console.log('⚡ Performance Metrics:', {
@@ -54,7 +60,9 @@ const usePerformanceMonitoring = () => {
       if (paintTiming.length > 0) {
         metrics.paintTiming = paintTiming as PerformancePaintTiming[];
 
-        const fcp = paintTiming.find((entry) => entry.name === 'first-contentful-paint');
+        const fcp = paintTiming.find(
+          entry => entry.name === 'first-contentful-paint'
+        );
 
         if (process.env.NODE_ENV === 'development' && fcp) {
           console.log('🎨 Paint Metrics:', {
@@ -64,17 +72,22 @@ const usePerformanceMonitoring = () => {
       }
 
       // Resource Timing (top 5 slowest resources)
-      const resourceTiming = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+      const resourceTiming = performance.getEntriesByType(
+        'resource'
+      ) as PerformanceResourceTiming[];
       if (resourceTiming.length > 0) {
         const slowestResources = resourceTiming
           .sort((a, b) => b.duration - a.duration)
           .slice(0, 5);
 
         if (process.env.NODE_ENV === 'development') {
-          console.log('📦 Slowest Resources:', slowestResources.map(r => ({
-            name: r.name.split('/').pop(),
-            duration: `${Math.round(r.duration)}ms`
-          })));
+          console.log(
+            '📦 Slowest Resources:',
+            slowestResources.map(r => ({
+              name: r.name.split('/').pop(),
+              duration: `${Math.round(r.duration)}ms`,
+            }))
+          );
         }
       }
     };
@@ -91,7 +104,7 @@ const usePerformanceMonitoring = () => {
     // Web Vitals - Largest Contentful Paint (LCP)
     if ('PerformanceObserver' in window) {
       try {
-        const lcpObserver = new PerformanceObserver((list) => {
+        const lcpObserver = new PerformanceObserver(list => {
           const entries = list.getEntries();
           const lastEntry = entries[entries.length - 1];
 
@@ -108,13 +121,16 @@ const usePerformanceMonitoring = () => {
         lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
 
         // First Input Delay (FID)
-        const fidObserver = new PerformanceObserver((list) => {
+        const fidObserver = new PerformanceObserver(list => {
           const entries = list.getEntries();
           entries.forEach((entry: any) => {
             const fid = entry.processingStart - entry.startTime;
 
             if (process.env.NODE_ENV === 'development') {
-              console.log('⚡ FID (First Input Delay):', `${Math.round(fid)}ms`);
+              console.log(
+                '⚡ FID (First Input Delay):',
+                `${Math.round(fid)}ms`
+              );
             }
           });
         });
@@ -123,7 +139,7 @@ const usePerformanceMonitoring = () => {
 
         // Cumulative Layout Shift (CLS)
         let clsScore = 0;
-        const clsObserver = new PerformanceObserver((list) => {
+        const clsObserver = new PerformanceObserver(list => {
           for (const entry of list.getEntries()) {
             if (!(entry as any).hadRecentInput) {
               clsScore += (entry as any).value;
@@ -131,7 +147,10 @@ const usePerformanceMonitoring = () => {
           }
 
           if (process.env.NODE_ENV === 'development') {
-            console.log('📐 CLS (Cumulative Layout Shift):', clsScore.toFixed(3));
+            console.log(
+              '📐 CLS (Cumulative Layout Shift):',
+              clsScore.toFixed(3)
+            );
           }
         });
 

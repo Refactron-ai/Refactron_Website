@@ -30,7 +30,7 @@ const SkipToMain: React.FC = () => {
     'focus:shadow-lg',
     'focus:outline-none',
     'focus:ring-4',
-    'focus:ring-primary-300'
+    'focus:ring-primary-300',
   ].join(' ');
 
   return (
