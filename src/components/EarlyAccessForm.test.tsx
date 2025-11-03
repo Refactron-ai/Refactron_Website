@@ -70,9 +70,9 @@ describe('EarlyAccessForm', () => {
     const submitButton = screen.getByRole('button', { name: /get updates/i });
 
     fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
-    fireEvent.submit(submitButton.closest('form')!);
+    fireEvent.click(submitButton);
 
-    // Check that form validation works
+    // Check that input retains the invalid value
     expect(emailInput).toHaveValue('invalid-email');
   });
 
