@@ -16,7 +16,7 @@
     
     <!-- Header -->
     <div style="text-align: center; margin-bottom: 30px;">
-        <img src="https://refactron.us.kg/Refactron-logo-TM.png" alt="Refactron" style="height: 60px; margin-bottom: 20px;">
+        <img src="https://refactron.dev/Refactron-logo-TM.png" alt="Refactron" style="height: 60px; margin-bottom: 20px;">
         <h1 style="color: #20B2AA; margin: 0;">Welcome to Refactron!</h1>
         <p style="color: #666; font-size: 18px; margin: 10px 0 0 0;">You're now part of the future of code refactoring</p>
     </div>
@@ -62,7 +62,7 @@
         <p>© 2024 Refactron. All rights reserved.</p>
         <p style="font-size: 12px; margin-top: 20px;">
             <a href="{{unsubscribe_url}}" style="color: #999;">Unsubscribe</a> | 
-            <a href="https://refactron.us.kg/privacy-policy" style="color: #999;">Privacy Policy</a>
+            <a href="https://refactron.dev/privacy-policy" style="color: #999;">Privacy Policy</a>
         </p>
     </div>
 </body>
