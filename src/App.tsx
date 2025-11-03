@@ -34,7 +34,7 @@ const LandingPage: React.FC = () => {
 function App() {
   // Monitor performance metrics
   usePerformanceMonitoring();
-  
+
   // Enable accessibility features
   useAccessibility();
 

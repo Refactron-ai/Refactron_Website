@@ -21,9 +21,18 @@ const NotFoundPage: React.FC = () => {
         >
           <h1 className="text-9xl font-bold gradient-text mb-4">404</h1>
           <div className="flex justify-center gap-4 mb-8">
-            <div className="w-16 h-16 bg-primary-200 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-            <div className="w-16 h-16 bg-primary-300 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-            <div className="w-16 h-16 bg-primary-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+            <div
+              className="w-16 h-16 bg-primary-200 rounded-full animate-bounce"
+              style={{ animationDelay: '0s' }}
+            ></div>
+            <div
+              className="w-16 h-16 bg-primary-300 rounded-full animate-bounce"
+              style={{ animationDelay: '0.2s' }}
+            ></div>
+            <div
+              className="w-16 h-16 bg-primary-400 rounded-full animate-bounce"
+              style={{ animationDelay: '0.4s' }}
+            ></div>
           </div>
         </motion.div>
 
@@ -38,7 +47,8 @@ const NotFoundPage: React.FC = () => {
             Page Not Found
           </h2>
           <p className="text-lg text-gray-600 mb-8">
-            Oops! The page you're looking for doesn't exist. It might have been moved or deleted.
+            Oops! The page you're looking for doesn't exist. It might have been
+            moved or deleted.
           </p>
 
           {/* Action Buttons */}
@@ -67,31 +77,39 @@ const NotFoundPage: React.FC = () => {
 
           {/* Helpful Links */}
           <div className="mt-12 pt-8 border-t border-gray-200">
-            <p className="text-sm text-gray-500 mb-4">You might be looking for:</p>
+            <p className="text-sm text-gray-500 mb-4">
+              You might be looking for:
+            </p>
             <div className="flex flex-wrap gap-4 justify-center">
-              <Link to="/" className="text-primary-600 hover:text-primary-700 font-medium">
+              <Link
+                to="/"
+                className="text-primary-600 hover:text-primary-700 font-medium"
+              >
                 Home
               </Link>
               <span className="text-gray-300">•</span>
-              <a 
-                href="https://pypi.org/project/refactron/" 
-                target="_blank" 
+              <a
+                href="https://pypi.org/project/refactron/"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary-600 hover:text-primary-700 font-medium"
               >
                 Refactron Library
               </a>
               <span className="text-gray-300">•</span>
-              <a 
-                href="https://docs.refactron.dev" 
-                target="_blank" 
+              <a
+                href="https://docs.refactron.dev"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary-600 hover:text-primary-700 font-medium"
               >
                 Documentation
               </a>
               <span className="text-gray-300">•</span>
-              <Link to="/privacy-policy" className="text-primary-600 hover:text-primary-700 font-medium">
+              <Link
+                to="/privacy-policy"
+                className="text-primary-600 hover:text-primary-700 font-medium"
+              >
                 Privacy Policy
               </Link>
             </div>

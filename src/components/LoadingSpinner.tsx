@@ -47,7 +47,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
         {/* Animated Dots */}
         {text && (
           <div className="flex gap-1">
-            {[0, 1, 2].map((i) => (
+            {[0, 1, 2].map(i => (
               <motion.div
                 key={i}
                 animate={{ y: [0, -10, 0] }}
