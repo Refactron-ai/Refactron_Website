@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import HeroSection from './components/HeroSection';
+import RecognitionBadges from './components/RecognitionBadges';
 import WhatWeDoSection from './components/WhatWeDoSection';
 import ProductShowcaseSection from './components/ProductShowcaseSection';
 import EarlyAccessForm from './components/EarlyAccessForm';
@@ -22,6 +23,7 @@ const LandingPage: React.FC = () => {
     <div className="min-h-screen bg-white text-gray-700">
       <main id="main-content" tabIndex={-1}>
         <HeroSection />
+        <RecognitionBadges />
         <WhatWeDoSection />
         <ProductShowcaseSection />
         <EarlyAccessForm />
