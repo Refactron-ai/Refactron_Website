@@ -282,7 +282,7 @@ const DocsPage: React.FC = () => {
           </div>
           <div className="hidden md:flex items-center gap-6 text-sm text-gray-600">
             <a
-              href="https://refactron.ai"
+              href="https://www.refactron.dev/"
               className="hover:text-teal-600 transition-colors"
             >
               Home
