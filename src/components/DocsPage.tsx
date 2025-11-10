@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import CookiePreferencesModal from './CookiePreferencesModal';
 import { useCookieConsent, CookiePreferences } from '../hooks/useCookieConsent';
+import DiscordIcon from '../icons/DiscordIcon';
 
 const sections = [
   {
