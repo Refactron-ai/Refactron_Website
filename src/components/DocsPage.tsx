@@ -236,7 +236,7 @@ const DocsPage: React.FC = () => {
                   <ul className="space-y-2 text-sm text-gray-600">
                     <li>
                       <a
-                        href="https://refactron.ai"
+                        href="https://www.refactron.dev/"
                         className="block px-3 py-2 rounded-xl border border-gray-100 hover:border-teal-200 hover:text-teal-600 transition-colors"
                         onClick={() => setShowMobileNav(false)}
                       >
