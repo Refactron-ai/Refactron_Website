@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, Heart, MapPin, Settings } from 'lucide-react';
+import {
+  Github,
+  Linkedin,
+  Mail,
+  Heart,
+  MapPin,
+  Settings,
+  MessageCircle,
+} from 'lucide-react';
 import CookiePreferencesModal from './CookiePreferencesModal';
 import { useCookieConsent, CookiePreferences } from '../hooks/useCookieConsent';
 
@@ -25,6 +33,12 @@ const Footer: React.FC = () => {
       icon: Linkedin,
       url: 'https://linkedin.com/company/refactron',
       color: 'hover:text-blue-600',
+    },
+    {
+      name: 'Discord',
+      icon: MessageCircle,
+      url: 'https://discord.gg/zynEKJq8',
+      color: 'hover:text-indigo-600',
     },
     {
       name: 'Email',
