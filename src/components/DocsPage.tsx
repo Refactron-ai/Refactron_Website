@@ -164,6 +164,12 @@ const DocsPage: React.FC = () => {
       color: 'hover:text-blue-600',
     },
     {
+      name: 'Discord',
+      icon: DiscordIcon,
+      url: 'https://discord.gg/zynEKJq8',
+      color: 'hover:text-indigo-600',
+    },
+    {
       name: 'Email',
       icon: Mail,
       url: 'mailto:hello@refactron.dev',
