@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  Github,
-  Linkedin,
-  Mail,
-  Heart,
-  MapPin,
-  Settings,
-  MessageCircle,
-} from 'lucide-react';
+import { Github, Linkedin, Mail, Heart, MapPin, Settings } from 'lucide-react';
 import CookiePreferencesModal from './CookiePreferencesModal';
 import { useCookieConsent, CookiePreferences } from '../hooks/useCookieConsent';
+import DiscordIcon from '../icons/DiscordIcon';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -36,7 +29,7 @@ const Footer: React.FC = () => {
     },
     {
       name: 'Discord',
-      icon: MessageCircle,
+      icon: DiscordIcon,
       url: 'https://discord.gg/zynEKJq8',
       color: 'hover:text-indigo-600',
     },
