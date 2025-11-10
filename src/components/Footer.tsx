@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Heart, MapPin, Settings } from 'lucide-react';
 import CookiePreferencesModal from './CookiePreferencesModal';
 import { useCookieConsent, CookiePreferences } from '../hooks/useCookieConsent';
+import DiscordIcon from '../icons/DiscordIcon';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -25,6 +26,12 @@ const Footer: React.FC = () => {
       icon: Linkedin,
       url: 'https://linkedin.com/company/refactron',
       color: 'hover:text-blue-600',
+    },
+    {
+      name: 'Discord',
+      icon: DiscordIcon,
+      url: 'https://discord.gg/zynEKJq8',
+      color: 'hover:text-indigo-600',
     },
     {
       name: 'Email',
