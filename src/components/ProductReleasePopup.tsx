@@ -94,11 +94,13 @@ const ProductReleasePopup: React.FC = () => {
                   {/* Key Stats */}
                   <div className="grid grid-cols-3 gap-3 mb-6">
                     <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-lg font-bold text-green-600">98</div>
+                      <div className="text-lg font-bold text-green-600">
+                        135
+                      </div>
                       <div className="text-xs text-gray-500">Tests</div>
                     </div>
                     <div className="text-center p-3 bg-gray-50 rounded-lg">
-                      <div className="text-lg font-bold text-blue-600">90%</div>
+                      <div className="text-lg font-bold text-blue-600">84%</div>
                       <div className="text-xs text-gray-500">Coverage</div>
                     </div>
                     <div className="text-center p-3 bg-gray-50 rounded-lg">

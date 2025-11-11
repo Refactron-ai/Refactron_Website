@@ -20,13 +20,13 @@ const ProductShowcaseSection: React.FC = () => {
       icon: Shield,
       title: 'Safe & Reliable',
       description:
-        'Risk scoring, before/after previews, and 98 tests passing with 90% code coverage.',
+        'Risk scoring, before/after previews, and 135 tests passing with 84% code coverage.',
     },
   ];
 
   const stats = [
-    { label: 'Tests Passing', value: '98', icon: CheckCircle },
-    { label: 'Code Coverage', value: '90%', icon: Star },
+    { label: 'Tests Passing', value: '135', icon: CheckCircle },
+    { label: 'Code Coverage', value: '84%', icon: Star },
     { label: 'Production Ready', value: 'v1.0.0', icon: Download },
   ];
 
