@@ -41,6 +41,13 @@ const Footer: React.FC = () => {
     },
   ];
 
+  const quickLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: 'Case Studies', href: '/case-studies' },
+    { label: 'Docs', href: 'https://docs.refactron.dev', external: true },
+  ];
+
   return (
     <footer
       id="contact"
@@ -115,7 +122,7 @@ const Footer: React.FC = () => {
               </p>
             </motion.div>
 
-            {/* Contact Info */}
+            {/* Quick Links & Contact */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -124,21 +131,20 @@ const Footer: React.FC = () => {
               className="flex flex-col items-center sm:items-start text-center sm:text-left"
             >
               <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
-                Get In Touch
+                Quick Links
               </h4>
-              <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 max-w-sm">
-                <a
-                  href="mailto:hello@refactron.dev"
-                  className="block text-primary-600 hover:text-primary-700 transition-colors duration-300 text-sm sm:text-base font-medium break-all"
-                >
-                  hello@refactron.dev
-                </a>
-                <p className="text-gray-600 text-xs sm:text-sm">
-                  Ready to revolutionize your code?
-                </p>
-                <p className="text-xs text-gray-500">
-                  We're here to help you optimize your development workflow.
-                </p>
+              <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 w-full">
+                {quickLinks.map(link => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target={link.external ? '_blank' : undefined}
+                    rel={link.external ? 'noopener noreferrer' : undefined}
+                    className="block text-sm sm:text-base text-gray-600 hover:text-primary-600 transition-colors duration-300 font-medium"
+                  >
+                    {link.label}
+                  </a>
+                ))}
               </div>
             </motion.div>
 
@@ -191,13 +197,6 @@ const Footer: React.FC = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 text-xs sm:text-sm text-gray-500">
-                <a
-                  href="https://docs.refactron.dev"
-                  className="hover:text-primary-600 transition-colors duration-300"
-                >
-                  Documentation
-                </a>
-                <span className="hidden sm:inline">•</span>
                 <a
                   href="/privacy-policy"
                   className="hover:text-primary-600 transition-colors duration-300"
