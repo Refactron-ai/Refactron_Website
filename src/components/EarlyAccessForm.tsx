@@ -139,7 +139,8 @@ const EarlyAccessForm: React.FC = () => {
 
   return (
     <section
-      className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 bg-gray-50 relative"
+      id="early-access"
+      className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 bg-gray-50 relative scroll-mt-24"
       data-section="early-access"
     >
       {/* Background Effects - Hidden on mobile */}

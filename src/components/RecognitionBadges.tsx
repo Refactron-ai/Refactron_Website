@@ -4,7 +4,10 @@ import { Award } from 'lucide-react';
 
 const RecognitionBadges: React.FC = () => {
   return (
-    <section className="relative py-12 sm:py-16 bg-gradient-to-b from-gray-50 to-white">
+    <section
+      id="recognition"
+      className="relative py-12 sm:py-16 bg-gradient-to-b from-gray-50 to-white scroll-mt-24"
+    >
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-10 left-10 w-64 h-64 bg-primary-100 rounded-full blur-3xl opacity-30"></div>
