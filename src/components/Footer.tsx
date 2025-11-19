@@ -42,7 +42,10 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="relative bg-white border-t border-gray-200">
+    <footer
+      id="contact"
+      className="relative bg-white border-t border-gray-200 scroll-mt-24"
+    >
       {/* Background Effects - Hidden on mobile */}
       <div className="absolute inset-0">
         <div className="hidden sm:block absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>

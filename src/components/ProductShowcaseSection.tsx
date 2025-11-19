@@ -31,7 +31,10 @@ const ProductShowcaseSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 bg-white relative">
+    <section
+      id="product"
+      className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 bg-white relative scroll-mt-24"
+    >
       {/* Background Effects - Hidden on mobile */}
       <div className="absolute inset-0">
         <div className="hidden sm:block absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>

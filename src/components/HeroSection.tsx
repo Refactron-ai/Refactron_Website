@@ -16,7 +16,7 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <section className="relative min-h-screen bg-white">
+    <section id="home" className="relative min-h-screen bg-white scroll-mt-24">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
@@ -28,32 +28,8 @@ const HeroSection: React.FC = () => {
 
       {/* Main Hero Content with Logo and Countdown */}
       <div className="relative z-10 min-h-screen px-4">
-        {/* Logo and Countdown Row */}
-        <div className="pt-4 sm:pt-8 pb-8 sm:pb-12 px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between max-w-7xl mx-auto gap-4 sm:gap-0">
-          {/* Logo - Top Left */}
-          <motion.img
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-            src="/Refactron-logo-TM.png"
-            alt="Refactron"
-            className="h-12 sm:h-16 w-auto"
-          />
-
-          {/* Status Badge - Top Right */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex items-center gap-2"
-          >
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-sm font-medium text-green-700">v1.0.0</span>
-          </motion.div>
-        </div>
-
         {/* Main Content */}
-        <div className="flex items-center justify-center flex-1 px-4 sm:px-6">
+        <div className="flex items-center justify-center flex-1 px-4 sm:px-6 pt-16 sm:pt-24">
           <div className="text-center max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
