@@ -72,10 +72,12 @@ const NavigationBar: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 z-40 transition-all duration-300 ${
+      className={`fixed top-0 left-1/2 -translate-x-1/2 z-40 transition-all duration-300 ${
+        isScrolled ? 'w-[95%] max-w-7xl' : 'w-full'
+      } ${
         isScrolled
-          ? 'left-1/2 -translate-x-1/2 w-[95%] max-w-7xl rounded-2xl mt-2 bg-white/95 backdrop-blur-lg border border-gray-200 shadow-lg shadow-gray-200/80'
-          : 'left-0 w-full bg-white/80 backdrop-blur-md border-b border-white/70 shadow-md shadow-primary-100/60'
+          ? 'bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-lg shadow-gray-200/80'
+          : 'bg-white/80 backdrop-blur-md border-b border-white/70 shadow-md shadow-primary-100/60'
       }`}
     >
       <div className="w-full px-4 sm:px-6">
