@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, X, ExternalLink } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 type NavItem = {
   label: string;
@@ -19,6 +20,8 @@ const navItems: NavItem[] = [
 const NavigationBar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,13 +41,31 @@ const NavigationBar: React.FC = () => {
 
   const handleItemClick = (item: NavItem) => {
     if (item.target) {
-      scrollToTarget(item.target);
+      // If not on home page, navigate to home first then scroll
+      if (location.pathname !== '/') {
+        navigate('/');
+        // Wait for navigation to complete before scrolling
+        setTimeout(() => {
+          scrollToTarget(item.target!);
+        }, 100);
+      } else {
+        scrollToTarget(item.target);
+      }
       setIsMenuOpen(false);
     }
   };
 
   const handleEarlyAccess = () => {
-    scrollToTarget('[data-section="early-access"]');
+    // If not on home page, navigate to home first then scroll
+    if (location.pathname !== '/') {
+      navigate('/');
+      // Wait for navigation to complete before scrolling
+      setTimeout(() => {
+        scrollToTarget('[data-section="early-access"]');
+      }, 100);
+    } else {
+      scrollToTarget('[data-section="early-access"]');
+    }
     setIsMenuOpen(false);
   };
 
@@ -59,10 +80,14 @@ const NavigationBar: React.FC = () => {
       <div className="w-full px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Brand */}
-          <div className="flex items-center gap-2 pl-2 sm:pl-4">
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 pl-2 sm:pl-4 cursor-pointer"
+            aria-label="Go to homepage"
+          >
             <img src="/logo.png" alt="Refactron logo" className="h-8 w-auto" />
             <span className="sr-only">Refactron</span>
-          </div>
+          </button>
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center">

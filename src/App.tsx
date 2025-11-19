@@ -63,7 +63,7 @@ function App() {
               <Route
                 path="/case-studies"
                 element={
-                  <PageLayout mainClassName="bg-gradient-to-br from-gray-50 via-white to-gray-100">
+                  <PageLayout>
                     <CaseStudiesPage />
                   </PageLayout>
                 }
@@ -71,7 +71,7 @@ function App() {
               <Route
                 path="/case-studies/:slug"
                 element={
-                  <PageLayout mainClassName="bg-gradient-to-b from-white via-gray-50 to-gray-100">
+                  <PageLayout>
                     <CaseStudyDetailPage />
                   </PageLayout>
                 }
