@@ -8,6 +8,7 @@ import ProductShowcaseSection from './components/ProductShowcaseSection';
 import EarlyAccessForm from './components/EarlyAccessForm';
 import CaseStudiesPage from './components/CaseStudiesPage';
 import CaseStudyDetailPage from './components/CaseStudyDetailPage';
+import AboutPage from './components/AboutPage';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import ProductReleasePopup from './components/ProductReleasePopup';
@@ -89,6 +90,14 @@ function App() {
                 element={
                   <PageLayout>
                     <TermsOfService />
+                  </PageLayout>
+                }
+              />
+              <Route
+                path="/about"
+                element={
+                  <PageLayout>
+                    <AboutPage />
                   </PageLayout>
                 }
               />
