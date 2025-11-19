@@ -43,7 +43,8 @@ export const industryChallenges: IndustryChallenge[] = [
       'Manual code reviews for every compliance release',
       'Inconsistent linting leads to high defect rates',
     ],
-    impact: 'Refactron unlocked parallel review pipelines and reduced release prep from 3 weeks to 5 days.',
+    impact:
+      'Refactron unlocked parallel review pipelines and reduced release prep from 3 weeks to 5 days.',
   },
   {
     sector: 'AI/ML Startups',
@@ -55,7 +56,8 @@ export const industryChallenges: IndustryChallenge[] = [
       'Runtime regressions after each refactor',
       'Security teams flag unchecked third-party snippets',
     ],
-    impact: 'Teams replaced ad-hoc scripts with standardized modules, improving MTTR by 32%.',
+    impact:
+      'Teams replaced ad-hoc scripts with standardized modules, improving MTTR by 32%.',
   },
   {
     sector: 'Enterprise SaaS',
@@ -67,7 +69,8 @@ export const industryChallenges: IndustryChallenge[] = [
       'High-risk sections lack documentation or tests',
       'Regression suites take hours, blocking engineers',
     ],
-    impact: 'Refactron automated dependency clean-up and generated targeted test plans, cutting incidents by half.',
+    impact:
+      'Refactron automated dependency clean-up and generated targeted test plans, cutting incidents by half.',
   },
 ];
 
@@ -76,8 +79,10 @@ export const caseStudies: CaseStudy[] = [
     slug: 'vectorpay-modernization',
     customer: 'VectorPay™',
     industry: 'FinTech Infrastructure',
-    summary: 'Digital payments leader migrating a 1.2M LOC Python codebase to modular services.',
-    highlight: 'Consolidated 14 redundant payment processors down to 4 hardened flows.',
+    summary:
+      'Digital payments leader migrating a 1.2M LOC Python codebase to modular services.',
+    highlight:
+      'Consolidated 14 redundant payment processors down to 4 hardened flows.',
     overview:
       'VectorPay operates across 42 countries with strict PCI and SOC2 requirements. Years of compliance-driven forks created duplicated payment processors and fragile release windows. Refactron partnered with the architecture council to chart a safe modernization program.',
     painPoints: [
@@ -97,7 +102,11 @@ export const caseStudies: CaseStudy[] = [
     ],
     metrics: [
       { label: 'Cycle time improvement', value: '38%' },
-      { label: 'Dead code removed', value: '62K LOC', context: 'across payment modules' },
+      {
+        label: 'Dead code removed',
+        value: '62K LOC',
+        context: 'across payment modules',
+      },
       { label: 'Regression defects', value: '-45%' },
     ],
     before: [
@@ -120,7 +129,8 @@ export const caseStudies: CaseStudy[] = [
     slug: 'orbitai-platform',
     customer: 'OrbitAI Research',
     industry: 'AI/ML Platforms',
-    summary: 'Series A AI startup scaling from research notebooks to reliable APIs.',
+    summary:
+      'Series A AI startup scaling from research notebooks to reliable APIs.',
     highlight: 'Stabilized experimentation workflows and cut MTTR by 45%.',
     overview:
       'OrbitAI needed to ship APIs to enterprise customers without slowing the pace of research. Legacy notebooks, duplicated ETL jobs, and ad-hoc deployments made every release a fire drill. Refactron codified patterns so researchers and platform teams could collaborate.',
@@ -164,4 +174,3 @@ export const caseStudies: CaseStudy[] = [
 
 export const getCaseStudyBySlug = (slug: string) =>
   caseStudies.find(caseStudy => caseStudy.slug === slug);
-

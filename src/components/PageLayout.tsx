@@ -14,7 +14,9 @@ const PageLayout: React.FC<PageLayoutProps> = ({
   wrapperClassName = '',
 }) => {
   return (
-    <div className={`min-h-screen bg-white text-gray-700 flex flex-col ${wrapperClassName}`}>
+    <div
+      className={`min-h-screen bg-white text-gray-700 flex flex-col ${wrapperClassName}`}
+    >
       <NavigationBar />
       <main
         id="main-content"
@@ -29,4 +31,3 @@ const PageLayout: React.FC<PageLayoutProps> = ({
 };
 
 export default PageLayout;
-
