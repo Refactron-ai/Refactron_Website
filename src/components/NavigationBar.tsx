@@ -60,11 +60,7 @@ const NavigationBar: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Brand */}
           <div className="flex items-center gap-2 pl-2 sm:pl-4">
-            <img
-              src="/logo.png"
-              alt="Refactron logo"
-              className="h-8 w-auto"
-            />
+            <img src="/logo.png" alt="Refactron logo" className="h-8 w-auto" />
             <span className="sr-only">Refactron</span>
           </div>
 
@@ -76,7 +72,11 @@ const NavigationBar: React.FC = () => {
                   key={item.label}
                   href={item.href}
                   target={item.href.startsWith('http') ? '_blank' : undefined}
-                  rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  rel={
+                    item.href.startsWith('http')
+                      ? 'noopener noreferrer'
+                      : undefined
+                  }
                   className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors rounded-full"
                 >
                   <span className="inline-flex items-center gap-1">
@@ -108,7 +108,6 @@ const NavigationBar: React.FC = () => {
             </button>
           </div>
 
-
           {/* Mobile Toggle */}
           <button
             className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full border border-gray-200 text-gray-700 hover:bg-gray-50 transition"
@@ -116,7 +115,11 @@ const NavigationBar: React.FC = () => {
             aria-label="Toggle navigation menu"
             aria-expanded={isMenuOpen}
           >
-            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {isMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </button>
         </div>
 
@@ -130,7 +133,11 @@ const NavigationBar: React.FC = () => {
                     key={item.label}
                     href={item.href}
                     target={item.href.startsWith('http') ? '_blank' : undefined}
-                    rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                    rel={
+                      item.href.startsWith('http')
+                        ? 'noopener noreferrer'
+                        : undefined
+                    }
                     className="flex items-center justify-between px-4 py-3 rounded-2xl bg-white shadow-sm border border-gray-100 text-gray-700 text-sm font-medium"
                   >
                     <span>{item.label}</span>
@@ -172,4 +179,3 @@ const NavigationBar: React.FC = () => {
 };
 
 export default NavigationBar;
-
