@@ -1,184 +1,384 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
+import { motion } from 'framer-motion';
 import {
-  ArrowLeft,
   Target,
   AlertTriangle,
-  Sparkles,
   Shield,
   ArrowRight,
+  CheckCircle2,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { caseStudies, industryChallenges } from '../data/caseStudies';
 
 const CaseStudiesPage: React.FC = () => {
   const navigate = useNavigate();
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [mousePosition, setMousePosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const GRID_SIZE = 50;
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!gridRef.current) return;
+    const rect = gridRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Calculate which grid cell the cursor is in
+    const gridX = Math.floor(x / GRID_SIZE) * GRID_SIZE;
+    const gridY = Math.floor(y / GRID_SIZE) * GRID_SIZE;
+
+    setMousePosition({ x: gridX, y: gridY });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePosition(null);
+  };
 
   return (
-    <div className="relative pb-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-      <button
-        onClick={() => navigate('/')}
-        className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors mb-8"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back to home
-      </button>
+    <div className="relative min-h-screen bg-white">
+      {/* Minimal Background Effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary-50 rounded-full blur-3xl opacity-30"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-100 rounded-full blur-3xl opacity-20"></div>
+      </div>
 
-      <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 sm:p-10 mb-12">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-semibold uppercase tracking-wide mb-4">
-          <Sparkles className="w-3 h-3" />
-          Case Studies
-        </div>
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-          Industry-grade refactoring playbooks
-        </h1>
-        <p className="text-lg text-gray-600 leading-relaxed max-w-3xl">
-          Refactron partners with engineering teams who are pushing the limits
-          of legacy codebases, AI workloads, and compliance-heavy releases.
-          Explore common pain points we attack first and the measurable outcomes
-          we drive across sectors.
-        </p>
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {[
-            { label: 'Average LOC analyzed', value: '845K+' },
-            { label: 'Critical issues resolved', value: '320+' },
-            { label: 'Release acceleration', value: '≤ 5 days' },
-          ].map(stat => (
+      {/* Top Section with Full-Width Grid Background */}
+      <div
+        ref={gridRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        className="relative overflow-hidden min-h-[600px] -mt-24 sm:-mt-28"
+      >
+        {/* Full-Width Grid Background */}
+        <div className="animated-grid-bg"></div>
+
+        {/* Interactive Grid Fill Effect */}
+        {mousePosition && (
+          <>
+            {/* Filled Cell */}
             <div
-              key={stat.label}
-              className="bg-gray-50 rounded-2xl px-4 py-5 text-center border border-gray-100"
+              className="absolute pointer-events-none z-[1]"
+              style={{
+                left: `${mousePosition.x}px`,
+                top: `${mousePosition.y}px`,
+                width: `${GRID_SIZE}px`,
+                height: `${GRID_SIZE}px`,
+              }}
             >
-              <div className="text-2xl font-bold text-primary-600">
-                {stat.value}
-              </div>
-              <div className="text-xs uppercase tracking-wide text-gray-500">
-                {stat.label}
-              </div>
+              <div className="w-full h-full bg-primary-500/50 border border-primary-400/50"></div>
             </div>
-          ))}
+
+            {/* Illuminated Grid Lines */}
+            <svg
+              className="absolute pointer-events-none z-[2]"
+              style={{
+                left: 0,
+                top: 0,
+                width: '100%',
+                height: '100%',
+              }}
+            >
+              <defs>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                  <feMerge>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+              {/* Top line */}
+              <line
+                x1={mousePosition.x}
+                y1={mousePosition.y}
+                x2={mousePosition.x + GRID_SIZE}
+                y2={mousePosition.y}
+                stroke="#48d1cc"
+                strokeWidth="2"
+                filter="url(#glow)"
+                opacity="0.8"
+              />
+              {/* Bottom line */}
+              <line
+                x1={mousePosition.x}
+                y1={mousePosition.y + GRID_SIZE}
+                x2={mousePosition.x + GRID_SIZE}
+                y2={mousePosition.y + GRID_SIZE}
+                stroke="#48d1cc"
+                strokeWidth="2"
+                filter="url(#glow)"
+                opacity="0.8"
+              />
+              {/* Left line */}
+              <line
+                x1={mousePosition.x}
+                y1={mousePosition.y}
+                x2={mousePosition.x}
+                y2={mousePosition.y + GRID_SIZE}
+                stroke="#48d1cc"
+                strokeWidth="2"
+                filter="url(#glow)"
+                opacity="0.8"
+              />
+              {/* Right line */}
+              <line
+                x1={mousePosition.x + GRID_SIZE}
+                y1={mousePosition.y}
+                x2={mousePosition.x + GRID_SIZE}
+                y2={mousePosition.y + GRID_SIZE}
+                stroke="#48d1cc"
+                strokeWidth="2"
+                filter="url(#glow)"
+                opacity="0.8"
+              />
+            </svg>
+          </>
+        )}
+
+        {/* Content Container */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Minimal Hero Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="pt-40 sm:pt-48 pb-12 sm:pb-16 text-center"
+          >
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+              Case Studies
+            </h1>
+            <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto mb-12">
+              Real transformations from engineering teams pushing the limits of
+              legacy codebases, AI workloads, and compliance-heavy releases.
+            </p>
+
+            {/* Stats Row */}
+            <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 mb-16">
+              {[
+                { label: 'LOC Analyzed', value: '845K+' },
+                { label: 'Issues Resolved', value: '320+' },
+                { label: 'Release Time', value: '≤ 5 days' },
+              ].map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                  className="text-center"
+                >
+                  <div className="text-3xl sm:text-4xl font-bold text-primary-600 mb-1">
+                    {stat.value}
+                  </div>
+                  <div className="text-xs uppercase tracking-wide text-gray-500">
+                    {stat.label}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
 
-      <section className="mb-12">
-        <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
-          <AlertTriangle className="w-6 h-6 text-amber-500" />
-          Common industry blockers
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {industryChallenges.map(challenge => (
-            <article
-              key={challenge.sector}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-4"
-            >
-              <div className="text-xs font-semibold uppercase tracking-wide text-primary-600">
-                {challenge.sector}
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900">
-                {challenge.headline}
-              </h3>
-              <p className="text-sm text-gray-600">{challenge.description}</p>
-              <ul className="space-y-2 text-sm text-gray-600">
-                {challenge.issues.map(issue => (
-                  <li key={issue} className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 bg-primary-500 rounded-full mt-2"></span>
-                    {issue}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-auto rounded-xl bg-primary-50 text-primary-800 text-sm p-4">
-                {challenge.impact}
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="mb-12">
-        <div className="flex items-center gap-3 mb-6">
-          <Target className="w-6 h-6 text-primary-500" />
-          <h2 className="text-2xl sm:text-3xl font-semibold text-gray-900">
-            Featured transformations
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {caseStudies.map(caseStudy => (
-            <article
-              key={caseStudy.slug}
-              className="bg-white border border-gray-100 rounded-3xl shadow-md hover:shadow-xl transition-shadow p-6 flex flex-col gap-4"
-            >
-              <div className="text-xs uppercase tracking-wide font-semibold text-primary-600">
-                {caseStudy.industry}
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900">
-                {caseStudy.customer}
-              </h3>
-              <p className="text-sm text-gray-600">{caseStudy.summary}</p>
-              <p className="text-sm text-gray-500 bg-gray-50 border border-gray-100 rounded-2xl px-4 py-3">
-                {caseStudy.highlight}
-              </p>
-              <div className="grid grid-cols-3 gap-2 text-center">
-                {caseStudy.metrics.slice(0, 3).map(metric => (
-                  <div
-                    key={metric.label}
-                    className="rounded-2xl border border-gray-100 px-2 py-3"
-                  >
-                    <div className="text-base font-semibold text-gray-900">
-                      {metric.value}
+      {/* Portfolio Grid - Case Studies */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="pb-20 sm:pb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            {caseStudies.map((caseStudy, index) => (
+              <motion.div
+                key={caseStudy.slug}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                viewport={{ once: true }}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                className="group relative h-full flex"
+              >
+                <div className="relative bg-white border border-gray-200 rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:border-primary-200 hover:-translate-y-2 flex flex-col w-full">
+                  {/* Card Header - Minimal */}
+                  <div className="relative h-48 bg-gray-50 border-b border-gray-200 p-8 flex flex-col justify-between flex-shrink-0">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-medium uppercase tracking-wide mb-4">
+                          {caseStudy.industry}
+                        </div>
+                        <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight line-clamp-2">
+                          {caseStudy.customer}
+                        </h3>
+                      </div>
+                      <motion.div
+                        animate={{
+                          scale: hoveredIndex === index ? 1.1 : 1,
+                          rotate: hoveredIndex === index ? 5 : 0,
+                        }}
+                        transition={{ duration: 0.3 }}
+                        className="w-16 h-16 rounded-xl bg-primary-50 flex items-center justify-center flex-shrink-0 ml-4"
+                      >
+                        <Target className="w-8 h-8 text-primary-600" />
+                      </motion.div>
                     </div>
-                    <div className="text-[11px] uppercase tracking-wide text-gray-500">
-                      {metric.label}
-                    </div>
+                    <p className="text-gray-600 text-sm font-medium line-clamp-2 mt-4">
+                      {caseStudy.highlight}
+                    </p>
                   </div>
-                ))}
-              </div>
-              <div className="flex justify-between items-center pt-2">
-                <span className="text-xs uppercase tracking-wide text-gray-400">
-                  {caseStudy.painPoints.length} issues resolved
-                </span>
-                <button
-                  onClick={() => navigate(`/case-studies/${caseStudy.slug}`)}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors"
-                >
-                  View details
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
 
-      <section className="bg-gray-900 text-white rounded-3xl p-8 sm:p-12 border border-gray-800">
-        <div className="flex flex-col md:flex-row gap-6 md:items-center md:justify-between">
-          <div>
-            <div className="inline-flex items-center gap-2 text-xs uppercase tracking-wide text-green-300 mb-3">
-              <Shield className="w-4 h-4" />
-              Trusted Outcomes
-            </div>
-            <h2 className="text-3xl font-bold mb-3">
-              Ready to modernize your refactoring pipeline?
+                  {/* Card Content - Flexible */}
+                  <div className="p-8 flex flex-col flex-grow">
+                    <p className="text-gray-600 leading-relaxed mb-6 text-base line-clamp-3">
+                      {caseStudy.summary}
+                    </p>
+
+                    {/* Metrics */}
+                    <div className="grid grid-cols-3 gap-3 mb-6 flex-shrink-0">
+                      {caseStudy.metrics.slice(0, 3).map(metric => (
+                        <div
+                          key={metric.label}
+                          className="text-center p-3 rounded-lg bg-gray-50 border border-gray-100"
+                        >
+                          <div className="text-xl font-bold text-gray-900 mb-1">
+                            {metric.value}
+                          </div>
+                          <div className="text-[10px] uppercase tracking-wide text-gray-500">
+                            {metric.label}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Hover Overlay Content */}
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{
+                        opacity: hoveredIndex === index ? 1 : 0,
+                        height: hoveredIndex === index ? 'auto' : 0,
+                      }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden flex-shrink-0"
+                    >
+                      <div className="pt-4 border-t border-gray-100 space-y-3">
+                        <div className="flex items-center gap-2 text-xs text-gray-500">
+                          <CheckCircle2 className="w-4 h-4 text-primary-500" />
+                          <span>
+                            {caseStudy.painPoints.length} critical issues
+                            resolved
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600 line-clamp-2">
+                          {caseStudy.overview}
+                        </p>
+                      </div>
+                    </motion.div>
+
+                    {/* Action Button - Fixed at bottom */}
+                    <motion.button
+                      onClick={() =>
+                        navigate(`/case-studies/${caseStudy.slug}`)
+                      }
+                      className="mt-auto w-full inline-flex items-center justify-center gap-2 bg-gray-900 text-white font-semibold px-6 py-3 rounded-xl hover:bg-primary-600 transition-all duration-300 group-hover:shadow-lg"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span>View Case Study</span>
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    </motion.button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* Industry Challenges - Compact Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="pb-20 sm:pb-24"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+              Common Challenges We Solve
             </h2>
-            <p className="text-gray-200 text-sm sm:text-base max-w-2xl">
-              Share the problems slowing your engineers. We will map an
-              actionable refactoring playbook in under two weeks, grounded in
-              measurable KPIs.
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Across industries, these patterns emerge time and again
             </p>
           </div>
-          <div className="flex flex-col gap-3 w-full md:w-auto">
-            <a
-              href="/#early-access"
-              className="w-full md:w-auto bg-white text-gray-900 font-semibold px-6 py-3 rounded-2xl shadow-lg hover:bg-gray-100 transition-colors text-center"
-            >
-              Book a working session
-            </a>
-            <button
-              onClick={() => navigate('/')}
-              className="w-full md:w-auto border border-white/40 rounded-2xl px-6 py-3 text-sm uppercase tracking-wide text-gray-300 hover:bg-white/10 transition-colors"
-            >
-              Explore product overview
-            </button>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {industryChallenges.map((challenge, index) => (
+              <motion.div
+                key={challenge.sector}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300"
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
+                    <AlertTriangle className="w-5 h-5 text-amber-600" />
+                  </div>
+                  <span className="text-xs font-semibold uppercase tracking-wide text-primary-600">
+                    {challenge.sector}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
+                  {challenge.headline}
+                </h3>
+                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                  {challenge.description}
+                </p>
+                <div className="pt-4 border-t border-gray-100">
+                  <p className="text-sm font-medium text-primary-700">
+                    {challenge.impact}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </div>
-      </section>
+        </motion.section>
+
+        {/* CTA Section - Minimal */}
+        <motion.section
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="pb-20 sm:pb-24 text-center"
+        >
+          <div className="max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-medium uppercase tracking-wide mb-6">
+              <Shield className="w-3 h-3" />
+              Get Started
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+              Ready to transform your codebase?
+            </h2>
+            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+              Partner with us to create an actionable refactoring playbook
+              tailored to your engineering challenges.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href="/#early-access"
+                className="inline-flex items-center justify-center gap-2 bg-gray-900 text-white font-semibold px-8 py-4 rounded-xl hover:bg-primary-600 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                Book a Session
+                <ArrowRight className="w-4 h-4" />
+              </a>
+              <button
+                onClick={() => navigate('/')}
+                className="inline-flex items-center justify-center gap-2 border-2 border-gray-200 text-gray-700 font-semibold px-8 py-4 rounded-xl hover:border-gray-300 hover:bg-gray-50 transition-all duration-300"
+              >
+                Learn More
+              </button>
+            </div>
+          </div>
+        </motion.section>
+      </div>
     </div>
   );
 };

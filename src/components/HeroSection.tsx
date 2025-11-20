@@ -29,7 +29,7 @@ const HeroSection: React.FC = () => {
       {/* Main Hero Content with Logo and Countdown */}
       <div className="relative z-10 min-h-screen px-4">
         {/* Main Content */}
-        <div className="flex items-center justify-center flex-1 px-4 sm:px-6 pt-16 sm:pt-24">
+        <div className="flex items-center justify-center flex-1 px-4 sm:px-6 pt-4 sm:pt-8">
           <div className="text-center max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
