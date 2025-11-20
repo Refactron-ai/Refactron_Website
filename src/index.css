@@ -137,4 +137,31 @@
   .mobile-text-6xl {
     @apply text-6xl sm:text-7xl;
   }
+
+  /* Animated Grid Background */
+  .animated-grid-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(rgba(32, 178, 170, 0.15) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(32, 178, 170, 0.15) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position:
+      0 0,
+      0 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animated-grid-bg {
+      animation: none;
+    }
+  }
 }
