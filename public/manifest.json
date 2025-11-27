@@ -1,7 +1,7 @@
 {
   "short_name": "Refactron",
-  "name": "Refactron - AI-Powered Code Refactoring",
-  "description": "Transform legacy code with AI-powered refactoring and optimization",
+  "name": "Refactron - AI-Powered Code Refactoring & Optimization",
+  "description": "Transform legacy code with AI-powered refactoring and optimization. Automate code quality improvement and technical debt reduction with intelligent developer tools.",
   "icons": [
     {
       "src": "logo.png",
@@ -16,12 +16,39 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "theme_color": "#20B2AA",
   "background_color": "#ffffff",
   "orientation": "portrait-primary",
-  "categories": ["development", "productivity", "utilities"],
+  "categories": ["development", "productivity", "utilities", "developer tools"],
   "lang": "en-US",
-  "dir": "ltr"
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Try Refactron Library",
+      "short_name": "Library",
+      "description": "Install and use the Refactron Python library",
+      "url": "https://pypi.org/project/refactron/",
+      "icons": [{"src": "logo.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "Case Studies",
+      "short_name": "Cases",
+      "description": "View real code transformation case studies",
+      "url": "/case-studies",
+      "icons": [{"src": "logo.png", "sizes": "192x192"}]
+    },
+    {
+      "name": "Documentation",
+      "short_name": "Docs",
+      "description": "Read the Refactron documentation",
+      "url": "https://docs.refactron.dev",
+      "icons": [{"src": "logo.png", "sizes": "192x192"}]
+    }
+  ],
+  "iarc_rating_id": "",
+  "related_applications": []
 }

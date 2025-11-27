@@ -1,6 +1,13 @@
 # Refactron Website - Robots.txt
+# https://refactron.dev
+
+# Default rules for all crawlers
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/js/*.map
+Disallow: /static/css/*.map
 
 # Sitemap Location
 Sitemap: https://refactron.dev/sitemap.xml
@@ -11,20 +18,53 @@ Allow: /js/
 Allow: /images/
 Allow: /static/
 
-# Disallow admin or private areas (if any in future)
-# Disallow: /admin/
-# Disallow: /private/
-
-# Crawl-delay (optional - only if needed)
-# Crawl-delay: 1
-
-# Specific bot instructions
+# Specific bot instructions for major search engines
 User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Googlebot-Image
 Allow: /
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
-# Block bad bots (optional)
-# User-agent: BadBot
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 2
+
+# Block AI training bots (optional - uncomment if needed)
+# User-agent: GPTBot
 # Disallow: /
+
+# User-agent: CCBot
+# Disallow: /
+
+# User-agent: anthropic-ai
+# Disallow: /
+
+# Block common bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+# Host directive
+Host: https://refactron.dev
