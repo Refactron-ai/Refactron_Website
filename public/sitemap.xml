@@ -6,38 +6,76 @@
   <!-- Homepage -->
   <url>
     <loc>https://refactron.dev/</loc>
-    <lastmod>2025-01-02</lastmod>
+    <lastmod>2025-11-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://refactron.dev/Refactron-logo-TM.png</image:loc>
-      <image:title>Refactron - AI-Powered Code Refactoring</image:title>
+      <image:title>Refactron - AI-Powered Code Refactoring Platform</image:title>
+      <image:caption>Transform legacy code with AI-powered refactoring and optimization</image:caption>
     </image:image>
+  </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://refactron.dev/about</loc>
+    <lastmod>2025-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Case Studies -->
+  <url>
+    <loc>https://refactron.dev/case-studies</loc>
+    <lastmod>2025-11-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://refactron.dev/Refactron-logo-TM.png</image:loc>
+      <image:title>Refactron Case Studies - Real Code Transformations</image:title>
+      <image:caption>Real transformations from engineering teams using AI-powered code refactoring</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Case Study: VectorPay Modernization -->
+  <url>
+    <loc>https://refactron.dev/case-studies/vectorpay-modernization</loc>
+    <lastmod>2025-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Case Study: OrbitAI Platform -->
+  <url>
+    <loc>https://refactron.dev/case-studies/orbitai-platform</loc>
+    <lastmod>2025-11-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
   <!-- Privacy Policy -->
   <url>
     <loc>https://refactron.dev/privacy-policy</loc>
-    <lastmod>2025-01-02</lastmod>
+    <lastmod>2025-11-27</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.4</priority>
   </url>
 
   <!-- Terms of Service -->
   <url>
     <loc>https://refactron.dev/terms-of-service</loc>
-    <lastmod>2025-01-02</lastmod>
+    <lastmod>2025-11-27</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.4</priority>
   </url>
 
-  <!-- Documentation (if available - include only when docs subdomain is deployed) -->
-  <!-- <url>
-    <loc>https://docs.refactron.dev</loc>
-    <lastmod>2025-01-02</lastmod>
+  <!-- Documentation Subdomain -->
+  <url>
+    <loc>https://docs.refactron.dev/</loc>
+    <lastmod>2025-11-27</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url> -->
+    <priority>0.9</priority>
+  </url>
 
 </urlset>
 

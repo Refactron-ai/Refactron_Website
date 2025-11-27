@@ -7,16 +7,28 @@
     <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/logo.png?v=6" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#20B2AA" />
-    <meta name="description" content="Refactron™ — AI-powered code refactoring & optimization platform for cleaner, faster code. Transform legacy code with intelligent automation." />
-    <meta name="keywords" content="AI code refactoring, automated code optimization, AI developer tools, legacy code modernization, code quality improvement, developer productivity tools, automated code refactoring, AI-powered development tools, code refactoring software, intelligent code optimization" />
+    <meta name="description" content="Refactron™ — AI-powered code refactoring & optimization platform for cleaner, faster code. Transform legacy code with intelligent automation. Try our Python library today." />
+    <meta name="keywords" content="AI code refactoring, automated code optimization, AI developer tools, legacy code modernization, code quality improvement, developer productivity tools, automated code refactoring, AI-powered development tools, code refactoring software, intelligent code optimization, Python refactoring library, code maintainability, technical debt reduction, code transformation, software modernization" />
     <meta name="author" content="Refactron Team" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="googlebot" content="index, follow" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="bingbot" content="index, follow" />
     <link rel="canonical" href="https://refactron.dev/" />
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="rating" content="General" />
+    <meta name="distribution" content="Global" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="language" content="English" />
+    <meta name="geo.region" content="IN-KA" />
+    <meta name="geo.placename" content="Bengaluru" />
+    <meta name="geo.position" content="12.9716;77.5946" />
+    <meta name="ICBM" content="12.9716, 77.5946" />
     
     <!-- Performance Hints -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="dns-prefetch" href="https://pypi.org" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     
@@ -24,25 +36,31 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://refactron.dev/" />
     <meta property="og:site_name" content="Refactron" />
-    <meta property="og:title" content="Refactron | AI-powered Code Refactoring & Optimization" />
-    <meta property="og:description" content="Transform legacy code with AI-powered refactoring. Automate code optimization and improve developer productivity with intelligent tools." />
-    <meta property="og:image" content="https://refactron.dev/logo.png" />
+    <meta property="og:title" content="Refactron | AI-powered Code Refactoring & Optimization Platform" />
+    <meta property="og:description" content="Transform legacy code with AI-powered refactoring. Automate code optimization, reduce technical debt, and improve developer productivity with intelligent tools. Now available as a Python library." />
+    <meta property="og:image" content="https://refactron.dev/Refactron-logo-TM.png" />
+    <meta property="og:image:secure_url" content="https://refactron.dev/Refactron-logo-TM.png" />
     <meta property="og:image:alt" content="Refactron - AI-Powered Code Refactoring Platform" />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="en_GB" />
+    <meta property="article:publisher" content="https://www.linkedin.com/company/refactron" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@refactron" />
     <meta name="twitter:creator" content="@refactron" />
+    <meta property="twitter:domain" content="refactron.dev" />
     <meta property="twitter:url" content="https://refactron.dev/" />
     <meta property="twitter:title" content="Refactron | AI-powered Code Refactoring & Optimization" />
-    <meta property="twitter:description" content="Transform legacy code with AI-powered refactoring. Automate code optimization and improve developer productivity." />
-    <meta property="twitter:image" content="https://refactron.dev/logo.png" />
+    <meta property="twitter:description" content="Transform legacy code with AI-powered refactoring. Automate code optimization and improve developer productivity. Try our Python library today!" />
+    <meta property="twitter:image" content="https://refactron.dev/Refactron-logo-TM.png" />
     <meta property="twitter:image:alt" content="Refactron - AI-Powered Code Refactoring Platform" />
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png?v=6" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/logo.png?v=6" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json?v=6" />
     
     <!-- Additional PWA meta tags -->
@@ -53,10 +71,36 @@
     <meta name="application-name" content="Refactron" />
     <meta name="msapplication-TileColor" content="#20B2AA" />
     <meta name="msapplication-TileImage" content="%PUBLIC_URL%/logo.png" />
+    <meta name="msapplication-config" content="%PUBLIC_URL%/browserconfig.xml" />
     
     <!-- Preconnect to Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Structured Data for WebSite (enables sitelinks search box) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Refactron",
+      "alternateName": ["Refactron AI", "Refactron Code Refactoring"],
+      "url": "https://refactron.dev",
+      "description": "AI-powered code refactoring and optimization platform for developers",
+      "inLanguage": "en-US",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Refactron"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://docs.refactron.dev/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
     
     <!-- Structured Data for Organization -->
     <script type="application/ld+json">
@@ -64,13 +108,37 @@
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Refactron",
+      "legalName": "Refactron",
       "url": "https://refactron.dev",
-      "logo": "https://refactron.dev/Refactron-logo-TM.png",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://refactron.dev/Refactron-logo-TM.png",
+        "width": 512,
+        "height": 512
+      },
+      "image": "https://refactron.dev/Refactron-logo-TM.png",
+      "description": "AI-powered code refactoring and optimization platform that revolutionizes legacy code with intelligent automation",
+      "foundingDate": "2024",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bengaluru",
+        "addressRegion": "Karnataka",
+        "addressCountry": "IN"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "hello@refactron.dev",
+        "availableLanguage": ["English"]
+      },
       "sameAs": [
         "https://www.linkedin.com/company/refactron",
         "https://github.com/refactron-ai",
-        "https://twitter.com/refactron"
-      ]
+        "https://twitter.com/refactron",
+        "https://discord.gg/zynEKJq8",
+        "https://pypi.org/project/refactron/"
+      ],
+      "slogan": "Refactor. Optimize. Automate."
     }
     </script>
     
@@ -80,15 +148,21 @@
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
       "name": "Refactron",
-      "description": "AI-powered code refactoring and optimization platform that revolutionizes legacy code with intelligent automation",
+      "alternateName": "Refactron Library",
+      "description": "AI-powered code refactoring and optimization platform that revolutionizes legacy code with intelligent automation. Available as a Python library for seamless integration into your development workflow.",
       "url": "https://refactron.dev",
+      "downloadUrl": "https://pypi.org/project/refactron/",
+      "installUrl": "https://pypi.org/project/refactron/",
       "applicationCategory": "DeveloperApplication",
+      "applicationSubCategory": "Code Refactoring Tool",
       "operatingSystem": "Web, Windows, macOS, Linux",
+      "programmingLanguage": ["Python", "JavaScript", "TypeScript"],
       "offers": {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock"
+        "availability": "https://schema.org/InStock",
+        "priceValidUntil": "2025-12-31"
       },
       "aggregateRating": {
         "@type": "AggregateRating",
@@ -99,14 +173,94 @@
       },
       "author": {
         "@type": "Organization",
-        "name": "Refactron Team"
+        "name": "Refactron Team",
+        "url": "https://refactron.dev"
       },
-      "keywords": "AI code refactoring, automated code optimization, developer tools, legacy code modernization",
-      "screenshot": "https://refactron.dev/og-image.jpg"
+      "publisher": {
+        "@type": "Organization",
+        "name": "Refactron",
+        "url": "https://refactron.dev"
+      },
+      "featureList": [
+        "AI-powered code analysis",
+        "Automated code refactoring",
+        "Legacy code modernization",
+        "Technical debt reduction",
+        "Code quality improvement",
+        "Multi-language support"
+      ],
+      "screenshot": "https://refactron.dev/Refactron-logo-TM.png",
+      "keywords": "AI code refactoring, automated code optimization, developer tools, legacy code modernization, Python library"
+    }
+    </script>
+
+    <!-- Structured Data for FAQPage (helps with featured snippets) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Refactron?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Refactron is an AI-powered code refactoring and optimization platform that helps developers transform legacy code into clean, maintainable solutions. It uses intelligent automation to analyze codebases, identify improvement opportunities, and automate the refactoring process."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does AI code refactoring work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AI code refactoring uses machine learning algorithms to analyze code patterns, identify code smells, and suggest improvements. Refactron's AI understands code context and applies best practices to automatically refactor code while maintaining functionality and improving readability, performance, and maintainability."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Refactron free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Refactron offers a free tier that includes the core Python library available on PyPI. You can install it using pip install refactron and start refactoring your code immediately. Premium features and enterprise solutions are available for teams with advanced needs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What programming languages does Refactron support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Refactron currently supports Python, JavaScript, and TypeScript. The platform is designed to handle multiple programming languages and we are continuously expanding language support to help more developers modernize their codebases."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How can Refactron help reduce technical debt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Refactron helps reduce technical debt by automatically identifying code smells, duplications, and outdated patterns. It then suggests and applies refactoring transformations that improve code quality, reduce complexity, and make the codebase easier to maintain and extend."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- Structured Data for BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://refactron.dev/"
+        }
+      ]
     }
     </script>
     
-    <title>Refactron | AI-powered Code Refactoring & Optimization</title>
+    <title>Refactron | AI-powered Code Refactoring & Optimization Platform</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
