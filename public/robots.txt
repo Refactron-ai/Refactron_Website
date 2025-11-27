@@ -67,4 +67,4 @@ User-agent: MJ12bot
 Disallow: /
 
 # Host directive
-Host: https://refactron.dev
+Host: refactron.dev

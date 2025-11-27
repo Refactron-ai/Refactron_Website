@@ -86,7 +86,7 @@
       ]
     },
     {
-      "source": "/(.*).png",
+      "source": "/(logo|Refactron|F6S)(.*).png",
       "headers": [
         {
           "key": "Cache-Control",

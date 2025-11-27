@@ -28,13 +28,6 @@
   "prefer_related_applications": false,
   "shortcuts": [
     {
-      "name": "Try Refactron Library",
-      "short_name": "Library",
-      "description": "Install and use the Refactron Python library",
-      "url": "https://pypi.org/project/refactron/",
-      "icons": [{"src": "logo.png", "sizes": "192x192"}]
-    },
-    {
       "name": "Case Studies",
       "short_name": "Cases",
       "description": "View real code transformation case studies",
