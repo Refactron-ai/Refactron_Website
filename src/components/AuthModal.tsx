@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 
@@ -17,11 +17,33 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     email: '',
     password: '',
   });
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Focus management and keyboard handling
+  useEffect(() => {
+    if (isOpen) {
+      // Focus the close button when modal opens
+      setTimeout(() => {
+        closeButtonRef.current?.focus();
+      }, 100);
+    }
+  }, [isOpen]);
+
+  // Handle Escape key press
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Backend authentication will be implemented later
-    console.log('Form submitted:', { authMode, formData });
     // For now, just close the modal
     onClose();
   };
@@ -59,12 +81,16 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             className="fixed inset-0 flex items-center justify-center z-50 p-4"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="auth-modal-title"
           >
             <div className="w-full max-w-md max-h-[90vh] overflow-y-auto">
               <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-200/50 overflow-hidden">
                 {/* Header */}
                 <div className="relative bg-gradient-to-r from-primary-50 to-primary-100 p-6 border-b border-gray-100/50">
                   <button
+                    ref={closeButtonRef}
                     onClick={onClose}
                     className="absolute top-4 right-4 p-2 hover:bg-white/50 rounded-full transition-colors"
                     aria-label="Close modal"
@@ -77,7 +103,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                       <User className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-900">
+                      <h2
+                        id="auth-modal-title"
+                        className="text-2xl font-bold text-gray-900"
+                      >
                         {authMode === 'login'
                           ? 'Welcome Back'
                           : 'Create Account'}
