@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Menu, X, ExternalLink } from 'lucide-react';
+import { Menu, X, ExternalLink, LogIn } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import AuthModal from './AuthModal';
 
 type NavItem = {
   label: string;
@@ -21,6 +22,7 @@ const navItems: NavItem[] = [
 const NavigationBar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -128,6 +130,14 @@ const NavigationBar: React.FC = () => {
           {/* CTA */}
           <div className="hidden lg:flex items-center justify-end gap-3 ml-auto pl-4 sm:pl-6 pr-2">
             <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="inline-flex items-center gap-2 border-2 border-primary-500 text-primary-600 hover:bg-primary-50 text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-300"
+              aria-label="Sign in"
+            >
+              <LogIn className="w-4 h-4" />
+              Sign In
+            </button>
+            <button
               onClick={handleEarlyAccess}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-300 shadow-lg"
             >
@@ -186,6 +196,16 @@ const NavigationBar: React.FC = () => {
 
             <div className="grid gap-2 pt-2">
               <button
+                onClick={() => {
+                  setIsAuthModalOpen(true);
+                  setIsMenuOpen(false);
+                }}
+                className="w-full px-4 py-3 rounded-2xl border-2 border-primary-500 text-primary-600 font-semibold text-sm bg-white text-center flex items-center justify-center gap-2"
+              >
+                <LogIn className="w-4 h-4" />
+                Sign In
+              </button>
+              <button
                 onClick={() => scrollToTarget('#product')}
                 className="w-full px-4 py-3 rounded-2xl border border-gray-200 text-gray-800 font-semibold text-sm bg-white text-center"
               >
@@ -201,6 +221,12 @@ const NavigationBar: React.FC = () => {
           </div>
         )}
       </div>
+      
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+      />
     </header>
   );
 };
