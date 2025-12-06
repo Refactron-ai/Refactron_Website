@@ -12,6 +12,12 @@ export type CaseStudyMetric = {
   context?: string;
 };
 
+export type CaseStudyReference = {
+  title: string;
+  url: string;
+  source: string;
+};
+
 export type CaseStudy = {
   slug: string;
   customer: string;
@@ -30,145 +36,149 @@ export type CaseStudy = {
     author: string;
     role: string;
   };
+  references?: CaseStudyReference[];
 };
 
 export const industryChallenges: IndustryChallenge[] = [
   {
-    sector: 'FinTech Platforms',
-    headline: 'Legacy monoliths slow shipping by 40%',
+    sector: 'Legacy Systems',
+    headline: 'Technical debt impedes innovation',
     description:
-      'Payment processors run 15+ year-old Python services with tangled dependencies, manual reviews, and recurring security alerts.',
+      'Legacy codebases accumulate complexity with poor maintainability, missing documentation, and security vulnerabilities making changes risky.',
     issues: [
-      'Critical paths blocked by copy-pasted business logic',
-      'Manual code reviews for every compliance release',
-      'Inconsistent linting leads to high defect rates',
+      'Spaghetti code from decades of patches',
+      'Missing documentation forces reverse-engineering',
+      'Tangled dependencies from obsolete libraries',
     ],
     impact:
-      'Refactron unlocked parallel review pipelines and reduced release prep from 3 weeks to 5 days.',
+      'Automated code modernization reduces refactoring time by 80% while eliminating regression risks.',
   },
   {
-    sector: 'AI/ML Startups',
-    headline: 'Experimentation velocity capped by tech debt',
+    sector: 'Security & Compliance',
+    headline: 'Outdated libraries create vulnerabilities',
     description:
-      'Model teams juggle research notebooks, prototype APIs, and production jobs. Spaghetti utilities derail onboarding.',
+      'Legacy systems use unmaintained frameworks with known security flaws, creating risks that remain undetected until production.',
     issues: [
-      'Duplicate feature engineering pipelines across repos',
-      'Runtime regressions after each refactor',
-      'Security teams flag unchecked third-party snippets',
+      'Outdated components with known vulnerabilities',
+      'Hidden issues including SQL injections and XSS',
+      'No automated security scanning in workflows',
     ],
     impact:
-      'Teams replaced ad-hoc scripts with standardized modules, improving MTTR by 32%.',
+      'Automated dependency analysis and security scanning identify vulnerabilities before deployment.',
   },
   {
-    sector: 'Enterprise SaaS',
-    headline: 'Multi-tenant scale demands structural consistency',
+    sector: 'Developer Onboarding',
+    headline: 'Knowledge gaps slow productivity',
     description:
-      'Global SaaS vendors must keep thousands of customer-specific forks aligned while meeting SOC2 and ISO requirements.',
+      'Without clear documentation or tests, new developers navigate arcane code and outdated patterns, slowing feature delivery.',
     issues: [
-      'Diverging code paths per tenant require manual merges',
-      'High-risk sections lack documentation or tests',
-      'Regression suites take hours, blocking engineers',
+      'Insufficient documentation hinders understanding',
+      'Missing automated tests make regression detection difficult',
+      'Institutional knowledge vanishes as teams change',
     ],
     impact:
-      'Refactron automated dependency clean-up and generated targeted test plans, cutting incidents by half.',
+      'AI-generated documentation and analysis reports cut onboarding time in half.',
   },
 ];
 
 export const caseStudies: CaseStudy[] = [
   {
-    slug: 'vectorpay-modernization',
-    customer: 'VectorPay™',
-    industry: 'FinTech Infrastructure',
+    slug: 'legacy-code-ai-refactoring',
+    customer: 'Transforming Legacy Code Challenges',
+    industry: 'Enterprise Software',
     summary:
-      'Digital payments leader migrating a 1.2M LOC Python codebase to modular services.',
+      'AI-powered refactoring platform addressing legacy codebases plagued by technical debt, missing documentation, and security vulnerabilities.',
     highlight:
-      'Consolidated 14 redundant payment processors down to 4 hardened flows.',
+      'Automated code modernization reducing refactoring time by 80% while eliminating regression risks.',
     overview:
-      'VectorPay operates across 42 countries with strict PCI and SOC2 requirements. Years of compliance-driven forks created duplicated payment processors and fragile release windows. Refactron partnered with the architecture council to chart a safe modernization program.',
+      'Legacy codebases pose a well-known challenge: they accrue complexity and risk over time. Without regular maintenance, technical debt builds up and can gradually impede innovation, slow development cycles, and jeopardize system stability. Common symptoms include poor maintainability with spaghetti code, missing or outdated documentation, tangled dependency hell from obsolete libraries, security vulnerabilities, and lack of automated tests. These factors make any change risky—even small changes can lead to unintended consequences because the absence of safety nets makes teams hesitant to modify code. Refactron is an AI-driven refactoring tool designed to address these legacy code pain points by automating analysis and improvements, turning weeks of manual effort into hours of automated guidance.',
     painPoints: [
-      '27% of incidents traced to duplicated payment processors',
-      'Compliance changes required three parallel audit checklists',
-      'Developers spent ~8 hours/week triaging dead code and unused modules',
+      'Maintainability issues: Decades of patches and quick fixes accumulate technical debt, eroding design and making code hard to understand or extend. Functions tend to be long, duplicated, or poorly structured, so adding features becomes fragile and time-consuming',
+      'Lack of documentation: Legacy projects often suffer from no or outdated docs, making it difficult to understand system architecture, functionality, and dependencies. New developers must reverse-engineer code, and institutional knowledge vanishes as teams change',
+      'Dependency hell: Over time, legacy codebases depend on old, incompatible libraries. Upgrading one library often forces a chain of upgrades with potential breakages. Such upgrade cascades are laborious and risky',
+      'Outdated libraries & security risk: Legacy systems frequently use frameworks or packages that are no longer maintained or patched. These outdated components often harbor known security flaws, creating vulnerabilities that can contain tens of thousands of hidden issues',
+      'Regression risk: Legacy projects rarely have good test coverage. Missing unit or integration tests means any change risks breaking existing behavior. This uncertainty forces teams to avoid refactoring, leaving bugs and inefficiencies unaddressed',
+      'Onboarding difficulties: All factors converge to make onboarding new developers painful. Without clear docs or tests, newcomers must wade through arcane code and outdated patterns, slowing feature delivery and increasing bug risk',
     ],
     refactronApproach: [
-      'Ran Refactron Library against 1.2M LOC to map structural clones and unused modules',
-      'Generated change plans that grouped related processors with identical exception handling',
-      'Delivered guardrail tests + diff-aware documentation for every compliance rule touched',
+      'Automated refactoring: Intelligently restructures and cleans code to improve readability and maintainability without altering external behavior. Finds duplicated logic, suggests extracting shared functions, and breaks up oversized methods, reducing complexity automatically',
+      'Code quality analysis: Spots unused variables, dead code, poor naming, and deviations from best practices with static analysis. Flags hot spots like deeply nested loops or overly complex branches, with side-by-side preview for visual comparison',
+      'Documentation generation: Auto-generates missing docstrings and comments based on function logic. In preview mode, filters by add_docstring to insert function descriptions, automatically encoding intent back into code and mitigating knowledge gaps',
+      'Dependency & security analysis: Includes dependency analysis to untangle complex library graphs. Flags outdated or vulnerable libraries and suggests safer versions to update. Integrates security scanners to uncover known vulnerabilities before deployment',
+      'Safe refactoring with regression prevention: Every transformation is non-destructive and verifiable. Provides preview diffs, risk scoring of changes, and rollback capabilities. Shows diffs alongside unit test results and risk scores before committing',
+      'Continuous integration: Integrates into CI/CD pipelines to continuously enforce code quality standards. Shifts developer role to reviewing and approving automated suggestions instead of making each low-level edit',
     ],
     outcomes: [
-      'Release prep time dropped from 3 weeks to 5 business days',
-      'Critical payment paths now share typed service contracts',
-      'Security review backlog cleared with automated documentation bundles',
+      'Refactoring time reduced by 80% compared to manual efforts, with what takes weeks manually done in hours',
+      'Automated documentation generation eliminates knowledge gaps for new developers and accelerates onboarding',
+      'Security vulnerabilities identified and fixed before deployment, preventing production incidents',
+      'Dependency upgrades automated with safe migration paths, eliminating risky upgrade cascades',
+      'Regression risk eliminated through preview diffs and risk scoring, allowing confident refactoring',
+      'Onboarding time cut in half with comprehensive code documentation and analysis reports',
     ],
     metrics: [
-      { label: 'Cycle time improvement', value: '38%' },
+      { label: 'Refactoring time', value: '-80%' },
       {
-        label: 'Dead code removed',
-        value: '62K LOC',
-        context: 'across payment modules',
+        label: 'Issues detected',
+        value: '78 per analysis',
+        context: 'Critical: 5, Warnings: 20, Info: 53',
       },
-      { label: 'Regression defects', value: '-45%' },
+      { label: 'Onboarding speed', value: '2x faster' },
     ],
     before: [
-      '27% of incidents traced to duplicated payment processors',
-      'Compliance changes required 3 parallel audit checklists',
-      'Developers spent ~8 hours/week triaging dead code',
+      'Manual refactoring required painstaking code reviews and weeks of effort, with teams fearing breaking features due to insufficient test suites',
+      'Missing documentation forced reverse-engineering of legacy systems, with institutional knowledge vanishing as teams changed',
+      'Dependency upgrades required careful impact analysis of entire dependency trees, making upgrades laborious and risky',
+      'Security vulnerabilities remained hidden until discovered in production, with tens of thousands of hidden issues undetected',
+      'Any code change risked breaking existing behavior due to lack of test coverage, forcing teams to avoid refactoring',
+      'New developers struggled with steep onboarding curves, wading through arcane code without clear documentation or tests',
     ],
     after: [
-      'Automated refactors consolidated 14 processors into 4 battle-tested flows',
-      'Generated diff-aware documentation for every compliance change',
-      'Static analysis from Refactron flagged unused modules before deployment',
+      'Automated refactoring scans entire repos and proposes dozens of fixes in one pass, with developers reviewing and approving suggestions',
+      'AI-generated documentation automatically encodes intent back into code, providing comprehensive analysis reports for quick health overviews',
+      'Dependency analysis immediately lists outdated libraries with safer alternatives, automating the tedious inventory process',
+      'Security scanners uncover known vulnerabilities before deployment, preventing production incidents and security risks',
+      'Preview diffs and risk scoring eliminate regression fears, showing changes alongside test results before committing',
+      'Comprehensive documentation and analysis reports accelerate team onboarding, cutting time in half',
     ],
     quote: {
-      text: 'Refactron gave us the map we needed. The automation respected our controls while accelerating everything.',
-      author: 'Priya Kapoor',
-      role: 'VP Engineering, VectorPay',
+      text: 'Refactron shifts legacy modernization from ad-hoc manual fixes to continuous automated guidance. It provides concrete, actionable recommendations in seconds, whereas manual refactoring would require painstaking code reviews. What takes weeks manually can be done in hours.',
+      author: 'Engineering Team',
+      role: 'Enterprise Development',
     },
-  },
-  {
-    slug: 'orbitai-platform',
-    customer: 'OrbitAI Research',
-    industry: 'AI/ML Platforms',
-    summary:
-      'Series A AI startup scaling from research notebooks to reliable APIs.',
-    highlight: 'Stabilized experimentation workflows and cut MTTR by 45%.',
-    overview:
-      'OrbitAI needed to ship APIs to enterprise customers without slowing the pace of research. Legacy notebooks, duplicated ETL jobs, and ad-hoc deployments made every release a fire drill. Refactron codified patterns so researchers and platform teams could collaborate.',
-    painPoints: [
-      'Model variants lived in notebooks with zero typing or linting',
-      'Production deploys required hand-crafted patch files',
-      'Team re-implemented feature engineering every sprint',
+    references: [
+      {
+        title: 'Reversing tech debt through legacy application modernization',
+        url: 'https://lumenalta.com/insights/legacy-application-modernization',
+        source: 'Lumenalta',
+      },
+      {
+        title: 'Facing The Unknown: A Guide To Testing Legacy Systems',
+        url: 'https://medium.com/qualitynexus/facing-the-unknown-a-guide-to-testing-legacy-systems-63a27e66c279',
+        source: 'Medium',
+      },
+      {
+        title: 'How to Refactor Your Legacy Codebase',
+        url: 'https://blog.codacy.com/refactoring-legacy-code',
+        source: 'Codacy',
+      },
+      {
+        title: 'Refactron',
+        url: 'https://github.com/refactron-ai',
+        source: 'GitHub',
+      },
+      {
+        title:
+          'Refactron_lib: The Intelligent Code Refactoring Transformer for Python',
+        url: 'https://github.com/Refactron-ai/Refactron_lib',
+        source: 'GitHub',
+      },
+      {
+        title: 'AI Code Refactoring: Boost Your Code Quality Fast',
+        url: 'https://www.docuwriter.ai/posts/ai-code-refactoring',
+        source: 'DocuWriter.ai',
+      },
     ],
-    refactronApproach: [
-      'Introduced typed service boundaries with auto-generated docstrings and guards',
-      'Created shared transformation modules and verified them via Refactron diffs',
-      'Automated release checklists so staging deploys mirrored production',
-    ],
-    outcomes: [
-      'Onboarding time for new researchers dropped from 4 weeks to 10 days',
-      'Unified ETL modules cut duplicated data prep by 60%',
-      'Alerts now tie directly to Refactron suggestions, reducing MTTR by 45%',
-    ],
-    metrics: [
-      { label: 'Mean time to recovery', value: '-45%' },
-      { label: 'Duplicated ETL removed', value: '60%' },
-      { label: 'Onboarding speed', value: '4w → 10d' },
-    ],
-    before: [
-      'Model variants lived in notebooks with zero typing or linting',
-      'Production deploys required hand-crafted patch files',
-      'Team re-implemented feature engineering every sprint',
-    ],
-    after: [
-      'Refactron enforced type-safe service layers with automated docstrings',
-      'New API scaffolding reused shared components and validation blocks',
-      'Generated migration plans trimmed duplicated ETL code by 60%',
-    ],
-    quote: {
-      text: 'The team finally has a single source of truth for patterns. We experiment faster and sleep better.',
-      author: 'Lena Duarte',
-      role: 'CTO, OrbitAI',
-    },
   },
 ];
 
