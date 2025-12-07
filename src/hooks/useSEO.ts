@@ -19,7 +19,11 @@ interface SEOConfig {
  */
 const validateSEOConfig = (config: SEOConfig): void => {
   // Validate URLs use HTTPS
-  const urlFields: (keyof SEOConfig)[] = ['canonical', 'ogImage', 'twitterImage'];
+  const urlFields: (keyof SEOConfig)[] = [
+    'canonical',
+    'ogImage',
+    'twitterImage',
+  ];
   urlFields.forEach(field => {
     const value = config[field];
     if (value && typeof value === 'string' && !value.startsWith('https://')) {
@@ -34,7 +38,9 @@ const validateSEOConfig = (config: SEOConfig): void => {
 
   // Validate description length (recommended: 150-160 characters)
   if (config.description && config.description.length > 160) {
-    console.warn('SEO: Description exceeds recommended length of 160 characters');
+    console.warn(
+      'SEO: Description exceeds recommended length of 160 characters'
+    );
   }
 
   // Validate robots directive
@@ -55,8 +61,8 @@ const validateSEOConfig = (config: SEOConfig): void => {
     const directives = config.robots.split(',').map(d => d.trim());
     directives.forEach(directive => {
       // Check if directive starts with any valid prefix (for max-snippet:N format)
-      const isValid = validRobotsDirectives.some(valid =>
-        directive === valid || directive.startsWith(`${valid}:`)
+      const isValid = validRobotsDirectives.some(
+        valid => directive === valid || directive.startsWith(`${valid}:`)
       );
       if (!isValid) {
         console.warn(`SEO: Invalid robots directive: ${directive}`);
@@ -158,20 +164,24 @@ export const useSEO = (config: SEOConfig) => {
       updateMetaTag('meta[name="twitter:image"]', config.twitterImage);
     }
     // Add twitter:card meta tag if not present
-    if (config.twitterTitle || config.twitterDescription || config.twitterImage) {
+    if (
+      config.twitterTitle ||
+      config.twitterDescription ||
+      config.twitterImage
+    ) {
       updateMetaTag('meta[name="twitter:card"]', 'summary_large_image');
     }
 
     // Cleanup function - restore original values
     return () => {
       document.title = originalTitle;
-      
+
       // Remove created elements
       createdElements.forEach(el => el.remove());
       if (createdCanonical) {
         createdCanonical.remove();
       }
-      
+
       // Restore original meta values
       Object.entries(originalMeta).forEach(([selector, content]) => {
         if (selector === 'canonical') {
