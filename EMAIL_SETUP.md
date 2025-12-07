@@ -47,7 +47,7 @@ This user has joined the Refactron early access program.
 REACT_APP_EMAILJS_SERVICE_ID=your_service_id_here
 REACT_APP_EMAILJS_TEMPLATE_ID=your_template_id_here
 REACT_APP_EMAILJS_PUBLIC_KEY=your_public_key_here
-REACT_APP_NOTIFICATION_EMAIL=hello@refactron.ai
+REACT_APP_NOTIFICATION_EMAIL=hello@refactron.dev
 ```
 
 3. Replace the placeholder values with your actual EmailJS credentials
@@ -69,7 +69,7 @@ app.post('/api/early-access', async (req, res) => {
   
   // Send email notification
   await sendEmail({
-    to: 'hello@refactron.ai',
+    to: 'hello@refactron.dev',
     subject: 'New Early Access Signup',
     text: `New signup: ${email}`
   });

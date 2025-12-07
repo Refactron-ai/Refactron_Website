@@ -118,7 +118,7 @@ Look for issues labeled `good first issue` to get started!
 
 Feel free to reach out:
 - Open a discussion on GitHub
-- Email: hello@refactron.ai
+- Email: hello@refactron.dev
 
 ## 📜 Code of Conduct
 

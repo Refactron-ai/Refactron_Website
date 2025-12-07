@@ -1,4 +1,4 @@
-# Refactron Landing Page
+# Refactron Website
 
 [![CI](https://github.com/Refactron-ai/Refactron_Website/actions/workflows/ci.yml/badge.svg)](https://github.com/Refactron-ai/Refactron_Website/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -6,7 +6,9 @@
 [![Code of Conduct](https://img.shields.io/badge/Code%20of%20Conduct-Contributor%20Covenant-blue.svg)](CODE_OF_CONDUCT.md)
 [![Production Ready](https://img.shields.io/badge/Production-Ready-brightgreen.svg)]()
 
-A modern, **production-ready**, professional landing page for Refactron - an AI-powered code refactoring and optimization platform. Built with React, TypeScript, Tailwind CSS, and Framer Motion with enterprise-grade security and performance.
+Welcome to the official website repository for **Refactron** - an AI-powered code refactoring and optimization platform that helps developers modernize legacy code and improve code quality.
+
+This is a modern, production-ready web application built with React, TypeScript, Tailwind CSS, and Framer Motion, featuring enterprise-grade security and performance optimizations. We welcome contributions from the open source community!
 
 ## 🚀 Features
 
@@ -217,7 +219,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For support or questions:
 - Email: hello@refactron.dev
-- GitHub: [Create an issue](https://github.com/refactron/landing/issues)
+- GitHub: [Create an issue](https://github.com/Refactron-ai/Refactron_Website/issues)
+- Discussions: [GitHub Discussions](https://github.com/Refactron-ai/Refactron_Website/discussions)
 
 ## 🎯 Next Steps
 
@@ -229,5 +232,4 @@ For support or questions:
 
 ---
 
-Built with ❤️ by the Refactron Team
-# Test commit
+Built with ❤️ by the Refactron Team and our amazing [contributors](https://github.com/Refactron-ai/Refactron_Website/graphs/contributors)

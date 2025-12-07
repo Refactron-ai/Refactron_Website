@@ -332,7 +332,7 @@ Review the security findings and address vulnerabilities. Common issues:
 For questions or issues with workflows:
 1. Open an issue using the bug report template
 2. Tag with `type:ci/cd` label
-3. Email: hello@refactron.ai
+3. Email: hello@refactron.dev
 
 ---
 

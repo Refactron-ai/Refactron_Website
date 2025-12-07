@@ -360,7 +360,7 @@ Be respectful, inclusive, and professional in all interactions.
 
 - **Issues:** Use issue templates for bugs/features
 - **Discussions:** For general questions
-- **Email:** hello@refactron.ai
+- **Email:** hello@refactron.dev
 
 ---
 
