@@ -59,7 +59,11 @@ const SEOHead: React.FC<SEOHeadProps> = ({
         // Extract attribute value from selector: meta[name="description"] -> description
         // Uses specific regex to match meta tag selectors: /\[(name|property)=["']([^"']+)["']\]/
         const match = selector.match(/\[(name|property)=["']([^"']+)["']\]/);
-        const attributeValue = match ? match[2] : selector;
+        if (!match || !match[2]) {
+          console.warn(`SEOHead: Invalid meta tag selector "${selector}"`);
+          return;
+        }
+        const attributeValue = match[2];
         element.setAttribute(attribute, attributeValue);
         element.setAttribute('content', content);
         document.head.appendChild(element);
@@ -138,7 +142,6 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       scriptElement.text = JSON.stringify(structuredData);
       scriptElement.id = 'dynamic-structured-data';
       document.head.appendChild(scriptElement);
-      
       // Store reference for cleanup
       metaTags.push({ element: scriptElement, attribute: 'remove', value: '' });
     }
