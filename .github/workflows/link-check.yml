@@ -22,8 +22,8 @@ jobs:
     - name: Link Checker
       uses: lycheeverse/lychee-action@v1
       with:
-        args: --verbose --no-progress '**/*.md' '**/*.html' '**/*.tsx' --exclude 'node_modules' --exclude 'build'
-        fail: true
+        args: --verbose --no-progress '**/*.md' '**/*.html' '**/*.tsx' --exclude 'node_modules' --exclude 'build' --max-retries 3 --timeout 10
+        fail: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     

@@ -41,8 +41,9 @@ We love hearing your ideas! To suggest a new feature:
 
 For general questions, discussions, or ideas:
 
-- **[GitHub Discussions](https://github.com/Refactron-ai/Refactron_Website/discussions)** - Ask questions and discuss with the community
-- **[Issues](https://github.com/Refactron-ai/Refactron_Website/issues)** - For specific problems or feature requests only
+- **[Issues](https://github.com/Refactron-ai/Refactron_Website/issues)** - For questions, problems, or feature requests
+<!-- Discussions are not yet enabled for this repository -->
+<!-- - **[GitHub Discussions](https://github.com/Refactron-ai/Refactron_Website/discussions)** - Ask questions and discuss with the community -->
 
 ## 📧 Contact
 
