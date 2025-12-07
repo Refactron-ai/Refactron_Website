@@ -217,7 +217,10 @@ The `sync-labels: true` option ensures that:
 **Labels applied**: `dependencies`, `type:build`
 
 ### Example 3: Documentation Update
-**Files changed**: `README.md`, `CONTRIBUTING.md`
+**Files changed**: `README.md`
+**Labels applied**: `documentation`
+
+**Files changed**: `CONTRIBUTING.md`
 **Labels applied**: `documentation`, `type:meta`
 
 ### Example 4: Bug Fix with Tests
