@@ -9,7 +9,7 @@ Pull request CI workflows (dependency review, link check, auto label) were faili
 ### 1. **Link Check Workflow Failures**
 - **Issue**: Overly strict link checking without exclusions
 - **Details**:
-  - Local development URLs (`http://localhost:3000`) expected to work
+  - Local development URLs (`http://localhost:3000`) not valid in CI; shouldn't be checked
   - Placeholder template URLs (`%PUBLIC_URL%`) being checked as real links
   - Font CDN base URLs returning 404 (they need specific font paths)
   - Broken relative paths in documentation files
@@ -44,7 +44,7 @@ Pull request CI workflows (dependency review, link check, auto label) were faili
 **Effect:**
 - Link checker no longer blocks PRs on false positives
 - Retries transient failures automatically
-- Creates GitHub issue for actual broken links that need fixing
+- Creates GitHub issue when broken links are detected (via exit code check)
 - Workflow will pass while still providing useful feedback
 
 **Files modified:**
@@ -129,7 +129,7 @@ The link checker now:
 - ✅ Runs on all PRs but won't block merging
 - ✅ Retries failed links automatically
 - ✅ Excludes known false positives
-- ✅ Creates GitHub issues for real broken links
+- ✅ Creates GitHub issues when broken links are detected (via exit code check)
 
 **Action needed:** None, it's working as designed now
 

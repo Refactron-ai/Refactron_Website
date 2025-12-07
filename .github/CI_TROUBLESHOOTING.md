@@ -40,7 +40,7 @@ We've added a `.lycheeignore` file to exclude known false positives. The workflo
 - Uses `fail: false` to not block PRs on link issues
 - Retries failed links 3 times
 - Has a 10-second timeout per link
-- Creates an issue for actual broken links that need fixing
+- Creates an issue when broken links are detected (via exit code check)
 
 **How to add more exclusions:**
 Edit `.lycheeignore` and add patterns:

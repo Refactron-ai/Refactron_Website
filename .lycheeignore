@@ -24,9 +24,9 @@ https://github.com/Refactron-ai/Refactron_Website/releases/tag/v0.1.0
 https://github.com/Refactron-ai/Refactron_Website/compare/v0.1.0...HEAD
 
 # Ignore internal file:// references that are relative paths
-file:///home/runner/work/Refactron_Website/Refactron_Website/.github/CODE_OF_CONDUCT.md
-file:///home/runner/work/Refactron_Website/Refactron_Website/.github/SECURITY.md
-file:///home/runner/work/Refactron_Website/Refactron_Website/.github/CONTRIBUTING.md
+file:///home/runner/work/Refactron_Website/Refactron_Website/CODE_OF_CONDUCT.md
+file:///home/runner/work/Refactron_Website/Refactron_Website/SECURITY.md
+file:///home/runner/work/Refactron_Website/Refactron_Website/CONTRIBUTING.md
 file:///home/runner/work/Refactron_Website/Refactron_Website/.github/.github/*
 file:///home/runner/work/Refactron_Website/security
 file:///home/runner/work/Refactron_Website/settings/branches
