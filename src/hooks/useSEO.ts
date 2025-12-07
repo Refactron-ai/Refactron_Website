@@ -102,12 +102,12 @@ export const useSEO = (config: SEOConfig) => {
       Object.entries(originalMeta).forEach(([selector, content]) => {
         if (selector === 'canonical') {
           const linkElement = document.querySelector('link[rel="canonical"]');
-          if (linkElement && content) {
+          if (linkElement) {
             linkElement.setAttribute('href', content);
           }
         } else {
           const element = document.querySelector(selector);
-          if (element && content) {
+          if (element) {
             element.setAttribute('content', content);
           }
         }
