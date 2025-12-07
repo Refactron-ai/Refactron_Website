@@ -321,9 +321,9 @@ Review the security findings and address vulnerabilities. Common issues:
 
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [Semantic Commit Messages](https://www.conventionalcommits.org/)
-- [Contributing Guide](CONTRIBUTING.md)
-- [Code of Conduct](CODE_OF_CONDUCT.md)
-- [Security Policy](SECURITY.md)
+- [Contributing Guide](../CONTRIBUTING.md)
+- [Code of Conduct](../CODE_OF_CONDUCT.md)
+- [Security Policy](../SECURITY.md)
 
 ---
 

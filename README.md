@@ -208,6 +208,7 @@ This repository includes comprehensive CI/CD workflows:
 - 📝 Stale issue management
 
 See [Workflows Documentation](.github/WORKFLOWS.md) for details.
+**Having CI issues?** Check the [CI Troubleshooting Guide](.github/CI_TROUBLESHOOTING.md).
 
 ## 📄 License
 

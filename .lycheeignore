@@ -1,0 +1,34 @@
+# Lychee link checker ignore file
+# Ignore local development URLs
+http://localhost*
+http://127.0.0.1*
+
+# Ignore email addresses
+mailto:*
+
+# Ignore SVG namespace URLs (not real links)
+http://www.w3.org/2000/svg
+
+# Ignore placeholder URLs
+%PUBLIC_URL%
+*.%25PUBLIC_URL%25*
+
+# Ignore font CDN base URLs (they return 404 without specific font paths)
+https://fonts.googleapis.com/$
+https://fonts.gstatic.com/$
+
+# Ignore known 404s that need to be fixed separately
+https://github.com/refactron/landing/issues
+https://github.com/Refactron-ai/Refactron_Website/discussions
+https://github.com/Refactron-ai/Refactron_Website/releases/tag/v0.1.0
+https://github.com/Refactron-ai/Refactron_Website/compare/v0.1.0...HEAD
+
+# Ignore internal file:// references that are relative paths
+file:///home/runner/work/Refactron_Website/Refactron_Website/CODE_OF_CONDUCT.md
+file:///home/runner/work/Refactron_Website/Refactron_Website/SECURITY.md
+file:///home/runner/work/Refactron_Website/Refactron_Website/CONTRIBUTING.md
+file:///home/runner/work/Refactron_Website/Refactron_Website/.github/.github/*
+file:///home/runner/work/Refactron_Website/security
+file:///home/runner/work/Refactron_Website/settings/branches
+file:///home/runner/work/Refactron_Website/actions
+file:///home/runner/work/Refactron_Website/pulls

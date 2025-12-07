@@ -352,7 +352,7 @@ Check the issues page for:
 
 ## 🤝 Code of Conduct
 
-By participating, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).
+By participating, you agree to abide by our [Code of Conduct](../CODE_OF_CONDUCT.md).
 
 Be respectful, inclusive, and professional in all interactions.
 
