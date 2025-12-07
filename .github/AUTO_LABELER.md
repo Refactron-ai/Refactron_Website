@@ -184,7 +184,7 @@ This multi-label approach provides:
 The auto-labeler workflow is configured in `.github/workflows/auto-label.yml`:
 
 - **Triggers**: PR opened, edited, synchronized, reopened
-- **Permissions**: Read contents, write to pull requests, read issues
+- **Permissions**: Read contents, write to pull requests
 - **Actions**: Uses `actions/labeler@v5` with sync-labels enabled
 - **Features**: 
   - Checks out repository to access configuration
