@@ -10,6 +10,7 @@ import SignupForm from './SignupForm';
 const AuthApp: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-primary-50 to-primary-100">
+      
       <Routes>
         {/* Default route - redirect to login */}
         <Route path="/" element={<Navigate to="/login" replace />} />

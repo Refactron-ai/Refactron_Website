@@ -16,6 +16,7 @@ import {
   X,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import SEOHead from './SEOHead';
 
 interface FormData {
   name: string;
@@ -279,6 +280,17 @@ const SignupForm: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <SEOHead
+        title="Sign Up | Refactron - AI-Powered Code Refactoring Platform"
+        description="Create your Refactron account to access AI-powered code refactoring and optimization tools. Join developers transforming legacy code with intelligent automation."
+        keywords="Refactron signup, create account, register, code refactoring signup, AI developer tools registration, automated code optimization account"
+        ogTitle="Sign Up for Refactron | AI-Powered Code Refactoring"
+        ogDescription="Create your account to access AI-powered code refactoring and optimization tools."
+        ogImage="https://refactron.dev/Refactron-logo-TM.png"
+        ogUrl="https://app.refactron.dev/signup"
+        canonicalUrl="https://app.refactron.dev/signup"
+      />
+
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
