@@ -6,7 +6,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://refactron.dev/</loc>
-    <lastmod>2025-11-27</lastmod>
+    <lastmod>2025-12-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -19,7 +19,7 @@
   <!-- About Page -->
   <url>
     <loc>https://refactron.dev/about</loc>
-    <lastmod>2025-11-27</lastmod>
+    <lastmod>2025-12-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -27,7 +27,7 @@
   <!-- Case Studies -->
   <url>
     <loc>https://refactron.dev/case-studies</loc>
-    <lastmod>2025-11-27</lastmod>
+    <lastmod>2025-12-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -40,7 +40,7 @@
   <!-- Case Study: VectorPay Modernization -->
   <url>
     <loc>https://refactron.dev/case-studies/vectorpay-modernization</loc>
-    <lastmod>2025-11-27</lastmod>
+    <lastmod>2025-12-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -48,7 +48,7 @@
   <!-- Case Study: OrbitAI Platform -->
   <url>
     <loc>https://refactron.dev/case-studies/orbitai-platform</loc>
-    <lastmod>2025-11-27</lastmod>
+    <lastmod>2025-12-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -56,7 +56,7 @@
   <!-- Privacy Policy -->
   <url>
     <loc>https://refactron.dev/privacy-policy</loc>
-    <lastmod>2025-11-27</lastmod>
+    <lastmod>2025-12-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
@@ -64,7 +64,7 @@
   <!-- Terms of Service -->
   <url>
     <loc>https://refactron.dev/terms-of-service</loc>
-    <lastmod>2025-11-27</lastmod>
+    <lastmod>2025-12-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
