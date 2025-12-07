@@ -9,6 +9,7 @@ interface SEOHeadProps {
   ogImage?: string;
   ogUrl?: string;
   canonicalUrl?: string;
+  twitterCard?: 'summary' | 'summary_large_image' | 'app' | 'player';
   structuredData?: Record<string, any>;
 }
 
@@ -25,6 +26,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   ogImage,
   ogUrl,
   canonicalUrl,
+  twitterCard = 'summary_large_image',
   structuredData,
 }) => {
   useEffect(() => {
@@ -55,8 +57,9 @@ const SEOHead: React.FC<SEOHeadProps> = ({
         // Create new meta tag if it doesn't exist
         element = document.createElement('meta');
         // Extract attribute value from selector: meta[name="description"] -> description
-        // Removes '[name="', '[property="', and '"]' from the selector string
-        const attributeValue = selector.replace(/\[.*?=["']|["']\]/g, '');
+        // Uses regex to capture the value between quotes: /.*\[.*?=["']([^"']+)["'].*/
+        const match = selector.match(/.*\[.*?=["']([^"']+)["'].*/);
+        const attributeValue = match ? match[1] : selector;
         element.setAttribute(attribute, attributeValue);
         element.setAttribute('content', content);
         document.head.appendChild(element);
@@ -92,6 +95,10 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     }
 
     // Update Twitter tags (Twitter uses 'name' not 'property')
+    if (twitterCard) {
+      updateMetaTag('meta[name="twitter:card"]', twitterCard, false);
+    }
+
     if (ogTitle) {
       updateMetaTag('meta[name="twitter:title"]', ogTitle, false);
     }
@@ -162,6 +169,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     ogImage,
     ogUrl,
     canonicalUrl,
+    twitterCard,
     structuredData,
   ]);
 
