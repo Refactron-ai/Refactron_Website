@@ -94,18 +94,12 @@ const LoginForm: React.FC = () => {
       setErrors({});
 
       // TODO: Implement OAuth flow
-      console.log(`Logging in with ${provider}...`);
-
-      // Simulate OAuth redirect
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
       // In production, redirect to OAuth provider
-      // window.location.href = `/api/auth/${provider}`;
+      window.location.href = `/api/auth/${provider}`;
     } catch (error) {
       setErrors({
         general: `Failed to authenticate with ${provider}. Please try again.`,
       });
-    } finally {
       setIsLoading(false);
     }
   };
@@ -212,12 +206,6 @@ const LoginForm: React.FC = () => {
       }
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !isLoading) {
-      handleSubmit(e as any);
     }
   };
 
@@ -350,11 +338,7 @@ const LoginForm: React.FC = () => {
             </div>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            onKeyPress={handleKeyPress}
-            className="space-y-5"
-          >
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email Field */}
             <div>
               <label
