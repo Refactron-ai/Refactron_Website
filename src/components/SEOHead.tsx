@@ -54,7 +54,10 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       } else {
         // Create new meta tag if it doesn't exist
         element = document.createElement('meta');
-        element.setAttribute(attribute, selector.replace(/\[.*?=["']|["']\]/g, ''));
+        // Extract attribute value from selector: meta[name="description"] -> description
+        // Removes '[name="', '[property="', and '"]' from the selector string
+        const attributeValue = selector.replace(/\[.*?=["']|["']\]/g, '');
+        element.setAttribute(attribute, attributeValue);
         element.setAttribute('content', content);
         document.head.appendChild(element);
         metaTags.push({ element, attribute: 'remove', value: '' });
@@ -88,17 +91,17 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       updateMetaTag('meta[property="og:url"]', ogUrl, true);
     }
 
-    // Update Twitter tags
+    // Update Twitter tags (Twitter uses 'name' not 'property')
     if (ogTitle) {
-      updateMetaTag('meta[property="twitter:title"]', ogTitle, true);
+      updateMetaTag('meta[name="twitter:title"]', ogTitle, false);
     }
 
     if (ogDescription) {
-      updateMetaTag('meta[property="twitter:description"]', ogDescription, true);
+      updateMetaTag('meta[name="twitter:description"]', ogDescription, false);
     }
 
     if (ogImage) {
-      updateMetaTag('meta[property="twitter:image"]', ogImage, true);
+      updateMetaTag('meta[name="twitter:image"]', ogImage, false);
     }
 
     // Update canonical URL
