@@ -1,34 +1,49 @@
 # Auto-labeling configuration for pull requests
 # Add labels based on files changed
+# Format for actions/labeler@v5
 
 documentation:
-  - '**/*.md'
-  - 'docs/**/*'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.md'
+      - 'docs/**/*'
 
 dependencies:
-  - 'package.json'
-  - 'package-lock.json'
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'package.json'
+      - 'package-lock.json'
 
 type:ci/cd:
-  - '.github/workflows/**/*'
-  - '.github/dependabot.yml'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/workflows/**/*'
+      - '.github/dependabot.yml'
 
 type:test:
-  - '**/*.test.ts'
-  - '**/*.test.tsx'
-  - '**/*.spec.ts'
-  - '**/*.spec.tsx'
-  - 'src/setupTests.ts'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.test.ts'
+      - '**/*.test.tsx'
+      - '**/*.spec.ts'
+      - '**/*.spec.tsx'
+      - 'src/setupTests.ts'
 
 type:feature:
-  - 'src/components/**/*'
-  - 'src/hooks/**/*'
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/components/**/*'
+      - 'src/hooks/**/*'
 
 type:refactor:
-  - 'src/**/*.tsx'
-  - 'src/**/*.ts'
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/**/*.tsx'
+      - 'src/**/*.ts'
 
 style:
-  - '**/*.css'
-  - 'tailwind.config.js'
-  - 'postcss.config.js'
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.css'
+      - 'tailwind.config.js'
+      - 'postcss.config.js'
