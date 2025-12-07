@@ -1,6 +1,10 @@
 # Auto-labeling configuration for pull requests
 # Add labels based on files changed
 # Format for actions/labeler@v5
+#
+# Note: Multiple labels can (and should) be applied to the same PR.
+# For example, updating package.json will get both 'dependencies' and 'type:build' labels.
+# This is intentional to provide comprehensive categorization.
 
 # ============================================
 # DOCUMENTATION LABELS
@@ -217,8 +221,9 @@ type:performance:
           - 'src/reportWebVitals.ts'
 
 # ============================================
-# REFACTOR LABEL (excluding new features)
-# Only applies to files that are NOT new features
+# REFACTOR LABEL
+# Applies to TypeScript changes (may overlap with other labels)
+# Multiple labels can be applied to the same PR
 # ============================================
 
 type:refactor:
@@ -226,8 +231,3 @@ type:refactor:
       - any-glob-to-any-file:
           - 'src/**/*.ts'
           - 'src/**/*.tsx'
-      - all-globs-to-all-files:
-          - '!src/components/**/*'
-          - '!src/hooks/**/*'
-          - '!src/data/**/*'
-          - '!src/icons/**/*'

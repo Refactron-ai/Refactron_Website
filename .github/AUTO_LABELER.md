@@ -141,18 +141,25 @@ Applied for performance optimizations:
 - `src/reportWebVitals.ts`
 
 ### 🔨 Refactoring (`type:refactor`)
-Applied for code refactoring (excluding new features):
-- Any TypeScript files in `src/` that are NOT:
-  - New components
-  - New hooks
-  - New data files
-  - New icons
+Applied for TypeScript code changes:
+- Any TypeScript files in `src/` (`src/**/*.ts`, `src/**/*.tsx`)
+- May overlap with other labels (this is intentional)
+- Useful for tracking all code changes regardless of type
 
-## Label Precedence
+## Label Precedence and Multiple Labels
 
-Multiple labels can be applied to a single PR. For example:
-- A PR that adds a new component AND updates tests will get both `type:feature` and `type:test` labels
-- A PR that updates dependencies AND modifies CI will get both `dependencies` and `type:ci/cd` labels
+**Multiple labels are intentionally applied to provide comprehensive categorization.**
+
+Examples:
+- A PR that adds a new component AND updates tests will get: `type:feature`, `type:test`, and `type:refactor` labels
+- A PR that updates dependencies will get both: `dependencies` and `type:build` labels
+- A PR that modifies vercel.json will get both: `type:ci/cd` and `type:build` labels
+- A new form component will get: `type:feature`, `type:form-component`, and `type:refactor` labels
+
+This multi-label approach provides:
+- **Better filtering**: Filter by any relevant category
+- **Comprehensive tracking**: Track changes from multiple perspectives
+- **Accurate metrics**: Count feature additions, refactors, and test updates separately
 
 ## Troubleshooting
 
