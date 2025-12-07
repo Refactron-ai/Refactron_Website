@@ -18,7 +18,7 @@ The Refactron team takes security bugs seriously. We appreciate your efforts to 
 
 Instead, please report them via email to:
 
-**hello@refactron.ai**
+**hello@refactron.dev**
 
 Include the following information in your report:
 

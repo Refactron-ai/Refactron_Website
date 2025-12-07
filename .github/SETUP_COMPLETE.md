@@ -164,7 +164,7 @@ This repository now has a comprehensive set of GitHub Actions workflows and temp
 ### Need Help?
 - Check [WORKFLOWS.md](.github/WORKFLOWS.md) documentation
 - Open an issue with `type:ci/cd` label
-- Email: hello@refactron.ai
+- Email: hello@refactron.dev
 
 ## 🎊 What This Enables
 
@@ -204,7 +204,7 @@ These workflows follow GitHub best practices and include:
 Questions or issues? 
 - 📖 Check the documentation files
 - 💬 Open an issue
-- 📧 Email: hello@refactron.ai
+- 📧 Email: hello@refactron.dev
 
 ---
 
