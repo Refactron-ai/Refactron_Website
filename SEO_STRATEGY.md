@@ -49,11 +49,14 @@ Refactron uses a multi-subdomain architecture to optimize SEO for different user
 - **Dynamic SEO**: Route-specific meta tags for optimal indexing
 
 ### Subdomain SEO Best Practices
-1. **Separate Sitemaps**: Each subdomain should have its own sitemap.xml
+1. **Separate Sitemaps**: Each subdomain has its own sitemap file for better organization
+   - `sitemap.xml` - Main domain (refactron.dev)
+   - `sitemap-docs.xml` - Documentation subdomain (docs.refactron.dev)
+   - `sitemap-app.xml` - Application subdomain (app.refactron.dev)
 2. **Canonical URLs**: Always use subdomain-specific canonical URLs
 3. **Cross-Domain Linking**: Strategic internal links between subdomains
 4. **Consistent Branding**: Same logo, colors, and messaging across all subdomains
-5. **Independent Robots.txt**: Each subdomain references all sitemaps in main robots.txt
+5. **Centralized Robots.txt**: Main robots.txt references all subdomain sitemaps for crawler discovery
 
 ## Target Keywords Strategy
 

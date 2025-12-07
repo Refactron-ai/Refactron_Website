@@ -11,49 +11,61 @@ The `app.refactron.dev` subdomain was not properly indexed by search engines bec
 
 ## Solution Implemented
 
-### 1. Sitemap Updates (public/sitemap.xml)
-Added four new entries for the app subdomain:
+### 1. Separate Sitemap Files (Multi-Subdomain Architecture)
+Created dedicated sitemap files for each subdomain following SEO best practices:
 
+**public/sitemap.xml** (Main domain - refactron.dev):
+- Homepage, About, Case Studies, Privacy Policy, Terms of Service
+
+**public/sitemap-app.xml** (App subdomain - app.refactron.dev):
 ```xml
-<!-- App Subdomain -->
+<!-- App Subdomain Homepage -->
 <url>
   <loc>https://app.refactron.dev/</loc>
   <lastmod>2025-12-07</lastmod>
   <changefreq>weekly</changefreq>
-  <priority>0.9</priority>
+  <priority>1.0</priority>
 </url>
 
-<!-- App Subdomain - Login Page -->
+<!-- Login Page -->
 <url>
   <loc>https://app.refactron.dev/login</loc>
   <lastmod>2025-12-07</lastmod>
   <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
+  <priority>0.9</priority>
 </url>
 
-<!-- App Subdomain - Signup Page -->
+<!-- Signup Page -->
 <url>
   <loc>https://app.refactron.dev/signup</loc>
   <lastmod>2025-12-07</lastmod>
   <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
+  <priority>0.9</priority>
 </url>
 ```
 
-**Priority Levels:**
-- Main app page: 0.9 (high priority - main entry point)
-- Login/Signup: 0.8 (important conversion pages)
+**public/sitemap-docs.xml** (Docs subdomain - docs.refactron.dev):
+- Documentation homepage
+
+**Benefits of Separate Sitemaps:**
+- Better organization and maintainability
+- Independent update cycles per subdomain
+- Easier to track indexing per subdomain
+- Follows SEO best practices for multi-subdomain sites
 
 ### 2. Robots.txt Enhancement (public/robots.txt)
-Added subdomain sitemap references:
+Updated to reference all sitemap files:
 
 ```
-# Subdomain Sitemaps
-Sitemap: https://docs.refactron.dev/sitemap.xml
-Sitemap: https://app.refactron.dev/sitemap.xml
+# Sitemap Locations
+# Main domain sitemap
+Sitemap: https://refactron.dev/sitemap.xml
+# Subdomain sitemaps
+Sitemap: https://docs.refactron.dev/sitemap-docs.xml
+Sitemap: https://app.refactron.dev/sitemap-app.xml
 ```
 
-This ensures search engines can discover separate sitemaps for each subdomain when they exist.
+This ensures search engines can discover all sitemaps across all subdomains.
 
 ### 3. Custom SEO Hook (src/hooks/useSEO.ts)
 Created a reusable React hook for managing dynamic SEO meta tags:
@@ -121,12 +133,12 @@ Added comprehensive multi-subdomain SEO architecture section documenting:
 - Dynamic SEO with route-specific meta tags
 - Priority: 0.9 (main), 0.8 (auth pages)
 
-**Best Practices Documented:**
-1. Separate sitemaps for each subdomain
-2. Subdomain-specific canonical URLs
-3. Strategic cross-domain linking
-4. Consistent branding across subdomains
-5. Independent robots.txt entries
+**Best Practices Implemented:**
+1. ✅ Separate sitemap files for each subdomain (sitemap.xml, sitemap-docs.xml, sitemap-app.xml)
+2. ✅ Subdomain-specific canonical URLs in SEO meta tags
+3. ✅ Strategic cross-domain linking capability
+4. ✅ Consistent branding across subdomains
+5. ✅ Centralized robots.txt referencing all sitemaps
 
 ## SEO Benefits
 
@@ -192,9 +204,9 @@ Use online XML sitemap validators to ensure:
 
 ### Short-term (Recommended)
 1. Add structured data (JSON-LD) for SoftwareApplication
-2. Create dedicated sitemap.xml for app subdomain
-3. Implement breadcrumb navigation with schema markup
-4. Add FAQ schema for common authentication questions
+2. Implement breadcrumb navigation with schema markup
+3. Add FAQ schema for common authentication questions
+4. Populate documentation sitemap with actual doc pages as they are created
 
 ### Long-term (Optional)
 1. Implement server-side rendering for better SEO
@@ -208,7 +220,7 @@ Use online XML sitemap validators to ensure:
 ### When Adding New Routes
 If you add new pages to the app subdomain:
 
-1. Add sitemap entry to public/sitemap.xml:
+1. Add sitemap entry to public/sitemap-app.xml:
 ```xml
 <url>
   <loc>https://app.refactron.dev/new-page</loc>
@@ -234,7 +246,7 @@ useSEO({
 To update existing meta tags, simply modify the useSEO call in the component. The hook will handle DOM updates automatically.
 
 ### Sitemap Update Schedule
-Update lastmod dates in sitemap.xml when making significant changes to:
+Update lastmod dates in the appropriate sitemap file (sitemap.xml, sitemap-app.xml, or sitemap-docs.xml) when making significant changes to:
 - Page content
 - Page layout
 - SEO strategy
