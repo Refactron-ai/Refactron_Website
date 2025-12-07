@@ -93,8 +93,8 @@ type:config:
           - '.env.example'
           - '.gitignore'
           - '.lycheeignore'
-          - '*.config.js'
-          - '*.config.ts'
+          - '**/*.config.js'
+          - '**/*.config.ts'
           - '.github/labels.yml'
           - '.github/labeler.yml'
 
