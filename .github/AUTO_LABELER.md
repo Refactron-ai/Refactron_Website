@@ -210,8 +210,13 @@ The `sync-labels: true` option ensures that:
 
 ### Example 1: New React Component
 **Files changed**: `src/components/NewFeature.tsx`
-**Labels applied**: `type:feature`, `type:ui-component` (if it's a UI component)
+**Labels applied**: `type:feature`, `type:refactor`
 
+> **Note:** The `type:ui-component` label is only applied to changes involving specific UI components listed in the configuration (e.g., `NavigationBar`, `Footer`, `HeroSection`, `LoadingSpinner`, `ErrorBoundary`). For example:
+
+### Example 1b: Update to a Core UI Component
+**Files changed**: `src/components/NavigationBar.tsx`
+**Labels applied**: `type:feature`, `type:ui-component`, `type:refactor`
 ### Example 2: Dependency Update
 **Files changed**: `package.json`, `package-lock.json`
 **Labels applied**: `dependencies`, `type:build`
