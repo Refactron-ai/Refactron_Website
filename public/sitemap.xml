@@ -69,13 +69,5 @@
     <priority>0.4</priority>
   </url>
 
-  <!-- Documentation Subdomain -->
-  <url>
-    <loc>https://docs.refactron.dev/</loc>
-    <lastmod>2025-11-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
 </urlset>
 

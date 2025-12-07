@@ -16,6 +16,7 @@ import {
   X,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useSEO } from '../hooks/useSEO';
 
 interface FormData {
   name: string;
@@ -54,6 +55,25 @@ const SignupForm: React.FC = () => {
   const [success, setSuccess] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [checkingEmail, setCheckingEmail] = useState(false);
+
+  // SEO Configuration for Signup Page
+  useSEO({
+    title: 'Sign Up | Refactron - Start Refactoring with AI',
+    description:
+      'Create your free Refactron account to access AI-powered code refactoring tools. Join developers transforming legacy code with intelligent automation and boost productivity.',
+    keywords:
+      'Refactron signup, create developer account, AI code refactoring registration, free developer tools, code optimization signup',
+    ogTitle: 'Sign Up for Refactron | AI Code Refactoring',
+    ogDescription:
+      'Join Refactron to transform legacy code with AI-powered refactoring. Free signup for developers.',
+    ogImage: 'https://refactron.dev/Refactron-logo-TM.png',
+    twitterTitle: 'Sign Up for Refactron | AI Code Refactoring',
+    twitterDescription:
+      'Join Refactron to transform legacy code with AI-powered refactoring. Free signup for developers.',
+    twitterImage: 'https://refactron.dev/Refactron-logo-TM.png',
+    canonical: 'https://app.refactron.dev/signup',
+    robots: 'index, follow',
+  });
 
   // Auto-focus name input on mount
   useEffect(() => {

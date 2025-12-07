@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <!-- App Subdomain Homepage -->
+  <url>
+    <loc>https://app.refactron.dev/</loc>
+    <lastmod>2025-12-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://refactron.dev/Refactron-logo-TM.png</image:loc>
+      <image:title>Refactron App - AI Code Refactoring Platform</image:title>
+      <image:caption>Access your Refactron account for AI-powered code refactoring</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Login Page -->
+  <url>
+    <loc>https://app.refactron.dev/login</loc>
+    <lastmod>2025-12-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Signup Page -->
+  <url>
+    <loc>https://app.refactron.dev/signup</loc>
+    <lastmod>2025-12-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+</urlset>

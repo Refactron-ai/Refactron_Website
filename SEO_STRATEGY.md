@@ -12,6 +12,8 @@ This comprehensive SEO strategy is designed to position Refactron as the #1 resu
 - ✅ Fast loading React application
 - ✅ Clear value proposition
 - ✅ Professional branding
+- ✅ Multi-subdomain architecture with dedicated SEO
+- ✅ Dynamic SEO meta tags per route
 
 ### Areas for Improvement
 - ❌ Missing structured data markup
@@ -19,6 +21,42 @@ This comprehensive SEO strategy is designed to position Refactron as the #1 resu
 - ❌ No blog/content marketing strategy
 - ❌ Missing local SEO elements
 - ❌ Limited internal linking structure
+
+## Multi-Subdomain SEO Architecture
+
+Refactron uses a multi-subdomain architecture to optimize SEO for different user journeys:
+
+### 1. Main Domain (refactron.dev)
+- **Purpose**: Marketing and product information
+- **Target Audience**: Prospective users, researchers
+- **Key Pages**: Homepage, Case Studies, About, Privacy, Terms
+- **SEO Focus**: High-priority keywords, brand awareness
+- **Priority**: 1.0 (Homepage), 0.7-0.8 (Other pages)
+
+### 2. Documentation Subdomain (docs.refactron.dev)
+- **Purpose**: Technical documentation and developer resources
+- **Target Audience**: Developers, technical users
+- **Key Content**: API Reference, Tutorials, CLI Workflows, Security
+- **SEO Focus**: Technical queries, "how to" searches
+- **Priority**: 0.9
+
+### 3. Application Subdomain (app.refactron.dev)
+- **Purpose**: Authentication and user application access
+- **Target Audience**: Active users, new signups
+- **Key Pages**: Login, Signup, Email Verification, Password Reset
+- **SEO Focus**: Brand searches, direct access queries
+- **Priority**: 0.9 (Main), 0.8 (Auth pages)
+- **Dynamic SEO**: Route-specific meta tags for optimal indexing
+
+### Subdomain SEO Best Practices
+1. **Separate Sitemaps**: Each subdomain has its own sitemap file for better organization
+   - `sitemap.xml` - Main domain (refactron.dev)
+   - `sitemap-docs.xml` - Documentation subdomain (docs.refactron.dev)
+   - `sitemap-app.xml` - Application subdomain (app.refactron.dev)
+2. **Canonical URLs**: Always use subdomain-specific canonical URLs
+3. **Cross-Domain Linking**: Strategic internal links between subdomains
+4. **Consistent Branding**: Same logo, colors, and messaging across all subdomains
+5. **Centralized Robots.txt**: Main robots.txt references all subdomain sitemaps for crawler discovery
 
 ## Target Keywords Strategy
 

@@ -9,8 +9,12 @@ Disallow: /_next/
 Disallow: /static/js/*.map
 Disallow: /static/css/*.map
 
-# Sitemap Location
+# Sitemap Locations
+# Main domain sitemap
 Sitemap: https://refactron.dev/sitemap.xml
+# Subdomain sitemaps
+Sitemap: https://docs.refactron.dev/sitemap-docs.xml
+Sitemap: https://app.refactron.dev/sitemap-app.xml
 
 # Allow all crawlers to access all content
 Allow: /css/
