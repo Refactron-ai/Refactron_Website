@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Lock, User, ArrowRight, Sparkles, Eye, EyeOff, Check } from 'lucide-react';
+import {
+  Mail,
+  Lock,
+  User,
+  ArrowRight,
+  Sparkles,
+  Eye,
+  EyeOff,
+  Check,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const SignupForm: React.FC = () => {
@@ -23,9 +32,15 @@ const SignupForm: React.FC = () => {
 
   const getPasswordStrength = (password: string) => {
     if (password.length === 0) return { strength: 0, label: '', color: '' };
-    if (password.length < 8) return { strength: 1, label: 'Weak', color: 'bg-red-500' };
-    if (password.length < 12) return { strength: 2, label: 'Fair', color: 'bg-yellow-500' };
-    if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password)) {
+    if (password.length < 8)
+      return { strength: 1, label: 'Weak', color: 'bg-red-500' };
+    if (password.length < 12)
+      return { strength: 2, label: 'Fair', color: 'bg-yellow-500' };
+    if (
+      !/[A-Z]/.test(password) ||
+      !/[a-z]/.test(password) ||
+      !/[0-9]/.test(password)
+    ) {
       return { strength: 2, label: 'Fair', color: 'bg-yellow-500' };
     }
     if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
@@ -38,7 +53,7 @@ const SignupForm: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
     setError('');
   };
 
@@ -86,8 +101,11 @@ const SignupForm: React.FC = () => {
 
     try {
       // TODO: Implement actual registration logic
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log('Signup attempt:', { name: formData.name, email: formData.email });
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      console.log('Signup attempt:', {
+        name: formData.name,
+        email: formData.email,
+      });
       // Handle successful signup here
     } catch (err) {
       setError('Something went wrong. Please try again.');
@@ -156,7 +174,9 @@ const SignupForm: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm flex items-center gap-2"
               >
-                <span className="w-5 h-5 flex items-center justify-center">⚠️</span>
+                <span className="w-5 h-5 flex items-center justify-center">
+                  ⚠️
+                </span>
                 {error}
               </motion.div>
             )}
@@ -253,7 +273,7 @@ const SignupForm: React.FC = () => {
               {formData.password && (
                 <div className="mt-2">
                   <div className="flex gap-1 mb-1">
-                    {[1, 2, 3, 4].map((level) => (
+                    {[1, 2, 3, 4].map(level => (
                       <div
                         key={level}
                         className={`h-1 flex-1 rounded-full transition-colors ${
@@ -265,7 +285,8 @@ const SignupForm: React.FC = () => {
                     ))}
                   </div>
                   <p className="text-xs text-gray-600">
-                    Password strength: {passwordStrength.label || 'Enter password'}
+                    Password strength:{' '}
+                    {passwordStrength.label || 'Enter password'}
                   </p>
                 </div>
               )}
@@ -336,7 +357,7 @@ const SignupForm: React.FC = () => {
                 name="agree-terms"
                 type="checkbox"
                 checked={agreedToTerms}
-                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                onChange={e => setAgreedToTerms(e.target.checked)}
                 className="h-4 w-4 mt-0.5 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
               />
               <label
@@ -424,4 +445,3 @@ const SignupForm: React.FC = () => {
 };
 
 export default SignupForm;
-

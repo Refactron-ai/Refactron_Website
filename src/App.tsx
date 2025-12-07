@@ -42,7 +42,7 @@ function App() {
   const isDocsHost =
     typeof window !== 'undefined' &&
     window.location.hostname.startsWith('docs.');
-  
+
   const isAppHost =
     typeof window !== 'undefined' &&
     window.location.hostname.startsWith('app.');

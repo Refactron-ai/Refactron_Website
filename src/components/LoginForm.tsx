@@ -44,7 +44,7 @@ const LoginForm: React.FC = () => {
 
     try {
       // TODO: Implement actual authentication logic
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1500));
       console.log('Login attempt:', { email, rememberMe });
       // Handle successful login here
     } catch (err) {
@@ -114,7 +114,9 @@ const LoginForm: React.FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm flex items-center gap-2"
               >
-                <span className="w-5 h-5 flex items-center justify-center">⚠️</span>
+                <span className="w-5 h-5 flex items-center justify-center">
+                  ⚠️
+                </span>
                 {error}
               </motion.div>
             )}
@@ -138,7 +140,7 @@ const LoginForm: React.FC = () => {
                   autoComplete="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   className="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white text-gray-900 placeholder-gray-400"
                   placeholder="you@example.com"
                 />
@@ -164,7 +166,7 @@ const LoginForm: React.FC = () => {
                   autoComplete="current-password"
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   className="block w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white text-gray-900 placeholder-gray-400"
                   placeholder="Enter your password"
                 />
@@ -191,7 +193,7 @@ const LoginForm: React.FC = () => {
                   name="remember-me"
                   type="checkbox"
                   checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
+                  onChange={e => setRememberMe(e.target.checked)}
                   className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
                 />
                 <label
@@ -296,4 +298,3 @@ const LoginForm: React.FC = () => {
 };
 
 export default LoginForm;
-

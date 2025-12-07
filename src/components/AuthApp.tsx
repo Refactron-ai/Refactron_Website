@@ -13,13 +13,13 @@ const AuthApp: React.FC = () => {
       <Routes>
         {/* Default route - redirect to login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
-        
+
         {/* Login route */}
         <Route path="/login" element={<LoginForm />} />
-        
+
         {/* Signup route */}
         <Route path="/signup" element={<SignupForm />} />
-        
+
         {/* Forgot Password route - placeholder */}
         <Route
           path="/forgot-password"
@@ -49,7 +49,7 @@ const AuthApp: React.FC = () => {
             </div>
           }
         />
-        
+
         {/* Catch-all route */}
         <Route
           path="*"
@@ -77,4 +77,3 @@ const AuthApp: React.FC = () => {
 };
 
 export default AuthApp;
-
