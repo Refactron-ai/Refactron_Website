@@ -104,12 +104,12 @@ This repository now has a comprehensive set of GitHub Actions workflows and temp
 
 ## 📚 Documentation Links
 
-- [Full Workflow Documentation](.github/WORKFLOWS.md)
-- [Maintainers Guide](.github/MAINTAINERS_GUIDE.md)
-- [Contributors Guide](.github/CONTRIBUTORS_GUIDE.md)
-- [Contributing Guidelines](CONTRIBUTING.md)
-- [Code of Conduct](CODE_OF_CONDUCT.md)
-- [Security Policy](SECURITY.md)
+- [Full Workflow Documentation](WORKFLOWS.md)
+- [Maintainers Guide](MAINTAINERS_GUIDE.md)
+- [Contributors Guide](CONTRIBUTORS_GUIDE.md)
+- [Contributing Guidelines](../CONTRIBUTING.md)
+- [Code of Conduct](../CODE_OF_CONDUCT.md)
+- [Security Policy](../SECURITY.md)
 
 ## 🎯 Next Steps
 
