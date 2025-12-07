@@ -8,7 +8,24 @@
 
 Welcome to the official website repository for **Refactron** - an AI-powered code refactoring and optimization platform that helps developers modernize legacy code and improve code quality.
 
-This is a modern, production-ready web application built with React, TypeScript, Tailwind CSS, and Framer Motion, featuring enterprise-grade security and performance optimizations. We welcome contributions from the open source community!
+This is a modern, production-ready web application built with React, TypeScript, Tailwind CSS, and Framer Motion, featuring enterprise-grade security and performance optimizations. **We welcome contributions from the open source community!**
+
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Tech Stack](#️-tech-stack)
+- [Installation](#-installation)
+- [Project Structure](#️-project-structure)
+- [Customization](#-customization)
+- [Responsive Design](#-responsive-design)
+- [Deployment](#-deployment)
+- [Environment Variables](#-environment-variables)
+- [Performance](#-performance)
+- [Security Features](#-security-features)
+- [Accessibility](#-accessibility)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Support](#-support)
 
 ## 🚀 Features
 
@@ -183,20 +200,29 @@ REACT_APP_EMAILJS_PUBLIC_KEY=your_public_key
 
 ## 🤝 Contributing
 
-We welcome contributions from the community! Please see our detailed guides:
+We welcome contributions from the community! Whether you're fixing a bug, adding a feature, or improving documentation, your help is appreciated. 🎉
+
+### 📚 Documentation for Contributors
 
 - **[Contributing Guide](CONTRIBUTING.md)** - Full contribution guidelines
 - **[Quick Start for Contributors](.github/CONTRIBUTORS_GUIDE.md)** - Fast setup guide
 - **[Maintainers Guide](.github/MAINTAINERS_GUIDE.md)** - For maintainers
 - **[Workflows Documentation](.github/WORKFLOWS.md)** - GitHub Actions workflows
+- **[Code of Conduct](CODE_OF_CONDUCT.md)** - Community guidelines
 
-### Quick Start
+### 🚀 Quick Start for Contributors
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Commit changes: `git commit -m 'feat: add feature'` (use semantic commits)
-4. Push to branch: `git push origin feature-name`
-5. Submit a pull request
+1. **Fork the repository** on GitHub
+2. **Clone your fork**: `git clone https://github.com/YOUR_USERNAME/Refactron_Website.git`
+3. **Create a feature branch**: `git checkout -b feature/your-feature-name`
+4. **Make your changes** and test them locally
+5. **Commit your changes**: `git commit -m 'feat: add amazing feature'` (use [semantic commits](https://www.conventionalcommits.org/))
+6. **Push to your fork**: `git push origin feature/your-feature-name`
+7. **Open a Pull Request** with a clear description of your changes
+
+### 🏷️ Good First Issues
+
+New to the project? Look for issues labeled [`good first issue`](https://github.com/Refactron-ai/Refactron_Website/labels/good%20first%20issue) - these are great starting points for new contributors!
 
 ### Automated Workflows
 
