@@ -27,7 +27,7 @@ const validateSEOConfig = (config: SEOConfig): void => {
     }
   });
 
-  // Validate title length (recommended: 50-60 characters)
+  // Validate title length (SEO best practice: 50-60 chars, hard limit: 70 chars)
   if (config.title && config.title.length > 70) {
     console.warn('SEO: Title exceeds recommended length of 70 characters');
   }
@@ -38,11 +38,27 @@ const validateSEOConfig = (config: SEOConfig): void => {
   }
 
   // Validate robots directive
-  const validRobotsDirectives = ['index', 'noindex', 'follow', 'nofollow'];
+  const validRobotsDirectives = [
+    'index',
+    'noindex',
+    'follow',
+    'nofollow',
+    'nosnippet',
+    'noarchive',
+    'noimageindex',
+    'notranslate',
+    'max-snippet',
+    'max-image-preview',
+    'max-video-preview',
+  ];
   if (config.robots) {
     const directives = config.robots.split(',').map(d => d.trim());
     directives.forEach(directive => {
-      if (!validRobotsDirectives.includes(directive)) {
+      // Check if directive starts with any valid prefix (for max-snippet:N format)
+      const isValid = validRobotsDirectives.some(valid =>
+        directive === valid || directive.startsWith(`${valid}:`)
+      );
+      if (!isValid) {
         console.warn(`SEO: Invalid robots directive: ${directive}`);
       }
     });
@@ -171,6 +187,9 @@ export const useSEO = (config: SEOConfig) => {
         }
       });
     };
+    // Disable exhaustive-deps: we intentionally list individual config properties
+    // instead of the entire config object to avoid unnecessary re-renders when
+    // config object reference changes but individual values remain the same
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     config.title,
