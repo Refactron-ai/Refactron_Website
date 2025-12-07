@@ -13,6 +13,7 @@ import {
   Chrome,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useSEO } from '../hooks/useSEO';
 
 interface FormErrors {
   email?: string;
@@ -33,6 +34,20 @@ const LoginForm: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [rateLimitMessage, setRateLimitMessage] = useState('');
   const [attemptCount, setAttemptCount] = useState(0);
+
+  // SEO Configuration for Login Page
+  useSEO({
+    title: 'Login | Refactron - AI Code Refactoring Platform',
+    description:
+      'Login to your Refactron account to access AI-powered code refactoring tools. Transform legacy code with intelligent automation and boost developer productivity.',
+    keywords:
+      'Refactron login, code refactoring login, AI developer tools access, secure developer login, code optimization platform',
+    ogTitle: 'Login to Refactron | AI Code Refactoring',
+    ogDescription:
+      'Access your Refactron account for AI-powered code refactoring and optimization',
+    canonical: 'https://app.refactron.dev/login',
+    robots: 'index, follow',
+  });
 
   // Auto-focus email input on mount
   useEffect(() => {

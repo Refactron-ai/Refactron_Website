@@ -2,12 +2,31 @@ import React from 'react';
 import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
+import { useSEO } from '../hooks/useSEO';
 
 /**
  * AuthApp - Main component for app.refactron.dev subdomain
  * Handles authentication-related routes (login, signup, etc.)
  */
 const AuthApp: React.FC = () => {
+  // SEO Configuration for App Subdomain
+  useSEO({
+    title: 'Refactron App | AI-Powered Code Refactoring Platform',
+    description:
+      'Access your Refactron account to start transforming legacy code with AI-powered refactoring. Login or signup to use our intelligent code optimization tools.',
+    keywords:
+      'Refactron login, AI code refactoring platform, developer tools login, code optimization app, automated refactoring access, developer productivity platform',
+    ogTitle: 'Refactron App | Login to AI Code Refactoring Platform',
+    ogDescription:
+      'Access Refactron to transform legacy code with AI-powered refactoring. Secure login for developers.',
+    ogImage: 'https://refactron.dev/Refactron-logo-TM.png',
+    twitterTitle: 'Refactron App | AI Code Refactoring',
+    twitterDescription:
+      'Login to Refactron for AI-powered code refactoring and optimization',
+    canonical: 'https://app.refactron.dev/',
+    robots: 'index, follow',
+  });
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-primary-50 to-primary-100">
       <Routes>
