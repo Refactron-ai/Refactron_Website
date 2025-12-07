@@ -205,9 +205,6 @@ type:form-component:
   - changed-files:
       - any-glob-to-any-file:
           - 'src/components/*Form.tsx'
-          - 'src/components/EarlyAccessForm.tsx'
-          - 'src/components/LoginForm.tsx'
-          - 'src/components/SignupForm.tsx'
 
 # ============================================
 # ACCESSIBILITY AND PERFORMANCE
