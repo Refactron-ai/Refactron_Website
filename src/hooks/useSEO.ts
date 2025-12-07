@@ -9,9 +9,45 @@ interface SEOConfig {
   ogImage?: string;
   twitterTitle?: string;
   twitterDescription?: string;
+  twitterImage?: string;
   canonical?: string;
   robots?: string;
 }
+
+/**
+ * Validates and sanitizes SEO configuration values
+ */
+const validateSEOConfig = (config: SEOConfig): void => {
+  // Validate URLs use HTTPS
+  const urlFields: (keyof SEOConfig)[] = ['canonical', 'ogImage', 'twitterImage'];
+  urlFields.forEach(field => {
+    const value = config[field];
+    if (value && typeof value === 'string' && !value.startsWith('https://')) {
+      console.warn(`SEO: ${field} should use HTTPS protocol`);
+    }
+  });
+
+  // Validate title length (recommended: 50-60 characters)
+  if (config.title && config.title.length > 70) {
+    console.warn('SEO: Title exceeds recommended length of 70 characters');
+  }
+
+  // Validate description length (recommended: 150-160 characters)
+  if (config.description && config.description.length > 160) {
+    console.warn('SEO: Description exceeds recommended length of 160 characters');
+  }
+
+  // Validate robots directive
+  const validRobotsDirectives = ['index', 'noindex', 'follow', 'nofollow'];
+  if (config.robots) {
+    const directives = config.robots.split(',').map(d => d.trim());
+    directives.forEach(directive => {
+      if (!validRobotsDirectives.includes(directive)) {
+        console.warn(`SEO: Invalid robots directive: ${directive}`);
+      }
+    });
+  }
+};
 
 /**
  * Custom hook for managing SEO meta tags dynamically
@@ -19,9 +55,14 @@ interface SEOConfig {
  */
 export const useSEO = (config: SEOConfig) => {
   useEffect(() => {
+    // Validate configuration
+    validateSEOConfig(config);
+
     // Store original values for cleanup
     const originalTitle = document.title;
     const originalMeta: { [key: string]: string } = {};
+    const createdElements: Element[] = [];
+    let createdCanonical: HTMLLinkElement | null = null;
 
     // Update document title
     document.title = config.title;
@@ -40,6 +81,7 @@ export const useSEO = (config: SEOConfig) => {
           element.setAttribute(selectorParts[1], selectorParts[2]);
           element.setAttribute('content', content);
           document.head.appendChild(element);
+          createdElements.push(element);
         }
       }
     };
@@ -61,15 +103,16 @@ export const useSEO = (config: SEOConfig) => {
 
     // Update canonical URL
     if (config.canonical) {
-      let linkElement = document.querySelector('link[rel="canonical"]');
-      if (linkElement) {
-        originalMeta['canonical'] = linkElement.getAttribute('href') || '';
-        linkElement.setAttribute('href', config.canonical);
+      const existingLink = document.querySelector('link[rel="canonical"]');
+      if (existingLink) {
+        originalMeta['canonical'] = existingLink.getAttribute('href') || '';
+        existingLink.setAttribute('href', config.canonical);
       } else {
-        linkElement = document.createElement('link');
+        const linkElement = document.createElement('link') as HTMLLinkElement;
         linkElement.setAttribute('rel', 'canonical');
         linkElement.setAttribute('href', config.canonical);
         document.head.appendChild(linkElement);
+        createdCanonical = linkElement;
       }
     }
 
@@ -95,10 +138,25 @@ export const useSEO = (config: SEOConfig) => {
         config.twitterDescription
       );
     }
+    if (config.twitterImage) {
+      updateMetaTag('meta[name="twitter:image"]', config.twitterImage);
+    }
+    // Add twitter:card meta tag if not present
+    if (config.twitterTitle || config.twitterDescription || config.twitterImage) {
+      updateMetaTag('meta[name="twitter:card"]', 'summary_large_image');
+    }
 
     // Cleanup function - restore original values
     return () => {
       document.title = originalTitle;
+      
+      // Remove created elements
+      createdElements.forEach(el => el.remove());
+      if (createdCanonical) {
+        createdCanonical.remove();
+      }
+      
+      // Restore original meta values
       Object.entries(originalMeta).forEach(([selector, content]) => {
         if (selector === 'canonical') {
           const linkElement = document.querySelector('link[rel="canonical"]');
@@ -113,6 +171,7 @@ export const useSEO = (config: SEOConfig) => {
         }
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     config.title,
     config.description,
@@ -122,6 +181,7 @@ export const useSEO = (config: SEOConfig) => {
     config.ogImage,
     config.twitterTitle,
     config.twitterDescription,
+    config.twitterImage,
     config.canonical,
     config.robots,
   ]);

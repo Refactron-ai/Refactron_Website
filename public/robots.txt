@@ -12,10 +12,6 @@ Disallow: /static/css/*.map
 # Sitemap Location
 Sitemap: https://refactron.dev/sitemap.xml
 
-# Subdomain Sitemaps
-Sitemap: https://docs.refactron.dev/sitemap.xml
-Sitemap: https://app.refactron.dev/sitemap.xml
-
 # Allow all crawlers to access all content
 Allow: /css/
 Allow: /js/

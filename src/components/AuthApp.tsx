@@ -2,14 +2,12 @@ import React from 'react';
 import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
-import { useSEO } from '../hooks/useSEO';
 
 /**
  * AuthApp - Main component for app.refactron.dev subdomain
  * Handles authentication-related routes (login, signup, etc.)
  */
 const AuthApp: React.FC = () => {
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-primary-50 to-primary-100">
       <Routes>

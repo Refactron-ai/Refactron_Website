@@ -66,6 +66,11 @@ const SignupForm: React.FC = () => {
     ogTitle: 'Sign Up for Refactron | AI Code Refactoring',
     ogDescription:
       'Join Refactron to transform legacy code with AI-powered refactoring. Free signup for developers.',
+    ogImage: 'https://refactron.dev/Refactron-logo-TM.png',
+    twitterTitle: 'Sign Up for Refactron | AI Code Refactoring',
+    twitterDescription:
+      'Join Refactron to transform legacy code with AI-powered refactoring. Free signup for developers.',
+    twitterImage: 'https://refactron.dev/Refactron-logo-TM.png',
     canonical: 'https://app.refactron.dev/signup',
     robots: 'index, follow',
   });

@@ -45,6 +45,11 @@ const LoginForm: React.FC = () => {
     ogTitle: 'Login to Refactron | AI Code Refactoring',
     ogDescription:
       'Access your Refactron account for AI-powered code refactoring and optimization',
+    ogImage: 'https://refactron.dev/Refactron-logo-TM.png',
+    twitterTitle: 'Login to Refactron | AI Code Refactoring',
+    twitterDescription:
+      'Access your Refactron account for AI-powered code refactoring and optimization',
+    twitterImage: 'https://refactron.dev/Refactron-logo-TM.png',
     canonical: 'https://app.refactron.dev/login',
     robots: 'index, follow',
   });
