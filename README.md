@@ -55,6 +55,8 @@ We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) f
 5. Open a Pull Request
 
 **New to the project?** Check out issues labeled [`good first issue`](https://github.com/Refactron-ai/Refactron_Website/labels/good%20first%20issue).
+See [Workflows Documentation](.github/WORKFLOWS.md) for details.
+**Having CI issues?** Check the [CI Troubleshooting Guide](.github/CI_TROUBLESHOOTING.md).
 
 ## 📄 License
 
