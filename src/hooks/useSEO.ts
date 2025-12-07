@@ -85,13 +85,13 @@ export const useSEO = (config: SEOConfig) => {
       updateMetaTag('meta[property="og:image:secure_url"]', config.ogImage);
     }
 
-    // Update Twitter tags
+    // Update Twitter tags (use name attribute, not property)
     if (config.twitterTitle) {
-      updateMetaTag('meta[property="twitter:title"]', config.twitterTitle);
+      updateMetaTag('meta[name="twitter:title"]', config.twitterTitle);
     }
     if (config.twitterDescription) {
       updateMetaTag(
-        'meta[property="twitter:description"]',
+        'meta[name="twitter:description"]',
         config.twitterDescription
       );
     }
@@ -100,9 +100,16 @@ export const useSEO = (config: SEOConfig) => {
     return () => {
       document.title = originalTitle;
       Object.entries(originalMeta).forEach(([selector, content]) => {
-        const element = document.querySelector(selector);
-        if (element && content) {
-          element.setAttribute('content', content);
+        if (selector === 'canonical') {
+          const linkElement = document.querySelector('link[rel="canonical"]');
+          if (linkElement && content) {
+            linkElement.setAttribute('href', content);
+          }
+        } else {
+          const element = document.querySelector(selector);
+          if (element && content) {
+            element.setAttribute('content', content);
+          }
         }
       });
     };
