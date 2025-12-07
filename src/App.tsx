@@ -14,6 +14,7 @@ import TermsOfService from './components/TermsOfService';
 import ProductReleasePopup from './components/ProductReleasePopup';
 import CookieManager from './components/CookieManager';
 import DocsPage from './components/DocsPage';
+import AuthApp from './components/AuthApp';
 import NotFoundPage from './components/NotFoundPage';
 import ErrorBoundary from './components/ErrorBoundary';
 import SkipToMain from './components/SkipToMain';
@@ -41,6 +42,10 @@ function App() {
   const isDocsHost =
     typeof window !== 'undefined' &&
     window.location.hostname.startsWith('docs.');
+  
+  const isAppHost =
+    typeof window !== 'undefined' &&
+    window.location.hostname.startsWith('app.');
 
   return (
     <ErrorBoundary>
@@ -49,6 +54,10 @@ function App() {
         {isDocsHost ? (
           <Routes>
             <Route path="/*" element={<DocsPage />} />
+          </Routes>
+        ) : isAppHost ? (
+          <Routes>
+            <Route path="/*" element={<AuthApp />} />
           </Routes>
         ) : (
           <>

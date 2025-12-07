@@ -9,6 +9,16 @@
         }
       ],
       "destination": "/$1"
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "app.refactron.dev"
+        }
+      ],
+      "destination": "/$1"
     }
   ],
   "headers": [
