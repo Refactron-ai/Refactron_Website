@@ -31,6 +31,7 @@ dependencies:
 
 # ============================================
 # CI/CD AND WORKFLOW LABELS
+# Note: vercel.json also appears in type:build for deployment context
 # ============================================
 
 type:ci/cd:
@@ -99,6 +100,8 @@ type:config:
 
 # ============================================
 # BUILD AND DEPLOYMENT LABELS
+# Note: vercel.json and package.json also appear in other labels
+# This overlap is intentional for comprehensive categorization
 # ============================================
 
 type:build:
@@ -179,6 +182,8 @@ type:seo:
 
 # ============================================
 # SPECIFIC COMPONENT TYPES
+# Note: These are specific core UI components that are frequently modified
+# Add new important UI components here as needed
 # ============================================
 
 type:ui-component:
