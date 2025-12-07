@@ -2,53 +2,12 @@ import React from 'react';
 import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
-import SEOHead from './SEOHead';
 
 /**
  * AuthApp - Main component for app.refactron.dev subdomain
  * Handles authentication-related routes (login, signup, etc.)
  */
 const AuthApp: React.FC = () => {
-  // Structured data for the app subdomain
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'WebApplication',
-    name: 'Refactron App',
-    alternateName: 'Refactron Platform',
-    description:
-      'Access the Refactron AI-powered code refactoring platform. Login or sign up to start transforming your legacy code with intelligent automation.',
-    url: 'https://app.refactron.dev',
-    applicationCategory: 'DeveloperApplication',
-    operatingSystem: 'Web, Windows, macOS, Linux',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-      availability: 'https://schema.org/InStock',
-    },
-    author: {
-      '@type': 'Organization',
-      name: 'Refactron',
-      url: 'https://refactron.dev',
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Refactron',
-      url: 'https://refactron.dev',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://refactron.dev/Refactron-logo-TM.png',
-      },
-    },
-    featureList: [
-      'User authentication and account management',
-      'AI-powered code refactoring tools',
-      'Code analysis and optimization',
-      'Real-time code transformation',
-      'Team collaboration features',
-    ],
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-primary-50 to-primary-100">
       

@@ -69,42 +69,5 @@
     <priority>0.4</priority>
   </url>
 
-  <!-- Documentation Subdomain -->
-  <url>
-    <loc>https://docs.refactron.dev/</loc>
-    <lastmod>2025-12-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- App Subdomain - Main Entry -->
-  <url>
-    <loc>https://app.refactron.dev/</loc>
-    <lastmod>2025-12-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <image:image>
-      <image:loc>https://refactron.dev/Refactron-logo-TM.png</image:loc>
-      <image:title>Refactron App - AI-Powered Code Refactoring Platform</image:title>
-      <image:caption>Access the Refactron platform to transform your code with AI-powered refactoring</image:caption>
-    </image:image>
-  </url>
-
-  <!-- App Subdomain - Login -->
-  <url>
-    <loc>https://app.refactron.dev/login</loc>
-    <lastmod>2025-12-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- App Subdomain - Signup -->
-  <url>
-    <loc>https://app.refactron.dev/signup</loc>
-    <lastmod>2025-12-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
 </urlset>
 

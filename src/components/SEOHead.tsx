@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 interface SEOHeadProps {
   title?: string;
@@ -29,6 +29,12 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   twitterCard = 'summary_large_image',
   structuredData,
 }) => {
+  // Memoize structured data to prevent unnecessary re-renders
+  const structuredDataString = useMemo(
+    () => (structuredData ? JSON.stringify(structuredData) : null),
+    [structuredData]
+  );
+
   useEffect(() => {
     // Store original values
     const originalTitle = document.title;
@@ -136,10 +142,10 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     }
 
     // Add structured data
-    if (structuredData) {
+    if (structuredDataString) {
       const scriptElement = document.createElement('script');
       scriptElement.type = 'application/ld+json';
-      scriptElement.text = JSON.stringify(structuredData);
+      scriptElement.text = structuredDataString;
       scriptElement.id = 'dynamic-structured-data';
       document.head.appendChild(scriptElement);
       // Store reference for cleanup
@@ -170,7 +176,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     ogUrl,
     canonicalUrl,
     twitterCard,
-    structuredData,
+    structuredDataString,
   ]);
 
   return null;

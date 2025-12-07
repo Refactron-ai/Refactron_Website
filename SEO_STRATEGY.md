@@ -66,9 +66,17 @@ Refactron uses a multi-subdomain architecture for better organization and SEO:
 The app.refactron.dev subdomain includes:
 - Custom meta tags for authentication pages (login, signup)
 - WebApplication structured data schema
-- Sitemap integration with main domain
+- Separate sitemap file (sitemap-app.xml) deployed on app subdomain
 - Canonical URLs to prevent duplicate content issues
 - Dynamic SEO component for route-specific optimization
+
+### Sitemap Architecture
+Each subdomain maintains its own sitemap:
+- **refactron.dev/sitemap.xml** - Main site pages only
+- **docs.refactron.dev/sitemap.xml** - Documentation pages (sitemap-docs.xml)
+- **app.refactron.dev/sitemap.xml** - App pages (sitemap-app.xml)
+
+This follows SEO best practices as search engines treat subdomains as separate sites.
 
 ## Technical SEO Implementation
 
