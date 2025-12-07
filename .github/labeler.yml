@@ -4,50 +4,46 @@
 
 documentation:
   - changed-files:
-    - any-glob-to-any-file: '**/*.md'
-  - changed-files:
-    - any-glob-to-any-file: 'docs/**/*'
+    - any-glob-to-any-file:
+      - '**/*.md'
+      - 'docs/**/*'
 
 dependencies:
   - changed-files:
-    - any-glob-to-any-file: 'package.json'
-  - changed-files:
-    - any-glob-to-any-file: 'package-lock.json'
+    - any-glob-to-any-file:
+      - 'package.json'
+      - 'package-lock.json'
 
 type:ci/cd:
   - changed-files:
-    - any-glob-to-any-file: '.github/workflows/**/*'
-  - changed-files:
-    - any-glob-to-any-file: '.github/dependabot.yml'
+    - any-glob-to-any-file:
+      - '.github/workflows/**/*'
+      - '.github/dependabot.yml'
 
 type:test:
   - changed-files:
-    - any-glob-to-any-file: '**/*.test.ts'
-  - changed-files:
-    - any-glob-to-any-file: '**/*.test.tsx'
-  - changed-files:
-    - any-glob-to-any-file: '**/*.spec.ts'
-  - changed-files:
-    - any-glob-to-any-file: '**/*.spec.tsx'
-  - changed-files:
-    - any-glob-to-any-file: 'src/setupTests.ts'
+    - any-glob-to-any-file:
+      - '**/*.test.ts'
+      - '**/*.test.tsx'
+      - '**/*.spec.ts'
+      - '**/*.spec.tsx'
+      - 'src/setupTests.ts'
 
 type:feature:
   - changed-files:
-    - any-glob-to-any-file: 'src/components/**/*'
-  - changed-files:
-    - any-glob-to-any-file: 'src/hooks/**/*'
+    - any-glob-to-any-file:
+      - 'src/components/**/*'
+      - 'src/hooks/**/*'
 
 type:refactor:
   - changed-files:
-    - any-glob-to-any-file: 'src/**/*.tsx'
-  - changed-files:
-    - any-glob-to-any-file: 'src/**/*.ts'
+    - any-glob-to-any-file:
+      - 'src/**/*.tsx'
+      - 'src/**/*.ts'
 
 style:
   - changed-files:
-    - any-glob-to-any-file: '**/*.css'
-  - changed-files:
-    - any-glob-to-any-file: 'tailwind.config.js'
-  - changed-files:
-    - any-glob-to-any-file: 'postcss.config.js'
+    - any-glob-to-any-file:
+      - '**/*.css'
+      - 'tailwind.config.js'
+      - 'postcss.config.js'
