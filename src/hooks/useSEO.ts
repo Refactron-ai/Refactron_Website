@@ -35,7 +35,7 @@ export const useSEO = (config: SEOConfig) => {
       } else {
         // Create meta tag if it doesn't exist
         element = document.createElement('meta');
-        const selectorParts = selector.match(/\[(.*?)=['"](.*)["']\]/);
+        const selectorParts = selector.match(/\[([\w-]+)=["']([^"']+)["']\]/);
         if (selectorParts) {
           element.setAttribute(selectorParts[1], selectorParts[2]);
           element.setAttribute('content', content);
