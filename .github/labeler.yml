@@ -8,10 +8,10 @@
 
 documentation:
   - changed-files:
-    - any-glob-to-any-file:
-      - '*.md'
-      - '.github/*.md'
-      - 'docs/**/*'
+      - any-glob-to-any-file:
+          - '*.md'
+          - '.github/*.md'
+          - 'docs/**/*'
 
 # ============================================
 # DEPENDENCY LABELS
@@ -19,11 +19,11 @@ documentation:
 
 dependencies:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'package.json'
-      - 'package-lock.json'
-      - 'yarn.lock'
-      - 'pnpm-lock.yaml'
+      - any-glob-to-any-file:
+          - 'package.json'
+          - 'package-lock.json'
+          - 'yarn.lock'
+          - 'pnpm-lock.yaml'
 
 # ============================================
 # CI/CD AND WORKFLOW LABELS
@@ -31,11 +31,11 @@ dependencies:
 
 type:ci/cd:
   - changed-files:
-    - any-glob-to-any-file:
-      - '.github/workflows/**/*'
-      - '.github/dependabot.yml'
-      - '.github/auto-assign.yml'
-      - 'vercel.json'
+      - any-glob-to-any-file:
+          - '.github/workflows/**/*'
+          - '.github/dependabot.yml'
+          - '.github/auto-assign.yml'
+          - 'vercel.json'
 
 # ============================================
 # TESTING LABELS
@@ -43,13 +43,13 @@ type:ci/cd:
 
 type:test:
   - changed-files:
-    - any-glob-to-any-file:
-      - '**/*.test.ts'
-      - '**/*.test.tsx'
-      - '**/*.spec.ts'
-      - '**/*.spec.tsx'
-      - 'src/setupTests.ts'
-      - 'src/App.test.tsx'
+      - any-glob-to-any-file:
+          - '**/*.test.ts'
+          - '**/*.test.tsx'
+          - '**/*.spec.ts'
+          - '**/*.spec.tsx'
+          - 'src/setupTests.ts'
+          - 'src/App.test.tsx'
 
 # ============================================
 # FEATURE LABELS (Components, Hooks, Data)
@@ -57,11 +57,11 @@ type:test:
 
 type:feature:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'src/components/**/*.tsx'
-      - 'src/hooks/**/*.ts'
-      - 'src/data/**/*.ts'
-      - 'src/icons/**/*.tsx'
+      - any-glob-to-any-file:
+          - 'src/components/**/*.tsx'
+          - 'src/hooks/**/*.ts'
+          - 'src/data/**/*.ts'
+          - 'src/icons/**/*.tsx'
 
 # ============================================
 # STYLING LABELS
@@ -69,13 +69,13 @@ type:feature:
 
 style:
   - changed-files:
-    - any-glob-to-any-file:
-      - '**/*.css'
-      - 'src/**/*.css'
-      - 'tailwind.config.js'
-      - 'postcss.config.js'
-      - '.prettierrc.json'
-      - '.prettierignore'
+      - any-glob-to-any-file:
+          - '**/*.css'
+          - 'src/**/*.css'
+          - 'tailwind.config.js'
+          - 'postcss.config.js'
+          - '.prettierrc.json'
+          - '.prettierignore'
 
 # ============================================
 # CONFIGURATION LABELS
@@ -83,15 +83,15 @@ style:
 
 type:config:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'tsconfig.json'
-      - '.env.example'
-      - '.gitignore'
-      - '.lycheeignore'
-      - '*.config.js'
-      - '*.config.ts'
-      - '.github/labels.yml'
-      - '.github/labeler.yml'
+      - any-glob-to-any-file:
+          - 'tsconfig.json'
+          - '.env.example'
+          - '.gitignore'
+          - '.lycheeignore'
+          - '*.config.js'
+          - '*.config.ts'
+          - '.github/labels.yml'
+          - '.github/labeler.yml'
 
 # ============================================
 # BUILD AND DEPLOYMENT LABELS
@@ -99,13 +99,13 @@ type:config:
 
 type:build:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'vercel.json'
-      - 'package.json'
-      - 'tsconfig.json'
-      - 'webpack.config.js'
-      - 'rollup.config.js'
-      - 'vite.config.js'
+      - any-glob-to-any-file:
+          - 'vercel.json'
+          - 'package.json'
+          - 'tsconfig.json'
+          - 'webpack.config.js'
+          - 'rollup.config.js'
+          - 'vite.config.js'
 
 # ============================================
 # PUBLIC/ASSETS LABELS
@@ -113,15 +113,15 @@ type:build:
 
 type:assets:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'public/**/*'
-      - '**/*.png'
-      - '**/*.jpg'
-      - '**/*.jpeg'
-      - '**/*.gif'
-      - '**/*.svg'
-      - '**/*.ico'
-      - '**/*.webp'
+      - any-glob-to-any-file:
+          - 'public/**/*'
+          - '**/*.png'
+          - '**/*.jpg'
+          - '**/*.jpeg'
+          - '**/*.gif'
+          - '**/*.svg'
+          - '**/*.ico'
+          - '**/*.webp'
 
 # ============================================
 # SECURITY LABELS
@@ -129,10 +129,10 @@ type:assets:
 
 security:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'SECURITY.md'
-      - '.github/workflows/codeql.yml'
-      - '.github/workflows/dependency-review.yml'
+      - any-glob-to-any-file:
+          - 'SECURITY.md'
+          - '.github/workflows/codeql.yml'
+          - '.github/workflows/dependency-review.yml'
 
 # ============================================
 # ROOT LEVEL IMPORTANT FILES
@@ -140,12 +140,12 @@ security:
 
 type:meta:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'LICENSE'
-      - 'CODE_OF_CONDUCT.md'
-      - 'CONTRIBUTING.md'
-      - 'AUTHORS.md'
-      - 'CHANGELOG.md'
+      - any-glob-to-any-file:
+          - 'LICENSE'
+          - 'CODE_OF_CONDUCT.md'
+          - 'CONTRIBUTING.md'
+          - 'AUTHORS.md'
+          - 'CHANGELOG.md'
 
 # ============================================
 # APPLICATION CORE (App.tsx, index.tsx, routing)
@@ -153,13 +153,13 @@ type:meta:
 
 type:core:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'src/App.tsx'
-      - 'src/index.tsx'
-      - 'src/App.css'
-      - 'src/index.css'
-      - 'src/react-app-env.d.ts'
-      - 'src/reportWebVitals.ts'
+      - any-glob-to-any-file:
+          - 'src/App.tsx'
+          - 'src/index.tsx'
+          - 'src/App.css'
+          - 'src/index.css'
+          - 'src/react-app-env.d.ts'
+          - 'src/reportWebVitals.ts'
 
 # ============================================
 # SEO AND SITEMAP
@@ -167,11 +167,11 @@ type:core:
 
 type:seo:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'public/sitemap.xml'
-      - 'public/robots.txt'
-      - 'SEO_STRATEGY.md'
-      - 'public/manifest.json'
+      - any-glob-to-any-file:
+          - 'public/sitemap.xml'
+          - 'public/robots.txt'
+          - 'SEO_STRATEGY.md'
+          - 'public/manifest.json'
 
 # ============================================
 # SPECIFIC COMPONENT TYPES
@@ -179,26 +179,26 @@ type:seo:
 
 type:ui-component:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'src/components/NavigationBar.tsx'
-      - 'src/components/Footer.tsx'
-      - 'src/components/HeroSection.tsx'
-      - 'src/components/LoadingSpinner.tsx'
-      - 'src/components/ErrorBoundary.tsx'
+      - any-glob-to-any-file:
+          - 'src/components/NavigationBar.tsx'
+          - 'src/components/Footer.tsx'
+          - 'src/components/HeroSection.tsx'
+          - 'src/components/LoadingSpinner.tsx'
+          - 'src/components/ErrorBoundary.tsx'
 
 type:page-component:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'src/components/*Page.tsx'
-      - 'src/components/PageLayout.tsx'
+      - any-glob-to-any-file:
+          - 'src/components/*Page.tsx'
+          - 'src/components/PageLayout.tsx'
 
 type:form-component:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'src/components/*Form.tsx'
-      - 'src/components/EarlyAccessForm.tsx'
-      - 'src/components/LoginForm.tsx'
-      - 'src/components/SignupForm.tsx'
+      - any-glob-to-any-file:
+          - 'src/components/*Form.tsx'
+          - 'src/components/EarlyAccessForm.tsx'
+          - 'src/components/LoginForm.tsx'
+          - 'src/components/SignupForm.tsx'
 
 # ============================================
 # ACCESSIBILITY AND PERFORMANCE
@@ -206,27 +206,28 @@ type:form-component:
 
 type:accessibility:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'src/hooks/useAccessibility.ts'
-      - 'src/components/SkipToMain.tsx'
+      - any-glob-to-any-file:
+          - 'src/hooks/useAccessibility.ts'
+          - 'src/components/SkipToMain.tsx'
 
 type:performance:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'src/hooks/usePerformanceMonitoring.ts'
-      - 'src/reportWebVitals.ts'
+      - any-glob-to-any-file:
+          - 'src/hooks/usePerformanceMonitoring.ts'
+          - 'src/reportWebVitals.ts'
 
 # ============================================
 # REFACTOR LABEL (excluding new features)
+# Only applies to files that are NOT new features
 # ============================================
 
 type:refactor:
   - changed-files:
-    - any-glob-to-any-file:
-      - 'src/**/*.ts'
-      - 'src/**/*.tsx'
-    - all-globs-to-all-files:
-      - '!src/components/**/*'
-      - '!src/hooks/**/*'
-      - '!src/data/**/*'
-      - '!src/icons/**/*'
+      - any-glob-to-any-file:
+          - 'src/**/*.ts'
+          - 'src/**/*.tsx'
+      - all-globs-to-all-files:
+          - '!src/components/**/*'
+          - '!src/hooks/**/*'
+          - '!src/data/**/*'
+          - '!src/icons/**/*'

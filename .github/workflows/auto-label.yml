@@ -1,6 +1,6 @@
 name: Auto Label PR
 
-on:
+'on':
   pull_request:
     types: [opened, edited, synchronize, reopened]
 
@@ -13,23 +13,23 @@ jobs:
   label:
     runs-on: ubuntu-latest
     name: Label PR based on changed files
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - name: Apply labels to PR
-      uses: actions/labeler@v5
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        configuration-path: .github/labeler.yml
-        sync-labels: true
-    
-    - name: Log labeling completion
-      if: always()
-      run: |
-        echo "Auto-labeling process completed"
-        echo "PR: ${{ github.event.pull_request.html_url }}"
-        echo "Changed files will be analyzed and appropriate labels applied"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply labels to PR
+        uses: actions/labeler@v5
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yml
+          sync-labels: true
+
+      - name: Log labeling completion
+        if: always()
+        run: |
+          echo "Auto-labeling process completed"
+          echo "PR: ${{ github.event.pull_request.html_url }}"
+          echo "Changed files will be analyzed and appropriate labels applied"
