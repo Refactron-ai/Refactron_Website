@@ -76,8 +76,8 @@ style:
   - changed-files:
       - any-glob-to-any-file:
           - '**/*.css'
-          - 'src/**/*.css'
           - 'tailwind.config.js'
+          - 'postcss.config.js'
           - 'postcss.config.js'
           - '.prettierrc.json'
           - '.prettierignore'
