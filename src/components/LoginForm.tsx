@@ -1,56 +1,223 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Lock, ArrowRight, Sparkles, Eye, EyeOff } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Mail,
+  Lock,
+  ArrowRight,
+  Sparkles,
+  Eye,
+  EyeOff,
+  AlertCircle,
+  CheckCircle2,
+  Github,
+  Chrome,
+} from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+
+interface FormErrors {
+  email?: string;
+  password?: string;
+  general?: string;
+}
 
 const LoginForm: React.FC = () => {
+  const navigate = useNavigate();
+  const emailInputRef = useRef<HTMLInputElement>(null);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [success, setSuccess] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [rateLimitMessage, setRateLimitMessage] = useState('');
+  const [attemptCount, setAttemptCount] = useState(0);
 
-  const validateEmail = (email: string) => {
+  // Auto-focus email input on mount
+  useEffect(() => {
+    emailInputRef.current?.focus();
+  }, []);
+
+  // Load saved email from localStorage if remember me was checked
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('refactron_remembered_email');
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
+
+  const validateEmail = (email: string): boolean => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
 
-    if (!email) {
-      setError('Please enter your email address');
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setError('Please enter a valid email address');
-      return;
+    if (!email.trim()) {
+      newErrors.email = 'Email address is required';
+    } else if (!validateEmail(email)) {
+      newErrors.email = 'Please enter a valid email address';
     }
 
     if (!password) {
-      setError('Please enter your password');
+      newErrors.password = 'Password is required';
+    } else if (password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEmail(value);
+    if (errors.email) {
+      setErrors(prev => ({ ...prev, email: undefined }));
+    }
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPassword(value);
+    if (errors.password) {
+      setErrors(prev => ({ ...prev, password: undefined }));
+    }
+  };
+
+  const handleSocialLogin = async (provider: 'google' | 'github') => {
+    try {
+      setIsLoading(true);
+      setErrors({});
+
+      // TODO: Implement OAuth flow
+      console.log(`Logging in with ${provider}...`);
+
+      // Simulate OAuth redirect
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // In production, redirect to OAuth provider
+      // window.location.href = `/api/auth/${provider}`;
+    } catch (error) {
+      setErrors({
+        general: `Failed to authenticate with ${provider}. Please try again.`,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrors({});
+    setSuccess(false);
+    setRateLimitMessage('');
+
+    if (!validateForm()) {
       return;
     }
 
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters long');
+    // Rate limiting check (client-side indication)
+    if (attemptCount >= 5) {
+      setRateLimitMessage(
+        'Too many login attempts. Please wait a few minutes before trying again.'
+      );
       return;
     }
 
     setIsLoading(true);
 
     try {
-      // TODO: Implement actual authentication logic
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      console.log('Login attempt:', { email, rememberMe });
-      // Handle successful login here
-    } catch (err) {
-      setError('Invalid email or password. Please try again.');
+      // TODO: Replace with actual API call
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          email,
+          password,
+          rememberMe,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Handle specific error types
+        if (response.status === 401) {
+          setAttemptCount(prev => prev + 1);
+          setErrors({
+            general:
+              'Invalid email or password. Please check your credentials and try again.',
+          });
+        } else if (response.status === 429) {
+          setRateLimitMessage(
+            'Too many login attempts. Please wait before trying again.'
+          );
+        } else if (response.status === 403) {
+          setErrors({
+            general: 'Your account has been suspended. Please contact support.',
+          });
+        } else if (response.status === 423) {
+          setErrors({
+            general:
+              'Your account is locked. Please check your email for unlock instructions.',
+          });
+        } else if (response.status >= 500) {
+          setErrors({
+            general: 'Server error. Please try again in a few moments.',
+          });
+        } else {
+          setErrors({
+            general: data.message || 'An error occurred. Please try again.',
+          });
+        }
+        return;
+      }
+
+      // Save email if remember me is checked
+      if (rememberMe) {
+        localStorage.setItem('refactron_remembered_email', email);
+      } else {
+        localStorage.removeItem('refactron_remembered_email');
+      }
+
+      // Success
+      setSuccess(true);
+
+      // Store auth token if provided
+      if (data.token) {
+        localStorage.setItem('refactron_auth_token', data.token);
+      }
+
+      // Redirect after short delay
+      setTimeout(() => {
+        navigate('/dashboard'); // TODO: Update with actual dashboard route
+      }, 1000);
+    } catch (error) {
+      // Network or other errors
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        setErrors({
+          general: 'Network error. Please check your connection and try again.',
+        });
+      } else {
+        setErrors({
+          general: 'An unexpected error occurred. Please try again.',
+        });
+      }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !isLoading) {
+      handleSubmit(e as any);
     }
   };
 
@@ -106,21 +273,88 @@ const LoginForm: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200/50 p-8 sm:p-10"
         >
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Error Message */}
-            {error && (
+          {/* Success Message */}
+          <AnimatePresence>
+            {success && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="mb-6 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg text-sm flex items-center gap-2"
+              >
+                <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                <span>Login successful! Redirecting...</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* General Error Message */}
+          <AnimatePresence>
+            {(errors.general || rateLimitMessage) && (
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm flex items-center gap-2"
+                exit={{ opacity: 0 }}
+                className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm flex items-start gap-2"
               >
-                <span className="w-5 h-5 flex items-center justify-center">
-                  ⚠️
-                </span>
-                {error}
+                <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="font-medium">
+                    {rateLimitMessage || errors.general}
+                  </p>
+                  {rateLimitMessage && attemptCount >= 5 && (
+                    <p className="mt-1 text-xs text-red-600">
+                      You can try again in a few minutes.
+                    </p>
+                  )}
+                </div>
               </motion.div>
             )}
+          </AnimatePresence>
 
+          {/* Social Login Buttons */}
+          <div className="space-y-3 mb-6">
+            <motion.button
+              type="button"
+              onClick={() => handleSocialLogin('google')}
+              disabled={isLoading}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-medium px-4 py-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+            >
+              <Chrome className="w-5 h-5" />
+              <span>Continue with Google</span>
+            </motion.button>
+            <motion.button
+              type="button"
+              onClick={() => handleSocialLogin('github')}
+              disabled={isLoading}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full flex items-center justify-center gap-3 bg-gray-900 hover:bg-gray-800 text-white font-medium px-4 py-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
+            >
+              <Github className="w-5 h-5" />
+              <span>Continue with GitHub</span>
+            </motion.button>
+          </div>
+
+          {/* Divider */}
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">
+                Or continue with email
+              </span>
+            </div>
+          </div>
+
+          <form
+            onSubmit={handleSubmit}
+            onKeyPress={handleKeyPress}
+            className="space-y-5"
+          >
             {/* Email Field */}
             <div>
               <label
@@ -131,20 +365,40 @@ const LoginForm: React.FC = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Mail
+                    className={`h-5 w-5 ${errors.email ? 'text-red-400' : 'text-gray-400'}`}
+                  />
                 </div>
                 <input
+                  ref={emailInputRef}
                   id="email"
                   name="email"
                   type="email"
                   autoComplete="email"
                   required
                   value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  className="block w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white text-gray-900 placeholder-gray-400"
+                  onChange={handleEmailChange}
+                  className={`block w-full pl-12 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-primary-500 transition-all duration-200 bg-white text-gray-900 placeholder-gray-400 ${
+                    errors.email
+                      ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+                      : 'border-gray-300 focus:border-primary-500'
+                  }`}
                   placeholder="you@example.com"
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
                 />
               </div>
+              {errors.email && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  id="email-error"
+                  className="mt-1.5 text-sm text-red-600 flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  {errors.email}
+                </motion.p>
+              )}
             </div>
 
             {/* Password Field */}
@@ -157,7 +411,9 @@ const LoginForm: React.FC = () => {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock
+                    className={`h-5 w-5 ${errors.password ? 'text-red-400' : 'text-gray-400'}`}
+                  />
                 </div>
                 <input
                   id="password"
@@ -166,15 +422,24 @@ const LoginForm: React.FC = () => {
                   autoComplete="current-password"
                   required
                   value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  className="block w-full pl-12 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 bg-white text-gray-900 placeholder-gray-400"
+                  onChange={handlePasswordChange}
+                  className={`block w-full pl-12 pr-12 py-3 border rounded-xl focus:ring-2 focus:ring-primary-500 transition-all duration-200 bg-white text-gray-900 placeholder-gray-400 ${
+                    errors.password
+                      ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+                      : 'border-gray-300 focus:border-primary-500'
+                  }`}
                   placeholder="Enter your password"
+                  aria-invalid={!!errors.password}
+                  aria-describedby={
+                    errors.password ? 'password-error' : undefined
+                  }
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  tabIndex={0}
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -183,6 +448,17 @@ const LoginForm: React.FC = () => {
                   )}
                 </button>
               </div>
+              {errors.password && (
+                <motion.p
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  id="password-error"
+                  className="mt-1.5 text-sm text-red-600 flex items-center gap-1"
+                >
+                  <AlertCircle className="w-4 h-4" />
+                  {errors.password}
+                </motion.p>
+              )}
             </div>
 
             {/* Remember Me & Forgot Password */}
@@ -205,7 +481,7 @@ const LoginForm: React.FC = () => {
               </div>
               <Link
                 to="/forgot-password"
-                className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded"
               >
                 Forgot password?
               </Link>
@@ -214,9 +490,9 @@ const LoginForm: React.FC = () => {
             {/* Submit Button */}
             <motion.button
               type="submit"
-              disabled={isLoading}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              disabled={isLoading || success}
+              whileHover={{ scale: isLoading ? 1 : 1.02 }}
+              whileTap={{ scale: isLoading ? 1 : 0.98 }}
               className="group w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold px-6 py-3.5 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
@@ -243,6 +519,11 @@ const LoginForm: React.FC = () => {
                   </svg>
                   <span>Signing in...</span>
                 </>
+              ) : success ? (
+                <>
+                  <CheckCircle2 className="w-5 h-5" />
+                  <span>Success!</span>
+                </>
               ) : (
                 <>
                   <span>Sign in</span>
@@ -258,7 +539,7 @@ const LoginForm: React.FC = () => {
               Don't have an account?{' '}
               <Link
                 to="/signup"
-                className="font-semibold text-primary-600 hover:text-primary-700 transition-colors"
+                className="font-semibold text-primary-600 hover:text-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded"
               >
                 Create one now
               </Link>
