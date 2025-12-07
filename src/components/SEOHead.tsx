@@ -57,9 +57,9 @@ const SEOHead: React.FC<SEOHeadProps> = ({
         // Create new meta tag if it doesn't exist
         element = document.createElement('meta');
         // Extract attribute value from selector: meta[name="description"] -> description
-        // Uses regex to capture the value between quotes: /.*\[.*?=["']([^"']+)["'].*/
-        const match = selector.match(/.*\[.*?=["']([^"']+)["'].*/);
-        const attributeValue = match ? match[1] : selector;
+        // Uses specific regex to match meta tag selectors: /\[(name|property)=["']([^"']+)["']\]/
+        const match = selector.match(/\[(name|property)=["']([^"']+)["']\]/);
+        const attributeValue = match ? match[2] : selector;
         element.setAttribute(attribute, attributeValue);
         element.setAttribute('content', content);
         document.head.appendChild(element);
@@ -132,13 +132,15 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     }
 
     // Add structured data
-    let scriptElement: HTMLScriptElement | null = null;
     if (structuredData) {
-      scriptElement = document.createElement('script');
+      const scriptElement = document.createElement('script');
       scriptElement.type = 'application/ld+json';
       scriptElement.text = JSON.stringify(structuredData);
       scriptElement.id = 'dynamic-structured-data';
       document.head.appendChild(scriptElement);
+      
+      // Store reference for cleanup
+      metaTags.push({ element: scriptElement, attribute: 'remove', value: '' });
     }
 
     // Cleanup function
@@ -146,7 +148,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       // Restore original title
       document.title = originalTitle;
 
-      // Restore or remove meta tags
+      // Restore or remove meta tags and scripts
       metaTags.forEach(({ element, attribute, value }) => {
         if (attribute === 'remove') {
           element.remove();
@@ -154,11 +156,6 @@ const SEOHead: React.FC<SEOHeadProps> = ({
           element.setAttribute(attribute, value);
         }
       });
-
-      // Remove structured data script
-      if (scriptElement) {
-        scriptElement.remove();
-      }
     };
   }, [
     title,
