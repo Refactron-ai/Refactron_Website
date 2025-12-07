@@ -51,17 +51,7 @@ const AuthApp: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-primary-50 to-primary-100">
-      <SEOHead
-        title="Refactron App | AI-Powered Code Refactoring Platform"
-        description="Access the Refactron AI-powered code refactoring platform. Login or sign up to start transforming your legacy code with intelligent automation and improve code quality."
-        keywords="Refactron app, AI code refactoring login, code optimization platform, developer tools signin, automated refactoring platform, code transformation tool"
-        ogTitle="Refactron App | AI-Powered Code Refactoring Platform"
-        ogDescription="Access the Refactron platform to transform your legacy code with AI-powered refactoring and optimization tools. Sign in to get started."
-        ogImage="https://refactron.dev/Refactron-logo-TM.png"
-        ogUrl="https://app.refactron.dev/"
-        canonicalUrl="https://app.refactron.dev/"
-        structuredData={structuredData}
-      />
+      
       <Routes>
         {/* Default route - redirect to login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
