@@ -13,6 +13,7 @@ import {
   Chrome,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import SEOHead from './SEOHead';
 
 interface FormErrors {
   email?: string;
@@ -219,6 +220,17 @@ const LoginForm: React.FC = () => {
           style={{ animationDelay: '2s' }}
         ></div>
       </div>
+
+      <SEOHead
+        title="Login | Refactron - AI-Powered Code Refactoring Platform"
+        description="Sign in to your Refactron account to access AI-powered code refactoring and optimization tools. Transform your legacy code with intelligent automation."
+        keywords="Refactron login, sign in, code refactoring login, AI developer tools access, automated code optimization login"
+        ogTitle="Login to Refactron | AI-Powered Code Refactoring"
+        ogDescription="Sign in to access AI-powered code refactoring and optimization tools."
+        ogImage="https://refactron.dev/Refactron-logo-TM.png"
+        ogUrl="https://app.refactron.dev/login"
+        canonicalUrl="https://app.refactron.dev/login"
+      />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
