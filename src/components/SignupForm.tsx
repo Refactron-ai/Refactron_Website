@@ -58,18 +58,18 @@ const SignupForm: React.FC = () => {
 
   // SEO Configuration for Signup Page
   useSEO({
-    title: 'Sign Up | Refactron - Start Refactoring with AI',
+    title: 'Sign Up | Refactron - AI Code Refactoring Platform',
     description:
-      'Create your free Refactron account to access AI-powered code refactoring tools. Join developers transforming legacy code with intelligent automation and boost productivity.',
+      'Create your free Refactron account to access AI-powered code refactoring tools. Transform legacy code with intelligent automation and boost developer productivity.',
     keywords:
       'Refactron signup, create developer account, AI code refactoring registration, free developer tools, code optimization signup',
-    ogTitle: 'Sign Up for Refactron | AI Code Refactoring',
+    ogTitle: 'Sign Up for Refactron | AI Code Refactoring Platform',
     ogDescription:
-      'Join Refactron to transform legacy code with AI-powered refactoring. Free signup for developers.',
+      'Create your free Refactron account to access AI-powered code refactoring tools and transform legacy code with intelligent automation.',
     ogImage: 'https://refactron.dev/Refactron-logo-TM.png',
-    twitterTitle: 'Sign Up for Refactron | AI Code Refactoring',
+    twitterTitle: 'Sign Up for Refactron | AI Code Refactoring Platform',
     twitterDescription:
-      'Join Refactron to transform legacy code with AI-powered refactoring. Free signup for developers.',
+      'Create your free Refactron account to access AI-powered code refactoring tools and transform legacy code with intelligent automation.',
     twitterImage: 'https://refactron.dev/Refactron-logo-TM.png',
     canonical: 'https://app.refactron.dev/signup',
     robots: 'index, follow',
