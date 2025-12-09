@@ -42,13 +42,13 @@ const LoginForm: React.FC = () => {
       'Login to your Refactron account to access AI-powered code refactoring tools. Transform legacy code with intelligent automation and boost developer productivity.',
     keywords:
       'Refactron login, code refactoring login, AI developer tools access, secure developer login, code optimization platform',
-    ogTitle: 'Login to Refactron | AI Code Refactoring',
+    ogTitle: 'Login to Refactron | AI Code Refactoring Platform',
     ogDescription:
-      'Access your Refactron account for AI-powered code refactoring and optimization',
+      'Login to your Refactron account to access AI-powered code refactoring tools and transform legacy code with intelligent automation.',
     ogImage: 'https://refactron.dev/Refactron-logo-TM.png',
-    twitterTitle: 'Login to Refactron | AI Code Refactoring',
+    twitterTitle: 'Login to Refactron | AI Code Refactoring Platform',
     twitterDescription:
-      'Access your Refactron account for AI-powered code refactoring and optimization',
+      'Login to your Refactron account to access AI-powered code refactoring tools and transform legacy code with intelligent automation.',
     twitterImage: 'https://refactron.dev/Refactron-logo-TM.png',
     canonical: 'https://app.refactron.dev/login',
     robots: 'index, follow',
