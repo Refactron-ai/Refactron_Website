@@ -2,11 +2,17 @@
   "redirects": [
     {
       "source": "/login",
+      "has": [
+        { "type": "host", "value": "refactron.dev" }
+      ],
       "destination": "https://app.refactron.dev/login",
       "statusCode": 302
     },
     {
       "source": "/signup",
+      "has": [
+        { "type": "host", "value": "refactron.dev" }
+      ],
       "destination": "https://app.refactron.dev/signup",
       "statusCode": 302
     }
