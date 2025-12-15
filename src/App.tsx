@@ -21,7 +21,6 @@ import SkipToMain from './components/SkipToMain';
 import usePerformanceMonitoring from './hooks/usePerformanceMonitoring';
 import useAccessibility from './hooks/useAccessibility';
 import PageLayout from './components/PageLayout';
-import RedirectToApp from './components/RedirectToApp';
 
 const LandingContent: React.FC = () => (
   <>
@@ -110,14 +109,6 @@ function App() {
                     <AboutPage />
                   </PageLayout>
                 }
-              />
-              <Route
-                path="/login"
-                element={<RedirectToApp path="/login" label="Login" />}
-              />
-              <Route
-                path="/signup"
-                element={<RedirectToApp path="/signup" label="Sign Up" />}
               />
               <Route
                 path="*"
