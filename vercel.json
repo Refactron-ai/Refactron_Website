@@ -1,6 +1,14 @@
 {
   "redirects": [
     {
+      "source": "/(.*)",
+      "has": [
+        { "type": "host", "value": "www.refactron.dev" }
+      ],
+      "destination": "https://refactron.dev/$1",
+      "statusCode": 301
+    },
+    {
       "source": "/login",
       "has": [
         { "type": "host", "value": "refactron.dev" }
