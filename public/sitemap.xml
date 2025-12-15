@@ -69,5 +69,31 @@
     <priority>0.4</priority>
   </url>
 
+  <!-- Login -->
+  <url>
+    <loc>https://refactron.dev/login</loc>
+    <lastmod>2025-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://refactron.dev/Refactron-logo-TM.png</image:loc>
+      <image:title>Login | Refactron - AI Code Refactoring Platform</image:title>
+      <image:caption>Access your free Refactron account to access AI-powered code refactoring tools and boost developer productivity.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Signup -->
+  <url>
+    <loc>https://refactron.dev/signup</loc>
+    <lastmod>2025-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://refactron.dev/Refactron-logo-TM.png</image:loc>
+      <image:title>Sign Up | Refactron - AI Code Refactoring Platform</image:title>
+      <image:caption>Create your free Refactron account to access AI-powered code refactoring tools and transform legacy code with intelligent automation.</image:caption>
+    </image:image>
+  </url>
+
 </urlset>
 

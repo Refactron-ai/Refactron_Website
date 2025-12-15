@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/login",
+      "destination": "https://app.refactron.dev/login",
+      "statusCode": 302
+    },
+    {
+      "source": "/signup",
+      "destination": "https://app.refactron.dev/signup",
+      "statusCode": 302
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

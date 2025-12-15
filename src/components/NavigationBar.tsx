@@ -16,6 +16,7 @@ const navItems: NavItem[] = [
   { label: 'Products', target: '#product' },
   { label: 'Case Studies', href: '/case-studies' },
   { label: 'Docs', href: 'https://docs.refactron.dev' },
+  { label: 'Login', href: '/login' },
 ];
 
 const NavigationBar: React.FC = () => {
@@ -54,20 +55,6 @@ const NavigationBar: React.FC = () => {
       }
       setIsMenuOpen(false);
     }
-  };
-
-  const handleEarlyAccess = () => {
-    // If not on home page, navigate to home first then scroll
-    if (location.pathname !== '/') {
-      navigate('/');
-      // Wait for navigation to complete before scrolling
-      setTimeout(() => {
-        scrollToTarget('[data-section="early-access"]');
-      }, 100);
-    } else {
-      scrollToTarget('[data-section="early-access"]');
-    }
-    setIsMenuOpen(false);
   };
 
   return (
@@ -127,12 +114,12 @@ const NavigationBar: React.FC = () => {
 
           {/* CTA */}
           <div className="hidden lg:flex items-center justify-end gap-3 ml-auto pl-4 sm:pl-6 pr-2">
-            <button
-              onClick={handleEarlyAccess}
+            <a
+              href="/signup"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-300 shadow-lg"
             >
-              Get Early Access
-            </button>
+              Sign Up
+            </a>
           </div>
 
           {/* Mobile Toggle */}
@@ -185,18 +172,12 @@ const NavigationBar: React.FC = () => {
             </div>
 
             <div className="grid gap-2 pt-2">
-              <button
-                onClick={() => scrollToTarget('#product')}
-                className="w-full px-4 py-3 rounded-2xl border border-gray-200 text-gray-800 font-semibold text-sm bg-white text-center"
-              >
-                View Product
-              </button>
-              <button
-                onClick={handleEarlyAccess}
+              <a
+                href="/signup"
                 className="w-full px-4 py-3 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold text-sm shadow-lg text-center"
               >
-                Get Early Access
-              </button>
+                Sign Up
+              </a>
             </div>
           </div>
         )}
