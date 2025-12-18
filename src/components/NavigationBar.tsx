@@ -13,7 +13,7 @@ const navItems: NavItem[] = [
   { label: 'About', href: '/about' },
   { label: 'Recognition', target: '#recognition' },
   { label: 'Solutions', target: '#features' },
-  { label: 'Products', target: '#product' },
+  { label: 'Products', href: '/products' },
   { label: 'Case Studies', href: '/case-studies' },
   { label: 'Docs', href: 'https://docs.refactron.dev' },
   { label: 'Login', href: '/login' },

@@ -6,39 +6,39 @@ const WhatWeDoSection: React.FC = () => {
   const features = [
     {
       icon: Brain,
-      title: 'AI-Powered Code Refactoring',
+      title: 'Refactoring Intelligence, Not Blind Automation',
       description:
-        'Advanced machine learning algorithms that understand your codebase and suggest intelligent refactoring strategies.',
-    },
-    {
-      icon: Zap,
-      title: 'Performance Optimization',
-      description:
-        'Automatically identify and fix performance bottlenecks, reducing execution time and resource usage.',
-    },
-    {
-      icon: Shield,
-      title: 'Maintainability Improvements',
-      description:
-        'Transform complex, hard-to-maintain code into clean, readable, and well-structured solutions.',
-    },
-    {
-      icon: TrendingUp,
-      title: 'Developer Productivity',
-      description:
-        'Save hours of manual refactoring with automated suggestions that follow industry best practices.',
+        'Refactron treats refactoring as a structured, safety-first process—focusing on understanding your codebase and proposing targeted, behavior-preserving improvements.',
     },
     {
       icon: Code,
-      title: 'Legacy Code Modernization',
+      title: 'Structural Code Understanding',
       description:
-        'Safely modernize outdated codebases while maintaining functionality and improving architecture.',
+        'Analyze codebases beyond surface-level syntax by identifying relationships, dependencies, and structural complexity that impact long-term maintainability.',
+    },
+    {
+      icon: Shield,
+      title: 'Maintainability-Focused Refactoring',
+      description:
+        'Surface refactoring opportunities that reduce complexity, duplication, and architectural rigidity—while keeping changes minimal, reviewable, and safe to adopt.',
+    },
+    {
+      icon: TrendingUp,
+      title: 'Human-in-the-Loop Improvements',
+      description:
+        'Refactron proposes changes, but developers stay in control. Every refactor is delivered as a clear diff for inspection, review, and validation.',
     },
     {
       icon: Rocket,
-      title: 'Seamless Integration',
+      title: 'Legacy Code Evolution',
       description:
-        'Works with your existing development workflow and integrates with popular IDEs and CI/CD pipelines.',
+        'Gradually modernize long-lived systems through verified, incremental improvements rather than risky, large-scale rewrites.',
+    },
+    {
+      icon: Zap,
+      title: 'Workflow-Friendly by Design',
+      description:
+        'Designed to fit into existing developer workflows today, with a long-term vision of seamless CI/CD and tooling integration across your engineering stack.',
     },
   ];
 
@@ -57,64 +57,23 @@ const WhatWeDoSection: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Product Announcement */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-8 sm:mb-12"
-        >
-          <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 rounded-full px-4 py-2 mb-4 text-sm font-medium">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              Product Release
-            </div>
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 text-gray-900">
-              Refactron Library v1.0.0 is Now Live!
-            </h3>
-            <p className="text-base sm:text-lg text-gray-600 mb-4 max-w-2xl mx-auto">
-              Our first product is officially available on PyPI. Install it
-              today and start transforming your Python code with AI-powered
-              refactoring.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 mb-4">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>98 Tests Passing</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>90% Coverage</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span>Production Ready</span>
-              </div>
-            </div>
-            <div className="bg-gray-900 text-green-400 rounded-lg p-3 font-mono text-sm max-w-md mx-auto">
-              <span className="text-gray-400">$</span> pip install refactron
-            </div>
-          </div>
-        </motion.div>
-
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-12 sm:mb-16 md:mb-20"
+          className="text-center mb-12 sm:mb-16 md:mb-20 max-w-4xl mx-auto"
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-gray-900">
-            AI-Powered Code Refactoring Solutions
+            Refactoring Intelligence, Not Blind Automation
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
-            Refactron leverages cutting-edge artificial intelligence to
-            transform how developers approach automated code optimization. Our
-            intelligent refactoring tools don't just improve code—they
-            revolutionize the entire development workflow with AI-driven code
-            modernization.
+            Refactron approaches refactoring as a structured, safety-first
+            process—not a generic code generation task. It focuses on
+            understanding code relationships and proposing targeted improvements
+            that preserve behavior, so teams can evolve complex systems with
+            confidence instead of risk-heavy rewrites.
           </p>
         </motion.div>
 
@@ -154,14 +113,13 @@ const WhatWeDoSection: React.FC = () => {
         >
           <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-12 max-w-4xl mx-auto shadow-sm border border-gray-100">
             <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-gray-900">
-              The Future of Code Optimization
+              A Safer Direction for Code Quality
             </h3>
             <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 sm:mb-8 px-2">
-              Imagine a world where every developer has access to an AI
-              assistant that not only understands their code but can
-              intelligently improve it. That's what Refactron brings to the
-              table—a revolutionary approach to code quality that scales with
-              your team and grows with your projects.
+              Refactron is built on the belief that improving code quality
+              should be predictable, explainable, and boring. The goal is not
+              novelty, but confidence at scale—making large-scale refactoring a
+              safe, repeatable part of everyday engineering work.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-sm text-gray-500">
               <div className="flex items-center gap-2">
