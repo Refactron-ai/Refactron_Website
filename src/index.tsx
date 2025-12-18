@@ -8,9 +8,8 @@ import reportWebVitals from './reportWebVitals';
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
   environment: process.env.NODE_ENV,
-  integrations: [new Sentry.BrowserTracing()],
-  tracesSampleRate: 0.1,
-  enabled: process.env.NODE_ENV === 'production' && !!process.env.REACT_APP_SENTRY_DSN,
+  enabled:
+    process.env.NODE_ENV === 'production' && !!process.env.REACT_APP_SENTRY_DSN,
 });
 
 const root = ReactDOM.createRoot(
