@@ -4,7 +4,6 @@ import { Analytics } from '@vercel/analytics/react';
 import HeroSection from './components/HeroSection';
 import RecognitionBadges from './components/RecognitionBadges';
 import WhatWeDoSection from './components/WhatWeDoSection';
-import ProductShowcaseSection from './components/ProductShowcaseSection';
 import EarlyAccessForm from './components/EarlyAccessForm';
 import CaseStudiesPage from './components/CaseStudiesPage';
 import CaseStudyDetailPage from './components/CaseStudyDetailPage';
@@ -21,13 +20,13 @@ import SkipToMain from './components/SkipToMain';
 import usePerformanceMonitoring from './hooks/usePerformanceMonitoring';
 import useAccessibility from './hooks/useAccessibility';
 import PageLayout from './components/PageLayout';
+import ProductsPage from './components/ProductsPage';
 
 const LandingContent: React.FC = () => (
   <>
     <HeroSection />
     <RecognitionBadges />
     <WhatWeDoSection />
-    <ProductShowcaseSection />
     <EarlyAccessForm />
   </>
 );
@@ -107,6 +106,14 @@ function App() {
                 element={
                   <PageLayout>
                     <AboutPage />
+                  </PageLayout>
+                }
+              />
+              <Route
+                path="/products"
+                element={
+                  <PageLayout>
+                    <ProductsPage />
                   </PageLayout>
                 }
               />
