@@ -123,6 +123,15 @@ const ProductShowcaseSection: React.FC = () => {
                 href="https://pypi.org/project/refactron/"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  import('../utils/analytics').then(
+                    ({ trackConversion, ConversionEvents }) => {
+                      trackConversion(ConversionEvents.VIEW_PYPI_CLICKED, {
+                        source: 'product_showcase',
+                      });
+                    }
+                  );
+                }}
                 className="inline-flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
               >
                 <Download className="w-4 h-4" />
@@ -132,6 +141,15 @@ const ProductShowcaseSection: React.FC = () => {
                 href="https://github.com/Refactron-ai/Refactron_lib"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  import('../utils/analytics').then(
+                    ({ trackConversion, ConversionEvents }) => {
+                      trackConversion(ConversionEvents.VIEW_SOURCE_CLICKED, {
+                        source: 'product_showcase',
+                      });
+                    }
+                  );
+                }}
                 className="inline-flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
               >
                 <Code className="w-4 h-4" />

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle, Send, AlertCircle } from 'lucide-react';
 import emailjs from '@emailjs/browser';
+import { trackConversion, ConversionEvents } from '../utils/analytics';
 
 const EarlyAccessForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -106,6 +107,11 @@ const EarlyAccessForm: React.FC = () => {
 
       setIsSubmitted(true);
       setEmail('');
+
+      // Track conversion
+      trackConversion(ConversionEvents.EARLY_ACCESS_FORM_SUBMITTED, {
+        timestamp: new Date().toISOString(),
+      });
     } catch (err) {
       console.error('Email sending failed:', err);
 

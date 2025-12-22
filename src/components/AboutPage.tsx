@@ -214,6 +214,18 @@ const AboutPage: React.FC = () => {
               href="https://pypi.org/project/refactron/"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                import('../utils/analytics').then(
+                  ({ trackConversion, ConversionEvents }) => {
+                    trackConversion(
+                      ConversionEvents.TRY_REFACTRON_LIBRARY_CLICKED,
+                      {
+                        source: 'about_page',
+                      }
+                    );
+                  }
+                );
+              }}
               className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 shadow-lg"
             >
               <span>Try Refactron Library</span>
@@ -223,6 +235,18 @@ const AboutPage: React.FC = () => {
               href="https://docs.refactron.dev"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                import('../utils/analytics').then(
+                  ({ trackConversion, ConversionEvents }) => {
+                    trackConversion(
+                      ConversionEvents.VIEW_DOCUMENTATION_CLICKED,
+                      {
+                        source: 'about_page',
+                      }
+                    );
+                  }
+                );
+              }}
               className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white border-2 border-primary-500 text-primary-600 hover:bg-primary-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 shadow-lg"
             >
               <BookOpen className="w-5 h-5" />
