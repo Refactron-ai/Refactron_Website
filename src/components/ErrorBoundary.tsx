@@ -33,7 +33,11 @@ class ErrorBoundary extends Component<Props, State> {
 
     // Log to Sentry in production if configured
     if (process.env.NODE_ENV === 'production' && process.env.REACT_APP_SENTRY_DSN) {
-      Sentry.captureException(error, { extra: errorInfo });
+      Sentry.captureException(error, {
+        extra: {
+          componentStack: errorInfo.componentStack,
+        },
+      });
     }
   }
 
