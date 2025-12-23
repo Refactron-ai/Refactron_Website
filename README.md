@@ -20,12 +20,72 @@ npm install
 
 # Set up environment variables
 cp .env.example .env
+# Edit .env and configure your environment variables
 
 # Start development server
 npm start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+## 🧪 Local Testing
+
+### Testing Auth Pages Locally
+
+By default, the login and signup pages are only accessible on the `app.refactron.dev` subdomain. To test them locally:
+
+1. Create a `.env` file in the project root (if you haven't already)
+2. Add the following environment variable:
+   ```env
+   REACT_APP_ENABLE_LOCAL_AUTH=true
+   ```
+3. Restart your development server (`npm start`)
+4. Navigate to:
+   - [http://localhost:3000/login](http://localhost:3000/login)
+   - [http://localhost:3000/signup](http://localhost:3000/signup)
+
+When local auth is enabled, you'll see a "Local Testing Mode" indicator badge on the auth pages.
+
+**Note:** The auth pages will automatically detect localhost, 127.0.0.1, and local network IPs (192.168.x.x, 10.0.x.x) when `REACT_APP_ENABLE_LOCAL_AUTH` is enabled.
+
+### OAuth Configuration (Google & GitHub)
+
+To enable social login with Google and GitHub:
+
+1. **Google OAuth Setup:**
+   - Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+   - Create OAuth 2.0 credentials
+   - Add authorized redirect URIs:
+     - Production: `https://app.refactron.dev/auth/callback`
+     - Local: `http://localhost:3000/auth/callback`
+   - Copy the Client ID and add to `.env`:
+     ```env
+     REACT_APP_GOOGLE_CLIENT_ID=your_google_client_id_here
+     ```
+
+2. **GitHub OAuth Setup:**
+   - Go to [GitHub Developer Settings](https://github.com/settings/developers)
+   - Create a new OAuth App
+   - Set Authorization callback URL:
+     - Production: `https://app.refactron.dev/auth/callback`
+     - Local: `http://localhost:3000/auth/callback`
+   - Copy the Client ID and add to `.env`:
+     ```env
+     REACT_APP_GITHUB_CLIENT_ID=your_github_client_id_here
+     ```
+
+3. **Backend API Requirements:**
+   The OAuth flow requires backend endpoints:
+   - `POST /api/auth/google/callback` - Handle Google OAuth callback
+   - `POST /api/auth/github/callback` - Handle GitHub OAuth callback
+   
+   These endpoints should:
+   - Exchange the authorization code for tokens
+   - Verify the state parameter
+   - Create or authenticate the user
+   - Return a JWT token and redirect URL
+
+**Note:** Without backend endpoints, OAuth buttons will show an error. The UI gracefully handles missing OAuth configuration.
 
 ## 🛠️ Built With
 
