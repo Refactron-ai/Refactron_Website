@@ -4,6 +4,14 @@ import type { MouseEvent } from 'react';
  * Valid cookie consent values
  */
 const ACCEPTED_CONSENT_VALUES = ['true', 'accepted'] as const;
+type AcceptedConsentValue = typeof ACCEPTED_CONSENT_VALUES[number];
+
+/**
+ * Type guard to check if a string is an accepted consent value
+ */
+const isAcceptedConsentValue = (value: string): value is AcceptedConsentValue => {
+  return ACCEPTED_CONSENT_VALUES.includes(value as AcceptedConsentValue);
+};
 
 /**
  * Track conversion events with cookie consent check
@@ -21,7 +29,7 @@ export const trackConversion = (
   let hasAnalyticsConsent = false;
 
   // Validate both consent exists and has appropriate value
-  if (cookieConsent && ACCEPTED_CONSENT_VALUES.includes(cookieConsent as any) && cookiePreferences) {
+  if (cookieConsent && isAcceptedConsentValue(cookieConsent) && cookiePreferences) {
     try {
       const preferences = JSON.parse(cookiePreferences);
       hasAnalyticsConsent = preferences.analytics === true;
@@ -45,6 +53,7 @@ export const trackConversion = (
         })
         .catch((error) => {
           console.error('Error loading analytics module for conversion tracking:', error);
+          return Promise.resolve();
         });
     } catch (error) {
       console.error('Error tracking conversion:', error);
