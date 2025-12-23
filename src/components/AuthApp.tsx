@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
+import OAuthCallback from './OAuthCallback';
 
 /**
  * AuthApp - Main component for app.refactron.dev subdomain
@@ -19,6 +20,9 @@ const AuthApp: React.FC = () => {
 
         {/* Signup route */}
         <Route path="/signup" element={<SignupForm />} />
+
+        {/* OAuth Callback route */}
+        <Route path="/auth/callback" element={<OAuthCallback />} />
 
         {/* Email Verification route */}
         <Route

@@ -42,9 +42,20 @@ function App() {
     typeof window !== 'undefined' &&
     window.location.hostname.startsWith('docs.');
 
+  // Support local testing via environment variable
+  const enableLocalAuth =
+    process.env.REACT_APP_ENABLE_LOCAL_AUTH === 'true' ||
+    process.env.REACT_APP_ENABLE_LOCAL_AUTH === '1';
+
   const isAppHost =
-    typeof window !== 'undefined' &&
-    window.location.hostname.startsWith('app.');
+    (typeof window !== 'undefined' &&
+      window.location.hostname.startsWith('app.')) ||
+    (enableLocalAuth &&
+      typeof window !== 'undefined' &&
+      (window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.hostname.startsWith('192.168.') ||
+        window.location.hostname.startsWith('10.0.')));
 
   return (
     <ErrorBoundary>
@@ -117,6 +128,13 @@ function App() {
                   </PageLayout>
                 }
               />
+              {/* Local auth routes - only accessible when REACT_APP_ENABLE_LOCAL_AUTH is enabled */}
+              {enableLocalAuth && (
+                <>
+                  <Route path="/login" element={<AuthApp />} />
+                  <Route path="/signup" element={<AuthApp />} />
+                </>
+              )}
               <Route
                 path="*"
                 element={
