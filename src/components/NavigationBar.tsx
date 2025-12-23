@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, X, ExternalLink } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import {
+  createTrackingClickHandler,
+  ConversionEvents,
+} from '../utils/analytics';
 
 type NavItem = {
   label: string;
@@ -116,6 +120,11 @@ const NavigationBar: React.FC = () => {
           <div className="hidden lg:flex items-center justify-end gap-3 ml-auto pl-4 sm:pl-6 pr-2">
             <a
               href="/signup"
+              onClick={createTrackingClickHandler(
+                ConversionEvents.SIGN_UP_CLICKED,
+                { source: 'navigation_bar' },
+                { href: '/signup' }
+              )}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-300 shadow-lg"
             >
               Sign Up
@@ -174,6 +183,11 @@ const NavigationBar: React.FC = () => {
             <div className="grid gap-2 pt-2">
               <a
                 href="/signup"
+                onClick={createTrackingClickHandler(
+                  ConversionEvents.SIGN_UP_CLICKED,
+                  { source: 'mobile_navigation' },
+                  { href: '/signup' }
+                )}
                 className="w-full px-4 py-3 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold text-sm shadow-lg text-center"
               >
                 Sign Up
