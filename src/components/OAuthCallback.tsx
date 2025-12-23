@@ -51,11 +51,6 @@ const OAuthCallback: React.FC = () => {
         if (result.success) {
           setStatus('success');
 
-          // Store auth token if provided
-          if (result.data?.token) {
-            localStorage.setItem('refactron_auth_token', result.data.token);
-          }
-
           // Redirect to dashboard or appropriate page
           setTimeout(() => {
             navigate(result.data?.redirectTo || '/dashboard', {
