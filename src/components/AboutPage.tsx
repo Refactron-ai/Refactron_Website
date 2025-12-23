@@ -218,7 +218,7 @@ const AboutPage: React.FC = () => {
               onClick={createTrackingClickHandler(
                 ConversionEvents.TRY_REFACTRON_LIBRARY_CLICKED,
                 { source: 'about_page' },
-                { preventDefault: false }
+                { allowDefault: true }
               )}
               className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 shadow-lg"
             >
@@ -232,7 +232,7 @@ const AboutPage: React.FC = () => {
               onClick={createTrackingClickHandler(
                 ConversionEvents.VIEW_DOCUMENTATION_CLICKED,
                 { source: 'about_page' },
-                { preventDefault: false }
+                { allowDefault: true }
               )}
               className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white border-2 border-primary-500 text-primary-600 hover:bg-primary-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 shadow-lg"
             >

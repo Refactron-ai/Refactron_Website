@@ -1,6 +1,11 @@
 import type { MouseEvent } from 'react';
 
 /**
+ * Valid cookie consent values
+ */
+const ACCEPTED_CONSENT_VALUES = ['true', 'accepted'] as const;
+
+/**
  * Track conversion events with cookie consent check
  * Only tracks if user has consented to analytics
  * @returns A promise that resolves when tracking is complete or consent is denied
@@ -16,7 +21,7 @@ export const trackConversion = (
   let hasAnalyticsConsent = false;
 
   // Validate both consent exists and has appropriate value
-  if (cookieConsent && (cookieConsent === 'true' || cookieConsent === 'accepted') && cookiePreferences) {
+  if (cookieConsent && ACCEPTED_CONSENT_VALUES.includes(cookieConsent as any) && cookiePreferences) {
     try {
       const preferences = JSON.parse(cookiePreferences);
       hasAnalyticsConsent = preferences.analytics === true;
@@ -76,13 +81,13 @@ export const createTrackingClickHandler = (
   properties?: Record<string, any>,
   options?: {
     href?: string;
-    preventDefault?: boolean;
+    allowDefault?: boolean;
     onNavigate?: () => void;
   }
 ) => {
-  return async (event: MouseEvent<HTMLAnchorElement>) => {
-    // Prevent default navigation if specified
-    if (options?.preventDefault !== false) {
+  return async (event: MouseEvent<HTMLElement>) => {
+    // Prevent default navigation unless explicitly allowed
+    if (!options?.allowDefault) {
       event.preventDefault();
     }
 

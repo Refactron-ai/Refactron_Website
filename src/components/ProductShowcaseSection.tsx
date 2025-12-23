@@ -127,7 +127,7 @@ const ProductShowcaseSection: React.FC = () => {
                 onClick={createTrackingClickHandler(
                   ConversionEvents.VIEW_PYPI_CLICKED,
                   { source: 'product_showcase' },
-                  { preventDefault: false }
+                  { allowDefault: true }
                 )}
                 className="inline-flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
               >
@@ -141,7 +141,7 @@ const ProductShowcaseSection: React.FC = () => {
                 onClick={createTrackingClickHandler(
                   ConversionEvents.VIEW_SOURCE_CLICKED,
                   { source: 'product_showcase' },
-                  { preventDefault: false }
+                  { allowDefault: true }
                 )}
                 className="inline-flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
               >
