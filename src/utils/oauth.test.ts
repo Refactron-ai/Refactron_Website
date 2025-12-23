@@ -7,7 +7,6 @@ import {
   validateOAuthState,
   handleOAuthCallback,
   isOAuthProviderConfigured,
-  type OAuthProvider,
 } from './oauth';
 
 // Mock window.location
@@ -195,9 +194,7 @@ describe('OAuth utility functions', () => {
         redirectUri: 'http://localhost:3000/auth/callback',
       });
 
-      expect(window.location.href).toContain(
-        'prompt=select_account+consent'
-      );
+      expect(window.location.href).toContain('prompt=select_account+consent');
     });
 
     it('should redirect to GitHub OAuth URL with correct parameters for login', async () => {
@@ -311,7 +308,9 @@ describe('OAuth utility functions', () => {
     });
 
     it('should handle network errors gracefully', async () => {
-      global.fetch = jest.fn().mockRejectedValue(new TypeError('Failed to fetch'));
+      global.fetch = jest
+        .fn()
+        .mockRejectedValue(new TypeError('Failed to fetch'));
 
       const result = await handleOAuthCallback('test-code', 'test-state', {
         redirectUri: 'http://localhost:3000/auth/callback',
