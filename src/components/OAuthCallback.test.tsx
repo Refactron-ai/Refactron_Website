@@ -58,7 +58,9 @@ describe('OAuthCallback', () => {
 
   it('should display error when OAuth error parameter is present', () => {
     (useSearchParams as jest.Mock).mockReturnValue([
-      new URLSearchParams('error=access_denied&error_description=User denied access'),
+      new URLSearchParams(
+        'error=access_denied&error_description=User denied access'
+      ),
     ]);
 
     renderWithRouter(<OAuthCallback />);
@@ -93,7 +95,9 @@ describe('OAuthCallback', () => {
     renderWithRouter(<OAuthCallback />);
 
     await waitFor(() => {
-      expect(screen.getByText('Authentication Successful!')).toBeInTheDocument();
+      expect(
+        screen.getByText('Authentication Successful!')
+      ).toBeInTheDocument();
     });
 
     expect(
@@ -127,7 +131,9 @@ describe('OAuthCallback', () => {
       expect(screen.getByText('Authentication Failed')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('Invalid authentication token')).toBeInTheDocument();
+    expect(
+      screen.getByText('Invalid authentication token')
+    ).toBeInTheDocument();
   });
 
   it('should handle exceptions during callback processing', async () => {
@@ -168,7 +174,9 @@ describe('OAuthCallback', () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText('Authentication Successful!')).toBeInTheDocument();
+      expect(
+        screen.getByText('Authentication Successful!')
+      ).toBeInTheDocument();
     });
 
     // Should only be called once despite re-render
@@ -188,7 +196,9 @@ describe('OAuthCallback', () => {
     const { unmount } = renderWithRouter(<OAuthCallback />);
 
     await waitFor(() => {
-      expect(screen.getByText('Authentication Successful!')).toBeInTheDocument();
+      expect(
+        screen.getByText('Authentication Successful!')
+      ).toBeInTheDocument();
     });
 
     // Unmount before redirect timeout
