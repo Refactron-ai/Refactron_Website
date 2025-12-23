@@ -1,7 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle, Download, Code, Zap, Shield, Star } from 'lucide-react';
-import { createTrackingClickHandler, ConversionEvents } from '../utils/analytics';
+import {
+  createTrackingClickHandler,
+  ConversionEvents,
+} from '../utils/analytics';
 
 const ProductShowcaseSection: React.FC = () => {
   const features = [
