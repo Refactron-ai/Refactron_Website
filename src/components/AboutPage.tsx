@@ -8,7 +8,10 @@ import {
   BookOpen,
 } from 'lucide-react';
 import useSEO from '../hooks/useSEO';
-import { createTrackingClickHandler, ConversionEvents } from '../utils/analytics';
+import {
+  createTrackingClickHandler,
+  ConversionEvents,
+} from '../utils/analytics';
 
 const AboutPage: React.FC = () => {
   // SEO Configuration

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, X, ExternalLink } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { createTrackingClickHandler, ConversionEvents } from '../utils/analytics';
+import {
+  createTrackingClickHandler,
+  ConversionEvents,
+} from '../utils/analytics';
 
 type NavItem = {
   label: string;
