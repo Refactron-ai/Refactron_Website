@@ -1,13 +1,14 @@
-import React from 'react';
+import type { MouseEvent } from 'react';
 
 /**
  * Track conversion events with cookie consent check
  * Only tracks if user has consented to analytics
+ * @returns A promise that resolves when tracking is complete or consent is denied
  */
 export const trackConversion = (
   eventName: string,
   properties?: Record<string, any>
-) => {
+): Promise<void> => {
   // Check if analytics consent is given
   const cookieConsent = localStorage.getItem('cookie-consent');
   const cookiePreferences = localStorage.getItem('cookie-preferences');
@@ -27,23 +28,27 @@ export const trackConversion = (
   // Only track if consent is given
   if (hasAnalyticsConsent || process.env.NODE_ENV === 'development') {
     try {
+      // Also log to console in development
+      if (process.env.NODE_ENV === 'development') {
+        console.log('📊 Conversion tracked:', eventName, properties);
+      }
+
       // Dynamically import to avoid Jest ESM issues
-      import('@vercel/analytics')
+      return import('@vercel/analytics')
         .then(({ track }) => {
           track(eventName, properties);
         })
         .catch((error) => {
           console.error('Error loading analytics module for conversion tracking:', error);
         });
-
-      // Also log to console in development
-      if (process.env.NODE_ENV === 'development') {
-        console.log('📊 Conversion tracked:', eventName, properties);
-      }
     } catch (error) {
       console.error('Error tracking conversion:', error);
+      return Promise.resolve();
     }
   }
+
+  // Return resolved promise if no consent
+  return Promise.resolve();
 };
 
 /**
@@ -75,21 +80,21 @@ export const createTrackingClickHandler = (
     onNavigate?: () => void;
   }
 ) => {
-  return async (event: React.MouseEvent<HTMLAnchorElement>) => {
+  return async (event: MouseEvent<HTMLAnchorElement>) => {
     // Prevent default navigation if specified
     if (options?.preventDefault !== false) {
       event.preventDefault();
     }
 
     try {
-      // Track conversion directly (no circular import)
-      trackConversion(eventName, properties);
+      // Track conversion and wait for it to complete
+      await trackConversion(eventName, properties);
     } catch (error) {
       console.error('Error tracking conversion in click handler:', error);
     } finally {
       // Navigate if href or custom navigation provided
       if (options?.href) {
-        window.location.href = options.href;
+        window.location.assign(options.href);
       } else if (options?.onNavigate) {
         options.onNavigate();
       }
