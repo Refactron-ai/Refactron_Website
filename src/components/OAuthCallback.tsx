@@ -16,9 +16,17 @@ const OAuthCallback: React.FC = () => {
     'loading'
   );
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const processingRef = React.useRef(false);
+  const mountedRef = React.useRef(true);
 
   useEffect(() => {
     const processCallback = async () => {
+      // Prevent multiple simultaneous callback attempts
+      if (processingRef.current) {
+        return;
+      }
+      processingRef.current = true;
+
       const code = searchParams.get('code');
       const state = searchParams.get('state');
       const error = searchParams.get('error');
@@ -53,9 +61,11 @@ const OAuthCallback: React.FC = () => {
 
           // Redirect to dashboard or appropriate page
           setTimeout(() => {
-            navigate(result.data?.redirectTo || '/dashboard', {
-              replace: true,
-            });
+            if (mountedRef.current) {
+              navigate(result.data?.redirectTo || '/dashboard', {
+                replace: true,
+              });
+            }
           }, 1500);
         } else {
           setStatus('error');
@@ -74,6 +84,10 @@ const OAuthCallback: React.FC = () => {
     };
 
     processCallback();
+
+    return () => {
+      mountedRef.current = false;
+    };
   }, [searchParams, navigate]);
 
   return (

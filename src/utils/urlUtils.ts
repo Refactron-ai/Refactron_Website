@@ -4,7 +4,8 @@
 
 /**
  * Gets the base URL for the current environment
- * Returns the production subdomain URL in production, or localhost URL in development
+ * Returns the production subdomain URL (https://) in production,
+ * or localhost URL (http://) in development
  */
 export const getBaseUrl = (): string => {
   if (typeof window === 'undefined') {

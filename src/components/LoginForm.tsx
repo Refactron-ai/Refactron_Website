@@ -69,16 +69,21 @@ const LoginForm: React.FC = () => {
 
   // Load saved email from localStorage if remember me was checked
   useEffect(() => {
-    const savedEmail = localStorage.getItem('refactron_remembered_email');
-    if (savedEmail) {
-      setEmail(savedEmail);
-      setRememberMe(true);
+    try {
+      const savedEmail = localStorage.getItem('refactron_remembered_email');
+      if (savedEmail) {
+        setEmail(savedEmail);
+        setRememberMe(true);
+      }
+    } catch (storageError) {
+      // localStorage may be disabled; continue without saved email
+      console.warn('Unable to load saved email:', storageError);
     }
   }, []);
 
-  const validateEmail = (value: string): boolean => {
+  const validateEmail = (emailToValidate: string): boolean => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(value);
+    return re.test(emailToValidate);
   };
 
   const validateForm = (): boolean => {
@@ -117,6 +122,11 @@ const LoginForm: React.FC = () => {
   };
 
   const handleSocialLogin = async (provider: OAuthProvider) => {
+    // Prevent OAuth if email login is in progress
+    if (isLoading) {
+      return;
+    }
+
     try {
       setOauthLoading(provider);
       setErrors({});
@@ -149,6 +159,11 @@ const LoginForm: React.FC = () => {
     setErrors({});
     setSuccess(false);
     setRateLimitMessage('');
+
+    // Prevent submission if OAuth is in progress
+    if (oauthLoading !== null) {
+      return;
+    }
 
     if (!validateForm()) {
       return;
@@ -216,17 +231,21 @@ const LoginForm: React.FC = () => {
         return;
       }
 
-      if (rememberMe) {
-        localStorage.setItem('refactron_remembered_email', email);
-      } else {
-        localStorage.removeItem('refactron_remembered_email');
+      try {
+        if (rememberMe) {
+          localStorage.setItem('refactron_remembered_email', email);
+        } else {
+          localStorage.removeItem('refactron_remembered_email');
+        }
+      } catch (storageError) {
+        // localStorage may be disabled or full; continue without remembering email
+        console.warn('Unable to save email preference:', storageError);
       }
 
       setSuccess(true);
 
-      if (data.token) {
-        localStorage.setItem('refactron_auth_token', data.token);
-      }
+      // Auth tokens are managed via secure httpOnly cookies on the server.
+      // Do not store tokens in localStorage to avoid exposure to XSS.
 
       setTimeout(() => {
         navigate('/dashboard'); // TODO: Update with actual dashboard route

@@ -55,13 +55,7 @@ export const validateOAuthState = (
     | null;
   const timestamp = sessionStorage.getItem('oauth_timestamp');
 
-  // Clear stored state
-  sessionStorage.removeItem('oauth_state');
-  sessionStorage.removeItem('oauth_provider');
-  sessionStorage.removeItem('oauth_type');
-  sessionStorage.removeItem('oauth_timestamp');
-
-  // Validate state token
+  // Validate state token first before clearing
   if (!storedState || storedState !== state) {
     return null;
   }
@@ -70,6 +64,11 @@ export const validateOAuthState = (
   if (timestamp) {
     const age = Date.now() - parseInt(timestamp, 10);
     if (age > 10 * 60 * 1000) {
+      // Clear expired state
+      sessionStorage.removeItem('oauth_state');
+      sessionStorage.removeItem('oauth_provider');
+      sessionStorage.removeItem('oauth_type');
+      sessionStorage.removeItem('oauth_timestamp');
       return null;
     }
   }
@@ -77,6 +76,12 @@ export const validateOAuthState = (
   if (!provider || !type) {
     return null;
   }
+
+  // Clear stored state only after successful validation
+  sessionStorage.removeItem('oauth_state');
+  sessionStorage.removeItem('oauth_provider');
+  sessionStorage.removeItem('oauth_type');
+  sessionStorage.removeItem('oauth_timestamp');
 
   return { provider, type };
 };
@@ -102,9 +107,17 @@ const getGoogleAuthUrl = (
     prompt: 'select_account',
   });
 
-  // Add signup hint for signup flow
+  // Add consent prompt for signup flow
   if (type === 'signup') {
-    params.append('prompt', 'consent');
+    const existingPrompt = params.get('prompt') || '';
+    const prompts = new Set(
+      existingPrompt
+        .split(' ')
+        .map(p => p.trim())
+        .filter(Boolean)
+    );
+    prompts.add('consent');
+    params.set('prompt', Array.from(prompts).join(' '));
   }
 
   return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
@@ -152,9 +165,10 @@ export const initiateOAuth = (
           : config.githubClientId || process.env.REACT_APP_GITHUB_CLIENT_ID;
 
       if (!clientId) {
+        const providerName = provider === 'google' ? 'Google' : 'GitHub';
         reject(
           new Error(
-            `${provider === 'google' ? 'Google' : 'GitHub'} OAuth client ID is not configured. Please set REACT_APP_${provider.toUpperCase()}_CLIENT_ID environment variable.`
+            `${providerName} OAuth client ID is not configured. Please set REACT_APP_${provider.toUpperCase()}_CLIENT_ID environment variable.`
           )
         );
         return;
@@ -234,12 +248,25 @@ export const handleOAuthCallback = async (
       data,
     };
   } catch (error) {
+    let message =
+      'An unexpected error occurred during authentication. Please try again.';
+
+    if (error instanceof TypeError) {
+      // fetch typically throws TypeError for network/CORS issues
+      const errMsg = error.message || '';
+      if (/Failed to fetch|NetworkError|Load failed/i.test(errMsg)) {
+        message =
+          'Unable to reach the authentication server. This may be a network or browser configuration issue. Please check your connection and try again.';
+      } else {
+        message = errMsg || message;
+      }
+    } else if (error instanceof Error && error.message) {
+      message = error.message;
+    }
+
     return {
       success: false,
-      error:
-        error instanceof Error
-          ? error.message
-          : 'An unexpected error occurred during authentication.',
+      error: message,
     };
   }
 };
@@ -248,14 +275,10 @@ export const handleOAuthCallback = async (
  * Checks if OAuth provider is configured
  */
 export const isOAuthProviderConfigured = (provider: OAuthProvider): boolean => {
+  // Keep in sync with initiateOAuth: only use REACT_APP_GOOGLE_CLIENT_ID
   if (provider === 'google') {
-    return !!(
-      process.env.REACT_APP_GOOGLE_CLIENT_ID ||
-      process.env.REACT_APP_GOOGLE_CLIENT_ID_LOCAL
-    );
+    return !!process.env.REACT_APP_GOOGLE_CLIENT_ID;
   }
-  return !!(
-    process.env.REACT_APP_GITHUB_CLIENT_ID ||
-    process.env.REACT_APP_GITHUB_CLIENT_ID_LOCAL
-  );
+  // Keep in sync with initiateOAuth: only use REACT_APP_GITHUB_CLIENT_ID
+  return !!process.env.REACT_APP_GITHUB_CLIENT_ID;
 };
