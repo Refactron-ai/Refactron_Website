@@ -206,6 +206,11 @@ const SignupForm: React.FC = () => {
   };
 
   const handleSocialSignup = async (provider: OAuthProvider) => {
+    // Prevent OAuth if email signup is in progress
+    if (isLoading) {
+      return;
+    }
+
     try {
       setOauthLoading(provider);
       setErrors({});
@@ -241,6 +246,11 @@ const SignupForm: React.FC = () => {
     e.preventDefault();
     setErrors({});
     setSuccess(false);
+
+    // Prevent submission if OAuth is in progress
+    if (oauthLoading !== null) {
+      return;
+    }
 
     if (!validateForm()) {
       // Scroll to first error

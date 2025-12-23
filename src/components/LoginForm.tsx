@@ -122,6 +122,11 @@ const LoginForm: React.FC = () => {
   };
 
   const handleSocialLogin = async (provider: OAuthProvider) => {
+    // Prevent OAuth if email login is in progress
+    if (isLoading) {
+      return;
+    }
+
     try {
       setOauthLoading(provider);
       setErrors({});
@@ -154,6 +159,11 @@ const LoginForm: React.FC = () => {
     setErrors({});
     setSuccess(false);
     setRateLimitMessage('');
+
+    // Prevent submission if OAuth is in progress
+    if (oauthLoading !== null) {
+      return;
+    }
 
     if (!validateForm()) {
       return;
