@@ -1,3 +1,5 @@
+import React from 'react';
+
 /**
  * Track conversion events with cookie consent check
  * Only tracks if user has consented to analytics
@@ -80,8 +82,7 @@ export const createTrackingClickHandler = (
     }
 
     try {
-      // Dynamically import and track conversion
-      const { trackConversion } = await import('./analytics');
+      // Track conversion directly (no circular import)
       trackConversion(eventName, properties);
     } catch (error) {
       console.error('Error tracking conversion in click handler:', error);
