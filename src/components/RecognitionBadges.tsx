@@ -71,48 +71,50 @@ const RecognitionBadges: React.FC = () => {
                 </div>
               </motion.div>
 
-                {/* Content Section */}
-                <div className="flex-1 text-center lg:text-left space-y-6">
-                  <div>
-                    <div className="inline-flex items-center gap-2 bg-primary-50 border border-primary-200 rounded-full px-4 py-1.5 mb-4">
-                      <CheckCircle2 className="w-4 h-4 text-primary-600" />
-                      <span className="text-primary-700 text-xs font-medium uppercase tracking-wide">
-                        Verified Achievement
+              {/* Content Section */}
+              <div className="flex-1 text-center lg:text-left space-y-6">
+                <div>
+                  <div className="inline-flex items-center gap-2 bg-primary-50 border border-primary-200 rounded-full px-4 py-1.5 mb-4">
+                    <CheckCircle2 className="w-4 h-4 text-primary-600" />
+                    <span className="text-primary-700 text-xs font-medium uppercase tracking-wide">
+                      Verified Achievement
+                    </span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-light text-gray-900 mb-3 leading-tight tracking-tight">
+                    Top 12 Software Intelligence Company
+                  </h3>
+                  <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center justify-center w-12 h-12 bg-primary-500 text-white rounded-lg font-bold text-lg">
+                        #6
+                      </span>
+                      <span className="text-lg sm:text-xl text-primary-600 font-semibold">
+                        Ranked by F6S
                       </span>
                     </div>
-                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-light text-gray-900 mb-3 leading-tight tracking-tight">
-                      Top 12 Software Intelligence Company
-                    </h3>
-                    <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
-                      <div className="flex items-center gap-2">
-                        <span className="inline-flex items-center justify-center w-12 h-12 bg-primary-500 text-white rounded-lg font-bold text-lg">
-                          #6
-                        </span>
-                        <span className="text-lg sm:text-xl text-primary-600 font-semibold">
-                          Ranked by F6S
-                        </span>
-                      </div>
-                    </div>
-                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed max-w-2xl">
-                      Recognized by F6S for our innovative approach to AI-powered
-                      code refactoring and software intelligence solutions that
-                      help developers modernize legacy codebases at scale.
-                    </p>
                   </div>
+                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed max-w-2xl">
+                    Recognized by F6S for our innovative approach to AI-powered
+                    code refactoring and software intelligence solutions that
+                    help developers modernize legacy codebases at scale.
+                  </p>
+                </div>
 
-                  {/* Metadata */}
-                  <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4 border-t border-gray-200">
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="font-medium">Verified</span>
-                    </div>
-                    <span className="text-gray-400">•</span>
-                    <span className="text-sm text-gray-600">November 2025</span>
-                    <span className="text-gray-400">•</span>
-                    <span className="text-sm text-gray-600">Software Intelligence Category</span>
+                {/* Metadata */}
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4 border-t border-gray-200">
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span className="font-medium">Verified</span>
                   </div>
+                  <span className="text-gray-400">•</span>
+                  <span className="text-sm text-gray-600">November 2025</span>
+                  <span className="text-gray-400">•</span>
+                  <span className="text-sm text-gray-600">
+                    Software Intelligence Category
+                  </span>
                 </div>
               </div>
+            </div>
           </div>
         </motion.div>
 

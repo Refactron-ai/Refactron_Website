@@ -1,6 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Brain, Zap, Shield, TrendingUp, Code, Rocket, CheckCircle2 } from 'lucide-react';
+import {
+  Brain,
+  Zap,
+  Shield,
+  TrendingUp,
+  Code,
+  Rocket,
+  CheckCircle2,
+} from 'lucide-react';
 
 const WhatWeDoSection: React.FC = () => {
   const features = [
@@ -55,7 +63,7 @@ const WhatWeDoSection: React.FC = () => {
       className="relative py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50 via-gray-100/50 to-gray-50 scroll-mt-24 overflow-hidden"
     >
       {/* Pattern Overlay with gradient fade */}
-      <div 
+      <div
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: `
@@ -63,8 +71,10 @@ const WhatWeDoSection: React.FC = () => {
             linear-gradient(90deg, rgba(32, 178, 170, 0.2) 1px, transparent 1px)
           `,
           backgroundSize: '40px 40px',
-          maskImage: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 10%, rgba(0,0,0,0.8) 90%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 10%, rgba(0,0,0,0.8) 90%, transparent 100%)',
+          maskImage:
+            'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 10%, rgba(0,0,0,0.8) 90%, transparent 100%)',
+          WebkitMaskImage:
+            'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 10%, rgba(0,0,0,0.8) 90%, transparent 100%)',
         }}
       ></div>
 
@@ -117,7 +127,7 @@ const WhatWeDoSection: React.FC = () => {
                   <div className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-primary-500 rounded-lg mb-6 group-hover:bg-primary-600 transition-colors duration-300">
                     <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                   </div>
-                  
+
                   {/* Content */}
                   <h3 className="text-lg sm:text-xl font-light mb-4 text-gray-900 leading-tight tracking-tight">
                     {feature.title}
@@ -149,7 +159,7 @@ const WhatWeDoSection: React.FC = () => {
               novelty, but confidence at scale—making large-scale refactoring a
               safe, repeatable part of everyday engineering work.
             </p>
-            
+
             {/* Benefits Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 max-w-3xl mx-auto">
               {benefits.map((benefit, index) => (
