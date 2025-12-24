@@ -28,7 +28,7 @@ const RecognitionBadges: React.FC = () => {
               Industry Recognition
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-gray-900 mb-3 tracking-tight">
             Trusted by the Industry
           </h2>
           <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
@@ -61,7 +61,7 @@ const RecognitionBadges: React.FC = () => {
 
               {/* Recognition Details */}
               <div className="flex-1 text-center sm:text-left">
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 leading-tight">
+                <h3 className="text-2xl sm:text-3xl font-light text-gray-900 mb-3 leading-tight tracking-tight">
                   Top 12 Software Intelligence Company
                 </h3>
                 <p className="text-xl sm:text-2xl text-primary-600 font-semibold mb-4 flex items-center justify-center sm:justify-start gap-2">

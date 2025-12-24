@@ -70,7 +70,7 @@ const ProductShowcaseSection: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 text-center text-gray-900"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-6 sm:mb-8 text-center text-gray-900 tracking-tight"
         >
           <span className="gradient-text">Refactron Library</span>
         </motion.h2>
@@ -97,7 +97,7 @@ const ProductShowcaseSection: React.FC = () => {
         >
           <div className="bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-6 sm:p-8 md:p-12 max-w-4xl mx-auto">
             <div className="text-center mb-6 sm:mb-8">
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">
+              <h3 className="text-xl sm:text-2xl font-light text-white mb-4 tracking-tight">
                 Get Started in Seconds
               </h3>
               <p className="text-gray-300 text-base sm:text-lg">
@@ -196,7 +196,7 @@ const ProductShowcaseSection: React.FC = () => {
           className="bg-gray-50 rounded-2xl p-6 sm:p-8 md:p-12 max-w-5xl mx-auto"
         >
           <div className="text-center mb-8 sm:mb-12">
-            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+            <h3 className="text-xl sm:text-2xl font-light text-gray-900 mb-4 tracking-tight">
               Key Features
             </h3>
             <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
@@ -218,7 +218,7 @@ const ProductShowcaseSection: React.FC = () => {
                 <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl mb-4 mx-auto">
                   <feature.icon className="w-6 h-6 text-white" />
                 </div>
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                <h4 className="text-lg font-light text-gray-900 mb-2 tracking-tight">
                   {feature.title}
                 </h4>
                 <p className="text-sm text-gray-600 leading-relaxed">

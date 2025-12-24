@@ -167,7 +167,7 @@ const EarlyAccessForm: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-gray-900">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 md:mb-8 text-gray-900 tracking-tight">
             Stay Updated
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
@@ -252,7 +252,7 @@ const EarlyAccessForm: React.FC = () => {
                 </div>
 
                 <div className="space-y-3 sm:space-y-4">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                  <h3 className="text-2xl sm:text-3xl font-light text-gray-900 tracking-tight">
                     You're All Set!
                   </h3>
                   <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-md mx-auto px-2">

@@ -338,7 +338,7 @@ const DocsPage: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-teal-100/60 via-white to-sky-100/60 blur-3xl" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
           <header className="max-w-3xl">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 mb-6">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight text-gray-900 mb-6">
               Build with Refactron in minutes, scale to enterprise-grade
               refactoring pipelines.
             </h1>
@@ -394,7 +394,7 @@ const DocsPage: React.FC = () => {
                       Overview
                     </span>
                   </div>
-                  <h2 className="text-2xl font-semibold text-gray-900">
+                  <h2 className="text-2xl font-light text-gray-900 tracking-tight">
                     Why Refactron
                   </h2>
                   <p className="text-gray-600 leading-relaxed">
@@ -452,7 +452,7 @@ const DocsPage: React.FC = () => {
                       Quick Start
                     </span>
                   </div>
-                  <h2 className="text-2xl font-semibold text-gray-900">
+                  <h2 className="text-2xl font-light text-gray-900 tracking-tight">
                     Install & Authenticate
                   </h2>
                   <p className="text-gray-600 leading-relaxed">
@@ -511,7 +511,7 @@ refactron report src/ --format json -o report.json`}</pre>
                       Tutorials & Commands
                     </span>
                   </div>
-                  <h2 className="text-2xl font-semibold text-gray-900">
+                  <h2 className="text-2xl font-light text-gray-900 tracking-tight">
                     Learn by Following the Guided Tutorial
                   </h2>
                   <p className="text-gray-600 leading-relaxed">
@@ -619,7 +619,7 @@ result.show_diff()`}</pre>
                       Core Concepts
                     </span>
                   </div>
-                  <h2 className="text-2xl font-semibold text-gray-900">
+                  <h2 className="text-2xl font-light text-gray-900 tracking-tight">
                     Analysis, Refactoring, Reporting
                   </h2>
                   <div className="grid md:grid-cols-3 gap-6">
@@ -664,7 +664,7 @@ result.show_diff()`}</pre>
                       API Reference
                     </span>
                   </div>
-                  <h2 className="text-2xl font-semibold text-gray-900">
+                  <h2 className="text-2xl font-light text-gray-900 tracking-tight">
                     Python SDK & Data Models
                   </h2>
                   <p className="text-gray-600 leading-relaxed">
@@ -732,7 +732,7 @@ result.show_diff()`}</pre>
                       CLI Workflows
                     </span>
                   </div>
-                  <h2 className="text-2xl font-semibold text-gray-900">
+                  <h2 className="text-2xl font-light text-gray-900 tracking-tight">
                     Automate at Scale
                   </h2>
                   <p className="text-gray-600 leading-relaxed">
@@ -760,7 +760,7 @@ result.show_diff()`}</pre>
                       Security & Compliance
                     </span>
                   </div>
-                  <h2 className="text-2xl font-semibold text-gray-900">
+                  <h2 className="text-2xl font-light text-gray-900 tracking-tight">
                     Enterprise ready by default
                   </h2>
                   <ul className="space-y-4 text-sm text-gray-600">
@@ -803,7 +803,7 @@ result.show_diff()`}</pre>
                       Product Metrics & Roadmap
                     </span>
                   </div>
-                  <h2 className="text-2xl font-semibold text-gray-900">
+                  <h2 className="text-2xl font-light text-gray-900 tracking-tight">
                     Refactron v1.0.0 at a Glance
                   </h2>
                   <p className="text-gray-600 leading-relaxed">
@@ -839,7 +839,7 @@ result.show_diff()`}</pre>
                         <h3 className="text-base font-medium text-teal-600 mb-2">
                           {item.title}
                         </h3>
-                        <p className="text-xl font-semibold text-gray-900 mb-2">
+                        <p className="text-xl font-light text-gray-900 mb-2">
                           {item.value}
                         </p>
                         <p className="text-sm text-gray-600 leading-relaxed">
@@ -862,7 +862,7 @@ result.show_diff()`}</pre>
                       Contributing & Community
                     </span>
                   </div>
-                  <h2 className="text-2xl font-semibold text-gray-900">
+                  <h2 className="text-2xl font-light text-gray-900 tracking-tight">
                     Ship Improvements in Minutes
                   </h2>
                   <p className="text-gray-600 leading-relaxed">
@@ -980,7 +980,7 @@ result.show_diff()`}</pre>
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mb-6">
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
+                <h3 className="text-xl sm:text-2xl font-light mb-3 sm:mb-4 tracking-tight">
                   <span className="gradient-text">Refactron™</span>
                 </h3>
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 sm:mb-6 max-w-sm">
@@ -995,7 +995,7 @@ result.show_diff()`}</pre>
               </div>
 
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
+                <h4 className="text-base sm:text-lg font-light text-gray-900 mb-4 sm:mb-6 tracking-tight">
                   Connect With Us
                 </h4>
                 <div className="flex justify-center sm:justify-start gap-3 sm:gap-4 mb-4 sm:mb-6">
@@ -1022,7 +1022,7 @@ result.show_diff()`}</pre>
               </div>
 
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
+                <h4 className="text-base sm:text-lg font-light text-gray-900 mb-4 sm:mb-6 tracking-tight">
                   Get In Touch
                 </h4>
                 <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 max-w-sm">
@@ -1042,7 +1042,7 @@ result.show_diff()`}</pre>
               </div>
 
               <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
+                <h4 className="text-base sm:text-lg font-light text-gray-900 mb-4 sm:mb-6 tracking-tight">
                   Our Location
                 </h4>
                 <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 max-w-sm">

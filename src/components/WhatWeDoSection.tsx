@@ -65,7 +65,7 @@ const WhatWeDoSection: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16 md:mb-20 max-w-4xl mx-auto"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-gray-900">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 md:mb-8 text-gray-900 tracking-tight">
             Refactoring Intelligence, Not Blind Automation
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
@@ -92,7 +92,7 @@ const WhatWeDoSection: React.FC = () => {
                 <div className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300">
                   <feature.icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900">
+                <h3 className="text-lg sm:text-xl font-light mb-3 sm:mb-4 text-gray-900">
                   {feature.title}
                 </h3>
                 <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
@@ -112,7 +112,7 @@ const WhatWeDoSection: React.FC = () => {
           className="text-center"
         >
           <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-12 max-w-4xl mx-auto shadow-sm border border-gray-100">
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-gray-900">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-light mb-4 sm:mb-6 text-gray-900 tracking-tight">
               A Safer Direction for Code Quality
             </h3>
             <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-6 sm:mb-8 px-2">

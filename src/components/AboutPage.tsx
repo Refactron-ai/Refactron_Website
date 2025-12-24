@@ -68,7 +68,7 @@ const AboutPage: React.FC = () => {
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
         {/* Hero Section */}
         <div className="text-center mb-12 sm:mb-16">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-light mb-4 sm:mb-6 tracking-tight">
             <span className="gradient-text">About Refactron</span>
           </h1>
           <p className="text-xl sm:text-2xl text-gray-700 font-medium max-w-3xl mx-auto">
@@ -81,7 +81,7 @@ const AboutPage: React.FC = () => {
         <div className="space-y-12 sm:space-y-16">
           {/* Problem Statement */}
           <section className="glass-effect rounded-3xl p-6 sm:p-8 md:p-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-gray-900 mb-4 sm:mb-6 tracking-tight">
               The Problem We Solve
             </h2>
             <p className="text-base sm:text-lg text-gray-700 leading-relaxed mb-4">
@@ -95,7 +95,7 @@ const AboutPage: React.FC = () => {
 
           {/* Solution Overview */}
           <section className="glass-effect rounded-3xl p-6 sm:p-8 md:p-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-gray-900 mb-4 sm:mb-6 tracking-tight">
               Our Approach
             </h2>
             <p className="text-base sm:text-lg text-gray-700 leading-relaxed mb-4">
@@ -118,7 +118,7 @@ const AboutPage: React.FC = () => {
 
           {/* Core Components */}
           <section>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 sm:mb-8 text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-gray-900 mb-6 sm:mb-8 text-center tracking-tight">
               At Its Core
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
@@ -131,7 +131,7 @@ const AboutPage: React.FC = () => {
                     <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center flex-shrink-0">
                       <component.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                     </div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-gray-900">
+                    <h3 className="text-xl sm:text-2xl font-light text-gray-900 tracking-tight">
                       {component.title}
                     </h3>
                   </div>
@@ -145,7 +145,7 @@ const AboutPage: React.FC = () => {
 
           {/* Additional Benefits */}
           <section className="glass-effect rounded-3xl p-6 sm:p-8 md:p-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-gray-900 mb-4 sm:mb-6 tracking-tight">
               Beyond Refactoring
             </h2>
             <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
@@ -160,7 +160,7 @@ const AboutPage: React.FC = () => {
 
           {/* Library Positioning */}
           <section className="glass-effect rounded-3xl p-6 sm:p-8 md:p-12 bg-gradient-to-br from-primary-50 to-blue-50 border-primary-200">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-gray-900 mb-4 sm:mb-6 tracking-tight">
               The Refactron Library
             </h2>
             <p className="text-base sm:text-lg text-gray-700 leading-relaxed mb-4">
@@ -189,7 +189,7 @@ const AboutPage: React.FC = () => {
 
           {/* Mission Statement */}
           <section className="glass-effect rounded-3xl p-6 sm:p-8 md:p-12 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-gray-900 mb-4 sm:mb-6 tracking-tight">
               Our Mission
             </h2>
             <p className="text-xl sm:text-2xl text-gray-700 leading-relaxed mb-4 font-medium">
