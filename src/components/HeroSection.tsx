@@ -17,20 +17,19 @@ const HeroSection: React.FC = () => {
 
   return (
     <section id="home" className="relative min-h-screen bg-white scroll-mt-24">
-      {/* Background Effects */}
+      {/* Background Effects - More subtle for cleaner look */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
+        <div className="absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-40"></div>
         <div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-30"
           style={{ animationDelay: '2s' }}
         ></div>
       </div>
 
-      {/* Main Hero Content with Logo and Countdown */}
+      {/* Main Hero Content */}
       <div className="relative z-10 min-h-screen px-4">
-        {/* Main Content */}
         <div className="flex items-center justify-center flex-1 px-4 sm:px-6 pt-4 sm:pt-8">
-          <div className="text-center max-w-4xl mx-auto">
+          <div className="text-center max-w-5xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -45,23 +44,24 @@ const HeroSection: React.FC = () => {
               </div>
             </motion.div>
 
+            {/* Main Headline - Improved typography with lighter weight */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light mb-4 sm:mb-6 leading-[1.1] tracking-tight"
             >
               <span className="gradient-text">AI-Powered Code Refactoring</span>
               <br />
               <span className="text-gray-800">Revolutionizing Development</span>
             </motion.h1>
 
-            {/* Tagline moved to main hero content */}
+            {/* Tagline */}
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.0 }}
-              className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed"
+              className="text-xl sm:text-2xl md:text-3xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed font-light"
             >
               Refactor. Optimize. Automate.
             </motion.p>
@@ -70,7 +70,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.2 }}
-              className="text-base sm:text-lg text-gray-500 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2"
+              className="text-base sm:text-lg md:text-xl text-gray-500 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2"
             >
               Experience the future of automated code optimization. Transform
               legacy code into clean, maintainable solutions with our AI-powered
@@ -78,24 +78,25 @@ const HeroSection: React.FC = () => {
               code modernization.
             </motion.p>
 
+            {/* CTAs - Cleaner design, same content */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.4 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
             >
               <a
                 href="https://pypi.org/project/refactron/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 transform hover:scale-105 glow-border shadow-lg cursor-pointer text-sm sm:text-base"
+                className="group relative inline-flex items-center gap-2 sm:gap-3 bg-gray-900 hover:bg-gray-800 text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer text-sm sm:text-base"
               >
                 <span>Try Refactron Library</span>
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
               </a>
               <button
                 onClick={scrollToEarlyAccess}
-                className="group relative inline-flex items-center gap-2 sm:gap-3 bg-white border-2 border-primary-500 text-primary-600 hover:bg-primary-50 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg cursor-pointer text-sm sm:text-base"
+                className="group relative inline-flex items-center gap-2 sm:gap-3 bg-white border-2 border-gray-900 text-gray-900 hover:bg-gray-50 font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer text-sm sm:text-base"
               >
                 <span>Get Updates</span>
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
@@ -113,23 +114,6 @@ const HeroSection: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Floating Elements - Hidden on mobile for better performance */}
-      <motion.div
-        animate={{ y: [0, -20, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-        className="hidden sm:block absolute top-1/3 right-10 w-2 h-2 bg-primary-400 rounded-full opacity-60"
-      ></motion.div>
-      <motion.div
-        animate={{ y: [0, 20, 0] }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          delay: 1,
-        }}
-        className="hidden sm:block absolute bottom-1/3 left-10 w-3 h-3 bg-primary-300 rounded-full opacity-40"
-      ></motion.div>
     </section>
   );
 };

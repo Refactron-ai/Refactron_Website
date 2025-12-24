@@ -147,7 +147,7 @@ const CaseStudiesPage: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="pt-40 sm:pt-48 pb-12 sm:pb-16 text-center"
           >
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-light text-gray-900 mb-6 leading-tight tracking-tight">
               Case Studies
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto mb-12">
@@ -205,7 +205,7 @@ const CaseStudiesPage: React.FC = () => {
                         <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary-50 text-primary-700 text-xs font-medium uppercase tracking-wide mb-4">
                           {caseStudy.industry}
                         </div>
-                        <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight line-clamp-2">
+                        <h3 className="text-3xl lg:text-4xl font-light text-gray-900 leading-tight line-clamp-2 tracking-tight">
                           {caseStudy.customer}
                         </h3>
                       </div>
@@ -238,7 +238,7 @@ const CaseStudiesPage: React.FC = () => {
                           key={metric.label}
                           className="text-center p-3 rounded-lg bg-gray-50 border border-gray-100"
                         >
-                          <div className="text-xl font-bold text-gray-900 mb-1">
+                          <div className="text-xl font-light text-gray-900 mb-1">
                             {metric.value}
                           </div>
                           <div className="text-[10px] uppercase tracking-wide text-gray-500">
@@ -300,7 +300,7 @@ const CaseStudiesPage: React.FC = () => {
           className="pb-20 sm:pb-24"
         >
           <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-gray-900 mb-4 tracking-tight">
               Common Challenges We Solve
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -325,7 +325,7 @@ const CaseStudiesPage: React.FC = () => {
                     {challenge.sector}
                   </span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 leading-tight">
+                <h3 className="text-xl font-light text-gray-900 mb-3 leading-tight tracking-tight">
                   {challenge.headline}
                 </h3>
                 <p className="text-sm text-gray-600 mb-4 leading-relaxed">
@@ -354,7 +354,7 @@ const CaseStudiesPage: React.FC = () => {
               <Shield className="w-3 h-3" />
               Get Started
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-gray-900 mb-6 leading-tight tracking-tight">
               Ready to transform your codebase?
             </h2>
             <p className="text-lg text-gray-600 mb-8 leading-relaxed">

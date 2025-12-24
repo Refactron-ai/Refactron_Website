@@ -20,7 +20,7 @@ const CaseStudyDetailPage: React.FC = () => {
         <p className="text-sm uppercase tracking-wide text-primary-500 mb-2">
           Case Study
         </p>
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        <h1 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
           We couldn't find that story
         </h1>
         <p className="text-gray-600 mb-6 max-w-md">
@@ -53,7 +53,7 @@ const CaseStudyDetailPage: React.FC = () => {
               {caseStudy.industry}
             </span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
+          <h1 className="text-4xl sm:text-5xl font-light text-gray-900 mb-6 leading-tight tracking-tight">
             {caseStudy.customer}
           </h1>
           <p className="text-lg sm:text-xl text-gray-600 mb-12 leading-relaxed font-medium">
@@ -64,7 +64,7 @@ const CaseStudyDetailPage: React.FC = () => {
           <div className="flex flex-wrap gap-8 sm:gap-12 mb-16 pb-12 border-b border-gray-200">
             {caseStudy.metrics.map(metric => (
               <div key={metric.label} className="flex flex-col">
-                <div className="text-3xl sm:text-4xl font-bold text-gray-900 mb-1">
+                <div className="text-3xl sm:text-4xl font-light text-gray-900 mb-1">
                   {metric.value}
                 </div>
                 <div className="text-sm text-gray-600 font-medium">
@@ -100,7 +100,7 @@ const CaseStudyDetailPage: React.FC = () => {
           viewport={{ once: true }}
           className="pb-16 border-b border-gray-200"
         >
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-10 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-light text-gray-900 mb-10 tracking-tight">
             Pain Points
           </h2>
           <ul className="space-y-6">
@@ -124,7 +124,7 @@ const CaseStudyDetailPage: React.FC = () => {
           viewport={{ once: true }}
           className="py-16 border-b border-gray-200"
         >
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-10 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-light text-gray-900 mb-10 tracking-tight">
             Our Approach
           </h2>
           <ul className="space-y-6">
@@ -148,7 +148,7 @@ const CaseStudyDetailPage: React.FC = () => {
           viewport={{ once: true }}
           className="py-16 border-b border-gray-200"
         >
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-10 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-light text-gray-900 mb-10 tracking-tight">
             Outcomes
           </h2>
           <ul className="space-y-6">
@@ -174,7 +174,7 @@ const CaseStudyDetailPage: React.FC = () => {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
             <div>
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-8 tracking-tight">
+              <h3 className="text-xl sm:text-2xl font-light text-gray-900 mb-8 tracking-tight">
                 Before Refactron
               </h3>
               <ul className="space-y-6">
@@ -190,7 +190,7 @@ const CaseStudyDetailPage: React.FC = () => {
               </ul>
             </div>
             <div>
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-8 tracking-tight">
+              <h3 className="text-xl sm:text-2xl font-light text-gray-900 mb-8 tracking-tight">
                 After Refactron
               </h3>
               <ul className="space-y-6">
@@ -235,7 +235,7 @@ const CaseStudyDetailPage: React.FC = () => {
             viewport={{ once: true }}
             className="py-16"
           >
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-10 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-light text-gray-900 mb-10 tracking-tight">
               References
             </h2>
             <ol className="space-y-4">

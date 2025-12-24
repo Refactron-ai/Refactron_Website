@@ -10,10 +10,28 @@
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 300;
     background-color: #ffffff;
     color: #374151;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Elegant typography hierarchy - lighter weights for headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+
+  /* Keep medium weight for emphasis and interactive elements */
+  strong,
+  b {
+    font-weight: 400;
   }
 
   /* Mobile-specific optimizations */
