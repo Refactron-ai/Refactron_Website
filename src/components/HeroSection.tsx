@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
   const scrollToEarlyAccess = () => {
@@ -16,7 +16,10 @@ const HeroSection: React.FC = () => {
   };
 
   return (
-    <section id="home" className="relative min-h-screen bg-white scroll-mt-24">
+    <section
+      id="home"
+      className="relative h-screen bg-white scroll-mt-24 overflow-hidden"
+    >
       {/* Background Effects - More subtle for cleaner look */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-40"></div>
@@ -27,33 +30,19 @@ const HeroSection: React.FC = () => {
       </div>
 
       {/* Main Hero Content */}
-      <div className="relative z-10 min-h-screen px-4">
-        <div className="flex items-center justify-center flex-1 px-4 sm:px-6 pt-4 sm:pt-8">
-          <div className="text-center max-w-5xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="mb-4 sm:mb-6"
-            >
-              <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 rounded-full px-3 sm:px-4 py-2 mb-4 sm:mb-6">
-                <Sparkles className="w-4 h-4 text-green-600" />
-                <span className="text-green-700 text-xs sm:text-sm font-medium">
-                  Now Available - Refactron Library v1.0.0
-                </span>
-              </div>
-            </motion.div>
-
+      <div className="relative z-10 h-screen px-4 flex items-start pt-16 sm:pt-20">
+        <div className="flex items-start w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
+          <div className="text-left max-w-3xl w-full">
             {/* Main Headline - Improved typography with lighter weight */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light mb-4 sm:mb-6 leading-[1.1] tracking-tight"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-3 sm:mb-4 leading-[1.1] tracking-tight"
             >
-              <span className="gradient-text">AI-Powered Code Refactoring</span>
+              <span className="text-gray-900">Transform Legacy Code</span>
               <br />
-              <span className="text-gray-800">Revolutionizing Development</span>
+              <span className="gradient-text">to Modern Standards</span>
             </motion.h1>
 
             {/* Tagline */}
@@ -61,7 +50,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.0 }}
-              className="text-xl sm:text-2xl md:text-3xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto leading-relaxed font-light"
+              className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-4 sm:mb-5 leading-relaxed font-light"
             >
               Refactor. Optimize. Automate.
             </motion.p>
@@ -70,7 +59,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.2 }}
-              className="text-base sm:text-lg md:text-xl text-gray-500 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-2"
+              className="text-sm sm:text-base md:text-lg text-gray-500 mb-5 sm:mb-6 leading-relaxed"
             >
               Experience the future of automated code optimization. Transform
               legacy code into clean, maintainable solutions with our AI-powered
@@ -78,28 +67,28 @@ const HeroSection: React.FC = () => {
               code modernization.
             </motion.p>
 
-            {/* CTAs - Cleaner design, same content */}
+            {/* CTAs - Modern minimal design */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.4 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-5"
             >
               <a
                 href="https://pypi.org/project/refactron/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex items-center gap-2 sm:gap-3 bg-gray-900 hover:bg-gray-800 text-white font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer text-sm sm:text-base"
+                className="group inline-flex items-center gap-2 bg-gray-900 text-white rounded-xl px-5 sm:px-6 py-2.5 hover:bg-gray-800 font-light text-sm sm:text-base transition-all duration-300 hover:scale-[1.02]"
               >
                 <span>Try Refactron Library</span>
-                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </a>
               <button
                 onClick={scrollToEarlyAccess}
-                className="group relative inline-flex items-center gap-2 sm:gap-3 bg-white border-2 border-gray-900 text-gray-900 hover:bg-gray-50 font-medium px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer text-sm sm:text-base"
+                className="group inline-flex items-center gap-2 border border-gray-200 rounded-xl px-5 sm:px-6 py-2.5 text-gray-700 hover:border-gray-900 hover:text-gray-900 hover:bg-gray-50 font-light text-sm sm:text-base transition-all duration-300 hover:scale-[1.02]"
               >
                 <span>Get Updates</span>
-                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
             </motion.div>
 
@@ -107,11 +96,13 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 1.6 }}
-              className="mt-8 sm:mt-12 text-gray-500 text-xs sm:text-sm"
+              className="text-gray-500 text-xs sm:text-sm"
             >
               <p>Join thousands of developers already using Refactron</p>
             </motion.div>
           </div>
+          {/* Empty right side for visual balance */}
+          <div className="hidden lg:block flex-1"></div>
         </div>
       </div>
     </section>
