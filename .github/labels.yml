@@ -89,3 +89,51 @@
 - name: dependencies
   color: 0366d6
   description: Pull requests that update a dependency file
+
+- name: type:config
+  color: ffa500
+  description: Configuration changes
+
+- name: type:build
+  color: 1f77b4
+  description: Build and deployment related
+
+- name: type:assets
+  color: 9c27b0
+  description: Asset files (images, icons, etc.)
+
+- name: type:meta
+  color: 795548
+  description: Meta files (LICENSE, CONTRIBUTING, etc.)
+
+- name: type:core
+  color: ff5722
+  description: Core application files (App.tsx, index.tsx)
+
+- name: type:seo
+  color: 4caf50
+  description: SEO related changes (sitemap, robots.txt)
+
+- name: type:ui-component
+  color: 00bcd4
+  description: UI component changes
+
+- name: type:page-component
+  color: 3f51b5
+  description: Page component changes
+
+- name: type:form-component
+  color: e91e63
+  description: Form component changes
+
+- name: type:accessibility
+  color: 009688
+  description: Accessibility improvements
+
+- name: type:performance
+  color: ff9800
+  description: Performance optimizations
+
+- name: style
+  color: c6538c
+  description: Styling changes (CSS, Tailwind)
