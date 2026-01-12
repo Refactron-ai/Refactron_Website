@@ -51,13 +51,13 @@ const Footer: React.FC = () => {
   return (
     <footer
       id="contact"
-      className="relative bg-white border-t border-gray-200 scroll-mt-24"
+      className="relative bg-gradient-to-b from-black to-gray-900 border-t border-blue-500/20 scroll-mt-24"
     >
-      {/* Background Effects - Hidden on mobile */}
+      {/* Background Effects */}
       <div className="absolute inset-0">
-        <div className="hidden sm:block absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
+        <div className="absolute top-20 left-20 w-72 h-72 bg-blue-600 rounded-full blur-3xl animate-float opacity-20"></div>
         <div
-          className="hidden sm:block absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-cyan-500 rounded-full blur-3xl animate-float opacity-15"
           style={{ animationDelay: '2s' }}
         ></div>
       </div>
@@ -75,9 +75,11 @@ const Footer: React.FC = () => {
               className="flex flex-col items-center sm:items-start text-center sm:text-left"
             >
               <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
-                <span className="gradient-text">Refactron™</span>
+                <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                  Refactron™
+                </span>
               </h3>
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 sm:mb-6 max-w-sm">
+              <p className="text-sm sm:text-base text-gray-400 leading-relaxed mb-4 sm:mb-6 max-w-sm">
                 Refactor. Optimize. Automate. Building the future of developer
                 productivity with AI-powered code optimization.
               </p>
@@ -110,7 +112,7 @@ const Footer: React.FC = () => {
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: 0.2 + index * 0.1 }}
                     viewport={{ once: true }}
-                    className={`w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-xl flex items-center justify-center text-gray-500 transition-all duration-300 hover:scale-110 ${social.color}`}
+                    className={`w-10 h-10 sm:w-12 sm:h-12 bg-gray-800/60 backdrop-blur-sm border border-blue-500/30 rounded-xl flex items-center justify-center text-gray-400 hover:text-blue-400 hover:border-blue-400/50 transition-all duration-300 hover:scale-110`}
                     aria-label={social.name}
                   >
                     <social.icon className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -140,7 +142,7 @@ const Footer: React.FC = () => {
                     href={link.href}
                     target={link.external ? '_blank' : undefined}
                     rel={link.external ? 'noopener noreferrer' : undefined}
-                    className="block text-sm sm:text-base text-gray-600 hover:text-primary-600 transition-colors duration-300 font-medium"
+                    className="block text-sm sm:text-base text-gray-400 hover:text-blue-400 transition-colors duration-300 font-medium"
                   >
                     {link.label}
                   </a>
@@ -187,33 +189,33 @@ const Footer: React.FC = () => {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             viewport={{ once: true }}
-            className="pt-4 sm:pt-6 border-t border-gray-200"
+            className="pt-4 sm:pt-6 border-t border-blue-500/20"
           >
             <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
               <div className="text-center sm:text-left">
-                <p className="text-gray-500 text-xs sm:text-sm">
+                <p className="text-gray-400 text-xs sm:text-sm">
                   © {currentYear} Refactron™. All rights reserved.
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 text-xs sm:text-sm text-gray-500">
+              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 text-xs sm:text-sm text-gray-400">
                 <a
                   href="/privacy-policy"
-                  className="hover:text-primary-600 transition-colors duration-300"
+                  className="hover:text-blue-400 transition-colors duration-300"
                 >
                   Privacy Policy
                 </a>
                 <span className="hidden sm:inline">•</span>
                 <a
                   href="/terms-of-service"
-                  className="hover:text-primary-600 transition-colors duration-300"
+                  className="hover:text-blue-400 transition-colors duration-300"
                 >
                   Terms of Service
                 </a>
                 <span className="hidden sm:inline">•</span>
                 <button
                   onClick={() => setShowCookieModal(true)}
-                  className="hover:text-primary-600 transition-colors duration-300 flex items-center gap-1"
+                  className="hover:text-blue-400 transition-colors duration-300 flex items-center gap-1"
                 >
                   <Settings className="w-3 h-3" />
                   Cookie Settings
