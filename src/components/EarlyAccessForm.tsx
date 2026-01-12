@@ -146,16 +146,17 @@ const EarlyAccessForm: React.FC = () => {
   return (
     <section
       id="early-access"
-      className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 bg-gray-50 relative scroll-mt-24"
+      className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 bg-gradient-to-b from-gray-900 via-blue-950/40 to-black relative scroll-mt-24 overflow-hidden"
       data-section="early-access"
     >
-      {/* Background Effects - Hidden on mobile */}
+      {/* Background Effects with Blue Glow */}
       <div className="absolute inset-0">
-        <div className="hidden sm:block absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
+        <div className="absolute top-20 left-20 w-96 h-96 bg-blue-600 rounded-full blur-3xl animate-float opacity-25"></div>
         <div
-          className="hidden sm:block absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40"
+          className="absolute bottom-20 right-20 w-96 h-96 bg-cyan-500 rounded-full blur-3xl animate-float opacity-20"
           style={{ animationDelay: '2s' }}
         ></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f610_1px,transparent_1px),linear-gradient(to_bottom,#3b82f610_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -167,10 +168,10 @@ const EarlyAccessForm: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 md:mb-8 text-gray-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8 text-white tracking-tight">
             Stay Updated
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
+          <p className="text-base sm:text-lg md:text-xl text-blue-200 max-w-3xl mx-auto leading-relaxed px-2">
             Get the latest updates on Refactron features, new releases, and
             AI-powered development tools. Join our community of developers
             transforming code with intelligent automation.
@@ -185,13 +186,13 @@ const EarlyAccessForm: React.FC = () => {
           viewport={{ once: true }}
           className="max-w-2xl mx-auto"
         >
-          <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-12 shadow-sm border border-gray-100">
+          <div className="bg-gray-800/60 backdrop-blur-xl rounded-2xl p-6 sm:p-8 md:p-12 shadow-2xl shadow-blue-500/20 border border-blue-500/30">
             {!isSubmitted ? (
               <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-left text-sm font-semibold text-gray-700 mb-2 sm:mb-3"
+                    className="block text-left text-sm font-semibold text-blue-200 mb-2 sm:mb-3"
                   >
                     Email Address
                   </label>
@@ -201,7 +202,7 @@ const EarlyAccessForm: React.FC = () => {
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="Enter your email address"
-                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
+                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-gray-900/60 border border-blue-500/30 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition-all duration-300 text-sm sm:text-base backdrop-blur-sm"
                     disabled={isLoading}
                   />
                   {error && (
@@ -219,7 +220,7 @@ const EarlyAccessForm: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="group w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
+                  className="group w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-blue-500/50 hover:shadow-blue-500/70 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-sm sm:text-base"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center gap-2 sm:gap-3">
@@ -252,10 +253,10 @@ const EarlyAccessForm: React.FC = () => {
                 </div>
 
                 <div className="space-y-3 sm:space-y-4">
-                  <h3 className="text-2xl sm:text-3xl font-light text-gray-900 tracking-tight">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
                     You're All Set!
                   </h3>
-                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-md mx-auto px-2">
+                  <p className="text-base sm:text-lg text-blue-200 leading-relaxed max-w-md mx-auto px-2">
                     You've successfully joined our community. We'll keep you
                     updated on the latest Refactron features and releases!
                   </p>
@@ -333,10 +334,10 @@ const EarlyAccessForm: React.FC = () => {
                   1
                 </span>
               </div>
-              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">
+              <h4 className="text-base sm:text-lg font-semibold text-white mb-2 sm:mb-3">
                 Priority Access
               </h4>
-              <p className="text-sm sm:text-base text-gray-600">
+              <p className="text-sm sm:text-base text-gray-300">
                 Be first in line when we launch with exclusive early access
               </p>
             </div>
@@ -347,24 +348,24 @@ const EarlyAccessForm: React.FC = () => {
                   2
                 </span>
               </div>
-              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">
+              <h4 className="text-base sm:text-lg font-semibold text-white mb-2 sm:mb-3">
                 Exclusive Benefits
               </h4>
-              <p className="text-sm sm:text-base text-gray-600">
+              <p className="text-sm sm:text-base text-gray-300">
                 Special pricing and features only available to early adopters
               </p>
             </div>
 
             <div className="text-center sm:col-span-2 lg:col-span-1">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary-100 rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary-600">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500/30 to-cyan-500/30 rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-6 border border-blue-400/40">
+                <span className="text-lg sm:text-xl md:text-2xl font-bold text-blue-400">
                   3
                 </span>
               </div>
-              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">
+              <h4 className="text-base sm:text-lg font-semibold text-white mb-2 sm:mb-3">
                 Early Updates
               </h4>
-              <p className="text-sm sm:text-base text-gray-600">
+              <p className="text-sm sm:text-base text-gray-300">
                 Get the latest news and feature previews before anyone else
               </p>
             </div>

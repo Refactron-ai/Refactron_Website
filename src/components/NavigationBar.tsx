@@ -63,10 +63,10 @@ const NavigationBar: React.FC = () => {
   return (
     <header
       style={{ willChange: 'width, max-width, margin-top, border-radius' }}
-      className={`fixed top-0 left-1/2 -translate-x-1/2 z-40 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+      className={`fixed top-0 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
         isScrolled
-          ? 'w-[95%] max-w-6xl bg-white/60 backdrop-blur-xl border-b border-gray-200/50 shadow-lg shadow-gray-200/80 rounded-2xl mt-2'
-          : 'w-full bg-white/80 backdrop-blur-md border-b border-white/70 shadow-md shadow-primary-100/60 rounded-none mt-0'
+          ? 'w-[95%] max-w-6xl bg-gray-900/80 backdrop-blur-xl border border-blue-500/30 shadow-lg shadow-blue-500/20 rounded-2xl mt-4'
+          : 'w-full bg-black/60 backdrop-blur-md border-b border-blue-500/20 shadow-md shadow-blue-500/10 rounded-none mt-0'
       }`}
     >
       <div className="w-full px-4 sm:px-6">
@@ -82,7 +82,7 @@ const NavigationBar: React.FC = () => {
           </button>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center">
+          <nav className="hidden lg:flex items-center gap-2 flex-1 justify-center">
             {navItems.map(item =>
               item.href ? (
                 <a
@@ -94,7 +94,7 @@ const NavigationBar: React.FC = () => {
                       ? 'noopener noreferrer'
                       : undefined
                   }
-                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors rounded-full"
+                  className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-blue-400 hover:bg-blue-500/10 transition-all duration-300 rounded-lg relative group"
                 >
                   <span className="inline-flex items-center gap-1">
                     {item.label}
@@ -107,9 +107,10 @@ const NavigationBar: React.FC = () => {
                 <button
                   key={item.label}
                   onClick={() => handleItemClick(item)}
-                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors rounded-full"
+                  className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-blue-400 hover:bg-blue-500/10 transition-all duration-300 rounded-lg relative group"
                 >
-                  {item.label}
+                  <span className="relative z-10">{item.label}</span>
+                  <span className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/20 group-hover:to-cyan-500/20 transition-all duration-300"></span>
                 </button>
               )
             )}
@@ -124,7 +125,7 @@ const NavigationBar: React.FC = () => {
                 { source: 'navigation_bar' },
                 { href: '/signup' }
               )}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-300 shadow-lg"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white text-sm font-semibold px-6 py-2.5 rounded-lg transition-all duration-300 shadow-lg shadow-blue-500/50 hover:shadow-blue-500/70 hover:scale-105"
             >
               Sign Up
             </a>
@@ -132,7 +133,7 @@ const NavigationBar: React.FC = () => {
 
           {/* Mobile Toggle */}
           <button
-            className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full border border-gray-200 text-gray-700 hover:bg-gray-50 transition"
+            className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-lg border border-blue-500/30 text-gray-300 hover:bg-blue-500/20 hover:text-blue-400 transition-all duration-300"
             onClick={() => setIsMenuOpen(open => !open)}
             aria-label="Toggle navigation menu"
             aria-expanded={isMenuOpen}
@@ -147,7 +148,7 @@ const NavigationBar: React.FC = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden pb-6 flex flex-col gap-3 border-t border-gray-100">
+          <div className="lg:hidden pb-6 flex flex-col gap-3 border-t border-blue-500/20 backdrop-blur-xl">
             <div className="pt-4 grid gap-2">
               {navItems.map(item =>
                 item.href ? (
@@ -160,7 +161,7 @@ const NavigationBar: React.FC = () => {
                         ? 'noopener noreferrer'
                         : undefined
                     }
-                    className="flex items-center justify-between px-4 py-3 rounded-2xl bg-white shadow-sm border border-gray-100 text-gray-700 text-sm font-medium"
+                    className="flex items-center justify-between px-4 py-3 rounded-xl bg-gray-900/60 shadow-sm border border-blue-500/30 text-gray-300 hover:text-blue-400 hover:border-blue-400/50 text-sm font-medium transition-all duration-300"
                   >
                     <span>{item.label}</span>
                     {item.href.startsWith('http') && (
@@ -171,7 +172,7 @@ const NavigationBar: React.FC = () => {
                   <button
                     key={item.label}
                     onClick={() => handleItemClick(item)}
-                    className="text-left px-4 py-3 rounded-2xl bg-white shadow-sm border border-gray-100 text-gray-700 text-sm font-medium"
+                    className="text-left px-4 py-3 rounded-xl bg-gray-900/60 shadow-sm border border-blue-500/30 text-gray-300 hover:text-blue-400 hover:border-blue-400/50 text-sm font-medium transition-all duration-300"
                   >
                     {item.label}
                   </button>
@@ -187,7 +188,7 @@ const NavigationBar: React.FC = () => {
                   { source: 'mobile_navigation' },
                   { href: '/signup' }
                 )}
-                className="w-full px-4 py-3 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold text-sm shadow-lg text-center"
+                className="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-semibold text-sm shadow-lg shadow-blue-500/50 text-center transition-all duration-300"
               >
                 Sign Up
               </a>
