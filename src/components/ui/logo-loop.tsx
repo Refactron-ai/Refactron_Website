@@ -79,8 +79,7 @@ const useResizeObserver = (
     return () => {
       observers.forEach(observer => observer?.disconnect());
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...dependencies, callback, elements]);
+  }, dependencies);
 };
 
 const useImageLoader = (
@@ -120,8 +119,7 @@ const useImageLoader = (
         img.removeEventListener('error', handleImageLoad);
       });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...dependencies, onLoad, seqRef]);
+  }, dependencies);
 };
 
 const useAnimationLoop = (
@@ -205,7 +203,7 @@ const useAnimationLoop = (
       }
       lastTimestampRef.current = null;
     };
-  }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, trackRef]);
+  }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical]);
 };
 
 export const LogoLoop = React.memo<LogoLoopProps>(
@@ -291,10 +289,9 @@ export const LogoLoop = React.memo<LogoLoopProps>(
       }
     }, [isVertical]);
 
-    const resizeObserverElements = useMemo(() => [containerRef, seqRef], [containerRef, seqRef]);
     useResizeObserver(
       updateDimensions,
-      resizeObserverElements,
+      [containerRef, seqRef],
       [logos, gap, logoHeight, isVertical]
     );
 
@@ -362,6 +359,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
                 scaleOnHover && 'overflow-visible group/item'
               )}
               key={key}
+              role="listitem"
             >
               {renderItem(item, key)}
             </li>
@@ -438,6 +436,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
               scaleOnHover && 'overflow-visible group/item'
             )}
             key={key}
+            role="listitem"
           >
             {inner}
           </li>
@@ -452,6 +451,7 @@ export const LogoLoop = React.memo<LogoLoopProps>(
           <ul
             className={cx('flex items-center', isVertical && 'flex-col')}
             key={`copy-${copyIndex}`}
+            role="list"
             aria-hidden={copyIndex > 0}
             ref={copyIndex === 0 ? seqRef : undefined}
           >
