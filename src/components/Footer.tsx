@@ -51,13 +51,13 @@ const Footer: React.FC = () => {
   return (
     <footer
       id="contact"
-      className="relative bg-white border-t border-gray-200 scroll-mt-24"
+      className="relative bg-[var(--bg-primary)] border-t border-[var(--border-primary)] scroll-mt-24"
     >
       {/* Background Effects - Hidden on mobile */}
       <div className="absolute inset-0">
-        <div className="hidden sm:block absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
+        <div className="hidden sm:block absolute top-20 left-20 w-72 h-72 bg-primary-100 dark:bg-primary-900/30 rounded-full blur-3xl animate-float opacity-60 dark:opacity-20"></div>
         <div
-          className="hidden sm:block absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40"
+          className="hidden sm:block absolute bottom-20 right-20 w-96 h-96 bg-primary-200 dark:bg-primary-800/20 rounded-full blur-3xl animate-float opacity-40 dark:opacity-15"
           style={{ animationDelay: '2s' }}
         ></div>
       </div>
@@ -77,11 +77,11 @@ const Footer: React.FC = () => {
               <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
                 <span className="gradient-text">Refactron™</span>
               </h3>
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 sm:mb-6 max-w-sm">
+              <p className="text-sm sm:text-base text-[var(--text-tertiary)] leading-relaxed mb-4 sm:mb-6 max-w-sm">
                 Refactor. Optimize. Automate. Building the future of developer
                 productivity with AI-powered code optimization.
               </p>
-              <div className="flex items-center justify-center sm:justify-start gap-2 text-gray-500 text-xs sm:text-sm">
+              <div className="flex items-center justify-center sm:justify-start gap-2 text-[var(--text-muted)] text-xs sm:text-sm">
                 <span>Made with</span>
                 <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-red-500 animate-pulse" />
                 <span>for developers</span>
@@ -96,7 +96,7 @@ const Footer: React.FC = () => {
               viewport={{ once: true }}
               className="flex flex-col items-center sm:items-start text-center sm:text-left"
             >
-              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
+              <h4 className="text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-4 sm:mb-6">
                 Connect With Us
               </h4>
               <div className="flex justify-center sm:justify-start gap-3 sm:gap-4 mb-4 sm:mb-6">
@@ -110,14 +110,14 @@ const Footer: React.FC = () => {
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: 0.2 + index * 0.1 }}
                     viewport={{ once: true }}
-                    className={`w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-xl flex items-center justify-center text-gray-500 transition-all duration-300 hover:scale-110 ${social.color}`}
+                    className={`w-10 h-10 sm:w-12 sm:h-12 bg-[var(--surface-secondary)] rounded-xl flex items-center justify-center text-[var(--text-tertiary)] transition-all duration-300 hover:scale-110 ${social.color}`}
                     aria-label={social.name}
                   >
                     <social.icon className="w-5 h-5 sm:w-6 sm:h-6" />
                   </motion.a>
                 ))}
               </div>
-              <p className="text-xs sm:text-sm text-gray-500 text-center sm:text-left">
+              <p className="text-xs sm:text-sm text-[var(--text-muted)] text-center sm:text-left">
                 Follow us for updates and insights
               </p>
             </motion.div>
@@ -130,7 +130,7 @@ const Footer: React.FC = () => {
               viewport={{ once: true }}
               className="flex flex-col items-center sm:items-start text-center sm:text-left"
             >
-              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
+              <h4 className="text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-4 sm:mb-6">
                 Quick Links
               </h4>
               <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 w-full">
@@ -140,7 +140,7 @@ const Footer: React.FC = () => {
                     href={link.href}
                     target={link.external ? '_blank' : undefined}
                     rel={link.external ? 'noopener noreferrer' : undefined}
-                    className="block text-sm sm:text-base text-gray-600 hover:text-primary-600 transition-colors duration-300 font-medium"
+                    className="block text-sm sm:text-base text-[var(--text-tertiary)] hover:text-primary-600 transition-colors duration-300 font-medium"
                   >
                     {link.label}
                   </a>
@@ -156,25 +156,25 @@ const Footer: React.FC = () => {
               viewport={{ once: true }}
               className="flex flex-col items-center sm:items-start text-center sm:text-left"
             >
-              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
+              <h4 className="text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-4 sm:mb-6">
                 Our Location
               </h4>
               <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 max-w-sm">
                 <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3">
                   <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary-500 flex-shrink-0" />
                   <div className="text-center sm:text-left">
-                    <p className="text-gray-600 font-medium text-sm sm:text-base">
+                    <p className="text-[var(--text-tertiary)] font-medium text-sm sm:text-base">
                       Bengaluru, India
                     </p>
-                    <p className="text-xs sm:text-sm text-gray-500">
+                    <p className="text-xs sm:text-sm text-[var(--text-muted)]">
                       Asia Pacific
                     </p>
                   </div>
                 </div>
-                <p className="text-gray-600 text-xs sm:text-sm">
+                <p className="text-[var(--text-tertiary)] text-xs sm:text-sm">
                   Global team, local impact
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-[var(--text-muted)]">
                   Serving developers worldwide
                 </p>
               </div>
@@ -187,16 +187,16 @@ const Footer: React.FC = () => {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             viewport={{ once: true }}
-            className="pt-4 sm:pt-6 border-t border-gray-200"
+            className="pt-4 sm:pt-6 border-t border-[var(--border-primary)]"
           >
             <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
               <div className="text-center sm:text-left">
-                <p className="text-gray-500 text-xs sm:text-sm">
+                <p className="text-[var(--text-muted)] text-xs sm:text-sm">
                   © {currentYear} Refactron™. All rights reserved.
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 text-xs sm:text-sm text-gray-500">
+              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 text-xs sm:text-sm text-[var(--text-muted)]">
                 <a
                   href="/privacy-policy"
                   className="hover:text-primary-600 transition-colors duration-300"
@@ -226,7 +226,7 @@ const Footer: React.FC = () => {
             </div>
 
             <div className="mt-3 text-center">
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-[var(--text-muted)]">
                 Join our early access program to be notified when we launch.
               </p>
             </div>

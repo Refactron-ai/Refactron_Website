@@ -4,17 +4,63 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-primary: #000000;
+    --bg-secondary: #0a0a0a;
+    --bg-tertiary: #111111;
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --text-tertiary: #b0b0b0;
+    --text-muted: #808080;
+    --border-primary: #1a1a1a;
+    --border-secondary: #252525;
+    --surface-primary: #0a0a0a;
+    --surface-secondary: #000000;
+    --surface-elevated: #111111;
+    --shadow-sm:
+      0 1px 2px 0 rgba(0, 0, 0, 0.8), 0 0 1px rgba(255, 255, 255, 0.05);
+    --shadow-md:
+      0 4px 6px -1px rgba(0, 0, 0, 0.9), 0 2px 4px -1px rgba(0, 0, 0, 0.8),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    --shadow-lg:
+      0 10px 15px -3px rgba(0, 0, 0, 0.95), 0 4px 6px -2px rgba(0, 0, 0, 0.9),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    --shadow-xl:
+      0 20px 25px -5px rgba(0, 0, 0, 0.98),
+      0 10px 10px -5px rgba(0, 0, 0, 0.95),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    --primary-glow: rgba(32, 178, 170, 0.3);
+    --primary-glow-light: rgba(32, 178, 170, 0.2);
+    --glass-bg: rgba(10, 10, 10, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --gloss-overlay: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      transparent 50%
+    );
+  }
+
   html {
     scroll-behavior: smooth;
+  }
+
+  html,
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
   }
 
   body {
     font-family: 'Inter', system-ui, sans-serif;
     font-weight: 300;
-    background-color: #ffffff;
-    color: #374151;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: linear-gradient(
+      180deg,
+      var(--bg-primary) 0%,
+      var(--bg-secondary) 100%
+    );
+    min-height: 100vh;
   }
 
   /* Elegant typography hierarchy - lighter weights for headings */
@@ -44,7 +90,7 @@
 
   /* Accessibility improvements */
   *:focus-visible {
-    outline: 3px solid #20b2aa;
+    outline: 3px solid #48d1cc;
     outline-offset: 2px;
   }
 
@@ -91,7 +137,12 @@
 
 @layer components {
   .gradient-bg {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+    background: linear-gradient(
+      135deg,
+      var(--bg-primary) 0%,
+      var(--bg-secondary) 50%,
+      var(--bg-tertiary) 100%
+    );
   }
 
   .gradient-text {
@@ -103,20 +154,54 @@
 
   .glow-border {
     border: 1px solid rgba(32, 178, 170, 0.3);
-    box-shadow: 0 0 20px rgba(32, 178, 170, 0.1);
+    box-shadow: 0 0 20px var(--primary-glow-light);
+  }
+
+  .dark .glow-border {
+    border-color: rgba(32, 178, 170, 0.4);
+    box-shadow: 0 0 20px var(--primary-glow);
   }
 
   .glass-effect {
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--glass-bg);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(32, 178, 170, 0.1);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-md);
+    position: relative;
+  }
+
+  .glass-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gloss-overlay);
+    pointer-events: none;
+    border-radius: inherit;
   }
 
   .card-shadow {
-    box-shadow:
-      0 10px 25px -3px rgba(0, 0, 0, 0.1),
-      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: var(--shadow-lg);
+    position: relative;
+  }
+
+  .card-shadow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    pointer-events: none;
+    border-radius: inherit;
   }
 
   /* Mobile-specific utilities */
@@ -156,7 +241,7 @@
     @apply text-6xl sm:text-7xl;
   }
 
-  /* Animated Grid Background */
+  /* Animated Grid Background - Tech Grid Pattern */
   .animated-grid-bg {
     position: absolute;
     top: 0;
@@ -166,8 +251,8 @@
     width: 100%;
     height: 100%;
     background-image:
-      linear-gradient(rgba(32, 178, 170, 0.15) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(32, 178, 170, 0.15) 1px, transparent 1px);
+      linear-gradient(rgba(32, 178, 170, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(32, 178, 170, 0.08) 1px, transparent 1px);
     background-size: 50px 50px;
     background-position:
       0 0,
@@ -175,6 +260,141 @@
     pointer-events: none;
     z-index: 0;
     opacity: 1;
+  }
+
+  /* Tech-inspired subtle scanline effect */
+  @keyframes scanline {
+    0% {
+      transform: translateY(-100%);
+    }
+
+    100% {
+      transform: translateY(100vh);
+    }
+  }
+
+  /* Animated spotlight glow effect */
+  @keyframes spotlight-glow {
+    0%,
+    100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+
+    50% {
+      opacity: 0.6;
+      transform: scale(1.1);
+    }
+  }
+
+  .spotlight-glow {
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(
+      circle,
+      rgba(32, 178, 170, 0.15) 0%,
+      rgba(32, 178, 170, 0.08) 30%,
+      transparent 70%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    animation: spotlight-glow 8s ease-in-out infinite;
+    filter: blur(60px);
+  }
+
+  .spotlight-glow-secondary {
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(
+      circle,
+      rgba(32, 178, 170, 0.1) 0%,
+      rgba(32, 178, 170, 0.05) 40%,
+      transparent 70%
+    );
+    border-radius: 50%;
+    pointer-events: none;
+    animation: spotlight-glow 10s ease-in-out infinite;
+    animation-delay: 2s;
+    filter: blur(80px);
+  }
+
+  /* Glossy surface effect - Tech aesthetic */
+  .glossy-surface {
+    position: relative;
+    background: var(--surface-elevated);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .glossy-surface::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.15),
+      transparent
+    );
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 1;
+  }
+
+  .glossy-surface::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.05) 0%,
+      transparent 30%
+    );
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 1;
+  }
+
+  /* Tech input styling */
+  input[type='email'],
+  input[type='text'],
+  textarea {
+    background: var(--surface-secondary) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-primary) !important;
+    box-shadow:
+      inset 0 2px 4px rgba(0, 0, 0, 0.5),
+      0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  }
+
+  input[type='email']:focus,
+  input[type='text']:focus,
+  textarea:focus {
+    border-color: rgba(32, 178, 170, 0.5) !important;
+    box-shadow:
+      inset 0 2px 4px rgba(0, 0, 0, 0.5),
+      0 0 0 3px rgba(32, 178, 170, 0.1),
+      0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  }
+
+  input[type='email']::placeholder,
+  input[type='text']::placeholder,
+  textarea::placeholder {
+    color: var(--text-muted) !important;
   }
 
   @media (prefers-reduced-motion: reduce) {

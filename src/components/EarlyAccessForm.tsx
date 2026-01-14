@@ -146,14 +146,14 @@ const EarlyAccessForm: React.FC = () => {
   return (
     <section
       id="early-access"
-      className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 bg-gray-50 relative scroll-mt-24"
+      className="py-12 sm:py-16 md:py-20 lg:py-24 px-4 sm:px-6 bg-[var(--bg-secondary)] relative scroll-mt-24"
       data-section="early-access"
     >
       {/* Background Effects - Hidden on mobile */}
-      <div className="absolute inset-0">
-        <div className="hidden sm:block absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
+      <div className="absolute inset-0 w-full h-full">
+        <div className="hidden sm:block absolute top-20 left-20 w-72 h-72 bg-primary-100 dark:bg-primary-900/30 rounded-full blur-3xl animate-float opacity-60 dark:opacity-20"></div>
         <div
-          className="hidden sm:block absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40"
+          className="hidden sm:block absolute bottom-20 right-20 w-96 h-96 bg-primary-200 dark:bg-primary-800/20 rounded-full blur-3xl animate-float opacity-40 dark:opacity-15"
           style={{ animationDelay: '2s' }}
         ></div>
       </div>
@@ -167,10 +167,10 @@ const EarlyAccessForm: React.FC = () => {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 md:mb-8 text-gray-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-4 sm:mb-6 md:mb-8 text-[var(--text-primary)] tracking-tight">
             Stay Updated
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2">
+          <p className="text-base sm:text-lg md:text-xl text-[var(--text-tertiary)] max-w-3xl mx-auto leading-relaxed px-2">
             Get the latest updates on Refactron features, new releases, and
             AI-powered development tools. Join our community of developers
             transforming code with intelligent automation.
@@ -185,13 +185,13 @@ const EarlyAccessForm: React.FC = () => {
           viewport={{ once: true }}
           className="max-w-2xl mx-auto"
         >
-          <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-12 shadow-sm border border-gray-100">
+          <div className="glossy-surface rounded-2xl p-6 sm:p-8 md:p-12">
             {!isSubmitted ? (
               <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-left text-sm font-semibold text-gray-700 mb-2 sm:mb-3"
+                    className="block text-left text-sm font-semibold text-[var(--text-secondary)] mb-2 sm:mb-3"
                   >
                     Email Address
                   </label>
@@ -201,7 +201,7 @@ const EarlyAccessForm: React.FC = () => {
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder="Enter your email address"
-                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
+                    className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-[var(--surface-secondary)] border border-[var(--border-primary)] rounded-xl text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
                     disabled={isLoading}
                   />
                   {error && (
@@ -234,7 +234,7 @@ const EarlyAccessForm: React.FC = () => {
                   )}
                 </button>
 
-                <p className="text-xs sm:text-sm text-gray-500 text-center">
+                <p className="text-xs sm:text-sm text-[var(--text-muted)] text-center">
                   Get updates on new features and releases. No spam, ever.
                 </p>
               </form>
@@ -246,29 +246,29 @@ const EarlyAccessForm: React.FC = () => {
                 className="text-center space-y-6 sm:space-y-8"
               >
                 <div className="flex justify-center">
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full flex items-center justify-center shadow-lg">
-                    <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-600" />
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-green-100 dark:from-green-900/30 to-emerald-100 dark:to-emerald-900/30 rounded-full flex items-center justify-center shadow-lg">
+                    <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-green-600 dark:text-green-400" />
                   </div>
                 </div>
 
                 <div className="space-y-3 sm:space-y-4">
-                  <h3 className="text-2xl sm:text-3xl font-light text-gray-900 tracking-tight">
+                  <h3 className="text-2xl sm:text-3xl font-light text-[var(--text-primary)] tracking-tight">
                     You're All Set!
                   </h3>
-                  <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-md mx-auto px-2">
+                  <p className="text-base sm:text-lg text-[var(--text-tertiary)] leading-relaxed max-w-md mx-auto px-2">
                     You've successfully joined our community. We'll keep you
                     updated on the latest Refactron features and releases!
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-r from-primary-50 to-blue-50 rounded-xl p-4 sm:p-6 border border-primary-100">
-                  <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-3">
+                <div className="bg-gradient-to-r from-primary-50 dark:from-primary-900/20 to-blue-50 dark:to-blue-900/20 rounded-xl p-4 sm:p-6 border border-primary-100 dark:border-primary-800/30">
+                  <h4 className="text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-3">
                     What happens next?
                   </h4>
-                  <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-600">
+                  <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-[var(--text-tertiary)]">
                     <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-primary-600 font-semibold text-xs">
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary-100 dark:bg-primary-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-primary-600 dark:text-primary-400 font-semibold text-xs">
                           1
                         </span>
                       </div>
@@ -277,16 +277,16 @@ const EarlyAccessForm: React.FC = () => {
                       </span>
                     </div>
                     <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-primary-600 font-semibold text-xs">
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary-100 dark:bg-primary-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-primary-600 dark:text-primary-400 font-semibold text-xs">
                           2
                         </span>
                       </div>
                       <span>Updates on new features and improvements</span>
                     </div>
                     <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-primary-600 font-semibold text-xs">
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 bg-primary-100 dark:bg-primary-900/50 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-primary-600 dark:text-primary-400 font-semibold text-xs">
                           3
                         </span>
                       </div>
@@ -296,11 +296,11 @@ const EarlyAccessForm: React.FC = () => {
                 </div>
 
                 <div className="space-y-3 sm:space-y-4">
-                  <p className="text-xs sm:text-sm text-gray-500 px-2">
+                  <p className="text-xs sm:text-sm text-[var(--text-muted)] px-2">
                     Questions? Reach out to us at{' '}
                     <a
                       href="mailto:hello@refactron.dev"
-                      className="text-primary-600 hover:text-primary-700 font-medium break-all"
+                      className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium break-all"
                     >
                       hello@refactron.dev
                     </a>
@@ -328,22 +328,22 @@ const EarlyAccessForm: React.FC = () => {
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             <div className="text-center">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary-100 rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary-600">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary-100 dark:bg-primary-900/50 rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400">
                   1
                 </span>
               </div>
-              <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">
+              <h4 className="text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-2 sm:mb-3">
                 Priority Access
               </h4>
-              <p className="text-sm sm:text-base text-gray-600">
+              <p className="text-sm sm:text-base text-[var(--text-tertiary)]">
                 Be first in line when we launch with exclusive early access
               </p>
             </div>
 
             <div className="text-center">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary-100 rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary-600">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary-100 dark:bg-primary-900/50 rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400">
                   2
                 </span>
               </div>
@@ -356,8 +356,8 @@ const EarlyAccessForm: React.FC = () => {
             </div>
 
             <div className="text-center sm:col-span-2 lg:col-span-1">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary-100 rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary-600">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-primary-100 dark:bg-primary-900/50 rounded-xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <span className="text-lg sm:text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400">
                   3
                 </span>
               </div>

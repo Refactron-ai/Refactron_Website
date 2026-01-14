@@ -5,6 +5,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Apply dark theme immediately
+if (typeof document !== 'undefined') {
+  document.documentElement.classList.add('dark');
+}
+
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DSN,
   environment: process.env.NODE_ENV,

@@ -5,7 +5,7 @@ import { Home, ArrowLeft } from 'lucide-react';
 
 const NotFoundPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-primary-50 to-primary-100 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-br from-[var(--bg-primary)] via-primary-50 dark:via-primary-900/20 to-primary-100 dark:to-primary-900/30 flex items-center justify-center px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -43,10 +43,10 @@ const NotFoundPage: React.FC = () => {
           transition={{ delay: 0.3, duration: 0.6 }}
           className="glass-effect rounded-3xl p-8 md:p-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)] mb-4">
             Page Not Found
           </h2>
-          <p className="text-lg text-gray-600 mb-8">
+          <p className="text-lg text-[var(--text-tertiary)] mb-8">
             Oops! The page you're looking for doesn't exist. It might have been
             moved or deleted.
           </p>
@@ -68,7 +68,7 @@ const NotFoundPage: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => window.history.back()}
-              className="flex items-center gap-2 px-6 py-3 bg-white text-primary-600 rounded-lg font-semibold border-2 border-primary-500 hover:bg-primary-50 transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-[var(--surface-elevated)] text-primary-600 dark:text-primary-400 rounded-lg font-semibold border-2 border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors"
             >
               <ArrowLeft size={20} />
               Go Back
@@ -76,39 +76,39 @@ const NotFoundPage: React.FC = () => {
           </div>
 
           {/* Helpful Links */}
-          <div className="mt-12 pt-8 border-t border-gray-200">
-            <p className="text-sm text-gray-500 mb-4">
+          <div className="mt-12 pt-8 border-t border-[var(--border-primary)]">
+            <p className="text-sm text-[var(--text-muted)] mb-4">
               You might be looking for:
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 to="/"
-                className="text-primary-600 hover:text-primary-700 font-medium"
+                className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
               >
                 Home
               </Link>
-              <span className="text-gray-300">•</span>
+              <span className="text-[var(--text-muted)]">•</span>
               <a
                 href="https://pypi.org/project/refactron/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary-600 hover:text-primary-700 font-medium"
+                className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
               >
                 Refactron Library
               </a>
-              <span className="text-gray-300">•</span>
+              <span className="text-[var(--text-muted)]">•</span>
               <a
                 href="https://docs.refactron.dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary-600 hover:text-primary-700 font-medium"
+                className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
               >
                 Documentation
               </a>
-              <span className="text-gray-300">•</span>
+              <span className="text-[var(--text-muted)]">•</span>
               <Link
                 to="/privacy-policy"
-                className="text-primary-600 hover:text-primary-700 font-medium"
+                className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
               >
                 Privacy Policy
               </Link>
@@ -121,12 +121,12 @@ const NotFoundPage: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.6 }}
-          className="mt-8 text-gray-600"
+          className="mt-8 text-[var(--text-tertiary)]"
         >
           Need help?{' '}
           <a
             href="mailto:hello@refactron.dev"
-            className="text-primary-600 hover:text-primary-700 font-semibold underline"
+            className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold underline"
           >
             Contact our support team
           </a>

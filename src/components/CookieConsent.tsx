@@ -72,36 +72,38 @@ const CookieConsent: React.FC<CookieConsentProps> = ({
       <div className="fixed inset-0 z-40 bg-black bg-opacity-20 backdrop-blur-sm transition-all duration-300 ease-out" />
 
       {/* Cookie popup */}
-      <div className="fixed bottom-4 right-4 z-50 bg-white border border-gray-100 shadow-sm rounded-2xl max-w-xs transform transition-all duration-300 ease-out">
+      <div className="fixed bottom-4 right-4 z-50 bg-[var(--surface-elevated)] border border-[var(--border-primary)] shadow-sm rounded-2xl max-w-xs transform transition-all duration-300 ease-out">
         {/* Close button */}
         <button
           onClick={handleCancel}
-          className="absolute top-3 right-3 p-1 hover:bg-gray-50 rounded-lg transition-colors"
+          className="absolute top-3 right-3 p-1 hover:bg-[var(--surface-secondary)] rounded-lg transition-colors"
           aria-label="Close"
         >
-          <X className="h-4 w-4 text-gray-400" />
+          <X className="h-4 w-4 text-[var(--text-muted)]" />
         </button>
 
         <div className="p-6">
           {/* Header */}
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-8 bg-primary-100 rounded-lg flex items-center justify-center">
-              <Shield className="h-4 w-4 text-primary-600" />
+            <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900/50 rounded-lg flex items-center justify-center">
+              <Shield className="h-4 w-4 text-primary-600 dark:text-primary-400" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-gray-900">
+              <h3 className="text-sm font-semibold text-[var(--text-primary)]">
                 Cookie Preferences
               </h3>
-              <p className="text-xs text-gray-500">Manage your privacy</p>
+              <p className="text-xs text-[var(--text-muted)]">
+                Manage your privacy
+              </p>
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-gray-600 text-xs leading-relaxed mb-4">
+          <p className="text-[var(--text-tertiary)] text-xs leading-relaxed mb-4">
             We use cookies to enhance your experience and analyze site usage.{' '}
             <a
               href="/privacy-policy"
-              className="text-primary-600 hover:text-primary-700 underline font-medium"
+              className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline font-medium"
             >
               Learn more
             </a>
@@ -118,13 +120,13 @@ const CookieConsent: React.FC<CookieConsentProps> = ({
             <div className="flex gap-2">
               <button
                 onClick={handleRejectAll}
-                className="flex-1 px-3 py-2 text-xs font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200"
+                className="flex-1 px-3 py-2 text-xs font-medium text-[var(--text-tertiary)] bg-[var(--surface-secondary)] hover:bg-[var(--bg-tertiary)] rounded-lg transition-colors border border-[var(--border-primary)]"
               >
                 Decline
               </button>
               <button
                 onClick={onCustomize}
-                className="flex-1 px-3 py-2 text-xs font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors border border-gray-200 flex items-center justify-center gap-1"
+                className="flex-1 px-3 py-2 text-xs font-medium text-[var(--text-tertiary)] bg-[var(--surface-secondary)] hover:bg-[var(--bg-tertiary)] rounded-lg transition-colors border border-[var(--border-primary)] flex items-center justify-center gap-1"
               >
                 <Settings className="h-3 w-3" />
                 Settings

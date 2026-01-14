@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import HeroSection from './components/HeroSection';
-import RecognitionBadges from './components/RecognitionBadges';
+import RefactoringWorkflowSection from './components/RefactoringWorkflowSection';
 import WhatWeDoSection from './components/WhatWeDoSection';
 import EarlyAccessForm from './components/EarlyAccessForm';
 import CaseStudiesPage from './components/CaseStudiesPage';
@@ -21,11 +21,12 @@ import usePerformanceMonitoring from './hooks/usePerformanceMonitoring';
 import useAccessibility from './hooks/useAccessibility';
 import PageLayout from './components/PageLayout';
 import ProductsPage from './components/ProductsPage';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 const LandingContent: React.FC = () => (
   <>
     <HeroSection />
-    <RecognitionBadges />
+    <RefactoringWorkflowSection />
     <WhatWeDoSection />
     <EarlyAccessForm />
   </>
@@ -58,99 +59,101 @@ function App() {
         window.location.hostname.startsWith('10.0.')));
 
   return (
-    <ErrorBoundary>
-      <SkipToMain />
-      <Router>
-        {isDocsHost ? (
-          <Routes>
-            <Route path="/*" element={<DocsPage />} />
-          </Routes>
-        ) : isAppHost ? (
-          <Routes>
-            <Route path="/*" element={<AuthApp />} />
-          </Routes>
-        ) : (
-          <>
+    <ThemeProvider>
+      <ErrorBoundary>
+        <SkipToMain />
+        <Router>
+          {isDocsHost ? (
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <PageLayout>
-                    <LandingContent />
-                  </PageLayout>
-                }
-              />
-              <Route
-                path="/case-studies"
-                element={
-                  <PageLayout>
-                    <CaseStudiesPage />
-                  </PageLayout>
-                }
-              />
-              <Route
-                path="/case-studies/:slug"
-                element={
-                  <PageLayout>
-                    <CaseStudyDetailPage />
-                  </PageLayout>
-                }
-              />
-              <Route
-                path="/privacy-policy"
-                element={
-                  <PageLayout>
-                    <PrivacyPolicy />
-                  </PageLayout>
-                }
-              />
-              <Route
-                path="/terms-of-service"
-                element={
-                  <PageLayout>
-                    <TermsOfService />
-                  </PageLayout>
-                }
-              />
-              <Route
-                path="/about"
-                element={
-                  <PageLayout>
-                    <AboutPage />
-                  </PageLayout>
-                }
-              />
-              <Route
-                path="/products"
-                element={
-                  <PageLayout>
-                    <ProductsPage />
-                  </PageLayout>
-                }
-              />
-              {/* Local auth routes - only accessible when REACT_APP_ENABLE_LOCAL_AUTH is enabled */}
-              {enableLocalAuth && (
-                <>
-                  <Route path="/login" element={<AuthApp />} />
-                  <Route path="/signup" element={<AuthApp />} />
-                </>
-              )}
-              <Route
-                path="*"
-                element={
-                  <PageLayout>
-                    <NotFoundPage />
-                  </PageLayout>
-                }
-              />
+              <Route path="/*" element={<DocsPage />} />
             </Routes>
-            <ProductReleasePopup />
-            <CookieManager />
-          </>
-        )}
-        <Analytics />
-      </Router>
-    </ErrorBoundary>
+          ) : isAppHost ? (
+            <Routes>
+              <Route path="/*" element={<AuthApp />} />
+            </Routes>
+          ) : (
+            <>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <PageLayout mainClassName="pt-0 sm:pt-0">
+                      <LandingContent />
+                    </PageLayout>
+                  }
+                />
+                <Route
+                  path="/case-studies"
+                  element={
+                    <PageLayout>
+                      <CaseStudiesPage />
+                    </PageLayout>
+                  }
+                />
+                <Route
+                  path="/case-studies/:slug"
+                  element={
+                    <PageLayout>
+                      <CaseStudyDetailPage />
+                    </PageLayout>
+                  }
+                />
+                <Route
+                  path="/privacy-policy"
+                  element={
+                    <PageLayout>
+                      <PrivacyPolicy />
+                    </PageLayout>
+                  }
+                />
+                <Route
+                  path="/terms-of-service"
+                  element={
+                    <PageLayout>
+                      <TermsOfService />
+                    </PageLayout>
+                  }
+                />
+                <Route
+                  path="/about"
+                  element={
+                    <PageLayout mainClassName="pt-0 sm:pt-0">
+                      <AboutPage />
+                    </PageLayout>
+                  }
+                />
+                <Route
+                  path="/products"
+                  element={
+                    <PageLayout>
+                      <ProductsPage />
+                    </PageLayout>
+                  }
+                />
+                {/* Local auth routes - only accessible when REACT_APP_ENABLE_LOCAL_AUTH is enabled */}
+                {enableLocalAuth && (
+                  <>
+                    <Route path="/login" element={<AuthApp />} />
+                    <Route path="/signup" element={<AuthApp />} />
+                  </>
+                )}
+                <Route
+                  path="*"
+                  element={
+                    <PageLayout>
+                      <NotFoundPage />
+                    </PageLayout>
+                  }
+                />
+              </Routes>
+              <ProductReleasePopup />
+              <CookieManager />
+            </>
+          )}
+          <Analytics />
+        </Router>
+      </ErrorBoundary>
+    </ThemeProvider>
   );
 }
 
