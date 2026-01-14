@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, TrendingUp, Star } from 'lucide-react';
+import { CheckCircle2, TrendingUp, Users, Star } from 'lucide-react';
 import { ThreeDMarquee } from './ui/3d-marquee';
 
 const RecognitionBadges: React.FC = () => {
