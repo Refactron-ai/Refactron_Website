@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Menu, X, ExternalLink } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   createTrackingClickHandler,
   ConversionEvents,
 } from '../utils/analytics';
+import ShimmerButton from './ui/shimmer-button';
 
 type NavItem = {
   label: string;
@@ -13,7 +14,6 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { label: 'Home', target: '#home' },
   { label: 'About', href: '/about' },
   { label: 'Solutions', target: '#features' },
   { label: 'Products', href: '/products' },
@@ -25,15 +25,27 @@ const navItems: NavItem[] = [
 const NavigationBar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+
+      // Determine visibility
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        setIsVisible(false); // Scrolling down & past threshold
+      } else {
+        setIsVisible(true); // Scrolling up
+      }
+
+      setIsScrolled(currentScrollY > 20);
+      lastScrollY.current = currentScrollY;
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -62,11 +74,18 @@ const NavigationBar: React.FC = () => {
 
   return (
     <header
-      style={{ willChange: 'width, max-width, margin-top, border-radius' }}
+      style={{
+        willChange: 'width, max-width, margin-top, border-radius',
+        boxShadow: isScrolled
+          ? '0 10px 15px -3px rgba(0, 0, 0, 0.95), 0 4px 6px -2px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
+          : '0 4px 6px -1px rgba(0, 0, 0, 0.9), 0 2px 4px -1px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+      }}
       className={`fixed top-0 left-1/2 -translate-x-1/2 z-40 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+        isVisible ? 'translate-y-0' : '-translate-y-[200%]'
+      } ${
         isScrolled
-          ? 'w-[95%] max-w-6xl bg-white/60 backdrop-blur-xl border-b border-gray-200/50 shadow-lg shadow-gray-200/80 rounded-2xl mt-2'
-          : 'w-full bg-white/80 backdrop-blur-md border-b border-white/70 shadow-md shadow-primary-100/60 rounded-none mt-0'
+          ? 'w-[90%] max-w-5xl bg-[var(--glass-bg)] backdrop-blur-xl border-b border-[var(--glass-border)] shadow-lg rounded-2xl mt-2 opacity-100'
+          : 'w-[95%] max-w-6xl bg-[rgba(10,10,10,0)] backdrop-blur-none border-transparent shadow-none rounded-2xl mt-2 opacity-100'
       }`}
     >
       <div className="w-full px-4 sm:px-6">
@@ -94,7 +113,7 @@ const NavigationBar: React.FC = () => {
                       ? 'noopener noreferrer'
                       : undefined
                   }
-                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors rounded-full"
+                  className="px-4 py-2 text-sm font-medium text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors rounded-full"
                 >
                   <span className="inline-flex items-center gap-1">
                     {item.label}
@@ -107,7 +126,7 @@ const NavigationBar: React.FC = () => {
                 <button
                   key={item.label}
                   onClick={() => handleItemClick(item)}
-                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors rounded-full"
+                  className="px-4 py-2 text-sm font-medium text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors rounded-full"
                 >
                   {item.label}
                 </button>
@@ -124,15 +143,20 @@ const NavigationBar: React.FC = () => {
                 { source: 'navigation_bar' },
                 { href: '/signup' }
               )}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white text-sm font-semibold px-5 py-2.5 rounded-full transition-all duration-300 shadow-lg"
             >
-              Sign Up
+              <ShimmerButton
+                className="shadow-lg h-10 px-6 text-black border-black/10"
+                background="#f5f5f5"
+                shimmerColor="rgba(0,0,0,0.2)"
+              >
+                <span className="text-sm font-medium text-black">Sign Up</span>
+              </ShimmerButton>
             </a>
           </div>
 
           {/* Mobile Toggle */}
           <button
-            className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full border border-gray-200 text-gray-700 hover:bg-gray-50 transition"
+            className="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-full border border-[var(--border-primary)] text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] transition"
             onClick={() => setIsMenuOpen(open => !open)}
             aria-label="Toggle navigation menu"
             aria-expanded={isMenuOpen}
@@ -147,7 +171,7 @@ const NavigationBar: React.FC = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="lg:hidden pb-6 flex flex-col gap-3 border-t border-gray-100">
+          <div className="lg:hidden pb-6 flex flex-col gap-3 border-t border-[var(--border-primary)]">
             <div className="pt-4 grid gap-2">
               {navItems.map(item =>
                 item.href ? (
@@ -160,18 +184,18 @@ const NavigationBar: React.FC = () => {
                         ? 'noopener noreferrer'
                         : undefined
                     }
-                    className="flex items-center justify-between px-4 py-3 rounded-2xl bg-white shadow-sm border border-gray-100 text-gray-700 text-sm font-medium"
+                    className="flex items-center justify-between px-4 py-3 rounded-2xl bg-[var(--surface-elevated)] shadow-sm border border-[var(--border-primary)] text-[var(--text-secondary)] text-sm font-medium"
                   >
                     <span>{item.label}</span>
                     {item.href.startsWith('http') && (
-                      <ExternalLink className="w-4 h-4 text-gray-400" />
+                      <ExternalLink className="w-4 h-4 text-[var(--text-muted)]" />
                     )}
                   </a>
                 ) : (
                   <button
                     key={item.label}
                     onClick={() => handleItemClick(item)}
-                    className="text-left px-4 py-3 rounded-2xl bg-white shadow-sm border border-gray-100 text-gray-700 text-sm font-medium"
+                    className="text-left px-4 py-3 rounded-2xl bg-[var(--surface-elevated)] shadow-sm border border-[var(--border-primary)] text-[var(--text-secondary)] text-sm font-medium"
                   >
                     {item.label}
                   </button>

@@ -1,6 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+
+import { TextGenerateEffect } from './ui/text-generate-effect';
+import LightRays from './ui/LightRays';
+import LogoLoop, { LogoItem } from './ui/logo-loop';
+import ShimmerButton from './ui/shimmer-button';
+import { Terminal, TypingAnimation, AnimatedSpan } from './ui/terminal';
+import { Cpu, ArrowRight, Github, Package, Users } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
   const scrollToEarlyAccess = () => {
@@ -18,39 +24,58 @@ const HeroSection: React.FC = () => {
   return (
     <section
       id="home"
-      className="relative h-screen bg-white scroll-mt-24 overflow-hidden"
+      className="relative h-screen bg-black antialiased bg-grid-white/[0.02] scroll-mt-24 overflow-hidden"
     >
-      {/* Background Effects - More subtle for cleaner look */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-40"></div>
-        <div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-30"
-          style={{ animationDelay: '2s' }}
-        ></div>
+      {/* Spotlight Effect */}
+
+      {/* Light Rays Effect */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-50">
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#48d1cc"
+          raysSpeed={1.5}
+          lightSpread={0.8}
+          rayLength={1.2}
+          followMouse={true}
+          mouseInfluence={0.1}
+          noiseAmount={0.1}
+          distortion={0.05}
+        />
       </div>
+
+      {/* Tech Grid Background */}
+      <div className="absolute inset-0 animated-grid-bg opacity-30"></div>
 
       {/* Main Hero Content */}
       <div className="relative z-10 h-screen px-4 flex items-start pt-16 sm:pt-20">
-        <div className="flex items-start w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
-          <div className="text-left max-w-3xl w-full">
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 gap-8 lg:gap-12">
+          <div className="text-left max-w-3xl w-full lg:w-1/2">
             {/* Main Headline - Improved typography with lighter weight */}
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light mb-3 sm:mb-4 leading-[1.1] tracking-tight"
-            >
-              <span className="text-gray-900">Transform Legacy Code</span>
+            <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-3 sm:mb-4 leading-[1.1] tracking-tight">
+              <TextGenerateEffect
+                words="Transform Legacy"
+                className="text-[var(--text-primary)] inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
+              />
               <br />
-              <span className="gradient-text">to Modern Standards</span>
-            </motion.h1>
+              <div className="inline-block">
+                <TextGenerateEffect
+                  words="Code"
+                  className="text-[var(--text-primary)] inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl mr-3 sm:mr-4"
+                />
+                <TextGenerateEffect
+                  words="to Modern Standards."
+                  className="inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
+                  wordClassName="text-neutral-400 font-medium"
+                />
+              </div>
+            </div>
 
             {/* Tagline */}
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.0 }}
-              className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-4 sm:mb-5 leading-relaxed font-light"
+              className="text-lg sm:text-xl md:text-2xl text-[var(--text-tertiary)] mb-4 sm:mb-5 leading-relaxed font-light"
             >
               Refactor. Optimize. Automate.
             </motion.p>
@@ -59,12 +84,13 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.2 }}
-              className="text-sm sm:text-base md:text-lg text-gray-500 mb-5 sm:mb-6 leading-relaxed"
+              className="text-sm sm:text-base md:text-lg text-[var(--text-muted)] mb-5 sm:mb-6 leading-relaxed"
             >
-              Experience the future of automated code optimization. Transform
-              legacy code into clean, maintainable solutions with our AI-powered
-              refactoring tools. Join thousands of developers using intelligent
-              code modernization.
+              Refactron safely refactor and modernize legacy code{' '}
+              <br className="hidden sm:block" />
+              with AI-assisted, behavior-preserving refactoring{' '}
+              <br className="hidden sm:block" />
+              and built-in verification.
             </motion.p>
 
             {/* CTAs - Modern minimal design */}
@@ -78,32 +104,147 @@ const HeroSection: React.FC = () => {
                 href="https://pypi.org/project/refactron/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 bg-gray-900 text-white rounded-xl px-5 sm:px-6 py-2.5 hover:bg-gray-800 font-light text-sm sm:text-base transition-all duration-300 hover:scale-[1.02]"
               >
-                <span>Try Refactron Library</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <ShimmerButton className="shadow-2xl gap-2 h-14">
+                  <span className="text-base font-medium text-neutral-300">
+                    Try Refactron
+                  </span>
+                  <ArrowRight className="w-5 h-5 text-neutral-300 transition-transform group-hover:translate-x-1" />
+                </ShimmerButton>
               </a>
-              <button
-                onClick={scrollToEarlyAccess}
-                className="group inline-flex items-center gap-2 border border-gray-200 rounded-xl px-5 sm:px-6 py-2.5 text-gray-700 hover:border-gray-900 hover:text-gray-900 hover:bg-gray-50 font-light text-sm sm:text-base transition-all duration-300 hover:scale-[1.02]"
+              <a
+                href="https://docs.refactron.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 border-2 border-neutral-300 text-neutral-300 rounded-full px-6 h-14 hover:bg-white/10 font-medium text-base transition-all duration-300 hover:scale-[1.02]"
               >
-                <span>Get Updates</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </button>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1.6 }}
-              className="text-gray-500 text-xs sm:text-sm"
-            >
-              <p>Join thousands of developers already using Refactron</p>
+                <span>Read Docs</span>
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </a>
             </motion.div>
           </div>
-          {/* Empty right side for visual balance */}
-          <div className="hidden lg:block flex-1"></div>
+
+          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end mt-8 lg:mt-0 relative z-20">
+            <Terminal className="bg-black/80 backdrop-blur-sm border-white/10 shadow-2xl w-full max-w-lg">
+              <TypingAnimation>pip install refactron</TypingAnimation>
+              <AnimatedSpan delay={1500} className="text-green-500">
+                <span>✔ Installed successfully.</span>
+              </AnimatedSpan>
+              <TypingAnimation delay={2000}>
+                refactron analyze .
+              </TypingAnimation>
+              <AnimatedSpan delay={3500} className="text-blue-500">
+                <span>ℹ Analyzing codebase...</span>
+              </AnimatedSpan>
+              <AnimatedSpan delay={4500} className="text-green-500">
+                <span>✔ Found 12 optimization opportunities.</span>
+              </AnimatedSpan>
+              <TypingAnimation delay={5500}>
+                refactron optimize --auto
+              </TypingAnimation>
+              <AnimatedSpan delay={7000} className="text-green-500">
+                <span>✔ Refactoring complete.</span>
+              </AnimatedSpan>
+            </Terminal>
+          </div>
         </div>
+
+        {/* Logo Loop - Centered at bottom */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.8 }}
+          className="absolute bottom-12 left-0 w-full z-20"
+        >
+          <div className="w-full sm:w-[70%] lg:w-[60%] mx-auto px-4">
+            <p className="text-center text-xs font-medium text-neutral-500 tracking-widest mb-6 uppercase">
+              Used by developers from
+            </p>
+            <LogoLoop
+              logos={[
+                {
+                  node: (
+                    <img
+                      src="/logos/UST.png"
+                      alt="UST"
+                      className="h-8 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                    />
+                  ),
+                  title: 'UST',
+                },
+                {
+                  node: (
+                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors group">
+                      <img
+                        src="/logos/Salesforce.png"
+                        alt="Salesforce"
+                        className="h-8 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                      />
+                      <span>Salesforce</span>
+                    </div>
+                  ),
+                  title: 'Salesforce',
+                },
+                {
+                  node: (
+                    <img
+                      src="/logos/KPIT.png"
+                      alt="KPIT"
+                      className="h-6 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                    />
+                  ),
+                  title: 'KPIT',
+                },
+                {
+                  node: (
+                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors group">
+                      <img
+                        src="/logos/Accenture.png"
+                        alt="Accenture"
+                        className="h-8 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                      />
+                      <span>Accenture</span>
+                    </div>
+                  ),
+                  title: 'Accenture',
+                },
+                {
+                  node: (
+                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors">
+                      <Package className="w-6 h-6" />
+                      <span>PyPi</span>
+                    </div>
+                  ),
+                  title: 'PyPi',
+                },
+                {
+                  node: (
+                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors">
+                      <Github className="w-6 h-6" />
+                      <span>Github</span>
+                    </div>
+                  ),
+                  title: 'Github',
+                },
+                {
+                  node: (
+                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors">
+                      <Users className="w-6 h-6" />
+                      <span>Open Source Community</span>
+                    </div>
+                  ),
+                  title: 'Open Source Community',
+                },
+              ]}
+              speed={40}
+              gap={64}
+              logoHeight={32}
+              pauseOnHover={true}
+              fadeOut={true}
+              fadeOutColor="black"
+            />
+          </div>
+        </motion.div>
       </div>
     </section>
   );
