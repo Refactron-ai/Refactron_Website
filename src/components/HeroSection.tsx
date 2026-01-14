@@ -1,25 +1,16 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 
 import { TextGenerateEffect } from './ui/text-generate-effect';
 import LightRays from './ui/LightRays';
-import LogoLoop, { LogoItem } from './ui/logo-loop';
+import LogoLoop from './ui/logo-loop';
 import ShimmerButton from './ui/shimmer-button';
 import { Terminal, TypingAnimation, AnimatedSpan } from './ui/terminal';
-import { Cpu, ArrowRight, Github, Package, Users } from 'lucide-react';
+import { ArrowRight, Package, Github, Users } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
-  const scrollToEarlyAccess = () => {
-    const earlyAccessSection = document.querySelector(
-      '[data-section="early-access"]'
-    );
-    if (earlyAccessSection) {
-      earlyAccessSection.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-      });
-    }
-  };
+
 
   return (
     <section
