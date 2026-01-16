@@ -1,64 +1,77 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Brain,
   Shield,
   CheckCircle2,
-  FileCode,
-  ArrowRight,
-  BookOpen,
+  GitBranch,
+  Eye,
+  RotateCcw,
 } from 'lucide-react';
 import useSEO from '../hooks/useSEO';
-import {
-  createTrackingClickHandler,
-  ConversionEvents,
-} from '../utils/analytics';
 
 import { motion } from 'framer-motion';
 import { LampContainer } from './ui/lamp';
+import { LightRays } from './ui/light-rays';
+import { SafariMockup } from './ui/safari-mockup';
+import CardSwap, { Card } from './ui/card-swap';
+import Orb from './ui/orb';
+import TextType from './ui/text-type';
 
 const AboutPage: React.FC = () => {
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
+
   // SEO Configuration
   useSEO({
-    title: 'About Refactron | AI-Driven Refactoring Intelligence Platform',
+    title: 'About Refactron | Safety-First Refactoring Engine',
     description:
-      'Refactron is an AI-driven refactoring intelligence platform designed to safely evolve real-world codebases through behavior-preserving transformation, static analysis, and verification mechanisms.',
+      'Refactron is a safety-first refactoring engine for evolving real-world codebases through structured, incremental, and behavior-preserving transformations.',
     keywords:
-      'AI code refactoring, automated refactoring, code modernization, technical debt, static analysis, behavior-preserving transformation, developer tools',
-    ogTitle: 'About Refactron | AI-Driven Refactoring Intelligence',
+      'safe refactoring, code evolution, technical debt, behavior-preserving transformation, incremental refactoring, code maintainability',
+    ogTitle: 'About Refactron | Safety-First Refactoring Engine',
     ogDescription:
-      'Safely evolve codebases with AI-powered refactoring. Behavior-preserving transformation with verification and risk scoring.',
+      'A safety-first refactoring engine for evolving real-world codebases with confidence.',
     canonical: 'https://refactron.dev/about',
     robots: 'index, follow',
   });
 
-  const coreComponents = [
+  const safetyConstraints = [
     {
-      icon: FileCode,
-      title: 'Static Analysis',
-      description: 'Understand structure and dependencies across your codebase',
-    },
-    {
-      icon: Brain,
-      title: 'Intent-Aware Models',
-      description:
-        'Learned models that generate refactor candidates with context understanding',
-    },
-    {
-      icon: Shield,
-      title: 'Verification Mechanisms',
-      description:
-        'AST diffing and test-based validation to ensure functional equivalence',
+      icon: Eye,
+      title: 'Read-only analysis by default',
+      description: 'No changes are made without explicit approval',
     },
     {
       icon: CheckCircle2,
-      title: 'Risk Scoring',
-      description:
-        'Balance improvement against regression risk before applying changes',
+      title: 'Human-in-the-loop refactoring',
+      description: 'Every change requires explicit approval from developers',
+    },
+    {
+      icon: Shield,
+      title: 'Verification to preserve behavior',
+      description: 'Automated checks ensure functional equivalence',
+    },
+    {
+      icon: GitBranch,
+      title: 'Small, incremental changes',
+      description: 'Targeted improvements instead of large rewrites',
+    },
+    {
+      icon: RotateCcw,
+      title: 'Rollback support',
+      description: 'Clear documentation and easy reversal for every change',
     },
   ];
 
   return (
-    <div className="relative min-h-screen bg-slate-950">
+    <div className="relative min-h-screen bg-black font-space">
+      {/* Light Rays Background */}
+      <LightRays
+        count={10}
+        color="rgba(255, 255, 255, 0.12)"
+        blur={40}
+        speed={16}
+        length="80vh"
+      />
+      {/* Hero Section with Lamp Effect */}
       <LampContainer>
         <motion.h1
           initial={{ opacity: 0.5, y: 100 }}
@@ -68,7 +81,7 @@ const AboutPage: React.FC = () => {
             duration: 0.8,
             ease: 'easeInOut',
           }}
-          className="mt-8 bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-center text-4xl font-light tracking-tight text-transparent md:text-7xl"
+          className="mt-8 bg-gradient-to-br from-neutral-300 to-neutral-500 py-4 bg-clip-text text-center text-5xl md:text-7xl font-light tracking-tight text-transparent"
         >
           About Refactron
         </motion.h1>
@@ -76,10 +89,9 @@ const AboutPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="text-xl sm:text-2xl text-slate-300 font-light max-w-3xl mx-auto mt-4 text-center px-4"
+          className="text-xl md:text-2xl text-neutral-300 font-light max-w-3xl mx-auto mt-4 text-center px-4"
         >
-          AI-driven refactoring intelligence platform designed to safely evolve
-          real-world codebases
+          A safety-first refactoring engine for evolving real-world codebases.
         </motion.p>
       </LampContainer>
 
@@ -87,185 +99,459 @@ const AboutPage: React.FC = () => {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
           {/* Main Content */}
           <div className="space-y-12 sm:space-y-16">
-            {/* Problem Statement */}
-            <section className="bg-slate-900/50 shadow-xl border border-slate-800 rounded-3xl p-6 sm:p-8 md:p-12 backdrop-blur-sm">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-white mb-4 sm:mb-6 tracking-tight">
-                The Problem We Solve
-              </h2>
-              <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-4">
-                Modern software systems accumulate technical debt over
-                time—complex logic, duplicated code, fragile abstractions, and
-                missing documentation. While existing tools can detect these
-                issues, fixing them at scale remains risky, manual, and
-                expensive. Refactron exists to close that gap.
-              </p>
-            </section>
-
-            {/* Solution Overview */}
-            <section className="bg-slate-900/50 shadow-xl border border-slate-800 rounded-3xl p-6 sm:p-8 md:p-12 backdrop-blur-sm">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-white mb-4 sm:mb-6 tracking-tight">
-                Our Approach
-              </h2>
-              <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-4">
-                Rather than generating new code blindly, Refactron focuses on{' '}
-                <strong className="text-primary-400">
-                  behavior-preserving transformation
-                </strong>
-                . It analyzes existing codebases, identifies structural and
-                architectural debt, proposes targeted refactors, and verifies
-                their safety before any change is applied.
-              </p>
-              <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
-                Every accepted refactor is delivered as a{' '}
-                <strong className="text-primary-400">
-                  reviewable, auditable diff
-                </strong>
-                , not an opaque rewrite.
-              </p>
-            </section>
-
-            {/* Core Components */}
-            <section>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-white mb-6 sm:mb-8 text-center tracking-tight">
-                At Its Core
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                {coreComponents.map((component, index) => (
-                  <div
-                    key={index}
-                    className="bg-slate-900/50 rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-sm hover:shadow-md transition-shadow hover:bg-slate-800/50"
-                  >
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <component.icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                      </div>
-                      <h3 className="text-xl sm:text-2xl font-light text-white tracking-tight">
-                        {component.title}
-                      </h3>
-                    </div>
-                    <p className="text-sm sm:text-base text-slate-400 leading-relaxed">
-                      {component.description}
+            {/* The Problem */}
+            <section className="min-h-[600px] flex items-center justify-center py-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full items-center">
+                {/* Left Content */}
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  viewport={{ once: true, margin: '-20%' }}
+                  className="space-y-8"
+                >
+                  <div className="space-y-4">
+                    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white tracking-tight font-space leading-[1.1]">
+                      The Problem
+                    </h2>
+                    <p className="text-xl text-neutral-400 font-space leading-relaxed max-w-lg">
+                      Most production codebases carry significant technical
+                      debt, but refactoring them is often avoided.
                     </p>
                   </div>
-                ))}
+
+                  <ul className="space-y-4">
+                    <li className="flex items-start gap-3 text-neutral-400 font-space text-base">
+                      <span className="mt-2.5 w-1 h-1 rounded-full bg-neutral-400 shrink-0" />
+                      Manual refactoring is slow, expensive, and risky
+                    </li>
+                    <li className="flex items-start gap-3 text-neutral-400 font-space text-base">
+                      <span className="mt-2.5 w-1 h-1 rounded-full bg-neutral-400 shrink-0" />
+                      Automated tools focus on generation without guaranteeing
+                      correctness
+                    </li>
+                    <li className="flex items-start gap-3 text-neutral-400 font-space text-base">
+                      <span className="mt-2.5 w-1 h-1 rounded-full bg-neutral-400 shrink-0" />
+                      Teams postpone structural improvements, making codebases
+                      harder to maintain
+                    </li>
+                  </ul>
+                </motion.div>
+
+                {/* Right - Safari Mockup */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, rotate: 2 }}
+                  whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  viewport={{ once: true, margin: '-20%' }}
+                  className="hidden lg:block"
+                >
+                  <SafariMockup
+                    url="legacy-codebase.example.com"
+                    className="h-[400px]"
+                  >
+                    <div className="p-8 space-y-4 font-mono text-sm">
+                      <div className="text-red-400">
+                        &gt; ERROR: CircularDependencyDetected
+                      </div>
+                      <div className="text-neutral-500">
+                        &gt; module_a imports module_b
+                      </div>
+                      <div className="text-neutral-500">
+                        &gt; module_b imports module_a
+                      </div>
+                      <div className="text-yellow-500 mt-4">
+                        &gt; WARNING: DuplicatedCode
+                      </div>
+                      <div className="text-neutral-500">
+                        &gt; 847 lines duplicated across 12 files
+                      </div>
+                      <div className="text-yellow-500 mt-4">
+                        &gt; WARNING: HighComplexity
+                      </div>
+                      <div className="text-neutral-500">
+                        &gt; cyclomatic_complexity: 28 (threshold: 10)
+                      </div>
+                      <div className="text-neutral-400 mt-4">
+                        &gt; test_coverage: 38%
+                      </div>
+                      <div className="text-red-400 mt-4">
+                        &gt; technical_debt_ratio: HIGH
+                      </div>
+                    </div>
+                  </SafariMockup>
+                </motion.div>
               </div>
             </section>
 
-            {/* Additional Benefits */}
-            <section className="bg-slate-900/50 shadow-xl border border-slate-800 rounded-3xl p-6 sm:p-8 md:p-12 backdrop-blur-sm">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-white mb-4 sm:mb-6 tracking-tight">
-                Beyond Refactoring
-              </h2>
-              <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
-                Refactron also generates{' '}
-                <strong className="text-primary-400">
-                  contextual documentation
-                </strong>{' '}
-                from verified refactors, helping teams improve maintainability,
-                accelerate onboarding, and reduce long-term engineering costs.
-              </p>
-            </section>
-
-            {/* Library Positioning */}
-            <section className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-xl border border-slate-700 rounded-3xl p-6 sm:p-8 md:p-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-white mb-4 sm:mb-6 tracking-tight">
-                The Refactron Library
-              </h2>
-              <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-4">
-                The currently available{' '}
-                <a
-                  href="https://pypi.org/project/refactron/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary-400 hover:text-primary-300 font-semibold underline"
+            {/* Our Approach */}
+            <section className="min-h-[600px] flex items-center justify-center py-10">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full items-center">
+                {/* Left - Safari Mockup */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, rotate: -2 }}
+                  whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  viewport={{ once: true, margin: '-20%' }}
+                  className="hidden lg:block"
                 >
-                  Refactron library
-                </a>{' '}
-                represents an early interface into this system—a practical way
-                to demonstrate the platform's capabilities. It is a starting
-                point, not the final form.
-              </p>
-              <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
-                The broader vision is a{' '}
-                <strong className="text-primary-400">
-                  language-agnostic refactoring engine
-                </strong>{' '}
-                that integrates seamlessly into developer workflows and CI/CD
-                pipelines.
-              </p>
+                  <SafariMockup
+                    url="refactron.dev/analysis"
+                    className="h-[400px]"
+                  >
+                    <div className="p-8 space-y-4 font-mono text-sm">
+                      <div className="text-green-400">
+                        &gt; analyzing_codebase...
+                      </div>
+                      <div className="text-neutral-400">
+                        &gt; dependency_graph: built
+                      </div>
+                      <div className="text-neutral-400">
+                        &gt; architectural_patterns: detected
+                      </div>
+                      <div className="text-cyan-400 mt-4">
+                        &gt; refactor_opportunity_found:
+                      </div>
+                      <div className="text-neutral-500 ml-4">
+                        &gt; type: extract_interface
+                      </div>
+                      <div className="text-neutral-500 ml-4">
+                        &gt; impact: low_risk
+                      </div>
+                      <div className="text-neutral-500 ml-4">
+                        &gt; benefit: reduces_coupling
+                      </div>
+                      <div className="text-green-400 mt-4">
+                        &gt; verification: passed
+                      </div>
+                      <div className="text-neutral-400">
+                        &gt; tests: all_green ✓
+                      </div>
+                      <div className="text-cyan-400 mt-4">
+                        &gt; ready_for_review
+                      </div>
+                    </div>
+                  </SafariMockup>
+                </motion.div>
+
+                {/* Right Content */}
+                <motion.div
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  viewport={{ once: true, margin: '-20%' }}
+                  className="space-y-8"
+                >
+                  <div className="space-y-4">
+                    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white tracking-tight font-space leading-[1.1]">
+                      Our Approach
+                    </h2>
+                    <p className="text-xl text-neutral-400 font-space leading-relaxed max-w-lg">
+                      Refactoring as a structured engineering process, not a
+                      one-shot automation problem.
+                    </p>
+                  </div>
+
+                  <ul className="space-y-4">
+                    <li className="flex items-start gap-3 text-neutral-400 font-space text-base">
+                      <span className="mt-2.5 w-1 h-1 rounded-full bg-neutral-400 shrink-0" />
+                      Analyzes code structure and identifies targeted
+                      improvements
+                    </li>
+                    <li className="flex items-start gap-3 text-neutral-400 font-space text-base">
+                      <span className="mt-2.5 w-1 h-1 rounded-full bg-neutral-400 shrink-0" />
+                      Proposes incremental refactors that preserve existing
+                      behavior
+                    </li>
+                    <li className="flex items-start gap-3 text-neutral-400 font-space text-base">
+                      <span className="mt-2.5 w-1 h-1 rounded-full bg-neutral-400 shrink-0" />
+                      Makes refactoring predictable, reviewable, and safe
+                    </li>
+                  </ul>
+                </motion.div>
+              </div>
             </section>
 
-            {/* Mission Statement */}
-            <section className="bg-slate-900/50 shadow-xl border border-slate-800 rounded-3xl p-6 sm:p-8 md:p-12 text-center backdrop-blur-sm">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-white mb-4 sm:mb-6 tracking-tight">
-                Our Mission
-              </h2>
-              <p className="text-xl sm:text-2xl text-slate-200 leading-relaxed mb-4 font-medium">
-                Refactron is built for teams maintaining long-lived systems
-                where{' '}
-                <strong className="text-primary-400">
-                  correctness, safety, and confidence
-                </strong>{' '}
-                matter more than novelty.
-              </p>
-              <p className="text-base sm:text-lg text-slate-400 leading-relaxed mb-6">
-                It does not replace developers or code reviews—it amplifies
-                them.
-              </p>
-              <p className="text-lg sm:text-xl text-slate-300 font-semibold">
-                Our goal is simple: make large-scale refactoring{' '}
-                <span className="text-primary-400">
-                  safe, repeatable, and boring
-                </span>
-                —so engineering teams can focus on building, not fighting their
-                codebases.
-              </p>
+            {/* What "Safe" Means */}
+            <section className="min-h-screen flex flex-col items-center justify-center py-20 relative">
+              {/* Centered Header */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                viewport={{ once: true }}
+                className="text-center mb-16 max-w-3xl"
+              >
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-white tracking-tight font-space leading-[1.1] mb-4">
+                  What Safe Means
+                </h2>
+                <p className="text-xl text-neutral-400 font-space leading-relaxed">
+                  Safety is not a claim—it's a set of constraints Refactron is
+                  built around.
+                </p>
+              </motion.div>
+
+              {/* Content Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full items-center">
+                {/* Left - Active Constraint Info */}
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  viewport={{ once: true, margin: '-20%' }}
+                  className="space-y-8 z-10"
+                >
+                  {/* Active Constraint */}
+                  <motion.div
+                    key={activeCardIndex}
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{
+                      duration: 0.8,
+                      ease: 'easeOut',
+                    }}
+                    className="space-y-4"
+                  >
+                    <div className="flex items-center gap-4">
+                      <span className="text-sm font-mono text-neutral-400 tracking-wider">
+                        0{activeCardIndex + 1}
+                      </span>
+                      <div className="h-[1px] w-full max-w-[600px] bg-neutral-800" />
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-normal text-white">
+                      {safetyConstraints[activeCardIndex].title}
+                    </h3>
+                    <p className="text-lg text-neutral-400 leading-relaxed">
+                      {safetyConstraints[activeCardIndex].description}
+                    </p>
+                  </motion.div>
+                </motion.div>
+
+                {/* Right - Card Swap */}
+                <div className="hidden lg:block relative h-[600px]">
+                  <CardSwap
+                    width={450}
+                    height={350}
+                    cardDistance={50}
+                    verticalDistance={60}
+                    delay={4000}
+                    pauseOnHover={true}
+                    skewAmount={4}
+                    easing="elastic"
+                    onActiveCardChange={setActiveCardIndex}
+                  >
+                    <Card key={0} className="p-0 overflow-hidden">
+                      {/* Read-only analysis by default */}
+                      <div className="bg-neutral-900 border-b border-neutral-800 px-4 py-2 flex items-center gap-2">
+                        <div className="flex gap-1.5">
+                          <div className="w-3 h-3 rounded-full bg-red-500" />
+                          <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                          <div className="w-3 h-3 rounded-full bg-green-500" />
+                        </div>
+                        <span className="text-xs font-mono text-neutral-500 ml-2">
+                          analyze.sh
+                        </span>
+                      </div>
+                      <div className="p-8 bg-black font-mono text-sm space-y-2">
+                        <div className="text-green-400">
+                          $ refactron analyze src/
+                        </div>
+                        <div className="text-green-400">
+                          ✔ Scanned 142 files
+                        </div>
+                        <div className="text-green-400">
+                          ✔ Detected 37 refactoring opportunities
+                        </div>
+                        <div className="text-green-400">
+                          ✔ High-risk changes: 0
+                        </div>
+                        <div className="text-green-400">
+                          ✔ No code changes applied
+                        </div>
+                      </div>
+                    </Card>
+
+                    <Card key={1} className="p-0 overflow-hidden">
+                      {/* Human-in-the-loop refactoring */}
+                      <div className="bg-neutral-900 border-b border-neutral-800 px-4 py-2 flex items-center gap-2">
+                        <div className="flex gap-1.5">
+                          <div className="w-3 h-3 rounded-full bg-red-500" />
+                          <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                          <div className="w-3 h-3 rounded-full bg-green-500" />
+                        </div>
+                        <span className="text-xs font-mono text-neutral-500 ml-2">
+                          refactor.sh
+                        </span>
+                      </div>
+                      <div className="p-8 bg-black font-mono text-sm space-y-2">
+                        <div className="text-green-400">
+                          $ refactron refactor src/
+                        </div>
+                        <div className="text-cyan-400">
+                          → Extract duplicated logic in auth/utils.py
+                        </div>
+                        <div className="text-cyan-400">
+                          → Simplify nested conditionals in payments/service.py
+                        </div>
+                        <div className="text-green-400">
+                          ✔ Suggestions generated
+                        </div>
+                        <div className="text-green-400">
+                          ✔ No changes applied
+                        </div>
+                      </div>
+                    </Card>
+
+                    <Card key={2} className="p-0 overflow-hidden">
+                      {/* Verification to preserve behavior */}
+                      <div className="bg-neutral-900 border-b border-neutral-800 px-4 py-2 flex items-center gap-2">
+                        <div className="flex gap-1.5">
+                          <div className="w-3 h-3 rounded-full bg-red-500" />
+                          <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                          <div className="w-3 h-3 rounded-full bg-green-500" />
+                        </div>
+                        <span className="text-xs font-mono text-neutral-500 ml-2">
+                          autofix.sh
+                        </span>
+                      </div>
+                      <div className="p-8 bg-black font-mono text-sm space-y-2">
+                        <div className="text-green-400">
+                          $ refactron autofix --safe
+                        </div>
+                        <div className="text-green-400">
+                          ✔ Applied 12 low-risk refactors
+                        </div>
+                        <div className="text-green-400">
+                          ✔ Behavior preserved
+                        </div>
+                        <div className="text-green-400">
+                          ✔ Changes staged for review
+                        </div>
+                        <div className="text-neutral-500 mt-4">
+                          $ refactron metrics
+                        </div>
+                        <div className="text-cyan-400">
+                          ✔ Complexity reduced: 18%
+                        </div>
+                        <div className="text-cyan-400">
+                          ✔ Duplication reduced: 22%
+                        </div>
+                      </div>
+                    </Card>
+
+                    <Card key={3} className="p-0 overflow-hidden">
+                      {/* Small, incremental changes */}
+                      <div className="bg-neutral-900 border-b border-neutral-800 px-4 py-2 flex items-center gap-2">
+                        <div className="flex gap-1.5">
+                          <div className="w-3 h-3 rounded-full bg-red-500" />
+                          <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                          <div className="w-3 h-3 rounded-full bg-green-500" />
+                        </div>
+                        <span className="text-xs font-mono text-neutral-500 ml-2">
+                          incremental.sh
+                        </span>
+                      </div>
+                      <div className="p-8 bg-black font-mono text-sm space-y-2">
+                        <div className="text-green-400">
+                          $ refactron autofix --safe
+                        </div>
+                        <div className="text-green-400">
+                          ✔ Applied 12 incremental refactors
+                        </div>
+                        <div className="text-green-400">
+                          ✔ Files modified: 7
+                        </div>
+                        <div className="text-green-400">
+                          ✔ Large rewrites avoided
+                        </div>
+                      </div>
+                    </Card>
+
+                    <Card key={4} className="p-0 overflow-hidden">
+                      {/* Rollback support */}
+                      <div className="bg-neutral-900 border-b border-neutral-800 px-4 py-2 flex items-center gap-2">
+                        <div className="flex gap-1.5">
+                          <div className="w-3 h-3 rounded-full bg-red-500" />
+                          <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                          <div className="w-3 h-3 rounded-full bg-green-500" />
+                        </div>
+                        <span className="text-xs font-mono text-neutral-500 ml-2">
+                          rollback.sh
+                        </span>
+                      </div>
+                      <div className="p-8 bg-black font-mono text-sm space-y-2">
+                        <div className="text-green-400">$ refactron report</div>
+                        <div className="text-green-400">
+                          ✔ Generated refactor-report.md
+                        </div>
+                        <div className="text-green-400">
+                          ✔ Included rationale and before/after diffs
+                        </div>
+                        <div className="text-neutral-500 mt-4">
+                          $ refactron rollback
+                        </div>
+                        <div className="text-green-400">
+                          ✔ All changes reverted successfully
+                        </div>
+                      </div>
+                    </Card>
+                  </CardSwap>
+                </div>
+              </div>
             </section>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
-              <a
-                href="https://pypi.org/project/refactron/"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={createTrackingClickHandler(
-                  ConversionEvents.TRY_REFACTRON_LIBRARY_CLICKED,
-                  { source: 'about_page' },
-                  { allowDefault: true }
-                )}
-                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 shadow-lg"
-              >
-                <span>Try Refactron Library</span>
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </a>
-              <a
-                href="https://docs.refactron.dev"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={createTrackingClickHandler(
-                  ConversionEvents.VIEW_DOCUMENTATION_CLICKED,
-                  { source: 'about_page' },
-                  { allowDefault: true }
-                )}
-                className="group w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full transition-all duration-300 shadow-lg"
-              >
-                <BookOpen className="w-5 h-5" />
-                <span>View Documentation</span>
-              </a>
-            </div>
+            {/* Why We're Building Refactron */}
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="relative w-full max-w-7xl mx-auto h-[600px] rounded-3xl overflow-hidden mt-60 md:mt-96 border border-white/10 bg-neutral-900/50"
+            >
+              <div className="absolute inset-0 bg-black opacity-60">
+                <Orb
+                  hue={0}
+                  hoverIntensity={0.2}
+                  rotateOnHover={true}
+                  backgroundColor="#000000"
+                />
+              </div>
+
+              <div className="relative z-10 h-full flex flex-col items-center justify-center p-8 md:p-12 text-center">
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-white mb-8 tracking-tight font-space">
+                  Why We're Building Refactron
+                </h2>
+                <div className="text-xl text-neutral-300 leading-relaxed max-w-3xl mx-auto font-space min-h-[120px]">
+                  <TextType
+                    text="We've worked with long-lived, real-world codebases where refactoring was necessary but often deferred because existing tools didn't feel safe or trustworthy. Refactron is being built to fill that gap—to make code evolution boring, predictable, and repeatable, so teams can improve their systems with confidence instead of fear."
+                    typingSpeed={50}
+                    deletingSpeed={0}
+                    loop={false}
+                    showCursor={true}
+                    cursorClassName="bg-neutral-500 w-1 h-6 inline-block align-middle ml-1"
+                  />
+                </div>
+              </div>
+            </motion.section>
 
             {/* Contact Section */}
-            <div className="text-center text-slate-400">
-              <p className="text-base sm:text-lg">
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="text-center text-neutral-400"
+            >
+              <p className="text-lg">
                 Questions or want to learn more?{' '}
                 <a
                   href="mailto:hello@refactron.dev"
-                  className="text-primary-400 hover:text-primary-300 font-semibold underline"
+                  className="text-white hover:text-neutral-300 font-semibold underline"
                 >
                   Get in touch with us
                 </a>
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

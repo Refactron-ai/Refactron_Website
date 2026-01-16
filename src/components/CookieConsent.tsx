@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Settings, Shield } from 'lucide-react';
+import { X, Settings } from 'lucide-react';
 
 export interface CookiePreferences {
   necessary: boolean;
@@ -72,66 +72,47 @@ const CookieConsent: React.FC<CookieConsentProps> = ({
       <div className="fixed inset-0 z-40 bg-black bg-opacity-20 backdrop-blur-sm transition-all duration-300 ease-out" />
 
       {/* Cookie popup */}
-      <div className="fixed bottom-4 right-4 z-50 bg-[var(--surface-elevated)] border border-[var(--border-primary)] shadow-sm rounded-2xl max-w-xs transform transition-all duration-300 ease-out">
-        {/* Close button */}
-        <button
-          onClick={handleCancel}
-          className="absolute top-3 right-3 p-1 hover:bg-[var(--surface-secondary)] rounded-lg transition-colors"
-          aria-label="Close"
-        >
-          <X className="h-4 w-4 text-[var(--text-muted)]" />
-        </button>
-
-        <div className="p-6">
-          {/* Header */}
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-8 bg-primary-100 dark:bg-primary-900/50 rounded-lg flex items-center justify-center">
-              <Shield className="h-4 w-4 text-primary-600 dark:text-primary-400" />
-            </div>
-            <div>
-              <h3 className="text-sm font-semibold text-[var(--text-primary)]">
-                Cookie Preferences
-              </h3>
-              <p className="text-xs text-[var(--text-muted)]">
-                Manage your privacy
-              </p>
-            </div>
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-[#0D0D0D] border border-white/10 shadow-2xl rounded-xl w-[90%] max-w-2xl transform transition-all duration-300 ease-out font-space animate-in slide-in-from-bottom-4 fade-in">
+        <div className="p-4 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+          <div className="flex-1 text-center sm:text-left">
+            <p className="text-neutral-400 text-xs leading-relaxed">
+              We use cookies to enhance your experience.{' '}
+              <a
+                href="/privacy-policy"
+                className="text-white hover:text-neutral-300 underline decoration-white/30 hover:decoration-white/100 transition-all"
+              >
+                Learn more
+              </a>
+            </p>
           </div>
 
-          {/* Description */}
-          <p className="text-[var(--text-tertiary)] text-xs leading-relaxed mb-4">
-            We use cookies to enhance your experience and analyze site usage.{' '}
-            <a
-              href="/privacy-policy"
-              className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 underline font-medium"
-            >
-              Learn more
-            </a>
-          </p>
-
-          {/* Action buttons */}
-          <div className="space-y-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-end">
             <button
               onClick={handleAcceptAll}
-              className="w-full px-4 py-2.5 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-xl transition-all duration-300 shadow-sm"
+              className="px-6 py-2 text-xs font-medium text-black bg-white hover:bg-neutral-200 rounded-lg transition-all duration-300 shadow-sm whitespace-nowrap"
             >
-              Accept All Cookies
+              Accept All
             </button>
-            <div className="flex gap-2">
-              <button
-                onClick={handleRejectAll}
-                className="flex-1 px-3 py-2 text-xs font-medium text-[var(--text-tertiary)] bg-[var(--surface-secondary)] hover:bg-[var(--bg-tertiary)] rounded-lg transition-colors border border-[var(--border-primary)]"
-              >
-                Decline
-              </button>
-              <button
-                onClick={onCustomize}
-                className="flex-1 px-3 py-2 text-xs font-medium text-[var(--text-tertiary)] bg-[var(--surface-secondary)] hover:bg-[var(--bg-tertiary)] rounded-lg transition-colors border border-[var(--border-primary)] flex items-center justify-center gap-1"
-              >
-                <Settings className="h-3 w-3" />
-                Settings
-              </button>
-            </div>
+            <button
+              onClick={handleRejectAll}
+              className="px-4 py-2 text-xs font-medium text-neutral-400 bg-white/5 hover:bg-white/10 rounded-lg transition-colors border border-white/10 whitespace-nowrap"
+            >
+              Decline
+            </button>
+            <button
+              onClick={onCustomize}
+              className="p-2 text-neutral-400 hover:text-white transition-colors"
+              aria-label="Settings"
+            >
+              <Settings className="h-4 w-4" />
+            </button>
+            <button
+              onClick={handleCancel}
+              className="p-2 text-neutral-500 hover:text-white transition-colors"
+              aria-label="Close"
+            >
+              <X className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </div>

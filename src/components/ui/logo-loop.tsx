@@ -79,6 +79,7 @@ const useResizeObserver = (
     return () => {
       observers.forEach(observer => observer?.disconnect());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies);
 };
 
@@ -119,6 +120,7 @@ const useImageLoader = (
         img.removeEventListener('error', handleImageLoad);
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies);
 };
 
@@ -203,6 +205,7 @@ const useAnimationLoop = (
       }
       lastTimestampRef.current = null;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical]);
 };
 
@@ -359,7 +362,6 @@ export const LogoLoop = React.memo<LogoLoopProps>(
                 scaleOnHover && 'overflow-visible group/item'
               )}
               key={key}
-              role="listitem"
             >
               {renderItem(item, key)}
             </li>
@@ -436,7 +438,6 @@ export const LogoLoop = React.memo<LogoLoopProps>(
               scaleOnHover && 'overflow-visible group/item'
             )}
             key={key}
-            role="listitem"
           >
             {inner}
           </li>
@@ -451,7 +452,6 @@ export const LogoLoop = React.memo<LogoLoopProps>(
           <ul
             className={cx('flex items-center', isVertical && 'flex-col')}
             key={`copy-${copyIndex}`}
-            role="list"
             aria-hidden={copyIndex > 0}
             ref={copyIndex === 0 ? seqRef : undefined}
           >

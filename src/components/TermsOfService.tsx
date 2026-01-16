@@ -1,849 +1,461 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FileText, Mail, ArrowLeft } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ShieldCheck, ArrowLeft, Menu, X } from 'lucide-react';
+import Footer from './Footer';
+
+const sections = [
+  { id: 'acceptance', title: 'Acceptance of Terms' },
+  { id: 'description', title: 'Description of Service' },
+  { id: 'registration', title: 'Registration & Accounts' },
+  { id: 'user-conduct', title: 'User Conduct' },
+  { id: 'intellectual-property', title: 'Intellectual Property' },
+  { id: 'payment', title: 'Payment & Subscription' },
+  { id: 'termination', title: 'Termination' },
+  { id: 'disclaimer', title: 'Disclaimer of Warranties' },
+  { id: 'limitation', title: 'Limitation of Liability' },
+  { id: 'indemnification', title: 'Indemnification' },
+  { id: 'changes', title: 'Changes to Terms' },
+  { id: 'governing-law', title: 'Governing Law' },
+  { id: 'contact', title: 'Contact Information' },
+];
 
 const TermsOfService: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
-  const handleBack = () => {
-    window.history.back();
-  };
+  const [showMobileNav, setShowMobileNav] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 100;
+      for (const section of sections) {
+        const element = document.getElementById(section.id);
+        if (
+          element &&
+          element.offsetTop <= scrollPosition &&
+          element.offsetTop + element.offsetHeight > scrollPosition
+        ) {
+          setActiveSection(section.id);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       setActiveSection(id);
-      setTimeout(() => setActiveSection(null), 1000);
+      setShowMobileNav(false);
     }
   };
 
-  const sections = [
-    { id: 'introduction', title: 'Introduction' },
-    { id: 'definitions', title: 'Definitions' },
-    { id: 'acceptance', title: 'Acceptance of Terms' },
-    { id: 'service-description', title: 'Description of Service' },
-    { id: 'user-responsibilities', title: 'User Responsibilities' },
-    { id: 'acceptable-use', title: 'Acceptable Use Policy' },
-    { id: 'intellectual-property', title: 'Intellectual Property' },
-    { id: 'ai-disclaimers', title: 'AI-Specific Disclaimers' },
-    { id: 'termination', title: 'Termination' },
-    { id: 'limitation-liability', title: 'Limitation of Liability' },
-    { id: 'dispute-resolution', title: 'Dispute Resolution' },
-    { id: 'modifications', title: 'Modifications to Terms' },
-    { id: 'contact', title: 'Contact' },
-  ];
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <button
-            onClick={handleBack}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors duration-300"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Refactron</span>
-          </button>
-        </div>
-      </header>
-
-      <div className="max-w-6xl mx-auto px-6 py-8">
-        <div className="grid lg:grid-cols-4 gap-8">
-          {/* Table of Contents - Desktop */}
-          <aside className="hidden lg:block lg:col-span-1">
-            <div className="sticky top-24 bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
-              <h3 className="text-sm font-light text-gray-900 mb-4 uppercase tracking-wide">
-                Table of Contents
-              </h3>
-              <nav className="space-y-2">
+    <div className="min-h-screen bg-black text-neutral-400 font-space flex flex-col">
+      {/* Mobile Navigation */}
+      {showMobileNav && (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            onClick={() => setShowMobileNav(false)}
+          />
+          <div className="absolute inset-y-0 left-0 w-full max-w-xs bg-neutral-900 border-r border-white/10 shadow-2xl flex flex-col">
+            <div className="px-6 py-5 flex items-center justify-between border-b border-white/10">
+              <span className="text-lg font-semibold text-white tracking-tight">
+                Contents
+              </span>
+              <button
+                type="button"
+                onClick={() => setShowMobileNav(false)}
+                className="inline-flex items-center justify-center rounded-full p-2 text-neutral-400 hover:text-white hover:bg-white/10 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-6 py-6">
+              <nav className="space-y-1">
                 {sections.map(section => (
                   <button
                     key={section.id}
                     onClick={() => scrollToSection(section.id)}
-                    className={`w-full text-left text-sm py-2 px-3 rounded-md transition-colors ${
-                      activeSection === section.id
-                        ? 'bg-primary-50 text-primary-700 font-medium'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                    }`}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeSection === section.id
+                      ? 'bg-white/10 text-white'
+                      : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                      }`}
                   >
                     {section.title}
                   </button>
                 ))}
               </nav>
             </div>
-          </aside>
-
-          {/* Main Content */}
-          <main className="lg:col-span-3">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 md:p-12"
-            >
-              {/* Header */}
-              <div className="text-center mb-12 pb-8 border-b border-gray-200">
-                <div className="flex justify-center mb-6">
-                  <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center">
-                    <FileText className="w-10 h-10 text-primary-600" />
-                  </div>
-                </div>
-                <h1 className="text-4xl md:text-5xl font-light text-gray-900 mb-4 tracking-tight">
-                  Terms of Service
-                </h1>
-                <div className="space-y-2 text-gray-600">
-                  <p className="text-lg">
-                    <strong>Effective Date:</strong> December 24, 2025
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    Last Updated: December 24, 2025
-                  </p>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="prose prose-lg max-w-none">
-                {/* Introduction */}
-                <section id="introduction" className="mb-12 scroll-mt-8">
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    1. Introduction
-                  </h2>
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    Welcome to Refactron. These Terms of Service ("Terms,"
-                    "Agreement") constitute a legally binding agreement between
-                    you ("User," "you," or "your") and Refactron ("we," "us," or
-                    "our") governing your access to and use of our AI-powered
-                    code refactoring platform and services (collectively, the
-                    "Service").
-                  </p>
-                  <p className="text-gray-700 leading-relaxed">
-                    Please read these Terms carefully before using our Service.
-                    By accessing or using the Service, you agree to be bound by
-                    these Terms. If you do not agree to these Terms, you may not
-                    access or use the Service.
-                  </p>
-                </section>
-
-                {/* Definitions */}
-                <section id="definitions" className="mb-12 scroll-mt-8">
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    2. Definitions
-                  </h2>
-                  <dl className="space-y-4 text-gray-700">
-                    <div>
-                      <dt className="font-light text-gray-900 mb-1">
-                        "Service" or "Platform"
-                      </dt>
-                      <dd className="ml-4">
-                        Refactron's AI-powered code refactoring platform,
-                        including all websites, applications, APIs, software,
-                        tools, and related services.
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="font-light text-gray-900 mb-1">
-                        "User" or "You"
-                      </dt>
-                      <dd className="ml-4">
-                        Any individual or entity that accesses or uses the
-                        Service.
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="font-light text-gray-900 mb-1">
-                        "User Content"
-                      </dt>
-                      <dd className="ml-4">
-                        Any code, data, files, or other materials that you
-                        upload, submit, or provide to the Service.
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="font-light text-gray-900 mb-1">
-                        "AI Suggestions" or "Refactoring Suggestions"
-                      </dt>
-                      <dd className="ml-4">
-                        Code refactoring recommendations, modifications, or
-                        suggestions generated by our AI models based on your
-                        User Content.
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="font-light text-gray-900 mb-1">
-                        "Account"
-                      </dt>
-                      <dd className="ml-4">
-                        Your registered user account that provides access to the
-                        Service.
-                      </dd>
-                    </div>
-                  </dl>
-                </section>
-
-                {/* Acceptance */}
-                <section id="acceptance" className="mb-12 scroll-mt-8">
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    3. Acceptance of Terms
-                  </h2>
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    By accessing or using Refactron, you acknowledge that you
-                    have read, understood, and agree to be bound by these Terms
-                    and our Privacy Policy, which is incorporated herein by
-                    reference.
-                  </p>
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    You represent and warrant that:
-                  </p>
-                  <ul className="space-y-3 text-gray-700">
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        You are at least 18 years old (or the age of majority in
-                        your jurisdiction) and have the legal capacity to enter
-                        into this Agreement.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        You have the authority to bind yourself or the entity
-                        you represent to these Terms.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        Your use of the Service will comply with all applicable
-                        laws and regulations.
-                      </span>
-                    </li>
-                  </ul>
-                </section>
-
-                {/* Service Description */}
-                <section id="service-description" className="mb-12 scroll-mt-8">
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    4. Description of Service
-                  </h2>
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    Refactron is an AI-powered platform that provides automated
-                    code refactoring and optimization services. Our Service uses
-                    machine learning models and heuristics to analyze your
-                    source code and generate refactoring suggestions.
-                  </p>
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    <strong>Key Features:</strong>
-                  </p>
-                  <ul className="space-y-2 text-gray-700 mb-4">
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        AI-powered code analysis and refactoring suggestions
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        Integration with version control systems (e.g., GitHub,
-                        GitLab)
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        Code quality and performance optimization
-                        recommendations
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>Diff previews and change management tools</span>
-                    </li>
-                  </ul>
-                  <p className="text-gray-700 leading-relaxed">
-                    We reserve the right to modify, suspend, or discontinue any
-                    aspect of the Service at any time, with or without notice.
-                    We do not guarantee that the Service will be available at
-                    all times or that it will be error-free.
-                  </p>
-                </section>
-
-                {/* User Responsibilities */}
-                <section
-                  id="user-responsibilities"
-                  className="mb-12 scroll-mt-8"
-                >
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    5. User Responsibilities
-                  </h2>
-                  <p className="text-gray-700 leading-relaxed mb-6">
-                    You are responsible for your use of the Service and agree
-                    to:
-                  </p>
-                  <div className="space-y-4">
-                    <div className="bg-gray-50 p-5 rounded-lg border-l-4 border-primary-500">
-                      <h4 className="font-light text-gray-900 mb-2 tracking-tight">
-                        Account Security
-                      </h4>
-                      <p className="text-gray-700 text-sm">
-                        Maintain the confidentiality of your account credentials
-                        and notify us immediately of any unauthorized access.
-                      </p>
-                    </div>
-                    <div className="bg-gray-50 p-5 rounded-lg border-l-4 border-primary-500">
-                      <h4 className="font-light text-gray-900 mb-2 tracking-tight">
-                        Accurate Information
-                      </h4>
-                      <p className="text-gray-700 text-sm">
-                        Provide accurate, current, and complete information when
-                        creating and maintaining your account.
-                      </p>
-                    </div>
-                    <div className="bg-gray-50 p-5 rounded-lg border-l-4 border-primary-500">
-                      <h4 className="font-light text-gray-900 mb-2 tracking-tight">
-                        Code Review & Testing
-                      </h4>
-                      <p className="text-gray-700 text-sm">
-                        Review, test, and validate all AI-generated refactoring
-                        suggestions before deploying to production. You are
-                        solely responsible for the code you deploy.
-                      </p>
-                    </div>
-                    <div className="bg-gray-50 p-5 rounded-lg border-l-4 border-primary-500">
-                      <h4 className="font-light text-gray-900 mb-2 tracking-tight">
-                        Compliance
-                      </h4>
-                      <p className="text-gray-700 text-sm">
-                        Use the Service only for lawful purposes and in
-                        compliance with all applicable laws, regulations, and
-                        these Terms.
-                      </p>
-                    </div>
-                  </div>
-                </section>
-
-                {/* Acceptable Use */}
-                <section id="acceptable-use" className="mb-12 scroll-mt-8">
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    6. Acceptable Use Policy
-                  </h2>
-                  <p className="text-gray-700 leading-relaxed mb-6">
-                    You agree NOT to use the Service to:
-                  </p>
-                  <div className="space-y-3">
-                    <div className="border border-red-200 bg-red-50 p-4 rounded-lg">
-                      <h4 className="font-light text-red-900 mb-2 tracking-tight">
-                        Prohibited Activities
-                      </h4>
-                      <ul className="space-y-2 text-red-800 text-sm">
-                        <li className="flex items-start gap-2">
-                          <span className="font-semibold">•</span>
-                          <span>
-                            Upload malicious code, viruses, malware, or code
-                            designed to harm systems or networks
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="font-semibold">•</span>
-                          <span>
-                            Upload proprietary third-party code without
-                            authorization or violate intellectual property
-                            rights
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="font-semibold">•</span>
-                          <span>
-                            Attempt to reverse engineer, decompile, or extract
-                            our AI models, algorithms, or proprietary technology
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="font-semibold">•</span>
-                          <span>
-                            Use automated tools, bots, or scripts to abuse the
-                            service, bypass rate limits, or scrape data
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="font-semibold">•</span>
-                          <span>
-                            Share API keys or access credentials with
-                            unauthorized parties
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="font-semibold">•</span>
-                          <span>
-                            Generate code for illegal activities or violate any
-                            laws
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="font-semibold">•</span>
-                          <span>
-                            Interfere with or disrupt the Service or servers
-                            connected to the Service
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="font-semibold">•</span>
-                          <span>
-                            Use the Service to compete with Refactron or build a
-                            competing service
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <p className="text-gray-700 leading-relaxed mt-6">
-                    Violation of this Acceptable Use Policy may result in
-                    immediate termination of your account and legal action.
-                  </p>
-                </section>
-
-                {/* Intellectual Property */}
-                <section
-                  id="intellectual-property"
-                  className="mb-12 scroll-mt-8"
-                >
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    7. Intellectual Property Rights
-                  </h2>
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-2xl font-light text-gray-900 mb-3 tracking-tight">
-                        7.1. Your Content
-                      </h3>
-                      <p className="text-gray-700 leading-relaxed mb-4">
-                        <strong>Ownership:</strong> You retain full ownership
-                        and all intellectual property rights to your original
-                        User Content. We do not claim any ownership over your
-                        code or User Content.
-                      </p>
-                      <p className="text-gray-700 leading-relaxed mb-4">
-                        <strong>License to Process:</strong> By using the
-                        Service, you grant Refactron a limited, non-exclusive,
-                        revocable license to process your User Content solely
-                        for the purpose of providing refactoring suggestions
-                        during your active session. This license:
-                      </p>
-                      <ul className="space-y-2 text-gray-700 ml-4 mb-4">
-                        <li className="flex items-start gap-2">
-                          <span>•</span>
-                          <span>
-                            Is limited to the duration of processing (typically
-                            minutes)
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span>•</span>
-                          <span>
-                            Terminates immediately upon completion of processing
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span>•</span>
-                          <span>
-                            Does not grant us rights to use your code for
-                            training or any other purpose
-                          </span>
-                        </li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-light text-gray-900 mb-3 tracking-tight">
-                        7.2. AI-Generated Suggestions
-                      </h3>
-                      <p className="text-gray-700 leading-relaxed mb-4">
-                        Refactoring suggestions generated by our AI are provided
-                        to you as tools. You own the resulting code after you
-                        review, modify, and incorporate our suggestions into
-                        your codebase. However, the underlying AI models,
-                        algorithms, and platform technology remain our
-                        intellectual property.
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-light text-gray-900 mb-3 tracking-tight">
-                        7.3. Our Intellectual Property
-                      </h3>
-                      <p className="text-gray-700 leading-relaxed">
-                        The Service, including all software, AI models,
-                        algorithms, designs, text, graphics, logos, and other
-                        content, is owned by Refactron and protected by
-                        copyright, trademark, and other intellectual property
-                        laws. You may not copy, modify, distribute, or create
-                        derivative works based on our intellectual property
-                        without our express written permission.
-                      </p>
-                    </div>
-                  </div>
-                </section>
-
-                {/* AI Disclaimers */}
-                <section id="ai-disclaimers" className="mb-12 scroll-mt-8">
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    8. AI-Specific Disclaimers
-                  </h2>
-                  <div className="bg-yellow-50 border-l-4 border-yellow-500 p-6 rounded-r-lg mb-6">
-                    <p className="text-yellow-900 font-semibold mb-2 text-lg">
-                      ⚠️ Important Notice
-                    </p>
-                    <p className="text-yellow-800 leading-relaxed">
-                      Refactron uses artificial intelligence to generate code
-                      refactoring suggestions. AI-generated content may contain
-                      errors, inaccuracies, security vulnerabilities, or may not
-                      be suitable for production use. You are solely responsible
-                      for reviewing, testing, and validating all AI-generated
-                      suggestions before deployment.
-                    </p>
-                  </div>
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    <strong>You acknowledge and agree that:</strong>
-                  </p>
-                  <div className="space-y-3 text-gray-700">
-                    <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        AI suggestions may contain bugs, security
-                        vulnerabilities, logic errors, or may not follow best
-                        practices
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        AI suggestions may not always be correct, optimal, or
-                        compatible with your codebase, dependencies, or
-                        requirements
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        You are solely responsible for reviewing, testing, and
-                        validating all AI-generated suggestions before
-                        deployment to production
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        We make no guarantees about code correctness,
-                        performance improvements, security, or compatibility
-                      </span>
-                    </div>
-                    <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        The Service is provided "as-is" and "as-available"
-                        without warranties of any kind, express or implied
-                      </span>
-                    </div>
-                  </div>
-                </section>
-
-                {/* Termination */}
-                <section id="termination" className="mb-12 scroll-mt-8">
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    9. Termination
-                  </h2>
-                  <h3 className="text-2xl font-light text-gray-900 mb-4 tracking-tight">
-                    9.1. Termination by Us
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    We may suspend or terminate your account immediately,
-                    without notice, for:
-                  </p>
-                  <ul className="space-y-2 text-gray-700 mb-6">
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>Violation of these Terms of Service</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>Fraudulent, abusive, or illegal activity</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        Attempting to reverse engineer or extract our AI models
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>Excessive API usage or rate limit violations</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>Non-payment of fees (for paid plans)</span>
-                    </li>
-                  </ul>
-                  <h3 className="text-2xl font-light text-gray-900 mb-4 tracking-tight">
-                    9.2. Termination by You
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    You may terminate your account at any time by contacting us
-                    at{' '}
-                    <a
-                      href="mailto:support@refactron.dev"
-                      className="text-primary-600 hover:text-primary-700 underline"
-                    >
-                      support@refactron.dev
-                    </a>
-                    .
-                  </p>
-                  <h3 className="text-2xl font-light text-gray-900 mb-4 tracking-tight">
-                    9.3. Effect of Termination
-                  </h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    Upon termination, your access to the Service will be
-                    revoked, and we will delete your account data in accordance
-                    with our Privacy Policy. Sections of these Terms that by
-                    their nature should survive termination will survive,
-                    including but not limited to intellectual property rights,
-                    disclaimers, and limitation of liability.
-                  </p>
-                </section>
-
-                {/* Limitation of Liability */}
-                <section
-                  id="limitation-liability"
-                  className="mb-12 scroll-mt-8"
-                >
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    10. Limitation of Liability
-                  </h2>
-                  <p className="text-gray-700 leading-relaxed mb-6">
-                    To the maximum extent permitted by applicable law,
-                    Refactron, its affiliates, officers, directors, employees,
-                    agents, and service providers shall not be liable for:
-                  </p>
-                  <div className="space-y-3 mb-6">
-                    <div className="border border-gray-200 rounded-lg p-4">
-                      <h4 className="font-light text-gray-900 mb-2 tracking-tight">
-                        AI-Related Damages
-                      </h4>
-                      <p className="text-gray-700 text-sm">
-                        Any bugs, errors, security vulnerabilities, or damages
-                        introduced by AI-generated refactoring suggestions
-                      </p>
-                    </div>
-                    <div className="border border-gray-200 rounded-lg p-4">
-                      <h4 className="font-light text-gray-900 mb-2 tracking-tight">
-                        Data Loss
-                      </h4>
-                      <p className="text-gray-700 text-sm">
-                        Data loss, corruption, or unauthorized access resulting
-                        from use of the platform
-                      </p>
-                    </div>
-                    <div className="border border-gray-200 rounded-lg p-4">
-                      <h4 className="font-light text-gray-900 mb-2 tracking-tight">
-                        Indirect Damages
-                      </h4>
-                      <p className="text-gray-700 text-sm">
-                        Indirect, incidental, special, consequential, or
-                        punitive damages
-                      </p>
-                    </div>
-                    <div className="border border-gray-200 rounded-lg p-4">
-                      <h4 className="font-light text-gray-900 mb-2 tracking-tight">
-                        Business Losses
-                      </h4>
-                      <p className="text-gray-700 text-sm">
-                        Loss of profits, revenue, data, business opportunities,
-                        or goodwill
-                      </p>
-                    </div>
-                    <div className="border border-gray-200 rounded-lg p-4">
-                      <h4 className="font-light text-gray-900 mb-2 tracking-tight">
-                        Service Interruptions
-                      </h4>
-                      <p className="text-gray-700 text-sm">
-                        Service interruptions, downtime, or unavailability of
-                        the platform
-                      </p>
-                    </div>
-                  </div>
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
-                    <p className="text-gray-800 font-semibold mb-2">
-                      Maximum Liability
-                    </p>
-                    <p className="text-gray-700 leading-relaxed text-sm">
-                      Our total liability for any claims arising from these
-                      Terms or your use of the Service shall not exceed the
-                      amount you paid us in the 12 months preceding the claim,
-                      or $100, whichever is greater. Some jurisdictions do not
-                      allow the exclusion of certain warranties or limitations
-                      of liability, so some of the above exclusions may not
-                      apply to you.
-                    </p>
-                  </div>
-                </section>
-
-                {/* Dispute Resolution */}
-                <section id="dispute-resolution" className="mb-12 scroll-mt-8">
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    11. Dispute Resolution & Governing Law
-                  </h2>
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="text-2xl font-light text-gray-900 mb-3 tracking-tight">
-                        11.1. Governing Law
-                      </h3>
-                      <p className="text-gray-700 leading-relaxed">
-                        These Terms shall be governed by and construed in
-                        accordance with applicable laws, without regard to
-                        conflict of law provisions.
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-light text-gray-900 mb-3 tracking-tight">
-                        11.2. Informal Resolution
-                      </h3>
-                      <p className="text-gray-700 leading-relaxed mb-4">
-                        Before filing a claim, you agree to first contact us at{' '}
-                        <a
-                          href="mailto:support@refactron.dev"
-                          className="text-primary-600 hover:text-primary-700 underline"
-                        >
-                          support@refactron.dev
-                        </a>{' '}
-                        to attempt to resolve the dispute informally. We will
-                        work in good faith to resolve any disputes within 60
-                        days.
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-light text-gray-900 mb-3 tracking-tight">
-                        11.3. Binding Arbitration
-                      </h3>
-                      <p className="text-gray-700 leading-relaxed mb-4">
-                        If a dispute cannot be resolved through direct
-                        communication, it may be subject to binding arbitration
-                        or litigation as required by applicable law. You agree
-                        to resolve disputes on an individual basis and waive any
-                        right to participate in a class-action lawsuit or
-                        class-wide arbitration, to the extent permitted by law.
-                      </p>
-                    </div>
-                  </div>
-                </section>
-
-                {/* Modifications */}
-                <section id="modifications" className="mb-12 scroll-mt-8">
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    12. Modifications to These Terms
-                  </h2>
-                  <p className="text-gray-700 leading-relaxed mb-4">
-                    We reserve the right to modify these Terms at any time. We
-                    will notify you of material changes by:
-                  </p>
-                  <ul className="space-y-2 text-gray-700 mb-4">
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>Posting the updated Terms on this page</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        Updating the "Last Updated" date at the top of these
-                        Terms
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-primary-600 font-semibold mt-1">
-                        •
-                      </span>
-                      <span>
-                        Sending you an email notification (for material changes)
-                      </span>
-                    </li>
-                  </ul>
-                  <p className="text-gray-700 leading-relaxed">
-                    Your continued use of the Service after such modifications
-                    constitutes acceptance of the updated Terms. If you do not
-                    agree to the modified Terms, you must stop using the Service
-                    and may terminate your account. We encourage you to review
-                    these Terms periodically.
-                  </p>
-                </section>
-
-                {/* Contact */}
-                <section id="contact" className="mb-8 scroll-mt-8">
-                  <h2 className="text-3xl font-light text-gray-900 mb-4 tracking-tight">
-                    13. Contact Information
-                  </h2>
-                  <p className="text-gray-700 leading-relaxed mb-6">
-                    If you have questions about these Terms of Service, please
-                    contact us:
-                  </p>
-                  <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-                    <div className="flex items-start gap-4">
-                      <Mail className="w-6 h-6 text-primary-600 mt-1 flex-shrink-0" />
-                      <div>
-                        <h4 className="font-light text-gray-900 mb-2 tracking-tight">
-                          Legal & Support Inquiries
-                        </h4>
-                        <a
-                          href="mailto:support@refactron.dev"
-                          className="text-primary-600 hover:text-primary-700 font-medium text-lg transition-colors duration-300"
-                        >
-                          support@refactron.dev
-                        </a>
-                        <p className="text-gray-600 text-sm mt-2">
-                          We aim to respond to all inquiries within 30 days.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              </div>
-            </motion.div>
-          </main>
+          </div>
         </div>
+      )}
+
+      {/* Header */}
+      <header className="sticky top-0 z-40 w-full border-b border-white/10 bg-black/50 backdrop-blur-xl">
+        <div className="flex h-16 items-center justify-between px-4 sm:px-8">
+          <div className="flex items-center gap-4">
+            <a
+              href="/"
+              className="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="text-sm font-medium">Back</span>
+            </a>
+            <span className="text-neutral-600">/</span>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-white" />
+              <span className="text-sm font-medium text-white">
+                Terms of Service
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setShowMobileNav(true)}
+            className="lg:hidden p-2 text-neutral-400 hover:text-white transition-colors"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+        </div>
+      </header>
+
+      <div className="flex flex-1 max-w-[1600px] mx-auto w-full">
+        {/* Sidebar */}
+        <aside className="hidden lg:block w-64 shrink-0 border-r border-white/10 bg-black sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto py-8 pl-8 pr-4">
+          <div className="space-y-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-neutral-500 px-2">
+              Contents
+            </span>
+            <nav className="space-y-0.5">
+              {sections.map(section => (
+                <button
+                  key={section.id}
+                  onClick={() => scrollToSection(section.id)}
+                  className={`w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${activeSection === section.id
+                    ? 'text-white bg-white/5'
+                    : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                    }`}
+                >
+                  {activeSection === section.id && (
+                    <div className="w-1 h-1 rounded-full bg-white" />
+                  )}
+                  {section.title}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </aside>
+
+        {/* Main Content */}
+        <main
+          id="main-content"
+          className="flex-1 min-w-0 py-12 px-4 sm:px-8 lg:px-12 lg:py-16"
+        >
+          <div className="max-w-4xl mx-auto">
+            {/* Title Section */}
+            <div className="mb-16 border-b border-white/10 pb-8">
+              <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight mb-6">
+                Terms of Service
+              </h1>
+              <div className="flex items-center gap-4 text-sm text-neutral-500">
+                <p>Effective Date: December 24, 2025</p>
+                <span>•</span>
+                <p>Last Updated: December 24, 2025</p>
+              </div>
+            </div>
+
+            <div className="space-y-16">
+              {/* Acceptance */}
+              <section id="acceptance" className="scroll-mt-24 space-y-6">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  1. Acceptance of Terms
+                </h2>
+                <div className="prose prose-invert max-w-none text-neutral-400">
+                  <p className="leading-relaxed mb-4">
+                    By accessing or using the Refactron website, platform, and
+                    services (collectively, the "Service"), you agree to be
+                    bound by these Terms of Service ("Terms"). If you do not
+                    agree to these Terms, you may not access or use the Service.
+                  </p>
+                  <p className="leading-relaxed">
+                    These Terms constitute a legally binding agreement between
+                    you and Refactron regarding your use of the Service.
+                  </p>
+                </div>
+              </section>
+
+              {/* Description */}
+              <section id="description" className="scroll-mt-24 space-y-6">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  2. Description of Service
+                </h2>
+                <p className="text-neutral-400 leading-relaxed">
+                  Refactron provides an AI-powered code refactoring platform
+                  that analyzes code and suggests improvements for performance,
+                  readability, and security.
+                </p>
+                <div className="bg-white/5 border border-white/10 rounded-xl p-6">
+                  <h3 className="text-white font-medium mb-3">
+                    Service Availability
+                  </h3>
+                  <p className="text-sm text-neutral-400 leading-relaxed">
+                    We strive to keep the Service available 24/7 but do not
+                    guarantee uninterrupted access. We reserve the right to
+                    modify, suspend, or discontinue any part of the Service at
+                    any time with or without notice.
+                  </p>
+                </div>
+              </section>
+
+              {/* Registration */}
+              <section id="registration" className="scroll-mt-24 space-y-6">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  3. Registration & Accounts
+                </h2>
+                <div className="space-y-4">
+                  <div className="p-4 rounded-lg border border-white/10 bg-neutral-900/30">
+                    <h3 className="font-medium text-white mb-2">
+                      Account Creation
+                    </h3>
+                    <p className="text-sm text-neutral-400 leading-relaxed">
+                      To access certain features, you must register for an
+                      account. You agree to provide accurate, current, and
+                      complete information during the registration process.
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-lg border border-white/10 bg-neutral-900/30">
+                    <h3 className="font-medium text-white mb-2">
+                      Account Security
+                    </h3>
+                    <p className="text-sm text-neutral-400 leading-relaxed">
+                      You are responsible for maintaining the confidentiality of
+                      your password and account. You agree to notify us
+                      immediately of any unauthorized use of your account.
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              {/* User Conduct */}
+              <section id="user-conduct" className="scroll-mt-24 space-y-6">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  4. User Conduct
+                </h2>
+                <p className="text-neutral-400 leading-relaxed mb-4">
+                  You agree not to use the Service to:
+                </p>
+                <ul className="grid gap-3">
+                  {[
+                    'Violate any applicable laws or regulations.',
+                    'Infringe upon the rights of others, including intellectual property rights.',
+                    'Upload malicious code, viruses, or harmful software.',
+                    'Interfere with or disrupt the integrity or performance of the Service.',
+                    'Attempt to gain unauthorized access to the Service or related systems.',
+                    'Reverse engineer or attempt to extract the source code of the Service.',
+                  ].map((item, i) => (
+                    <li key={i} className="flex gap-3 text-neutral-400">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white mt-2.5 shrink-0" />
+                      <span className="leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+
+              {/* Intellectual Property */}
+              <section
+                id="intellectual-property"
+                className="scroll-mt-24 space-y-6"
+              >
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  5. Intellectual Property
+                </h2>
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="text-lg font-medium text-white mb-3">
+                      Our Rights
+                    </h3>
+                    <p className="text-neutral-400 leading-relaxed text-sm">
+                      The Service, including its "look and feel" (e.g., text,
+                      graphics, images, logos), proprietary content, information
+                      and other materials, are protected under copyright,
+                      trademark and other intellectual property laws.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium text-white mb-3">
+                      Your Rights
+                    </h3>
+                    <p className="text-neutral-400 leading-relaxed text-sm">
+                      You retain all rights to the source code you upload to the
+                      Service. We claim no intellectual property rights over the
+                      material you provide to the Service.
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              {/* Payment */}
+              <section id="payment" className="scroll-mt-24 space-y-6">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  6. Payment & Subscription
+                </h2>
+                <div className="bg-[#0D0D0D] border border-white/10 rounded-xl p-6">
+                  <ul className="space-y-4">
+                    <li className="flex gap-4">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white mt-2 shrink-0" />
+                      <span className="text-neutral-400 leading-relaxed">
+                        <strong className="text-white">Fees:</strong> Some parts
+                        of the Service are billed on a subscription basis
+                        ("Subscription(s)"). You will be billed in advance on a
+                        recurring and periodic basis ("Billing Cycle").
+                      </span>
+                    </li>
+                    <li className="flex gap-4">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white mt-2 shrink-0" />
+                      <span className="text-neutral-400 leading-relaxed">
+                        <strong className="text-white">Changes:</strong> We
+                        reserve the right to change our pricing at any time. Any
+                        price changes will become effective at the end of the
+                        then-current Billing Cycle.
+                      </span>
+                    </li>
+                    <li className="flex gap-4">
+                      <div className="w-1.5 h-1.5 rounded-full bg-white mt-2 shrink-0" />
+                      <span className="text-neutral-400 leading-relaxed">
+                        <strong className="text-white">Refunds:</strong> Except
+                        when required by law, paid Subscription fees are
+                        non-refundable.
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </section>
+
+              {/* Termination */}
+              <section id="termination" className="scroll-mt-24 space-y-6">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  7. Termination
+                </h2>
+                <p className="text-neutral-400 leading-relaxed">
+                  We may terminate or suspend your account and bar access to the
+                  Service immediately, without prior notice or liability, under
+                  our sole discretion, for any reason whatsoever and without
+                  limitation, including but not limited to a breach of the
+                  Terms.
+                </p>
+                <p className="text-neutral-400 leading-relaxed">
+                  If you wish to terminate your account, you may simply
+                  discontinue using the Service or delete your account from the
+                  settings page.
+                </p>
+              </section>
+
+              {/* Disclaimer */}
+              <section id="disclaimer" className="scroll-mt-24 space-y-6">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  8. Disclaimer of Warranties
+                </h2>
+                <div className="bg-red-500/10 border border-red-500/20 p-6 rounded-xl">
+                  <p className="text-red-200/80 leading-relaxed text-sm uppercase tracking-wide font-medium mb-2">
+                    Disclaimer
+                  </p>
+                  <p className="text-neutral-400 leading-relaxed text-sm">
+                    THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE"
+                    BASIS. REFACTRON EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY
+                    KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED
+                    TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+                    PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+                  </p>
+                </div>
+              </section>
+
+              {/* Limitation of Liability */}
+              <section id="limitation" className="scroll-mt-24 space-y-6">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  9. Limitation of Liability
+                </h2>
+                <p className="text-neutral-400 leading-relaxed">
+                  IN NO EVENT SHALL REFACTRON, ITS DIRECTORS, EMPLOYEES,
+                  PARTNERS, AGENTS, SUPPLIERS, OR AFFILIATES, BE LIABLE FOR ANY
+                  INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR PUNITIVE
+                  DAMAGES, INCLUDING WITHOUT LIMITATION, LOSS OF PROFITS, DATA,
+                  USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM YOUR
+                  ACCESS TO OR USE OF OR INABILITY TO ACCESS OR USE THE SERVICE.
+                </p>
+              </section>
+
+              {/* Indemnification */}
+              <section id="indemnification" className="scroll-mt-24 space-y-6">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  10. Indemnification
+                </h2>
+                <p className="text-neutral-400 leading-relaxed">
+                  You agree to defend, indemnify and hold harmless Refactron and
+                  its licensee and licensors, and their employees, contractors,
+                  agents, officers and directors, from and against any and all
+                  claims, damages, obligations, losses, liabilities, costs or
+                  debt, and expenses (including but not limited to attorney's
+                  fees), resulting from or arising out of a) your use and access
+                  of the Service, or b) a breach of these Terms.
+                </p>
+              </section>
+
+              {/* Changes */}
+              <section id="changes" className="scroll-mt-24 space-y-6">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  11. Changes to Terms
+                </h2>
+                <p className="text-neutral-400 leading-relaxed">
+                  We reserve the right, at our sole discretion, to modify or
+                  replace these Terms at any time. If a revision is material we
+                  will provide at least 30 days' notice prior to any new terms
+                  taking effect. What constitutes a material change will be
+                  determined at our sole discretion.
+                </p>
+              </section>
+
+              {/* Governing Law */}
+              <section id="governing-law" className="scroll-mt-24 space-y-6">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  12. Governing Law
+                </h2>
+                <p className="text-neutral-400 leading-relaxed">
+                  These Terms shall be governed and construed in accordance with
+                  the laws of the United States, without regard to its conflict
+                  of law provisions. Our failure to enforce any right or
+                  provision of these Terms will not be considered a waiver of
+                  those rights.
+                </p>
+              </section>
+
+              {/* Contact */}
+              <section id="contact" className="scroll-mt-24 space-y-6">
+                <h2 className="text-2xl font-semibold text-white tracking-tight">
+                  Contact Information
+                </h2>
+                <div className="bg-white/5 border border-white/10 rounded-xl p-8 text-center">
+                  <p className="text-neutral-400 mb-6">
+                    If you have any questions about these Terms, please contact
+                    us:
+                  </p>
+                  <a
+                    href="mailto:legal@refactron.dev"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black font-medium rounded-lg hover:bg-neutral-200 transition-colors"
+                  >
+                    legal@refactron.dev
+                  </a>
+                </div>
+              </section>
+            </div>
+          </div>
+        </main>
       </div>
+
+      <Footer />
     </div>
   );
 };

@@ -56,6 +56,7 @@ export const AnimatedSpan = ({
     if (sequence.activeIndex === itemIndex) {
       setHasStarted(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sequence?.activeIndex, sequence?.sequenceStarted, hasStarted, itemIndex]);
 
   const shouldAnimate = sequence ? hasStarted : startOnView ? isInView : true;
@@ -139,6 +140,7 @@ export const TypingAnimation = ({
 
     const startTimeout = setTimeout(() => setStarted(true), delay);
     return () => clearTimeout(startTimeout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     delay,
     startOnView,
@@ -168,6 +170,7 @@ export const TypingAnimation = ({
     return () => {
       clearInterval(typingEffect);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children, duration, started]);
 
   return (
