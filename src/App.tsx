@@ -4,13 +4,14 @@ import { Analytics } from '@vercel/analytics/react';
 import HeroSection from './components/HeroSection';
 import RefactoringWorkflowSection from './components/RefactoringWorkflowSection';
 import WhatWeDoSection from './components/WhatWeDoSection';
-import EarlyAccessForm from './components/EarlyAccessForm';
+import PricingSection from './components/PricingSection';
+import FAQSection from './components/FAQSection';
 import CaseStudiesPage from './components/CaseStudiesPage';
 import CaseStudyDetailPage from './components/CaseStudyDetailPage';
 import AboutPage from './components/AboutPage';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
-import ProductReleasePopup from './components/ProductReleasePopup';
+
 import CookieManager from './components/CookieManager';
 import DocsPage from './components/DocsPage';
 import AuthApp from './components/AuthApp';
@@ -20,7 +21,7 @@ import SkipToMain from './components/SkipToMain';
 import usePerformanceMonitoring from './hooks/usePerformanceMonitoring';
 import useAccessibility from './hooks/useAccessibility';
 import PageLayout from './components/PageLayout';
-import ProductsPage from './components/ProductsPage';
+
 import { ThemeProvider } from './contexts/ThemeContext';
 
 const LandingContent: React.FC = () => (
@@ -28,7 +29,8 @@ const LandingContent: React.FC = () => (
     <HeroSection />
     <RefactoringWorkflowSection />
     <WhatWeDoSection />
-    <EarlyAccessForm />
+    <PricingSection />
+    <FAQSection />
   </>
 );
 
@@ -39,19 +41,30 @@ function App() {
   // Enable accessibility features
   useAccessibility();
 
-  const isDocsHost =
-    typeof window !== 'undefined' &&
-    window.location.hostname.startsWith('docs.');
-
   // Support local testing via environment variable
   const enableLocalAuth =
     process.env.REACT_APP_ENABLE_LOCAL_AUTH === 'true' ||
     process.env.REACT_APP_ENABLE_LOCAL_AUTH === '1';
 
+  const enableLocalDocs =
+    process.env.REACT_APP_ENABLE_LOCAL_DOCS === 'true' ||
+    process.env.REACT_APP_ENABLE_LOCAL_DOCS === '1';
+
+  const isDocsHost =
+    (typeof window !== 'undefined' &&
+      window.location.hostname.startsWith('docs.')) ||
+    (enableLocalDocs &&
+      typeof window !== 'undefined' &&
+      (window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.hostname.startsWith('192.168.') ||
+        window.location.hostname.startsWith('10.0.')));
+
   const isAppHost =
     (typeof window !== 'undefined' &&
       window.location.hostname.startsWith('app.')) ||
     (enableLocalAuth &&
+      !enableLocalDocs &&
       typeof window !== 'undefined' &&
       (window.location.hostname === 'localhost' ||
         window.location.hostname === '127.0.0.1' ||
@@ -93,27 +106,13 @@ function App() {
                 <Route
                   path="/case-studies/:slug"
                   element={
-                    <PageLayout>
+                    <PageLayout mainClassName="pt-0 sm:pt-0">
                       <CaseStudyDetailPage />
                     </PageLayout>
                   }
                 />
-                <Route
-                  path="/privacy-policy"
-                  element={
-                    <PageLayout>
-                      <PrivacyPolicy />
-                    </PageLayout>
-                  }
-                />
-                <Route
-                  path="/terms-of-service"
-                  element={
-                    <PageLayout>
-                      <TermsOfService />
-                    </PageLayout>
-                  }
-                />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-of-service" element={<TermsOfService />} />
                 <Route
                   path="/about"
                   element={
@@ -122,14 +121,7 @@ function App() {
                     </PageLayout>
                   }
                 />
-                <Route
-                  path="/products"
-                  element={
-                    <PageLayout>
-                      <ProductsPage />
-                    </PageLayout>
-                  }
-                />
+
                 {/* Local auth routes - only accessible when REACT_APP_ENABLE_LOCAL_AUTH is enabled */}
                 {enableLocalAuth && (
                   <>
@@ -146,7 +138,7 @@ function App() {
                   }
                 />
               </Routes>
-              <ProductReleasePopup />
+
               <CookieManager />
             </>
           )}

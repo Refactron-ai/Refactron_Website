@@ -15,8 +15,7 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   { label: 'About', href: '/about' },
-  { label: 'Solutions', target: '#features' },
-  { label: 'Products', href: '/products' },
+  { label: 'Pricing', target: '#pricing' },
   { label: 'Case Studies', href: '/case-studies' },
   { label: 'Docs', href: 'https://docs.refactron.dev' },
   { label: 'Login', href: '/login' },
@@ -113,7 +112,7 @@ const NavigationBar: React.FC = () => {
                       ? 'noopener noreferrer'
                       : undefined
                   }
-                  className="px-4 py-2 text-sm font-medium text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors rounded-full"
+                  className="px-4 py-2 text-sm font-medium text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors rounded-full font-space"
                 >
                   <span className="inline-flex items-center gap-1">
                     {item.label}
@@ -126,7 +125,7 @@ const NavigationBar: React.FC = () => {
                 <button
                   key={item.label}
                   onClick={() => handleItemClick(item)}
-                  className="px-4 py-2 text-sm font-medium text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors rounded-full"
+                  className="px-4 py-2 text-sm font-medium text-[var(--text-tertiary)] hover:text-[var(--text-primary)] transition-colors rounded-full font-space"
                 >
                   {item.label}
                 </button>
@@ -149,7 +148,9 @@ const NavigationBar: React.FC = () => {
                 background="#f5f5f5"
                 shimmerColor="rgba(0,0,0,0.2)"
               >
-                <span className="text-sm font-medium text-black">Sign Up</span>
+                <span className="text-sm font-medium text-black font-space">
+                  Sign Up
+                </span>
               </ShimmerButton>
             </a>
           </div>
@@ -184,7 +185,7 @@ const NavigationBar: React.FC = () => {
                         ? 'noopener noreferrer'
                         : undefined
                     }
-                    className="flex items-center justify-between px-4 py-3 rounded-2xl bg-[var(--surface-elevated)] shadow-sm border border-[var(--border-primary)] text-[var(--text-secondary)] text-sm font-medium"
+                    className="flex items-center justify-between px-4 py-3 rounded-2xl bg-[var(--surface-elevated)] shadow-sm border border-[var(--border-primary)] text-[var(--text-secondary)] text-sm font-medium font-space"
                   >
                     <span>{item.label}</span>
                     {item.href.startsWith('http') && (
@@ -195,7 +196,7 @@ const NavigationBar: React.FC = () => {
                   <button
                     key={item.label}
                     onClick={() => handleItemClick(item)}
-                    className="text-left px-4 py-3 rounded-2xl bg-[var(--surface-elevated)] shadow-sm border border-[var(--border-primary)] text-[var(--text-secondary)] text-sm font-medium"
+                    className="text-left px-4 py-3 rounded-2xl bg-[var(--surface-elevated)] shadow-sm border border-[var(--border-primary)] text-[var(--text-secondary)] text-sm font-medium font-space"
                   >
                     {item.label}
                   </button>
@@ -211,7 +212,7 @@ const NavigationBar: React.FC = () => {
                   { source: 'mobile_navigation' },
                   { href: '/signup' }
                 )}
-                className="w-full px-4 py-3 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold text-sm shadow-lg text-center"
+                className="w-full px-4 py-3 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold text-sm shadow-lg text-center font-space"
               >
                 Sign Up
               </a>

@@ -1,173 +1,189 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import {
-  Brain,
-  Zap,
-  Shield,
-  TrendingUp,
-  Code,
-  Rocket,
-  CheckCircle2,
-} from 'lucide-react';
+'use client';
+import React, { useRef } from 'react';
+import { useScroll, useTransform, motion } from 'framer-motion';
 import { cn } from '../utils/cn';
+import { StarsBackground } from './ui/stars-background';
+import { ShootingStars } from './ui/shooting-stars';
+import { FeatureCard } from './ui/feature-card';
 
 const WhatWeDoSection: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end'],
+  });
+
   const features = [
     {
-      icon: Brain,
-      title: 'Refactoring Intelligence, Not Blind Automation',
-      description:
-        'Refactron treats refactoring as a structured, safety-first process—focusing on understanding your codebase and proposing targeted, behavior-preserving improvements.',
+      title: 'Refactoring Intelligence',
+      subtitle:
+        'Refactoring treated as a structured, safety-first engineering process—not blind automation.',
+      points: [
+        'Understands code structure and relationships',
+        'Proposes targeted, behavior-preserving improvements',
+        'Avoids large, risk-heavy rewrites',
+      ],
+      cardTitle: 'INTELLIGENCE ENGINE',
+      cardCode: [
+        '> analyzing_dependency_graph...',
+        '> detecting_architectural_smells...',
+        '> identified: circular_dependency [module_a <-> module_b]',
+        '> calculating_impact_radius...',
+        '> proposal_ready: extract_interface strategy',
+      ],
     },
     {
-      icon: Code,
-      title: 'Structural Code Understanding',
-      description:
-        'Analyze codebases beyond surface-level syntax by identifying relationships, dependencies, and structural complexity that impact long-term maintainability.',
+      title: 'Maintainability-First',
+      subtitle: 'Focused on long-term code health, not short-term fixes.',
+      points: [
+        'Reduces complexity and duplication',
+        'Keeps changes minimal and reviewable',
+        'Improves readability and structure over time',
+      ],
+      cardTitle: 'HEALTH METRICS',
+      cardCode: [
+        '> calculating_cyclomatic_complexity...',
+        '> current_score: 15 (high_risk)',
+        '> applying_refactor: simplify_conditional...',
+        '> new_score: 4 (low_risk)',
+        '> duplication_index: reduced by 40%',
+      ],
     },
     {
-      icon: Shield,
-      title: 'Maintainability-Focused Refactoring',
-      description:
-        'Surface refactoring opportunities that reduce complexity, duplication, and architectural rigidity—while keeping changes minimal, reviewable, and safe to adopt.',
+      title: 'Human-in-the-Loop',
+      subtitle: 'Developers stay in control of every change.',
+      points: [
+        'Refactors delivered as clear diffs',
+        'Designed for inspection and code review',
+        'Automation only with explicit intent',
+      ],
+      cardTitle: 'REVIEW INTERFACE',
+      cardCode: [
+        '> generating_diff...',
+        '> --- a/src/legacy_service.ts',
+        '> +++ b/src/legacy_service.ts',
+        '> - function complexLogic() { ... }',
+        '> + function simplifiedLogic() { ... }',
+        '> waiting_for_approval...',
+        '> approved_by: @senior_dev',
+      ],
     },
     {
-      icon: TrendingUp,
-      title: 'Human-in-the-Loop Improvements',
-      description:
-        'Refactron proposes changes, but developers stay in control. Every refactor is delivered as a clear diff for inspection, review, and validation.',
+      title: 'Incremental Legacy Evolution',
+      subtitle: 'Modernize existing systems without disruption.',
+      points: [
+        'Small, verified improvements',
+        'Safe to apply in production codebases',
+        'No big-bang migrations',
+      ],
+      cardTitle: 'EVOLUTION STRATEGY',
+      cardCode: [
+        '> strategy: strangler_fig_pattern',
+        '> phase_1: isolate_legacy_module... [DONE]',
+        '> phase_2: route_traffic_to_new_service... [IN_PROGRESS]',
+        '> monitoring_error_rates... [STABLE]',
+        '> legacy_system_load: 40% -> 20%',
+      ],
     },
     {
-      icon: Rocket,
-      title: 'Legacy Code Evolution',
-      description:
-        'Gradually modernize long-lived systems through verified, incremental improvements rather than risky, large-scale rewrites.',
+      title: 'Workflow-Friendly',
+      subtitle: 'Fits naturally into how teams already work.',
+      points: [
+        'Git- and CI/CD-aware by design',
+        'Produces documentation and metrics',
+        'Built to scale with engineering workflows',
+      ],
+      cardTitle: 'CI/CD INTEGRATION',
+      cardCode: [
+        '> git fetch origin main',
+        '> refactron check --branch feature/new-api',
+        '> analyzing_changes...',
+        '> report_generated: refactron-report.json',
+        '> posting_pr_comment...',
+        '> status: success (no regressions found)',
+      ],
     },
-    {
-      icon: Zap,
-      title: 'Workflow-Friendly by Design',
-      description:
-        'Designed to fit into existing developer workflows today, with a long-term vision of seamless CI/CD and tooling integration across your engineering stack.',
-    },
-  ];
-
-  const benefits = [
-    'AI-Powered',
-    'Enterprise Ready',
-    'Developer Focused',
-    'Safety-First',
   ];
 
   return (
     <section
-      id="features"
-      className="relative py-16 sm:py-20 lg:py-24 bg-[var(--bg-primary)] scroll-mt-24 overflow-hidden"
+      ref={containerRef}
+      className="relative bg-[var(--bg-primary)] w-full"
     >
-      {/* Grid Background */}
-      <div
-        className={cn(
-          'absolute inset-0 pointer-events-none',
-          '[background-size:40px_40px]',
-          '[background-image:linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)]'
-        )}
-      />
-      {/* Radial gradient mask for faded look */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-[var(--bg-primary)] [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+      {/* Backgrounds */}
+      <div className="absolute inset-0 pointer-events-none fixed">
+        <StarsBackground />
+        <ShootingStars
+          starColor="#9E00FF"
+          trailColor="#2EB9DF"
+          minSpeed={5}
+          maxSpeed={5}
+          minDelay={1000}
+          maxDelay={3000}
+        />
+      </div>
 
-      <div className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mb-12 sm:mb-16 lg:mb-20 max-w-4xl mx-auto"
-        >
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light mb-6 text-[var(--text-primary)] tracking-tight leading-tight">
-            Refactoring Intelligence, Not Blind Automation
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-[var(--text-tertiary)] max-w-3xl mx-auto leading-relaxed">
-            Refactron approaches refactoring as a structured, safety-first
-            process—not a generic code generation task. It focuses on
-            understanding code relationships and proposing targeted improvements
-            that preserve behavior, so teams can evolve complex systems with
-            confidence instead of risk-heavy rewrites.
-          </p>
-        </motion.div>
-
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {features.map((feature, index) => (
+          <div
+            key={index}
+            className="min-h-[600px] flex items-center justify-center py-10"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full items-center">
+              {/* Left Content */}
               <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group"
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                viewport={{ once: false, margin: '-20%' }}
+                className="space-y-8"
               >
-                <div className="glossy-surface rounded-xl p-6 sm:p-8 h-full transition-all duration-300 hover:shadow-xl hover:border-primary-500/30 hover:-translate-y-1">
-                  {/* Icon Container */}
-                  <div className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-primary-500 rounded-lg mb-6 group-hover:bg-primary-600 transition-colors duration-300">
-                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <span className="text-sm font-mono text-neutral-400 tracking-wider">
+                      0{index + 1}
+                    </span>
+                    <div className="h-[1px] w-full max-w-[600px] bg-neutral-800" />
                   </div>
-
-                  {/* Content */}
-                  <h3 className="text-lg sm:text-xl font-light mb-4 text-[var(--text-primary)] leading-tight tracking-tight">
+                  <h2 className="text-4xl sm:text-5xl lg:text-6xl font-light text-[var(--text-primary)] tracking-tight font-space leading-[1.1]">
                     {feature.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-[var(--text-tertiary)] leading-relaxed">
-                    {feature.description}
+                  </h2>
+                  <p className="text-xl text-neutral-400 font-space leading-relaxed max-w-lg">
+                    {feature.subtitle}
                   </p>
                 </div>
+
+                <ul className="space-y-4">
+                  {feature.points.map((point, i) => (
+                    <li
+                      key={i}
+                      className="flex items-start gap-3 text-neutral-400 font-space text-base"
+                    >
+                      <span className="mt-2.5 w-1 h-1 rounded-full bg-neutral-400 shrink-0" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
               </motion.div>
-            );
-          })}
-        </div>
 
-        {/* Bottom CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <div className="glossy-surface rounded-2xl p-8 sm:p-10 lg:p-12 max-w-5xl mx-auto">
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-light mb-6 text-[var(--text-primary)] tracking-tight">
-              A Safer Direction for Code Quality
-            </h3>
-            <p className="text-base sm:text-lg text-[var(--text-tertiary)] leading-relaxed mb-8 max-w-3xl mx-auto">
-              Refactron is built on the belief that improving code quality
-              should be predictable, explainable, and boring. The goal is not
-              novelty, but confidence at scale—making large-scale refactoring a
-              safe, repeatable part of everyday engineering work.
-            </p>
-
-            {/* Benefits Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 max-w-3xl mx-auto">
-              {benefits.map((benefit, index) => (
-                <motion.div
-                  key={benefit}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: 0.7 + index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="flex flex-col items-center gap-3 p-4 rounded-lg bg-[var(--surface-secondary)] border border-[var(--border-primary)]"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center">
-                    <CheckCircle2 className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                  </div>
-                  <span className="text-sm sm:text-base font-medium text-[var(--text-secondary)] text-center">
-                    {benefit}
-                  </span>
-                </motion.div>
-              ))}
+              {/* Right Card */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, rotate: 2 }}
+                whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                viewport={{ once: false, margin: '-20%' }}
+                className="relative h-[400px] w-full"
+              >
+                <FeatureCard
+                  step={`SESSION_0${index + 1}`}
+                  title={feature.cardTitle}
+                  code={feature.cardCode}
+                  className="h-full"
+                />
+              </motion.div>
             </div>
           </div>
-        </motion.div>
+        ))}
       </div>
     </section>
   );

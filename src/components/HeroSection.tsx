@@ -33,7 +33,7 @@ const HeroSection: React.FC = () => {
         <LightRays
           raysOrigin="top-center"
           raysColor="#48d1cc"
-          raysSpeed={1.5}
+          raysSpeed={0.5}
           lightSpread={0.8}
           rayLength={1.2}
           followMouse={true}
@@ -51,7 +51,7 @@ const HeroSection: React.FC = () => {
         <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 gap-8 lg:gap-12">
           <div className="text-left max-w-3xl w-full lg:w-1/2">
             {/* Main Headline - Improved typography with lighter weight */}
-            <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-3 sm:mb-4 leading-[1.1] tracking-tight">
+            <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-3 sm:mb-4 leading-[1.1] tracking-tight font-space">
               <TextGenerateEffect
                 words="Transform Legacy"
                 className="text-[var(--text-primary)] inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
@@ -75,7 +75,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.0 }}
-              className="text-lg sm:text-xl md:text-2xl text-[var(--text-tertiary)] mb-4 sm:mb-5 leading-relaxed font-light"
+              className="text-lg sm:text-xl md:text-2xl text-[var(--text-tertiary)] mb-4 sm:mb-5 leading-relaxed font-light font-space"
             >
               Refactor. Optimize. Automate.
             </motion.p>
@@ -84,7 +84,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.2 }}
-              className="text-sm sm:text-base md:text-lg text-[var(--text-muted)] mb-5 sm:mb-6 leading-relaxed"
+              className="text-sm sm:text-base md:text-lg text-[var(--text-muted)] mb-5 sm:mb-6 leading-relaxed font-space"
             >
               Refactron safely refactor and modernize legacy code{' '}
               <br className="hidden sm:block" />
@@ -104,19 +104,16 @@ const HeroSection: React.FC = () => {
                 href="https://pypi.org/project/refactron/"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 bg-white text-black rounded-full px-6 h-12 hover:bg-neutral-100 font-medium text-base transition-all duration-300 hover:scale-[1.02] font-space"
               >
-                <ShimmerButton className="shadow-2xl gap-2 h-14">
-                  <span className="text-base font-medium text-neutral-300">
-                    Try Refactron
-                  </span>
-                  <ArrowRight className="w-5 h-5 text-neutral-300 transition-transform group-hover:translate-x-1" />
-                </ShimmerButton>
+                <span>Try Refactron</span>
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </a>
               <a
                 href="https://docs.refactron.dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 border-2 border-neutral-300 text-neutral-300 rounded-full px-6 h-14 hover:bg-white/10 font-medium text-base transition-all duration-300 hover:scale-[1.02]"
+                className="group inline-flex items-center gap-2 border border-neutral-700 text-neutral-300 rounded-full px-6 h-12 hover:bg-white/5 font-medium text-base transition-all duration-300 hover:scale-[1.02] font-space"
               >
                 <span>Read Docs</span>
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -157,7 +154,7 @@ const HeroSection: React.FC = () => {
           className="absolute bottom-12 left-0 w-full z-20"
         >
           <div className="w-full sm:w-[70%] lg:w-[60%] mx-auto px-4">
-            <p className="text-center text-xs font-medium text-neutral-500 tracking-widest mb-6 uppercase">
+            <p className="text-center text-xs font-medium text-neutral-500 tracking-widest mb-6 uppercase font-space">
               Used by developers from
             </p>
             <LogoLoop
@@ -174,7 +171,7 @@ const HeroSection: React.FC = () => {
                 },
                 {
                   node: (
-                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors group">
+                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors group font-space">
                       <img
                         src="/logos/Salesforce.png"
                         alt="Salesforce"
@@ -197,7 +194,7 @@ const HeroSection: React.FC = () => {
                 },
                 {
                   node: (
-                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors group">
+                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors group font-space">
                       <img
                         src="/logos/Accenture.png"
                         alt="Accenture"
@@ -210,7 +207,7 @@ const HeroSection: React.FC = () => {
                 },
                 {
                   node: (
-                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors">
+                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors font-space">
                       <Package className="w-6 h-6" />
                       <span>PyPi</span>
                     </div>
@@ -219,7 +216,7 @@ const HeroSection: React.FC = () => {
                 },
                 {
                   node: (
-                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors">
+                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors font-space">
                       <Github className="w-6 h-6" />
                       <span>Github</span>
                     </div>
@@ -228,7 +225,7 @@ const HeroSection: React.FC = () => {
                 },
                 {
                   node: (
-                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors">
+                    <div className="flex items-center gap-2 font-semibold text-xl text-neutral-400 hover:text-[var(--text-primary)] transition-colors font-space">
                       <Users className="w-6 h-6" />
                       <span>Open Source Community</span>
                     </div>

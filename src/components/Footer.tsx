@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, Heart, MapPin, Settings } from 'lucide-react';
+import { Github, Linkedin, Mail } from 'lucide-react';
+import DiscordIcon from '../icons/DiscordIcon';
+import XIcon from '../icons/XIcon';
 import CookiePreferencesModal from './CookiePreferencesModal';
 import { useCookieConsent, CookiePreferences } from '../hooks/useCookieConsent';
-import DiscordIcon from '../icons/DiscordIcon';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -14,228 +14,170 @@ const Footer: React.FC = () => {
     savePreferences(newPreferences);
   };
 
-  const socialLinks = [
-    {
-      name: 'GitHub',
-      icon: Github,
-      url: 'https://github.com/Refactron-ai',
-      color: 'hover:text-gray-700',
-    },
-    {
-      name: 'LinkedIn',
-      icon: Linkedin,
-      url: 'https://linkedin.com/company/refactron',
-      color: 'hover:text-blue-600',
-    },
-    {
-      name: 'Discord',
-      icon: DiscordIcon,
-      url: 'https://discord.gg/zynEKJq8',
-      color: 'hover:text-indigo-600',
-    },
-    {
-      name: 'Email',
-      icon: Mail,
-      url: 'mailto:hello@refactron.dev',
-      color: 'hover:text-primary-600',
-    },
-  ];
-
-  const quickLinks = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Case Studies', href: '/case-studies' },
-    { label: 'Docs', href: 'https://docs.refactron.dev', external: true },
-  ];
-
   return (
-    <footer
-      id="contact"
-      className="relative bg-[var(--bg-primary)] border-t border-[var(--border-primary)] scroll-mt-24"
-    >
-      {/* Background Effects - Hidden on mobile */}
-      <div className="absolute inset-0">
-        <div className="hidden sm:block absolute top-20 left-20 w-72 h-72 bg-primary-100 dark:bg-primary-900/30 rounded-full blur-3xl animate-float opacity-60 dark:opacity-20"></div>
-        <div
-          className="hidden sm:block absolute bottom-20 right-20 w-96 h-96 bg-primary-200 dark:bg-primary-800/20 rounded-full blur-3xl animate-float opacity-40 dark:opacity-15"
-          style={{ animationDelay: '2s' }}
-        ></div>
-      </div>
-
-      <div className="relative z-10 py-8 sm:py-10 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto">
-          {/* Main Footer Content */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-12 mb-6">
-            {/* Brand Section */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="flex flex-col items-center sm:items-start text-center sm:text-left"
-            >
-              <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
-                <span className="gradient-text">Refactron™</span>
-              </h3>
-              <p className="text-sm sm:text-base text-[var(--text-tertiary)] leading-relaxed mb-4 sm:mb-6 max-w-sm">
-                Refactor. Optimize. Automate. Building the future of developer
-                productivity with AI-powered code optimization.
-              </p>
-              <div className="flex items-center justify-center sm:justify-start gap-2 text-[var(--text-muted)] text-xs sm:text-sm">
-                <span>Made with</span>
-                <Heart className="w-3 h-3 sm:w-4 sm:h-4 text-red-500 animate-pulse" />
-                <span>for developers</span>
+    <footer className="bg-black text-white py-12 border-t border-neutral-900 font-space">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
+          {/* Brand & Social */}
+          <div className="col-span-1 md:col-span-1">
+            <div className="mb-6">
+              <div className="flex items-center gap-2">
+                <img
+                  src="/logo.png"
+                  alt="Refactron Logo"
+                  className="w-6 h-6 flex-shrink-0"
+                />
+                <h3 className="text-2xl font-bold text-neutral-100">
+                  Refactron™
+                </h3>
               </div>
-            </motion.div>
+            </div>
 
-            {/* Social Links */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="flex flex-col items-center sm:items-start text-center sm:text-left"
-            >
-              <h4 className="text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-4 sm:mb-6">
-                Connect With Us
-              </h4>
-              <div className="flex justify-center sm:justify-start gap-3 sm:gap-4 mb-4 sm:mb-6">
-                {socialLinks.map((social, index) => (
-                  <motion.a
-                    key={social.name}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: 0.2 + index * 0.1 }}
-                    viewport={{ once: true }}
-                    className={`w-10 h-10 sm:w-12 sm:h-12 bg-[var(--surface-secondary)] rounded-xl flex items-center justify-center text-[var(--text-tertiary)] transition-all duration-300 hover:scale-110 ${social.color}`}
-                    aria-label={social.name}
-                  >
-                    <social.icon className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </motion.a>
-                ))}
-              </div>
-              <p className="text-xs sm:text-sm text-[var(--text-muted)] text-center sm:text-left">
-                Follow us for updates and insights
-              </p>
-            </motion.div>
+            <div className="flex items-center gap-4 text-neutral-400 mb-8">
+              <a
+                href="https://x.com/refactron"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+                aria-label="X (Twitter)"
+              >
+                <XIcon className="w-5 h-5" />
+              </a>
+              <a
+                href="https://linkedin.com/company/refactron"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="w-5 h-5" />
+              </a>
+              <a
+                href="https://github.com/Refactron-ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+                aria-label="GitHub"
+              >
+                <Github className="w-5 h-5" />
+              </a>
+              <a
+                href="https://discord.gg/zynEKJq8"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+                aria-label="Discord"
+              >
+                <DiscordIcon className="w-5 h-5" />
+              </a>
+            </div>
 
-            {/* Quick Links & Contact */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="flex flex-col items-center sm:items-start text-center sm:text-left"
-            >
-              <h4 className="text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-4 sm:mb-6">
-                Quick Links
-              </h4>
-              <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6 w-full">
-                {quickLinks.map(link => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target={link.external ? '_blank' : undefined}
-                    rel={link.external ? 'noopener noreferrer' : undefined}
-                    className="block text-sm sm:text-base text-[var(--text-tertiary)] hover:text-primary-600 transition-colors duration-300 font-medium"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Location */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="flex flex-col items-center sm:items-start text-center sm:text-left"
-            >
-              <h4 className="text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-4 sm:mb-6">
-                Our Location
-              </h4>
-              <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6 max-w-sm">
-                <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-3">
-                  <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-primary-500 flex-shrink-0" />
-                  <div className="text-center sm:text-left">
-                    <p className="text-[var(--text-tertiary)] font-medium text-sm sm:text-base">
-                      Bengaluru, India
-                    </p>
-                    <p className="text-xs sm:text-sm text-[var(--text-muted)]">
-                      Asia Pacific
-                    </p>
-                  </div>
-                </div>
-                <p className="text-[var(--text-tertiary)] text-xs sm:text-sm">
-                  Global team, local impact
-                </p>
-                <p className="text-xs text-[var(--text-muted)]">
-                  Serving developers worldwide
-                </p>
-              </div>
-            </motion.div>
+            <p className="text-sm text-neutral-500 mt-24">
+              © {currentYear} Refactron™. All rights reserved.
+            </p>
           </div>
 
-          {/* Bottom Section */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="pt-4 sm:pt-6 border-t border-[var(--border-primary)]"
-          >
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
-              <div className="text-center sm:text-left">
-                <p className="text-[var(--text-muted)] text-xs sm:text-sm">
-                  © {currentYear} Refactron™. All rights reserved.
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 md:gap-4 text-xs sm:text-sm text-[var(--text-muted)]">
-                <a
-                  href="/privacy-policy"
-                  className="hover:text-primary-600 transition-colors duration-300"
-                >
-                  Privacy Policy
-                </a>
-                <span className="hidden sm:inline">•</span>
-                <a
-                  href="/terms-of-service"
-                  className="hover:text-primary-600 transition-colors duration-300"
-                >
-                  Terms of Service
-                </a>
-                <span className="hidden sm:inline">•</span>
-                <button
-                  onClick={() => setShowCookieModal(true)}
-                  className="hover:text-primary-600 transition-colors duration-300 flex items-center gap-1"
-                >
-                  <Settings className="w-3 h-3" />
-                  Cookie Settings
-                </button>
-                <span className="hidden sm:inline">•</span>
-                <span className="text-center sm:text-left">
-                  Refactron™ is currently in development
-                </span>
-              </div>
+          {/* Links Columns */}
+          <div className="col-span-1 md:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-8">
+            {/* Product */}
+            <div>
+              <h4 className="text-sm font-semibold text-white mb-4">Product</h4>
+              <ul className="space-y-3">
+                <li>
+                  <a
+                    href="/#workflows"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    How It Works
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/#pricing"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    Pricing
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/terms-of-service"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    Terms
+                  </a>
+                </li>
+              </ul>
             </div>
 
-            <div className="mt-3 text-center">
-              <p className="text-xs text-[var(--text-muted)]">
-                Join our early access program to be notified when we launch.
-              </p>
+            {/* Resources */}
+            <div>
+              <h4 className="text-sm font-semibold text-white mb-4">
+                Resources
+              </h4>
+              <ul className="space-y-3">
+                <li>
+                  <a
+                    href="https://docs.refactron.dev"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    Documentation
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/case-studies"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    Examples
+                  </a>
+                </li>
+              </ul>
             </div>
-          </motion.div>
+
+            {/* Company */}
+            <div>
+              <h4 className="text-sm font-semibold text-white mb-4">Company</h4>
+              <ul className="space-y-3">
+                <li>
+                  <a
+                    href="/about"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="mailto:hello@refactron.dev"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    Contact
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/privacy-policy"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    Privacy
+                  </a>
+                </li>
+                <li>
+                  <button
+                    onClick={() => setShowCookieModal(true)}
+                    className="text-neutral-400 hover:text-white text-sm transition-colors text-left"
+                  >
+                    Cookie Settings
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Background decoration */}
-      <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary-500/50 to-transparent"></div>
 
       {/* Cookie Preferences Modal */}
       <CookiePreferencesModal

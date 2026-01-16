@@ -37,6 +37,8 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        space: ['Space Grotesk', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       animation: {
         'glow': 'glow 2s ease-in-out infinite alternate',
@@ -46,6 +48,7 @@ module.exports = {
         "shimmer-slide": "shimmer-slide var(--speed) ease-in-out infinite alternate",
         "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
         aurora: "aurora 60s linear infinite",
+        "cell-ripple": "cell-ripple var(--duration, 200ms) ease-out none 1 var(--delay, 0ms)",
       },
       keyframes: {
         glow: {
@@ -91,6 +94,17 @@ module.exports = {
           },
           to: {
             backgroundPosition: "350% 50%, 350% 50%",
+          },
+        },
+        "cell-ripple": {
+          "0%": {
+            opacity: "0.4",
+          },
+          "50%": {
+            opacity: "0.8",
+          },
+          "100%": {
+            opacity: "0.4",
           },
         },
       }
