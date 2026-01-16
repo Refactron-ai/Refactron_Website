@@ -6,14 +6,12 @@ import {
   Rocket,
   Workflow,
   ShieldCheck,
-  PlugZap,
   BookOpen,
   GraduationCap,
   Menu,
   X,
   ChevronRight,
   Search,
-  Eye,
   ChevronDown,
   Check,
 } from 'lucide-react';
@@ -128,7 +126,6 @@ const securityItems = [
 const versions = ['v1.0.1', 'v1.0.0', 'v0.1.0b'];
 
 const DocsPage: React.FC = () => {
-  const currentYear = new Date().getFullYear();
   const [showMobileNav, setShowMobileNav] = React.useState(false);
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
   const [selectedVersion, setSelectedVersion] = React.useState('v1.0.0');
@@ -423,20 +420,20 @@ const DocsPage: React.FC = () => {
               </span>
               <ul className="space-y-0.5">
                 <li>
-                  <a
-                    href="#"
-                    className="group flex items-center gap-2 px-2 py-1.5 rounded-md text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5 transition-all"
+                  <button
+                    type="button"
+                    className="group flex items-center gap-2 px-2 py-1.5 rounded-md text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5 transition-all w-full text-left"
                   >
                     Python SDK
-                  </a>
+                  </button>
                 </li>
                 <li>
-                  <a
-                    href="#"
-                    className="group flex items-center gap-2 px-2 py-1.5 rounded-md text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5 transition-all"
+                  <button
+                    type="button"
+                    className="group flex items-center gap-2 px-2 py-1.5 rounded-md text-sm font-medium text-neutral-400 hover:text-white hover:bg-white/5 transition-all w-full text-left"
                   >
                     TypeScript SDK
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>

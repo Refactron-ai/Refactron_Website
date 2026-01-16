@@ -1,17 +1,12 @@
 'use client';
 import React, { useRef } from 'react';
-import { useScroll, useTransform, motion } from 'framer-motion';
-import { cn } from '../utils/cn';
+import { motion } from 'framer-motion';
 import { StarsBackground } from './ui/stars-background';
 import { ShootingStars } from './ui/shooting-stars';
 import { FeatureCard } from './ui/feature-card';
 
 const WhatWeDoSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
 
   const features = [
     {

@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Target, Shield, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { caseStudies } from '../data/caseStudies';
 import { BackgroundBeams } from './ui/background-beams';
 
 const CaseStudiesPage: React.FC = () => {
   const navigate = useNavigate();
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
     <div className="relative min-h-screen bg-black text-neutral-400 font-space overflow-hidden">
@@ -46,8 +45,6 @@ const CaseStudiesPage: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
                 viewport={{ once: true }}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
                 className="group relative h-full flex pointer-events-auto"
               >
                 <div className="relative h-full w-full aspect-square rounded-2xl border border-white/10 bg-[#0D0D0D] p-8 shadow-2xl overflow-hidden hover:border-white/20 transition-all duration-300 flex flex-col justify-between">

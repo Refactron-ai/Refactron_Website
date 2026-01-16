@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, X, ChevronRight, Command } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Search, ChevronRight, Command } from 'lucide-react';
 
 interface Section {
   id: string;
@@ -48,6 +47,17 @@ const DocsSearchModal: React.FC<DocsSearchModalProps> = ({
     }
   }, [isOpen]);
 
+  const handleSelect = React.useCallback(
+    (id: string) => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+      onClose();
+    },
+    [onClose]
+  );
+
   // Handle keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -79,7 +89,7 @@ const DocsSearchModal: React.FC<DocsSearchModalProps> = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, filteredSections, selectedIndex]);
+  }, [isOpen, filteredSections, selectedIndex, onClose, handleSelect]);
 
   // Scroll selected item into view
   useEffect(() => {
@@ -95,14 +105,6 @@ const DocsSearchModal: React.FC<DocsSearchModalProps> = ({
       }
     }
   }, [selectedIndex]);
-
-  const handleSelect = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-    onClose();
-  };
 
   if (!isOpen) return null;
 
@@ -158,18 +160,16 @@ const DocsSearchModal: React.FC<DocsSearchModalProps> = ({
                     key={section.id}
                     onClick={() => handleSelect(section.id)}
                     onMouseEnter={() => setSelectedIndex(index)}
-                    className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left transition-colors ${
-                      index === selectedIndex
-                        ? 'bg-white/10 text-white'
-                        : 'text-neutral-400 hover:bg-white/5 hover:text-white'
-                    }`}
+                    className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left transition-colors ${index === selectedIndex
+                      ? 'bg-white/10 text-white'
+                      : 'text-neutral-400 hover:bg-white/5 hover:text-white'
+                      }`}
                   >
                     <div
-                      className={`p-2 rounded-md ${
-                        index === selectedIndex
-                          ? 'bg-white/20 text-white'
-                          : 'bg-white/5 text-neutral-500'
-                      }`}
+                      className={`p-2 rounded-md ${index === selectedIndex
+                        ? 'bg-white/20 text-white'
+                        : 'bg-white/5 text-neutral-500'
+                        }`}
                     >
                       <section.icon className="w-4 h-4" />
                     </div>

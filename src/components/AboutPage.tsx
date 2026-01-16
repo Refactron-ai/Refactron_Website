@@ -2,12 +2,9 @@ import React, { useState } from 'react';
 import {
   Shield,
   CheckCircle2,
-  FileCode,
   GitBranch,
-  Lock,
   Eye,
   RotateCcw,
-  FileText,
 } from 'lucide-react';
 import useSEO from '../hooks/useSEO';
 

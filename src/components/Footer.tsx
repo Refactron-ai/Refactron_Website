@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Github, Linkedin, Mail } from 'lucide-react';
+import { Github, Linkedin } from 'lucide-react';
 import DiscordIcon from '../icons/DiscordIcon';
 import XIcon from '../icons/XIcon';
 import CookiePreferencesModal from './CookiePreferencesModal';

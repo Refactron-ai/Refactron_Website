@@ -4,7 +4,6 @@ import {
   ArrowRight,
   Eye,
   EyeOff,
-  AlertCircle,
   CheckCircle2,
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -15,7 +14,7 @@ import {
   isOAuthProviderConfigured,
   type OAuthProvider,
 } from '../utils/oauth';
-import { GoogleLogo, GithubLogo } from './SocialLogos';
+import { GoogleLogo } from './SocialLogos';
 
 interface FormData {
   email: string;

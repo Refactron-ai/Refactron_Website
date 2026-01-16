@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Shield, ArrowLeft, Menu, X, ChevronRight } from 'lucide-react';
+import { Shield, ArrowLeft, Menu, X } from 'lucide-react';
 import Footer from './Footer';
+
+const sections = [
+  { id: 'introduction', title: 'Introduction' },
+  { id: 'information-collection', title: 'Information Collection' },
+  { id: 'use-of-information', title: 'Use of Information' },
+  { id: 'data-security', title: 'Data Security' },
+  { id: 'data-retention', title: 'Data Retention' },
+  { id: 'sharing-disclosure', title: 'Sharing & Disclosure' },
+  { id: 'user-rights', title: 'Your Rights' },
+  { id: 'cookies', title: 'Cookies & Tracking' },
+  { id: 'children', title: "Children's Privacy" },
+  { id: 'changes', title: 'Changes to Policy' },
+  { id: 'contact', title: 'Contact Us' },
+];
 
 const PrivacyPolicy: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [showMobileNav, setShowMobileNav] = useState(false);
-
-  const sections = [
-    { id: 'introduction', title: 'Introduction' },
-    { id: 'definitions', title: 'Definitions' },
-    { id: 'information-collected', title: 'Information We Collect' },
-    { id: 'how-we-use', title: 'How We Use Your Information' },
-    { id: 'legal-basis', title: 'Legal Basis for Processing' },
-    { id: 'data-protection', title: 'Data Protection & Security' },
-    { id: 'cookies', title: 'Cookies & Tracking Technologies' },
-    { id: 'third-party', title: 'Third-Party Services' },
-    { id: 'data-retention', title: 'Data Retention' },
-    { id: 'your-rights', title: 'Your Rights' },
-    { id: 'data-breaches', title: 'Data Breach Notification' },
-    { id: 'children-privacy', title: "Children's Privacy" },
-    { id: 'changes', title: 'Changes to This Policy' },
-    { id: 'contact', title: 'Contact Us' },
-  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,11 +77,10 @@ const PrivacyPolicy: React.FC = () => {
                   <button
                     key={section.id}
                     onClick={() => scrollToSection(section.id)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                      activeSection === section.id
-                        ? 'bg-white/10 text-white'
-                        : 'text-neutral-400 hover:text-white hover:bg-white/5'
-                    }`}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeSection === section.id
+                      ? 'bg-white/10 text-white'
+                      : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                      }`}
                   >
                     {section.title}
                   </button>
@@ -138,11 +133,10 @@ const PrivacyPolicy: React.FC = () => {
                 <button
                   key={section.id}
                   onClick={() => scrollToSection(section.id)}
-                  className={`w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${
-                    activeSection === section.id
-                      ? 'text-white bg-white/5'
-                      : 'text-neutral-400 hover:text-white hover:bg-white/5'
-                  }`}
+                  className={`w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${activeSection === section.id
+                    ? 'text-white bg-white/5'
+                    : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                    }`}
                 >
                   {activeSection === section.id && (
                     <div className="w-1 h-1 rounded-full bg-white" />
