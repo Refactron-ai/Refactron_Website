@@ -160,16 +160,18 @@ const DocsSearchModal: React.FC<DocsSearchModalProps> = ({
                     key={section.id}
                     onClick={() => handleSelect(section.id)}
                     onMouseEnter={() => setSelectedIndex(index)}
-                    className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left transition-colors ${index === selectedIndex
-                      ? 'bg-white/10 text-white'
-                      : 'text-neutral-400 hover:bg-white/5 hover:text-white'
-                      }`}
+                    className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left transition-colors ${
+                      index === selectedIndex
+                        ? 'bg-white/10 text-white'
+                        : 'text-neutral-400 hover:bg-white/5 hover:text-white'
+                    }`}
                   >
                     <div
-                      className={`p-2 rounded-md ${index === selectedIndex
-                        ? 'bg-white/20 text-white'
-                        : 'bg-white/5 text-neutral-500'
-                        }`}
+                      className={`p-2 rounded-md ${
+                        index === selectedIndex
+                          ? 'bg-white/20 text-white'
+                          : 'bg-white/5 text-neutral-500'
+                      }`}
                     >
                       <section.icon className="w-4 h-4" />
                     </div>

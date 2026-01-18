@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Shield,
-  CheckCircle2,
-  GitBranch,
-  Eye,
-  RotateCcw,
-} from 'lucide-react';
+import { Shield, CheckCircle2, GitBranch, Eye, RotateCcw } from 'lucide-react';
 import useSEO from '../hooks/useSEO';
 
 import { motion } from 'framer-motion';

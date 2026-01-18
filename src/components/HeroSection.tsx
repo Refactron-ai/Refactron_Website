@@ -8,7 +8,6 @@ import { Terminal, TypingAnimation, AnimatedSpan } from './ui/terminal';
 import { ArrowRight, Github, Package, Users } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
-
   return (
     <section
       id="home"
