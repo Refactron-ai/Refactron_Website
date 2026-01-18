@@ -79,10 +79,11 @@ const TermsOfService: React.FC = () => {
                   <button
                     key={section.id}
                     onClick={() => scrollToSection(section.id)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeSection === section.id
-                      ? 'bg-white/10 text-white'
-                      : 'text-neutral-400 hover:text-white hover:bg-white/5'
-                      }`}
+                    className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                      activeSection === section.id
+                        ? 'bg-white/10 text-white'
+                        : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                    }`}
                   >
                     {section.title}
                   </button>
@@ -135,10 +136,11 @@ const TermsOfService: React.FC = () => {
                 <button
                   key={section.id}
                   onClick={() => scrollToSection(section.id)}
-                  className={`w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${activeSection === section.id
-                    ? 'text-white bg-white/5'
-                    : 'text-neutral-400 hover:text-white hover:bg-white/5'
-                    }`}
+                  className={`w-full text-left px-2 py-1.5 rounded-md text-sm font-medium transition-all flex items-center gap-2 ${
+                    activeSection === section.id
+                      ? 'text-white bg-white/5'
+                      : 'text-neutral-400 hover:text-white hover:bg-white/5'
+                  }`}
                 >
                   {activeSection === section.id && (
                     <div className="w-1 h-1 rounded-full bg-white" />

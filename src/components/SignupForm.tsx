@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  ArrowRight,
-  Eye,
-  EyeOff,
-  CheckCircle2,
-} from 'lucide-react';
+import { ArrowRight, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSEO } from '../hooks/useSEO';
 import { getBaseUrl } from '../utils/urlUtils';
