@@ -129,7 +129,8 @@ const SignupForm: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || '';
+      const apiBaseUrl =
+        process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
       const response = await fetch(`${apiBaseUrl}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -146,7 +147,18 @@ const SignupForm: React.FC = () => {
         if (response.status === 409) {
           setErrors({ email: 'An account with this email already exists.' });
         } else {
-          setErrors({ general: data.message || 'Something went wrong.' });
+          if (data.errors && Array.isArray(data.errors)) {
+            const newErrors: FormErrors = { general: data.message };
+            data.errors.forEach((err: { field?: string; message: string }) => {
+              if (err.field === 'email') newErrors.email = err.message;
+              else if (err.field === 'password')
+                newErrors.password = err.message;
+              else if (!newErrors.general) newErrors.general = err.message;
+            });
+            setErrors(newErrors);
+          } else {
+            setErrors({ general: data.message || 'Something went wrong.' });
+          }
         }
         return;
       }
@@ -184,10 +196,13 @@ const SignupForm: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mb-16"
           >
-            <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              className="flex items-center gap-2 w-fit hover:opacity-80 transition-opacity"
+            >
               <img src="/logo.png" alt="Refactron" className="w-7 h-7" />
               <span className="text-xl font-normal text-white">Refactron</span>
-            </div>
+            </Link>
           </motion.div>
 
           {/* Welcome Text */}

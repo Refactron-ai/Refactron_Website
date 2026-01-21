@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { CheckCircle2, AlertCircle } from 'lucide-react';
 import { handleOAuthCallback } from '../utils/oauth';
 import { getBaseUrl } from '../utils/urlUtils';
 
@@ -91,83 +91,70 @@ const OAuthCallback: React.FC = () => {
   }, [searchParams, navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-black relative overflow-hidden">
       {/* Background Effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-primary-100 rounded-full blur-3xl animate-float opacity-60"></div>
-        <div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-primary-200 rounded-full blur-3xl animate-float opacity-40"
-          style={{ animationDelay: '2s' }}
-        ></div>
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-[120px]" />
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="max-w-md w-full bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200/50 p-8 sm:p-10 text-center relative z-10"
+        className="max-w-md w-full bg-neutral-900/50 backdrop-blur-xl rounded-2xl shadow-2xl border border-neutral-800 p-8 sm:p-10 text-center relative z-10"
       >
         {status === 'loading' && (
           <>
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-              className="w-16 h-16 mx-auto mb-4"
-            >
-              <Loader2 className="w-16 h-16 text-primary-600" />
-            </motion.div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Completing Authentication
+            <div className="relative inline-block mb-8">
+              <div className="absolute inset-0 bg-white/5 blur-2xl rounded-full animate-pulse" />
+              <div className="relative w-20 h-20 bg-neutral-900 border border-neutral-800 rounded-2xl flex items-center justify-center shadow-2xl mx-auto">
+                <img
+                  src="/logo.png"
+                  alt="Refactron"
+                  className="w-10 h-10 opacity-80 animate-pulse"
+                />
+              </div>
+            </div>
+            <h2 className="text-2xl font-light text-white mb-2">
+              Authenticating
             </h2>
-            <p className="text-gray-600">
-              Please wait while we verify your credentials...
+            <p className="text-neutral-400">
+              Completing your secure sign in...
             </p>
           </>
         )}
 
         {status === 'success' && (
           <>
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-              className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
-            >
-              <CheckCircle2 className="w-8 h-8 text-green-600" />
-            </motion.div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Authentication Successful!
-            </h2>
-            <p className="text-gray-600 mb-4">
-              You've been successfully authenticated. Redirecting...
+            <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6 ring-1 ring-green-500/20">
+              <CheckCircle2 className="w-8 h-8 text-green-500" />
+            </div>
+            <h2 className="text-2xl font-light text-white mb-2">Success</h2>
+            <p className="text-neutral-400">
+              Redirecting you to the dashboard...
             </p>
           </>
         )}
 
         {status === 'error' && (
           <>
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-              className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4"
-            >
-              <AlertCircle className="w-8 h-8 text-red-600" />
-            </motion.div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6 ring-1 ring-red-500/20">
+              <AlertCircle className="w-8 h-8 text-red-500" />
+            </div>
+            <h2 className="text-2xl font-light text-white mb-2">
               Authentication Failed
             </h2>
-            <p className="text-gray-600 mb-6">{errorMessage}</p>
-            <div className="flex gap-3 justify-center">
+            <p className="text-neutral-400 mb-8">{errorMessage}</p>
+            <div className="flex flex-col gap-3">
               <button
                 onClick={() => navigate('/login', { replace: true })}
-                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                className="w-full py-3 bg-white text-black font-medium rounded-xl hover:bg-neutral-200 transition-all"
               >
                 Back to Login
               </button>
               <button
                 onClick={() => navigate('/signup', { replace: true })}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                className="w-full py-3 bg-transparent border border-neutral-800 text-white font-medium rounded-xl hover:bg-neutral-900 transition-all"
               >
                 Try Sign Up
               </button>

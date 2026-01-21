@@ -19,7 +19,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   };
 
   const containerClasses = fullScreen
-    ? 'fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50'
+    ? 'fixed inset-0 flex items-center justify-center bg-black z-50'
     : 'flex items-center justify-center p-8';
 
   return (
@@ -29,7 +29,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-          className={`${sizeClasses[size]} border-4 border-primary-200 border-t-primary-500 rounded-full`}
+          className={`${sizeClasses[size]} border-2 border-neutral-800 border-t-white rounded-full`}
         />
 
         {/* Loading Text */}
@@ -38,28 +38,10 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-gray-600 font-medium"
+            className="text-neutral-400 text-sm font-medium tracking-tight"
           >
             {text}
           </motion.p>
-        )}
-
-        {/* Animated Dots */}
-        {text && (
-          <div className="flex gap-1">
-            {[0, 1, 2].map(i => (
-              <motion.div
-                key={i}
-                animate={{ y: [0, -10, 0] }}
-                transition={{
-                  duration: 0.6,
-                  repeat: Infinity,
-                  delay: i * 0.2,
-                }}
-                className="w-2 h-2 bg-primary-400 rounded-full"
-              />
-            ))}
-          </div>
         )}
       </div>
     </div>
