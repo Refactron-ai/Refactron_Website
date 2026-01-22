@@ -217,7 +217,7 @@ export const handleOAuthCallback = async (
 
     // Exchange code for token via backend API
     const response = await fetch(
-      `${apiBaseUrl}/api/auth/${provider}/callback`,
+      `${apiBaseUrl}/api/auth/callback/${provider}`,
       {
         method: 'POST',
         headers: {

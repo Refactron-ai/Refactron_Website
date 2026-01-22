@@ -50,9 +50,9 @@ describe('OAuthCallback', () => {
 
     renderWithRouter(<OAuthCallback />);
 
-    expect(screen.getByText('Completing Authentication')).toBeInTheDocument();
+    expect(screen.getByText('Authenticating')).toBeInTheDocument();
     expect(
-      screen.getByText('Please wait while we verify your credentials...')
+      screen.getByText('Completing your secure sign in...')
     ).toBeInTheDocument();
   });
 
@@ -95,13 +95,11 @@ describe('OAuthCallback', () => {
     renderWithRouter(<OAuthCallback />);
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Authentication Successful!')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Success')).toBeInTheDocument();
     });
 
     expect(
-      screen.getByText("You've been successfully authenticated. Redirecting...")
+      screen.getByText('Redirecting you to the dashboard...')
     ).toBeInTheDocument();
 
     // Wait for redirect timeout
@@ -174,9 +172,7 @@ describe('OAuthCallback', () => {
     );
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Authentication Successful!')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Success')).toBeInTheDocument();
     });
 
     // Should only be called once despite re-render
@@ -196,9 +192,7 @@ describe('OAuthCallback', () => {
     const { unmount } = renderWithRouter(<OAuthCallback />);
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Authentication Successful!')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Success')).toBeInTheDocument();
     });
 
     // Unmount before redirect timeout

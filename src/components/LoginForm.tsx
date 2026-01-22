@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSEO } from '../hooks/useSEO';
+import { useAuth } from '../hooks/useAuth';
 import { getBaseUrl } from '../utils/urlUtils';
 import {
   initiateOAuth,
@@ -110,6 +111,8 @@ const LoginForm: React.FC = () => {
     }
   };
 
+  const { login } = useAuth();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
@@ -128,7 +131,8 @@ const LoginForm: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const apiBaseUrl = process.env.REACT_APP_API_BASE_URL || '';
+      const apiBaseUrl =
+        process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
       const response = await fetch(`${apiBaseUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -145,18 +149,36 @@ const LoginForm: React.FC = () => {
         } else if (response.status === 429) {
           setRateLimitMessage('Too many login attempts. Please wait.');
         } else {
-          setErrors({ general: data.message || 'Something went wrong.' });
+          if (data.errors && Array.isArray(data.errors)) {
+            const newErrors: FormErrors = { general: data.message };
+            data.errors.forEach((err: { field?: string; message: string }) => {
+              if (err.field === 'email') newErrors.email = err.message;
+              else if (err.field === 'password')
+                newErrors.password = err.message;
+              else if (!newErrors.general) newErrors.general = err.message;
+            });
+            setErrors(newErrors);
+          } else {
+            setErrors({ general: data.message || 'Something went wrong.' });
+          }
         }
         return;
       }
 
       setSuccess(true);
-      setTimeout(() => navigate('/dashboard'), 1000);
+      login(data.accessToken, data.user);
+      setTimeout(() => {
+        if (data.user.onboardingCompleted) {
+          navigate('/dashboard');
+        } else {
+          navigate('/onboarding');
+        }
+      }, 1000);
     } catch (error) {
       setErrors({
         general:
           error instanceof TypeError && error.message.includes('fetch')
-            ? 'Network issue detected.'
+            ? 'Network issue detected. Is the backend running?'
             : 'An unexpected error occurred.',
       });
     } finally {
@@ -181,10 +203,13 @@ const LoginForm: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mb-16"
           >
-            <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              className="flex items-center gap-2 w-fit hover:opacity-80 transition-opacity"
+            >
               <img src="/logo.png" alt="Refactron" className="w-7 h-7" />
               <span className="text-xl font-normal text-white">Refactron</span>
-            </div>
+            </Link>
           </motion.div>
 
           {/* Welcome Text */}
