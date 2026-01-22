@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSEO } from '../hooks/useSEO';
 import { getBaseUrl } from '../utils/urlUtils';
@@ -186,283 +186,295 @@ const SignupForm: React.FC = () => {
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="w-full lg:w-1/2 flex flex-col justify-center px-24 py-12"
+        className="w-full lg:w-1/2 flex flex-col justify-center px-24 py-12 relative overflow-hidden"
       >
-        <div className="w-full max-w-sm">
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mb-16"
-          >
-            <a
-              href="https://refactron.dev"
-              className="flex items-center gap-2 w-fit hover:opacity-80 transition-opacity"
+        <AnimatePresence mode="wait">
+          {!success ? (
+            <motion.div
+              key="signup-form"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4 }}
+              className="w-full max-w-sm"
             >
-              <img src="/logo.png" alt="Refactron" className="w-7 h-7" />
-              <span className="text-xl font-normal text-white">Refactron</span>
-            </a>
-          </motion.div>
-
-          {/* Welcome Text */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="mb-10"
-          >
-            <h1 className="text-3xl font-normal text-white mb-2">
-              Create your account
-            </h1>
-            <p className="text-neutral-500 text-sm">
-              Set up your workspace for safe, incremental refactoring.
-            </p>
-          </motion.div>
-
-          {/* Error Messages */}
-          <AnimatePresence>
-            {errors.general && (
+              {/* Logo */}
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
+                initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="mb-6 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg text-sm"
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="mb-16"
               >
-                {errors.general}
+                <a
+                  href="https://refactron.dev"
+                  className="flex items-center gap-2 w-fit hover:opacity-80 transition-opacity"
+                >
+                  <img src="/logo.png" alt="Refactron" className="w-7 h-7" />
+                  <span className="text-xl font-normal text-white">
+                    Refactron
+                  </span>
+                </a>
               </motion.div>
-            )}
-          </AnimatePresence>
 
-          {/* Success Message */}
-          <AnimatePresence>
-            {success && (
+              {/* Welcome Text */}
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="mb-6 bg-green-500/10 border border-green-500/20 text-green-400 px-4 py-3 rounded-lg text-sm flex items-center gap-2"
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="mb-10"
               >
-                <CheckCircle2 className="w-5 h-5" />
-                <span>Account created!</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Google OAuth Button */}
-          <button
-            type="button"
-            onClick={() => handleSocialSignup('google')}
-            disabled={isLoading || oauthLoading !== null}
-            className="w-full flex items-center justify-center gap-3 bg-neutral-900/50 border border-neutral-800 text-white font-medium px-4 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-900 mb-3"
-          >
-            {oauthLoading === 'google' ? (
-              <>
-                <svg
-                  className="animate-spin h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-                <span>Connecting...</span>
-              </>
-            ) : (
-              <>
-                <GoogleLogo />
-                <span>Continue with Google</span>
-              </>
-            )}
-          </button>
-
-          {/* Divider */}
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-neutral-800"></div>
-            </div>
-            <div className="relative flex justify-center text-xs">
-              <span className="px-2 bg-black text-neutral-600">
-                or sign up with email
-              </span>
-            </div>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Email Field */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm text-neutral-400 mb-2"
-              >
-                Email
-              </label>
-              <input
-                ref={emailInputRef}
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="block w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 transition-all"
-                placeholder="you@example.com"
-              />
-              {errors.email && (
-                <p className="mt-2 text-sm text-red-400">{errors.email}</p>
-              )}
-            </div>
-
-            {/* Password Field */}
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm text-neutral-400 mb-2"
-              >
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="block w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 transition-all pr-12"
-                  placeholder="At least 8 characters"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-neutral-500 hover:text-neutral-400"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
-                </button>
-              </div>
-              {errors.password && (
-                <p className="mt-2 text-sm text-red-400">{errors.password}</p>
-              )}
-            </div>
-
-            {/* Confirm Password Field */}
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm text-neutral-400 mb-2"
-              >
-                Confirm Password
-              </label>
-              <div className="relative">
-                <input
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  autoComplete="new-password"
-                  required
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className="block w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 transition-all pr-12"
-                  placeholder="Confirm your password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-neutral-500 hover:text-neutral-400"
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="mt-2 text-sm text-red-400">
-                  {errors.confirmPassword}
+                <h1 className="text-3xl font-normal text-white mb-2">
+                  Create your account
+                </h1>
+                <p className="text-neutral-500 text-sm">
+                  Set up your workspace for safe, incremental refactoring.
                 </p>
-              )}
-            </div>
+              </motion.div>
 
-            {/* Create Account Button */}
-            <button
-              type="submit"
-              disabled={isLoading || success}
-              className="w-full flex items-center justify-center gap-2 bg-white text-black font-medium px-6 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 mt-6"
-            >
-              {isLoading ? (
-                <>
-                  <svg
-                    className="animate-spin h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
+              {/* Error Messages */}
+              <AnimatePresence>
+                {errors.general && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="mb-6 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg text-sm"
                   >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                  <span>Creating account...</span>
-                </>
-              ) : success ? (
-                <>
-                  <CheckCircle2 className="w-5 h-5" />
-                  <span>Success!</span>
-                </>
-              ) : (
-                <>
-                  <span>Create account</span>
-                  <ArrowRight className="w-5 h-5" />
-                </>
-              )}
-            </button>
-          </form>
+                    {errors.general}
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
-          {/* Sign In Link */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-8"
-          >
-            <p className="text-sm text-neutral-500">
-              Already have an account?{' '}
-              <Link
-                to="/login"
-                className="text-white hover:text-neutral-300 transition-colors"
+              {/* Google OAuth Button */}
+              <button
+                type="button"
+                onClick={() => handleSocialSignup('google')}
+                disabled={isLoading || oauthLoading !== null}
+                className="w-full flex items-center justify-center gap-3 bg-neutral-900/50 border border-neutral-800 text-white font-medium px-4 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-900 mb-3"
               >
-                Sign in
-              </Link>
-            </p>
-          </motion.div>
-        </div>
+                {oauthLoading === 'google' ? (
+                  <>
+                    <svg
+                      className="animate-spin h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    <span>Connecting...</span>
+                  </>
+                ) : (
+                  <>
+                    <GoogleLogo />
+                    <span>Continue with Google</span>
+                  </>
+                )}
+              </button>
+
+              {/* Divider */}
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-neutral-800"></div>
+                </div>
+                <div className="relative flex justify-center text-xs">
+                  <span className="px-2 bg-black text-neutral-600">
+                    or sign up with email
+                  </span>
+                </div>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Email Field */}
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm text-neutral-400 mb-2"
+                  >
+                    Email
+                  </label>
+                  <input
+                    ref={emailInputRef}
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="block w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 transition-all"
+                    placeholder="you@example.com"
+                  />
+                  {errors.email && (
+                    <p className="mt-2 text-sm text-red-400">{errors.email}</p>
+                  )}
+                </div>
+
+                {/* Password Field */}
+                <div>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm text-neutral-400 mb-2"
+                  >
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="password"
+                      name="password"
+                      type={showPassword ? 'text' : 'password'}
+                      autoComplete="new-password"
+                      required
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="block w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 transition-all pr-12"
+                      placeholder="At least 8 characters"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-neutral-500 hover:text-neutral-400"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                  {errors.password && (
+                    <p className="mt-2 text-sm text-red-400">
+                      {errors.password}
+                    </p>
+                  )}
+                </div>
+
+                {/* Confirm Password Field */}
+                <div>
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block text-sm text-neutral-400 mb-2"
+                  >
+                    Confirm Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      autoComplete="new-password"
+                      required
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      className="block w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 transition-all pr-12"
+                      placeholder="Confirm your password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-neutral-500 hover:text-neutral-400"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                  {errors.confirmPassword && (
+                    <p className="mt-2 text-sm text-red-400">
+                      {errors.confirmPassword}
+                    </p>
+                  )}
+                </div>
+
+                {/* Create Account Button */}
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full flex items-center justify-center gap-2 bg-white text-black font-medium px-6 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 mt-6"
+                >
+                  {isLoading ? (
+                    <span>Creating account...</span>
+                  ) : (
+                    <>
+                      <span>Create account</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
+                </button>
+              </form>
+
+              {/* Sign In Link */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="mt-8"
+              >
+                <p className="text-sm text-neutral-500">
+                  Already have an account?{' '}
+                  <Link
+                    to="/login"
+                    className="text-white hover:text-neutral-300 transition-colors"
+                  >
+                    Sign in
+                  </Link>
+                </p>
+              </motion.div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="loading-state"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+              className="w-full max-w-sm flex flex-col items-center text-center"
+            >
+              <div className="mb-8">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: 'linear',
+                  }}
+                  className="w-12 h-12 border-2 border-neutral-800 border-t-white rounded-full"
+                />
+              </div>
+              <motion.h2
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-2xl font-normal text-white mb-2"
+              >
+                Creating account
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-neutral-500 text-sm"
+              >
+                Setting up your profile...
+              </motion.p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
 
       {/* Right Side - Marketing Content */}
