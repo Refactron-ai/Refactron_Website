@@ -277,7 +277,7 @@ describe('OAuth utility functions', () => {
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockResponse);
       expect(global.fetch).toHaveBeenCalledWith(
-        'http://localhost:3001/api/auth/google/callback',
+        'http://localhost:3001/api/auth/callback/google',
         expect.objectContaining({
           method: 'POST',
           headers: {
@@ -335,7 +335,7 @@ describe('OAuth utility functions', () => {
       });
 
       expect(global.fetch).toHaveBeenCalledWith(
-        'http://localhost:4000/api/auth/google/callback',
+        'http://localhost:4000/api/auth/callback/google',
         expect.anything()
       );
     });
