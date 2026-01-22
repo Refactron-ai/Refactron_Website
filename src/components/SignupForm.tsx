@@ -196,13 +196,13 @@ const SignupForm: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mb-16"
           >
-            <Link
-              to="/"
+            <a
+              href="https://refactron.dev"
               className="flex items-center gap-2 w-fit hover:opacity-80 transition-opacity"
             >
               <img src="/logo.png" alt="Refactron" className="w-7 h-7" />
               <span className="text-xl font-normal text-white">Refactron</span>
-            </Link>
+            </a>
           </motion.div>
 
           {/* Welcome Text */}
