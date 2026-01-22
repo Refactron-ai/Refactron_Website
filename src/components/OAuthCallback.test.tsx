@@ -45,7 +45,7 @@ describe('OAuthCallback', () => {
     ]);
 
     mockHandleOAuthCallback.mockImplementation(
-      () => new Promise(() => { }) // Never resolves
+      () => new Promise(() => {}) // Never resolves
     );
 
     renderWithRouter(<OAuthCallback />);
@@ -95,9 +95,7 @@ describe('OAuthCallback', () => {
     renderWithRouter(<OAuthCallback />);
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Success')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Success')).toBeInTheDocument();
     });
 
     expect(
@@ -174,9 +172,7 @@ describe('OAuthCallback', () => {
     );
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Success')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Success')).toBeInTheDocument();
     });
 
     // Should only be called once despite re-render
@@ -196,9 +192,7 @@ describe('OAuthCallback', () => {
     const { unmount } = renderWithRouter(<OAuthCallback />);
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Success')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Success')).toBeInTheDocument();
     });
 
     // Unmount before redirect timeout
