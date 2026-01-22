@@ -46,5 +46,6 @@ export const getBaseUrl = (): string => {
  * Uses REACT_APP_API_BASE_URL if set, otherwise uses relative paths
  */
 export const getApiBaseUrl = (): string => {
-  return process.env.REACT_APP_API_BASE_URL || '';
+  const url = process.env.REACT_APP_API_BASE_URL || '';
+  return url.endsWith('/') ? url.slice(0, -1) : url;
 };
