@@ -182,11 +182,10 @@ const Dashboard: React.FC = () => {
               {menuItems.map(item => (
                 <button
                   key={item.label}
-                  className={`w-full flex items-center gap-3 p-2 rounded-lg transition-colors group ${isSidebarCollapsed ? 'justify-center' : ''} ${
-                    item.active
+                  className={`w-full flex items-center gap-3 p-2 rounded-lg transition-colors group ${isSidebarCollapsed ? 'justify-center' : ''} ${item.active
                       ? 'bg-neutral-900 text-white'
                       : 'text-neutral-400 hover:bg-neutral-900 hover:text-white'
-                  }`}
+                    }`}
                 >
                   <item.icon
                     className={`w-5 h-5 ${item.active ? 'text-white' : 'text-neutral-400 group-hover:text-white'}`}

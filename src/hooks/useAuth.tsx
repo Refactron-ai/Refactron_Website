@@ -21,6 +21,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
+  loggingOut: boolean;
   login: (token: string, user: User) => void;
   logout: () => Promise<void>;
   updateUser: (user: User) => void;
@@ -34,6 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const navigate = useNavigate();
 
   // Initialize auth state
@@ -113,6 +115,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const logout = useCallback(async () => {
+    // 1. Trigger logging out state for animation
+    setIsLoggingOut(true);
+
+    // 2. Clear local state and navigate after a short delay for animation
+    setTimeout(() => {
+      localStorage.removeItem('accessToken');
+      setUser(null);
+      setIsLoggingOut(false);
+      navigate('/login');
+    }, 800);
+
+    // 3. Perform backend logout in the background
     try {
       const apiBaseUrl =
         process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
@@ -121,11 +135,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         credentials: 'include',
       });
     } catch (error) {
-      console.error('Logout failed:', error);
-    } finally {
-      localStorage.removeItem('accessToken');
-      setUser(null);
-      navigate('/login');
+      console.error('Background logout failed:', error);
     }
   }, [navigate]);
 
@@ -168,6 +178,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         user,
         isAuthenticated: !!user,
         loading: isLoading,
+        loggingOut: isLoggingOut,
         login,
         logout,
         updateUser,

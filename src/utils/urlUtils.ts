@@ -37,8 +37,8 @@ export const getBaseUrl = (): string => {
     return `${protocol}//${hostname}${port}`;
   }
 
-  // Default to production app subdomain
-  return 'https://app.refactron.dev';
+  // Default to production domain
+  return 'https://refactron.dev';
 };
 
 /**
