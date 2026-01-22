@@ -45,14 +45,14 @@ describe('OAuthCallback', () => {
     ]);
 
     mockHandleOAuthCallback.mockImplementation(
-      () => new Promise(() => {}) // Never resolves
+      () => new Promise(() => { }) // Never resolves
     );
 
     renderWithRouter(<OAuthCallback />);
 
-    expect(screen.getByText('Completing Authentication')).toBeInTheDocument();
+    expect(screen.getByText('Authenticating')).toBeInTheDocument();
     expect(
-      screen.getByText('Please wait while we verify your credentials...')
+      screen.getByText('Completing your secure sign in...')
     ).toBeInTheDocument();
   });
 
@@ -96,12 +96,12 @@ describe('OAuthCallback', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('Authentication Successful!')
+        screen.getByText('Success')
       ).toBeInTheDocument();
     });
 
     expect(
-      screen.getByText("You've been successfully authenticated. Redirecting...")
+      screen.getByText('Redirecting you to the dashboard...')
     ).toBeInTheDocument();
 
     // Wait for redirect timeout
@@ -175,7 +175,7 @@ describe('OAuthCallback', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('Authentication Successful!')
+        screen.getByText('Success')
       ).toBeInTheDocument();
     });
 
@@ -197,7 +197,7 @@ describe('OAuthCallback', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('Authentication Successful!')
+        screen.getByText('Success')
       ).toBeInTheDocument();
     });
 
