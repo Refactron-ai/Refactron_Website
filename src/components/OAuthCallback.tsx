@@ -39,8 +39,8 @@ const OAuthCallback: React.FC = () => {
         setStatus('error');
         setErrorMessage(
           errorDescription ||
-          error.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) ||
-          'Authentication failed. Please try again.'
+            error.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) ||
+            'Authentication failed. Please try again.'
         );
         return;
       }
