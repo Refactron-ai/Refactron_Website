@@ -26,13 +26,23 @@ jest.mock('framer-motion', () => ({
   AnimatePresence: ({ children }: any) => <>{children}</>,
 }));
 
+// Mock useAuth hook
+jest.mock('../hooks/useAuth', () => ({
+  useAuth: jest.fn(),
+}));
+
 describe('OAuthCallback', () => {
   const mockNavigate = jest.fn();
+  const mockLogin = jest.fn();
   const mockHandleOAuthCallback = oauthUtils.handleOAuthCallback as jest.Mock;
 
   beforeEach(() => {
     jest.clearAllMocks();
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
+    const { useAuth } = require('../hooks/useAuth');
+    (useAuth as jest.Mock).mockReturnValue({
+      login: mockLogin,
+    });
   });
 
   const renderWithRouter = (component: React.ReactElement) => {
@@ -89,13 +99,22 @@ describe('OAuthCallback', () => {
 
     mockHandleOAuthCallback.mockResolvedValue({
       success: true,
-      data: { redirectTo: '/dashboard' },
+      data: {
+        accessToken: 'test-token',
+        user: { id: '123', email: 'test@example.com' },
+        redirectTo: '/dashboard',
+      },
     });
 
     renderWithRouter(<OAuthCallback />);
 
     await waitFor(() => {
       expect(screen.getByText('Success')).toBeInTheDocument();
+    });
+
+    expect(mockLogin).toHaveBeenCalledWith('test-token', {
+      id: '123',
+      email: 'test@example.com',
     });
 
     expect(

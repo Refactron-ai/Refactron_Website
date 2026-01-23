@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 import { handleOAuthCallback } from '../utils/oauth';
 import { getBaseUrl } from '../utils/urlUtils';
+import { useAuth } from '../hooks/useAuth';
 
 /**
  * OAuthCallback - Handles OAuth callback from Google/GitHub
@@ -11,6 +12,7 @@ import { getBaseUrl } from '../utils/urlUtils';
  */
 const OAuthCallback: React.FC = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>(
     'loading'
@@ -56,7 +58,10 @@ const OAuthCallback: React.FC = () => {
           redirectUri: `${getBaseUrl()}/auth/callback`,
         });
 
-        if (result.success) {
+        if (result.success && result.data) {
+          // Update auth state
+          login(result.data.accessToken, result.data.user);
+
           setStatus('success');
 
           // Redirect to dashboard or appropriate page
@@ -88,7 +93,7 @@ const OAuthCallback: React.FC = () => {
     return () => {
       mountedRef.current = false;
     };
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, login]);
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-black relative overflow-hidden">
