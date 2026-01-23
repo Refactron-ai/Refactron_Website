@@ -288,6 +288,7 @@ describe('OAuth utility functions', () => {
             code: 'test-code',
             state: 'test-state',
             type: 'login',
+            redirectUri: 'http://localhost:3000/auth/callback',
           }),
         })
       );

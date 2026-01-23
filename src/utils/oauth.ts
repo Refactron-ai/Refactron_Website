@@ -228,6 +228,8 @@ export const handleOAuthCallback = async (
           code,
           state,
           type, // 'login' or 'signup'
+          redirectUri:
+            config.redirectUri || `${window.location.origin}/auth/callback`,
         }),
       }
     );
