@@ -16,7 +16,6 @@ import {
   LogOut,
   Bot,
   Menu,
-  Building2,
   Key,
   CreditCard,
 } from 'lucide-react';
@@ -60,6 +59,14 @@ const Dashboard: React.FC = () => {
     { icon: FlaskConical, label: 'Experiments' },
   ];
 
+  const formatOrgName = (name: string | null | undefined) => {
+    if (!name) return "User's Organization";
+    const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
+    return `${capitalized}'s Organization`;
+  };
+
+  const formattedOrgName = formatOrgName(user?.organizationName);
+
   return (
     <div className="flex h-screen bg-black text-white font-space overflow-hidden">
       {/* Sidebar */}
@@ -102,11 +109,10 @@ const Dashboard: React.FC = () => {
               onClick={() => setIsOrgDropdownOpen(!isOrgDropdownOpen)}
               className={`w-full flex items-center justify-between p-2 rounded-lg transition-all group ${isOrgDropdownOpen ? 'bg-neutral-900' : 'hover:bg-neutral-900'}`}
             >
-              <div className="flex items-center gap-3 overflow-hidden">
-                <Building2 className="w-5 h-5 text-neutral-400 flex-shrink-0" />
+              <div className="flex items-center gap-1 overflow-hidden">
                 <div className="text-left overflow-hidden">
                   <p className="text-sm font-medium truncate">
-                    {user?.organizationName || "User's Organization"}
+                    {formattedOrgName}
                   </p>
                 </div>
               </div>
@@ -127,7 +133,7 @@ const Dashboard: React.FC = () => {
                   <div className="p-1">
                     <button className="w-full flex items-center justify-between p-2 bg-neutral-800/50 rounded-lg group transition-colors">
                       <span className="text-xs font-medium text-white truncate">
-                        {user?.organizationName || "User's Organization"}
+                        {formattedOrgName}
                       </span>
                       <div className="w-1.5 h-1.5 rounded-full bg-white flex-shrink-0 ml-2" />
                     </button>
@@ -267,7 +273,6 @@ const Dashboard: React.FC = () => {
 
                         <div className="space-y-0.5">
                           <button className="w-full flex items-center gap-3 p-2 hover:bg-neutral-800/50 rounded-lg group transition-colors text-neutral-400 hover:text-white">
-                            <Building2 className="w-4 h-4" />
                             <span className="text-xs font-medium">
                               Organizations
                             </span>
@@ -304,12 +309,7 @@ const Dashboard: React.FC = () => {
       </motion.aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 relative flex flex-col items-center justify-center p-8 bg-black overflow-y-auto">
-        {/* Background Glow */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-[120px]" />
-        </div>
-
+      <main className="flex-1 relative flex flex-col items-center justify-center p-8 bg-[#0a0a0a] overflow-y-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -319,8 +319,7 @@ const Dashboard: React.FC = () => {
           {/* Central Logo/Icon */}
           <div className="mb-12 flex justify-center">
             <div className="relative">
-              <div className="absolute inset-0 bg-white/10 blur-2xl rounded-3xl" />
-              <div className="relative w-32 h-32 bg-neutral-900 border border-neutral-800 rounded-3xl flex items-center justify-center shadow-2xl">
+              <div className="relative w-32 h-32 bg-neutral-900 border border-neutral-800 rounded-3xl flex items-center justify-center">
                 <img
                   src="/logo.png"
                   alt="Refactron"
@@ -339,7 +338,7 @@ const Dashboard: React.FC = () => {
           </p>
 
           <div className="flex flex-col gap-4 w-full max-w-sm mx-auto">
-            <button className="w-full flex items-center justify-center gap-2 bg-white text-black font-medium px-8 py-4 rounded-xl hover:bg-neutral-200 transition-all shadow-lg shadow-white/5">
+            <button className="w-full flex items-center justify-center gap-2 bg-white text-black font-medium px-8 py-4 rounded-xl hover:bg-neutral-200 transition-all">
               <Plus className="w-5 h-5" />
               <span>Create New Project</span>
             </button>
@@ -349,7 +348,7 @@ const Dashboard: React.FC = () => {
                 <div className="w-full border-t border-neutral-800" />
               </div>
               <div className="relative flex justify-center text-xs uppercase tracking-widest">
-                <span className="px-4 bg-black text-neutral-600 font-bold">
+                <span className="px-4 bg-[#0a0a0a] text-neutral-600 font-bold">
                   OR
                 </span>
               </div>

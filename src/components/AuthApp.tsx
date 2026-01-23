@@ -10,6 +10,7 @@ import ProtectedRoute from './ProtectedRoute';
 import VerifyEmail from './VerifyEmail';
 import PageTransition from './PageTransition';
 import LogoutOverlay from './LogoutOverlay';
+import LoadingSpinner from './LoadingSpinner';
 import { AuthProvider, useAuth } from '../hooks/useAuth';
 
 /**
@@ -17,7 +18,11 @@ import { AuthProvider, useAuth } from '../hooks/useAuth';
  */
 const AuthAppContent: React.FC = () => {
   const location = useLocation();
-  const { loggingOut } = useAuth();
+  const { loggingOut, loading } = useAuth();
+
+  if (loading) {
+    return <LoadingSpinner fullScreen text="Verifying session..." />;
+  }
 
   return (
     <div className="min-h-screen bg-black font-space">
