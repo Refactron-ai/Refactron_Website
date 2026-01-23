@@ -15,6 +15,7 @@ interface User {
   organizationName?: string | null;
   onboardingCompleted?: boolean;
   plan?: string | null;
+  githubConnected?: boolean;
 }
 
 interface AuthContextType {
