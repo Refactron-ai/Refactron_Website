@@ -41,69 +41,66 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Initialize auth state
   useEffect(() => {
     const checkAuth = async () => {
-      const apiBaseUrl =
-        process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
-      const token = localStorage.getItem('accessToken');
-
       try {
-        if (token) {
-          // Verify token with backend
-          const response = await fetch(`${apiBaseUrl}/api/auth/me`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          if (response.ok) {
-            const data = await response.json();
-            setUser(data.user);
-            setIsLoading(false);
-            return;
-          }
-
-          // If token is invalid (401), try to refresh. Otherwise, don't clear anything yet.
-          if (response.status !== 401) {
-            setIsLoading(false);
-            return;
-          }
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+          setIsLoading(false);
+          return;
         }
 
-        // No token or token expired (401) - Try refresh
-        try {
-          const refreshResponse = await fetch(
-            `${apiBaseUrl}/api/auth/refresh`,
-            {
-              method: 'POST',
-              credentials: 'include',
-            }
-          );
+        // Verify token with backend
+        const apiBaseUrl =
+          process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+        const response = await fetch(`${apiBaseUrl}/api/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-          if (refreshResponse.ok) {
-            const refreshData = await refreshResponse.json();
-            localStorage.setItem('accessToken', refreshData.accessToken);
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+        } else {
+          // Token invalid or expired
+          if (response.status === 401) {
+            // Try refresh
+            try {
+              const refreshResponse = await fetch(
+                `${apiBaseUrl}/api/auth/refresh`,
+                {
+                  method: 'POST',
+                  credentials: 'include',
+                }
+              );
 
-            // Retry getting user
-            const retryResponse = await fetch(`${apiBaseUrl}/api/auth/me`, {
-              headers: {
-                Authorization: `Bearer ${refreshData.accessToken}`,
-              },
-            });
+              if (refreshResponse.ok) {
+                const refreshData = await refreshResponse.json();
+                localStorage.setItem('accessToken', refreshData.accessToken);
 
-            if (retryResponse.ok) {
-              const userData = await retryResponse.json();
-              setUser(userData.user);
-            }
-          } else {
-            // Refresh failed - only now clear the token if it existed
-            if (token) {
+                // Retry getting user
+                const retryResponse = await fetch(`${apiBaseUrl}/api/auth/me`, {
+                  headers: {
+                    Authorization: `Bearer ${refreshData.accessToken}`,
+                  },
+                });
+
+                if (retryResponse.ok) {
+                  const userData = await retryResponse.json();
+                  setUser(userData.user);
+                }
+              } else {
+                localStorage.removeItem('accessToken');
+              }
+            } catch (error) {
               localStorage.removeItem('accessToken');
             }
+          } else {
+            localStorage.removeItem('accessToken');
           }
-        } catch (error) {
-          console.error('Refresh attempt failed:', error);
         }
       } catch (error) {
         console.error('Auth check failed:', error);
+        localStorage.removeItem('accessToken');
       } finally {
         setIsLoading(false);
       }
