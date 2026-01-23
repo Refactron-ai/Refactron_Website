@@ -18,6 +18,7 @@ import {
   Menu,
   Key,
   CreditCard,
+  Github,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -66,6 +67,17 @@ const Dashboard: React.FC = () => {
   };
 
   const formattedOrgName = formatOrgName(user?.organizationName);
+
+  const handleGitHubConnect = async () => {
+    try {
+      const { initiateOAuth } = await import('../utils/oauth');
+      await initiateOAuth('github', 'connect', {
+        redirectUri: `${window.location.origin}/auth/callback`,
+      });
+    } catch (error) {
+      console.error('Failed to initiate GitHub connection:', error);
+    }
+  };
 
   return (
     <div className="flex h-screen bg-black text-white font-space overflow-hidden">
@@ -206,9 +218,31 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Footer Section */}
         <div className="p-4 space-y-2 border-t border-neutral-800">
-          {!isSidebarCollapsed && (
+          <button
+            onClick={user?.githubConnected ? undefined : handleGitHubConnect}
+            disabled={user?.githubConnected}
+            className={`w-full flex items-center p-2 text-neutral-400 hover:bg-neutral-900 hover:text-white rounded-lg transition-colors group ${isSidebarCollapsed ? 'justify-center' : 'justify-between'} ${user?.githubConnected ? 'cursor-default' : ''}`}
+            title={
+              isSidebarCollapsed
+                ? `GitHub: ${user?.githubConnected ? 'Connected' : 'Not connected'}`
+                : undefined
+            }
+          >
+            <div className="flex items-center gap-3">
+              <Github className="w-5 h-5 group-hover:text-white" />
+              {!isSidebarCollapsed && (
+                <span className="text-sm font-medium">GitHub</span>
+              )}
+            </div>
+            {!isSidebarCollapsed && (
+              <span className="text-[10px] font-medium text-neutral-600 group-hover:text-neutral-400">
+                {user?.githubConnected ? 'Connected' : 'Not connected'}
+              </span>
+            )}
+          </button>
+
+          {!isSidebarCollapsed ? (
             <a
               href="https://docs.refactron.dev"
               target="_blank"
@@ -217,6 +251,16 @@ const Dashboard: React.FC = () => {
             >
               <BookOpen className="w-5 h-5 group-hover:text-white" />
               <span className="text-sm font-medium">Docs</span>
+            </a>
+          ) : (
+            <a
+              href="https://docs.refactron.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full flex justify-center p-2 text-neutral-400 hover:text-white transition-colors"
+              title="Docs"
+            >
+              <BookOpen className="w-5 h-5" />
             </a>
           )}
 

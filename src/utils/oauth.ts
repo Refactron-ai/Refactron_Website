@@ -31,7 +31,7 @@ const generateStateToken = (): string => {
 const storeOAuthState = (
   state: string,
   provider: OAuthProvider,
-  type: 'login' | 'signup'
+  type: 'login' | 'signup' | 'connect'
 ): void => {
   sessionStorage.setItem('oauth_state', state);
   sessionStorage.setItem('oauth_provider', provider);
@@ -44,7 +44,7 @@ const storeOAuthState = (
  */
 export const validateOAuthState = (
   state: string
-): { provider: OAuthProvider; type: 'login' | 'signup' } | null => {
+): { provider: OAuthProvider; type: 'login' | 'signup' | 'connect' } | null => {
   const storedState = sessionStorage.getItem('oauth_state');
   const provider = sessionStorage.getItem(
     'oauth_provider'
@@ -52,6 +52,7 @@ export const validateOAuthState = (
   const type = sessionStorage.getItem('oauth_type') as
     | 'login'
     | 'signup'
+    | 'connect'
     | null;
   const timestamp = sessionStorage.getItem('oauth_timestamp');
 
@@ -93,7 +94,7 @@ const getGoogleAuthUrl = (
   clientId: string,
   redirectUri: string,
   state: string,
-  type: 'login' | 'signup'
+  type: 'login' | 'signup' | 'connect'
 ): string => {
   const scope = 'openid email profile';
   const responseType = 'code';
@@ -130,9 +131,14 @@ const getGitHubAuthUrl = (
   clientId: string,
   redirectUri: string,
   state: string,
-  type: 'login' | 'signup'
+  type: 'login' | 'signup' | 'connect'
 ): string => {
-  const scope = type === 'signup' ? 'user:email read:user' : 'user:email';
+  const scope =
+    type === 'connect'
+      ? 'user:email read:user repo'
+      : type === 'signup'
+        ? 'user:email read:user'
+        : 'user:email';
   const params = new URLSearchParams({
     client_id: clientId,
     redirect_uri: redirectUri,
@@ -149,7 +155,7 @@ const getGitHubAuthUrl = (
  */
 export const initiateOAuth = (
   provider: OAuthProvider,
-  type: 'login' | 'signup',
+  type: 'login' | 'signup' | 'connect',
   config: OAuthConfig
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
