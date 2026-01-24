@@ -26,6 +26,14 @@ export function useRepositories(): UseRepositoriesResult {
   const [error, setError] = useState<string | null>(null);
 
   const fetchRepositories = async () => {
+    const token = localStorage.getItem('accessToken');
+
+    if (!token) {
+      setLoading(false);
+      setError('Not authenticated');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -34,6 +42,9 @@ export function useRepositories(): UseRepositoriesResult {
         `${process.env.REACT_APP_API_BASE_URL}/api/github/repositories`,
         {
           credentials: 'include',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
