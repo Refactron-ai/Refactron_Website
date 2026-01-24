@@ -21,12 +21,16 @@ import {
   Github,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import RepositorySelector from './RepositorySelector';
+import type { Repository } from '../hooks/useRepositories';
 
 const Dashboard: React.FC = () => {
   const { user, logout } = useAuth();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isOrgDropdownOpen, setIsOrgDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isRepositorySelectorOpen, setIsRepositorySelectorOpen] =
+    useState(false);
   const orgDropdownRef = useRef<HTMLDivElement>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -77,6 +81,12 @@ const Dashboard: React.FC = () => {
     } catch (error) {
       console.error('Failed to initiate GitHub connection:', error);
     }
+  };
+
+  const handleRepositorySelect = (repository: Repository) => {
+    console.log('Selected repository:', repository);
+    // TODO: Create project with selected repository
+    setIsRepositorySelectorOpen(false);
   };
 
   return (
@@ -382,7 +392,10 @@ const Dashboard: React.FC = () => {
           </p>
 
           <div className="flex flex-col gap-4 w-full max-w-sm mx-auto">
-            <button className="w-full flex items-center justify-center gap-2 bg-white text-black font-medium px-8 py-4 rounded-xl hover:bg-neutral-200 transition-all">
+            <button
+              onClick={() => setIsRepositorySelectorOpen(true)}
+              className="w-full flex items-center justify-center gap-2 bg-white text-black font-medium px-8 py-4 rounded-xl hover:bg-neutral-200 transition-all"
+            >
               <Plus className="w-5 h-5" />
               <span>Create New Project</span>
             </button>
@@ -410,6 +423,16 @@ const Dashboard: React.FC = () => {
           </div>
         </motion.div>
       </main>
+
+      {/* Repository Selector Modal */}
+      <AnimatePresence>
+        {isRepositorySelectorOpen && (
+          <RepositorySelector
+            onClose={() => setIsRepositorySelectorOpen(false)}
+            onSelect={handleRepositorySelect}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
