@@ -143,7 +143,7 @@ const RepositorySelector: React.FC<RepositorySelectorProps> = ({
                 <button
                   key={repo.id}
                   onClick={() => onSelect(repo)}
-                  className="w-full p-4 bg-neutral-800/50 hover:bg-neutral-800 border border-neutral-700 hover:border-neutral-600 rounded-xl transition-all text-left group"
+                  className="w-full p-4 bg-neutral-800 hover:bg-neutral-750 border border-neutral-700 hover:border-neutral-600 rounded-xl transition-all text-left group"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
