@@ -6,12 +6,17 @@ import SignupForm from './SignupForm';
 import OAuthCallback from './OAuthCallback';
 import Dashboard from './Dashboard';
 import Onboarding from './Onboarding';
+import Billing from './Billing';
+import ApiKeys from './ApiKeys';
+import Organizations from './Organizations';
+import OrganizationSettings from './OrganizationSettings';
 import ProtectedRoute from './ProtectedRoute';
 import VerifyEmail from './VerifyEmail';
 import PageTransition from './PageTransition';
 import LogoutOverlay from './LogoutOverlay';
 import LoadingSpinner from './LoadingSpinner';
 import { AuthProvider, useAuth } from '../hooks/useAuth';
+import SlugRedirect from './SlugRedirect';
 
 /**
  * AuthAppContent - Internal component to access useAuth hook
@@ -69,9 +74,19 @@ const AuthAppContent: React.FC = () => {
             }
           />
 
-          {/* Protected Dashboard Route */}
+          {/* Protected Dashboard Route - Redirect legacy to slug */}
           <Route
             path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <SlugRedirect to="dashboard" />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Dashboard Route - Slug based */}
+          <Route
+            path="/:slug/dashboard"
             element={
               <ProtectedRoute>
                 <PageTransition>
@@ -88,6 +103,74 @@ const AuthAppContent: React.FC = () => {
               <ProtectedRoute>
                 <PageTransition>
                   <Onboarding />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Billing Route */}
+          <Route
+            path="/settings/billing"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <Billing />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected API Keys Route - Redirect legacy */}
+          <Route
+            path="/settings/api-keys"
+            element={
+              <ProtectedRoute>
+                <SlugRedirect to="settings/api-keys" />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected API Keys Route - Slug based */}
+          <Route
+            path="/:slug/settings/api-keys"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <ApiKeys />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Organizations Route */}
+          <Route
+            path="/settings/organizations"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <Organizations />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Organization Settings Route - Redirect legacy */}
+          <Route
+            path="/settings/organizations/settings"
+            element={
+              <ProtectedRoute>
+                <SlugRedirect to="settings/organizations/settings" />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Organization Settings Route - Slug based */}
+          <Route
+            path="/:slug/settings/organizations/settings"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <OrganizationSettings />
                 </PageTransition>
               </ProtectedRoute>
             }
