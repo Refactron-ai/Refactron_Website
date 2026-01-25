@@ -6,6 +6,7 @@ import {
   useCallback,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getApiBaseUrl } from '../utils/urlUtils';
 
 interface User {
   id: string;
@@ -41,9 +42,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Initialize auth state
   useEffect(() => {
+    // ...
+
     const checkAuth = async () => {
-      const apiBaseUrl =
-        process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+      const apiBaseUrl = getApiBaseUrl();
       const token = localStorage.getItem('accessToken');
 
       try {
@@ -132,8 +134,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     // 3. Perform backend logout in the background
     try {
-      const apiBaseUrl =
-        process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+      const apiBaseUrl = getApiBaseUrl();
       await fetch(`${apiBaseUrl}/api/auth/logout`, {
         method: 'POST',
         credentials: 'include',
@@ -153,8 +154,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (!token) {
         throw new Error('No authentication token found');
       }
-      const apiBaseUrl =
-        process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+      const apiBaseUrl = getApiBaseUrl();
 
       const response = await fetch(`${apiBaseUrl}/api/auth/onboarding`, {
         method: 'POST',
