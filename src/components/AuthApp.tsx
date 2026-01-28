@@ -12,6 +12,7 @@ import Organizations from './Organizations';
 import OrganizationSettings from './OrganizationSettings';
 import ProtectedRoute from './ProtectedRoute';
 import VerifyEmail from './VerifyEmail';
+import DeviceConnect from './DeviceConnect';
 import PageTransition from './PageTransition';
 import LogoutOverlay from './LogoutOverlay';
 import LoadingSpinner from './LoadingSpinner';
@@ -183,6 +184,18 @@ const AuthAppContent: React.FC = () => {
               <PageTransition>
                 <VerifyEmail />
               </PageTransition>
+            }
+          />
+
+          {/* Device Connect route - CLI authorization */}
+          <Route
+            path="/device/connect"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <DeviceConnect />
+                </PageTransition>
+              </ProtectedRoute>
             }
           />
 

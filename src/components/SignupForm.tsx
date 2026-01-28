@@ -40,6 +40,10 @@ const SignupForm: React.FC = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [success, setSuccess] = useState(false);
   const [oauthLoading, setOauthLoading] = useState<OAuthProvider | null>(null);
+  const [searchParams] = useState(
+    () => new URLSearchParams(window.location.search)
+  );
+  const deviceCode = searchParams.get('code');
 
   // SEO Configuration
   useSEO({
@@ -53,9 +57,14 @@ const SignupForm: React.FC = () => {
 
   useEffect(() => {
     if (!loading && isAuthenticated) {
-      navigate('/dashboard', { replace: true });
+      // If there's a device code, go to device connect page
+      if (deviceCode) {
+        navigate(`/device/connect?code=${deviceCode}`, { replace: true });
+      } else {
+        navigate('/dashboard', { replace: true });
+      }
     }
-  }, [isAuthenticated, loading, navigate]);
+  }, [isAuthenticated, loading, navigate, deviceCode]);
 
   useEffect(() => {
     emailInputRef.current?.focus();
@@ -114,6 +123,11 @@ const SignupForm: React.FC = () => {
         });
         setOauthLoading(null);
         return;
+      }
+
+      // Store device code in sessionStorage to preserve through OAuth flow
+      if (deviceCode) {
+        sessionStorage.setItem('oauth_device_code', deviceCode);
       }
 
       await initiateOAuth(provider, 'signup', {
@@ -175,8 +189,18 @@ const SignupForm: React.FC = () => {
       }
 
       setSuccess(true);
+
+      // Store device code in localStorage so it persists through email verification
+      if (deviceCode) {
+        localStorage.setItem('pending_device_code', deviceCode);
+      }
+
       setTimeout(() => {
-        navigate('/verify-email', { state: { email: formData.email } });
+        // If there's a device code, user needs to verify email first, then can use device flow
+        // For now, redirect to verify email - they can login with code after verification
+        navigate('/verify-email', {
+          state: { email: formData.email, deviceCode },
+        });
       }, 2000);
     } catch (error) {
       setErrors({
@@ -419,7 +443,7 @@ const SignupForm: React.FC = () => {
                 <p className="text-sm text-neutral-500">
                   Already have an account?{' '}
                   <Link
-                    to="/login"
+                    to={deviceCode ? `/login?code=${deviceCode}` : '/login'}
                     className="text-white hover:text-neutral-300 transition-colors"
                   >
                     Sign in
