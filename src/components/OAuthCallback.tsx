@@ -34,6 +34,13 @@ const OAuthCallback: React.FC = () => {
       const error = searchParams.get('error');
       const errorDescription = searchParams.get('error_description');
 
+      // Retrieve device code from sessionStorage (stored before OAuth redirect)
+      const deviceCode = sessionStorage.getItem('oauth_device_code');
+      // Clean up after reading
+      if (deviceCode) {
+        sessionStorage.removeItem('oauth_device_code');
+      }
+
       // Handle OAuth errors
       if (error) {
         setStatus('error');
@@ -67,9 +74,16 @@ const OAuthCallback: React.FC = () => {
           // Redirect to dashboard or appropriate page
           setTimeout(() => {
             if (mountedRef.current) {
-              navigate(result.data?.redirectTo || '/dashboard', {
-                replace: true,
-              });
+              // If there's a device code, redirect to device connect
+              if (deviceCode) {
+                navigate(`/device/connect?code=${deviceCode}`, {
+                  replace: true,
+                });
+              } else {
+                navigate(result.data?.redirectTo || '/dashboard', {
+                  replace: true,
+                });
+              }
             }
           }, 1500);
         } else {

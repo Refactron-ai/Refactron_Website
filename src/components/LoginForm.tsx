@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Eye, EyeOff } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSEO } from '../hooks/useSEO';
 import { useAuth } from '../hooks/useAuth';
 import { getBaseUrl } from '../utils/urlUtils';
@@ -20,6 +20,7 @@ interface FormErrors {
 
 const LoginForm: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const emailInputRef = useRef<HTMLInputElement>(null);
 
   const [email, setEmail] = useState('');
@@ -31,6 +32,10 @@ const LoginForm: React.FC = () => {
   const [rateLimitMessage, setRateLimitMessage] = useState('');
   const [attemptCount, setAttemptCount] = useState(0);
   const [oauthLoading, setOauthLoading] = useState<OAuthProvider | null>(null);
+  const [searchParams] = useState(
+    () => new URLSearchParams(window.location.search)
+  );
+  const deviceCode = searchParams.get('code');
 
   // SEO Configuration
   useSEO({
@@ -40,13 +45,59 @@ const LoginForm: React.FC = () => {
     robots: 'index, follow',
   });
 
-  const { login, isAuthenticated, loading } = useAuth();
+  const { login, isAuthenticated, loading, user } = useAuth();
+  const hasNavigated = useRef(false);
 
   useEffect(() => {
-    if (!loading && isAuthenticated) {
-      navigate('/dashboard', { replace: true });
+    // Only run this effect on the login page to prevent interference with other flows
+    if (location.pathname !== '/login') {
+      return;
     }
-  }, [isAuthenticated, loading, navigate]);
+
+    // Prevent multiple navigations as auth state updates
+    if (hasNavigated.current) {
+      console.log('[LoginForm] Already navigated, skipping');
+      return;
+    }
+
+    console.log('[LoginForm] Auth state:', {
+      loading,
+      isAuthenticated,
+      user,
+      deviceCode,
+    });
+    console.log(
+      '[LoginForm] user.onboardingCompleted:',
+      user?.onboardingCompleted
+    );
+
+    if (!loading && isAuthenticated && user) {
+      hasNavigated.current = true; // Mark as navigated to prevent re-runs
+
+      if (deviceCode) {
+        // Check onboarding status before redirecting
+        if (user.onboardingCompleted) {
+          // Existing user with device code → device connect
+          console.log(
+            '[LoginForm] Existing user, redirecting to device connect'
+          );
+          navigate(`/device/connect?code=${deviceCode}`, { replace: true });
+        } else {
+          // New user with device code → store in localStorage for post-onboarding redirect
+          // ProtectedRoute will redirect to /onboarding
+          console.log(
+            '[LoginForm] New user, storing device code and redirecting to dashboard (will be intercepted by ProtectedRoute)'
+          );
+          localStorage.setItem('pending_device_code', deviceCode);
+          navigate('/dashboard', { replace: true });
+        }
+      } else {
+        // No device code → normal dashboard redirect
+        console.log('[LoginForm] No device code, redirecting to dashboard');
+        navigate('/dashboard', { replace: true });
+      }
+    }
+  }, [isAuthenticated, loading, navigate, deviceCode, user, location.pathname]);
 
   useEffect(() => {
     emailInputRef.current?.focus();
@@ -105,6 +156,11 @@ const LoginForm: React.FC = () => {
         });
         setOauthLoading(null);
         return;
+      }
+
+      // Store device code in sessionStorage to preserve through OAuth flow
+      if (deviceCode) {
+        sessionStorage.setItem('oauth_device_code', deviceCode);
       }
 
       await initiateOAuth(provider, 'login', {
@@ -176,7 +232,17 @@ const LoginForm: React.FC = () => {
       setSuccess(true);
       login(data.accessToken, data.user);
       setTimeout(() => {
-        if (data.user.onboardingCompleted) {
+        if (deviceCode) {
+          // Check onboarding status before redirecting
+          if (data.user.onboardingCompleted) {
+            // Existing user with device code → device connect
+            navigate(`/device/connect?code=${deviceCode}`);
+          } else {
+            // New user with device code → store for post-onboarding redirect
+            localStorage.setItem('pending_device_code', deviceCode);
+            navigate('/onboarding');
+          }
+        } else if (data.user.onboardingCompleted) {
           navigate('/dashboard');
         } else {
           navigate('/onboarding');
@@ -380,7 +446,7 @@ const LoginForm: React.FC = () => {
                 <p className="text-sm text-neutral-500">
                   New to Refactron?{' '}
                   <Link
-                    to="/signup"
+                    to={deviceCode ? `/signup?code=${deviceCode}` : '/signup'}
                     className="text-white hover:text-neutral-300 transition-colors"
                   >
                     Create an account

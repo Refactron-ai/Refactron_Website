@@ -9,6 +9,19 @@ const VerifyEmail: React.FC = () => {
   const token = searchParams.get('token');
   const email = location.state?.email; // From signup redirection
 
+  // Try to get device code from location.state first, then localStorage
+  // localStorage is used when user clicks verification link from email
+  const deviceCode =
+    location.state?.deviceCode || localStorage.getItem('pending_device_code');
+
+  // Debug: log device code source
+  console.log('[VerifyEmail] Device code:', deviceCode);
+  console.log('[VerifyEmail] From state:', location.state?.deviceCode);
+  console.log(
+    '[VerifyEmail] From localStorage:',
+    localStorage.getItem('pending_device_code')
+  );
+
   const [status, setStatus] = useState<
     'idle' | 'loading' | 'success' | 'error'
   >('idle');
@@ -38,6 +51,7 @@ const VerifyEmail: React.FC = () => {
         if (response.ok) {
           setStatus('success');
           setMessage(data.message || 'Email verified successfully!');
+          // Don't remove device code here - keep it until user logs in with it
         } else {
           setStatus('error');
           setMessage(data.message || 'Failed to verify email.');
@@ -98,7 +112,7 @@ const VerifyEmail: React.FC = () => {
           . Click the link to activate <br /> your account.
         </p>
         <Link
-          to="/login"
+          to={deviceCode ? `/login?code=${deviceCode}` : '/login'}
           className="inline-flex items-center text-sm text-neutral-500 hover:text-white transition-colors"
         >
           Back to login <ArrowRight className="w-4 h-4 ml-1" />
@@ -140,7 +154,7 @@ const VerifyEmail: React.FC = () => {
           You can now sign in.
         </p>
         <Link
-          to="/login"
+          to={deviceCode ? `/login?code=${deviceCode}` : '/login'}
           className="inline-flex items-center text-sm text-neutral-500 hover:text-white transition-colors"
         >
           Back to login <ArrowRight className="w-4 h-4 ml-1" />
@@ -160,7 +174,7 @@ const VerifyEmail: React.FC = () => {
       </h1>
       <p className="text-neutral-400 mb-8">{message}</p>
       <Link
-        to="/login"
+        to={deviceCode ? `/login?code=${deviceCode}` : '/login'}
         className="inline-flex items-center text-sm text-neutral-500 hover:text-white transition-colors"
       >
         Back to login <ArrowRight className="w-4 h-4 ml-1" />

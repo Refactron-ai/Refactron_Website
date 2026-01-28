@@ -168,7 +168,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
-        navigate('/dashboard');
+
+        // Check if there's a pending device code
+        const deviceCode = localStorage.getItem('pending_device_code');
+        console.log(
+          '[completeOnboarding] Device code from localStorage:',
+          deviceCode
+        );
+
+        if (deviceCode) {
+          // Navigate with state (cleanup will happen in DeviceConnect after mount)
+          console.log(
+            '[completeOnboarding] Navigating to device connect with code via state'
+          ); // Don't remove yet - ProtectedRoute needs to detect this!
+          // localStorage.removeItem('pending_device_code');
+          navigate('/device/connect', {
+            state: { deviceCode },
+            replace: true,
+          });
+        } else {
+          console.log(
+            '[completeOnboarding] No device code found, redirecting to dashboard'
+          );
+          navigate('/dashboard');
+        }
       } else {
         throw new Error('Failed to complete onboarding');
       }
