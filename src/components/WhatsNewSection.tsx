@@ -155,6 +155,30 @@ export const WhatsNewSection: React.FC<WhatsNewSectionProps> = ({
             </div>
           </div>
         )}
+
+        {/* v1.0.13 Specific Sections */}
+        {[
+          whatsNew.sections.patternLearning,
+          whatsNew.sections.astCaching,
+          whatsNew.sections.secureCLI,
+          whatsNew.sections.gitRollback,
+          whatsNew.sections.securityEnhancements,
+        ]
+          .filter(Boolean)
+          .map((section, idx) => (
+            <div key={idx} className="space-y-4">
+              <h3 className="text-lg font-semibold text-white">
+                {section!.title}
+              </h3>
+              <div className="pl-4 border-l-2 border-white/10 space-y-2">
+                {section!.items.map((item, itemIdx) => (
+                  <p key={itemIdx} className="text-sm text-neutral-400">
+                    {item.description}
+                  </p>
+                ))}
+              </div>
+            </div>
+          ))}
       </div>
     </section>
   );

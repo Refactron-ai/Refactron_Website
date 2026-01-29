@@ -82,7 +82,21 @@ export interface WhatsNewContent {
       coverage: string;
       testSuites: string[];
     };
+    // New for v1.0.13
+    patternLearning?: FeatureCategory;
+    astCaching?: FeatureCategory;
+    secureCLI?: FeatureCategory;
+    gitRollback?: FeatureCategory;
+    securityEnhancements?: FeatureCategory;
   };
+}
+
+/**
+ * CLI command group
+ */
+export interface CommandGroup {
+  title: string;
+  commands: CommandInfo[];
 }
 
 /**
@@ -91,6 +105,15 @@ export interface WhatsNewContent {
 export interface CLIWorkflowsContent {
   description?: string;
   commands?: CommandInfo[];
+  commandGroups?: CommandGroup[];
+}
+
+/**
+ * Tutorial item
+ */
+export interface TutorialItem {
+  title: string;
+  steps: string[];
 }
 
 /**
@@ -100,7 +123,23 @@ export interface VersionContent {
   version: string;
   whatsNew?: WhatsNewContent;
   cliWorkflows?: CLIWorkflowsContent;
-  // Add more sections as needed for future versions
+  quickStart?: {
+    installation?: string;
+    authentication?: string;
+    firstAnalysis?: string;
+  };
+  tutorials?: TutorialItem[];
+  coreConcepts?: {
+    description: string;
+    items?: FeatureItem[];
+  };
+  security?: {
+    description: string;
+    items?: SecurityItem[];
+  };
+  apiReference?: {
+    sample: string;
+  };
 }
 
 /**
