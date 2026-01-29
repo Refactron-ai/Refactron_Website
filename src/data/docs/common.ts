@@ -118,5 +118,5 @@ refactron report src/ --format json -o report.json
     },
   ],
 
-  availableVersions: ['v1.0.1', 'v1.0.0', 'v0.1.0b'],
+  availableVersions: ['v1.0.13', 'v1.0.1', 'v1.0.0', 'v0.1.0b'],
 };
