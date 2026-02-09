@@ -29,7 +29,9 @@ export const CLIWorkflowsSection: React.FC<CLIWorkflowsSectionProps> = ({
 
       <div className="rounded-xl border border-white/10 bg-[#0D0D0D] p-6 overflow-hidden">
         <pre className="font-mono text-sm text-neutral-300 overflow-x-auto">
-          <code>{cliBasicSample}</code>
+          <code>
+            {versionContent.cliWorkflows?.cliSample || cliBasicSample}
+          </code>
         </pre>
       </div>
 

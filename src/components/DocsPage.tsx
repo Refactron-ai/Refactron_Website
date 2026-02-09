@@ -30,7 +30,7 @@ const {
 const DocsPage: React.FC = () => {
   const [showMobileNav, setShowMobileNav] = React.useState(false);
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
-  const [selectedVersion, setSelectedVersion] = React.useState('v1.0.13');
+  const [selectedVersion, setSelectedVersion] = React.useState('v1.0.15');
   const [isVersionOpen, setIsVersionOpen] = React.useState(false);
   const versionRef = React.useRef<HTMLDivElement>(null);
 
@@ -104,7 +104,7 @@ const DocsPage: React.FC = () => {
                     Getting Started
                   </span>
                   <ul className="space-y-1">
-                    {sections.slice(0, 3).map(section => (
+                    {sections.slice(0, 4).map(section => (
                       <li key={section.id}>
                         <a
                           href={`#${section.id}`}
@@ -123,7 +123,7 @@ const DocsPage: React.FC = () => {
                     Core Concepts
                   </span>
                   <ul className="space-y-1">
-                    {sections.slice(3, 5).map(section => (
+                    {sections.slice(4, 6).map(section => (
                       <li key={section.id}>
                         <a
                           href={`#${section.id}`}
@@ -142,7 +142,7 @@ const DocsPage: React.FC = () => {
                     Reference
                   </span>
                   <ul className="space-y-1">
-                    {sections.slice(5).map(section => (
+                    {sections.slice(6).map(section => (
                       <li key={section.id}>
                         <a
                           href={`#${section.id}`}
@@ -267,7 +267,7 @@ const DocsPage: React.FC = () => {
                 Getting Started
               </span>
               <ul className="space-y-0.5">
-                {sections.slice(0, 3).map(section => (
+                {sections.slice(0, 4).map(section => (
                   <li key={section.id}>
                     <a
                       href={`#${section.id}`}
@@ -288,7 +288,7 @@ const DocsPage: React.FC = () => {
                 Core Concepts
               </span>
               <ul className="space-y-0.5">
-                {sections.slice(3, 5).map(section => (
+                {sections.slice(4, 6).map(section => (
                   <li key={section.id}>
                     <a
                       href={`#${section.id}`}
@@ -306,7 +306,7 @@ const DocsPage: React.FC = () => {
                 Reference
               </span>
               <ul className="space-y-0.5">
-                {sections.slice(5).map(section => (
+                {sections.slice(6).map(section => (
                   <li key={section.id}>
                     <a
                       href={`#${section.id}`}
@@ -415,9 +415,7 @@ const DocsPage: React.FC = () => {
                     <div className="rounded-xl border border-white/10 bg-[#0D0D0D] p-6 overflow-hidden">
                       <div className="flex items-center justify-between mb-4">
                         <span className="text-sm font-medium text-neutral-400">
-                          {versionContent?.quickStart?.installation
-                            ? 'Installation'
-                            : 'Install & Analyze'}
+                          Installation
                         </span>
                         <div className="flex gap-1.5">
                           <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
@@ -427,65 +425,15 @@ const DocsPage: React.FC = () => {
                       </div>
                       <pre className="font-mono text-sm text-neutral-300 overflow-x-auto pb-2">
                         <code className="language-bash">
-                          {versionContent?.quickStart?.installation ? (
-                            versionContent.quickStart.installation
-                          ) : (
-                            <>
-                              <span className="text-neutral-500">
-                                # Install Refactron
-                              </span>
-                              {'\n'}
-                              pip install refactron{'\n\n'}
-                              <span className="text-neutral-500">
-                                # Analyze your project
-                              </span>
-                              {'\n'}
-                              refactron analyze src/ --summary
-                            </>
-                          )}
+                          {versionContent?.quickStart?.installation ||
+                            commonDocsData.quickStart.installation}
                         </code>
                       </pre>
                     </div>
                     <div className="rounded-xl border border-white/10 bg-[#0D0D0D] p-6 overflow-hidden">
                       <div className="flex items-center justify-between mb-4">
                         <span className="text-sm font-medium text-neutral-400">
-                          {versionContent?.quickStart?.authentication
-                            ? 'Authentication'
-                            : 'Python API'}
-                        </span>
-                        <div className="flex gap-1.5">
-                          <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
-                          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
-                          <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50" />
-                        </div>
-                      </div>
-                      <pre className="font-mono text-sm text-neutral-300 overflow-x-auto pb-2">
-                        <code className="language-python">
-                          {versionContent?.quickStart?.authentication ? (
-                            versionContent.quickStart.authentication
-                          ) : (
-                            <>
-                              <span className="text-purple-400">from</span>{' '}
-                              refactron{' '}
-                              <span className="text-purple-400">import</span>{' '}
-                              Refactron{'\n\n'}
-                              ref = Refactron(){'\n'}
-                              result = ref.refactor(
-                              <span className="text-green-400">"app.py"</span>,
-                              preview=
-                              <span className="text-blue-400">True</span>){'\n'}
-                              result.show_diff()
-                            </>
-                          )}
-                        </code>
-                      </pre>
-                    </div>
-                  </div>
-                  {versionContent?.quickStart?.firstAnalysis && (
-                    <div className="mt-6 rounded-xl border border-white/10 bg-[#0D0D0D] p-6 overflow-hidden">
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-sm font-medium text-neutral-400">
-                          Your First Analysis
+                          Authentication
                         </span>
                         <div className="flex gap-1.5">
                           <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
@@ -495,11 +443,30 @@ const DocsPage: React.FC = () => {
                       </div>
                       <pre className="font-mono text-sm text-neutral-300 overflow-x-auto pb-2">
                         <code className="language-bash">
-                          {versionContent.quickStart.firstAnalysis}
+                          {versionContent?.quickStart?.authentication ||
+                            commonDocsData.quickStart.authentication}
                         </code>
                       </pre>
                     </div>
-                  )}
+                  </div>
+                  <div className="mt-6 rounded-xl border border-white/10 bg-[#0D0D0D] p-6 overflow-hidden">
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-sm font-medium text-neutral-400">
+                        Your First Analysis
+                      </span>
+                      <div className="flex gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50" />
+                      </div>
+                    </div>
+                    <pre className="font-mono text-sm text-neutral-300 overflow-x-auto pb-2">
+                      <code className="language-bash">
+                        {versionContent?.quickStart?.firstAnalysis ||
+                          commonDocsData.quickStart.firstAnalysis}
+                      </code>
+                    </pre>
+                  </div>
                 </section>
 
                 {/* Core Concepts */}
