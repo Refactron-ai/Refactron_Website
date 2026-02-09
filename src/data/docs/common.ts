@@ -1,11 +1,12 @@
 import {
   BookOpen,
-  Rocket,
   GraduationCap,
   Layers,
   Code2,
   Workflow,
   ShieldCheck,
+  Sparkles,
+  Zap,
 } from 'lucide-react';
 import { CommonDocsData } from './types';
 
@@ -22,9 +23,16 @@ export const commonDocsData: CommonDocsData = {
         'Refactron Docs helps you understand how to integrate the Refactron AI refactoring engine into your workflow. Start here to explore capabilities, architecture, and integration patterns.',
     },
     {
+      id: 'whats-new',
+      title: "What's New",
+      icon: Sparkles,
+      description:
+        'Explore the latest features, engine enhancements, and architectural shifts in the current release.',
+    },
+    {
       id: 'quick-start',
       title: 'Quick Start',
-      icon: Rocket,
+      icon: Zap,
       description:
         'Install the Refactron library, authenticate, and run your first refactoring pipeline in under five minutes.',
     },
@@ -64,6 +72,12 @@ export const commonDocsData: CommonDocsData = {
         'How we secure your code, handle data residency, and comply with enterprise-grade standards.',
     },
   ],
+
+  quickStart: {
+    installation: `# Install Refactron\npip install refactron`,
+    authentication: `# Secure Login\nrefactron login`,
+    firstAnalysis: `# Analyze your project\nrefactron analyze .`,
+  },
 
   pythonApiSample: `from refactron import Refactron
 from refactron.core.config import RefactronConfig
@@ -118,5 +132,5 @@ refactron report src/ --format json -o report.json
     },
   ],
 
-  availableVersions: ['v1.0.13', 'v1.0.1', 'v1.0.0', 'v0.1.0b'],
+  availableVersions: ['v1.0.15', 'v1.0.13', 'v1.0.1', 'v1.0.0', 'v0.1.0b'],
 };

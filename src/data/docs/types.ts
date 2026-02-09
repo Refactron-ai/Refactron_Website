@@ -88,6 +88,14 @@ export interface WhatsNewContent {
     secureCLI?: FeatureCategory;
     gitRollback?: FeatureCategory;
     securityEnhancements?: FeatureCategory;
+    // New for v1.0.15
+    repositoryManagement?: FeatureCategory;
+    aiPoweredCommands?: FeatureCategory;
+    observabilityMetrics?: FeatureCategory;
+    ciCdIntegration?: FeatureCategory;
+    cliExperience?: FeatureCategory;
+    securityFixes?: FeatureCategory;
+    compatibility?: FeatureCategory;
   };
 }
 
@@ -106,6 +114,7 @@ export interface CLIWorkflowsContent {
   description?: string;
   commands?: CommandInfo[];
   commandGroups?: CommandGroup[];
+  cliSample?: string;
 }
 
 /**
@@ -153,4 +162,9 @@ export interface CommonDocsData {
   };
   securityItems: SecurityItem[];
   availableVersions: string[];
+  quickStart: {
+    installation: string;
+    authentication: string;
+    firstAnalysis: string;
+  };
 }

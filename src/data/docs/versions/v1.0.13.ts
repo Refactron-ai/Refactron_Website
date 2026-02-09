@@ -57,12 +57,6 @@ export const v1_0_13: VersionContent = {
     },
   },
 
-  quickStart: {
-    installation: `# Upgrade to v1.0.13\npip install --upgrade refactron`,
-    authentication: `# New: Mandatory Authentication\nrefactron login`,
-    firstAnalysis: `# Analyze with Pattern Learning\nrefactron analyze .`,
-  },
-
   tutorials: [
     {
       title: 'Mastering the Pattern Learning Loop',

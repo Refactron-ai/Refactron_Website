@@ -156,13 +156,20 @@ export const WhatsNewSection: React.FC<WhatsNewSectionProps> = ({
           </div>
         )}
 
-        {/* v1.0.13 Specific Sections */}
+        {/* Version Specific Sections (v1.0.13, v1.0.15) */}
         {[
           whatsNew.sections.patternLearning,
           whatsNew.sections.astCaching,
           whatsNew.sections.secureCLI,
           whatsNew.sections.gitRollback,
           whatsNew.sections.securityEnhancements,
+          whatsNew.sections.repositoryManagement,
+          whatsNew.sections.aiPoweredCommands,
+          whatsNew.sections.observabilityMetrics,
+          whatsNew.sections.ciCdIntegration,
+          whatsNew.sections.cliExperience,
+          whatsNew.sections.securityFixes,
+          whatsNew.sections.compatibility,
         ]
           .filter(Boolean)
           .map((section, idx) => (
