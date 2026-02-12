@@ -37,9 +37,14 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
 
-          <h1 className="text-4xl font-medium mb-4 tracking-tight text-white">
-            Welcome to Refactron
-          </h1>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <h1 className="text-4xl font-medium tracking-tight text-white">
+              Welcome to Refactron
+            </h1>
+            <span className="px-2 py-0.5 bg-amber-500/10 border border-amber-500/20 text-amber-500 text-[10px] font-bold uppercase tracking-widest rounded-full">
+              Beta
+            </span>
+          </div>
           <p className="text-neutral-500 text-lg mb-10 max-w-md mx-auto leading-relaxed">
             Create your first project to start analyzing and improving your
             codebase.
