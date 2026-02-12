@@ -113,6 +113,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
               <span className="text-lg font-medium tracking-tight">
                 Refactron
               </span>
+              <span className="px-1.5 py-0.5 bg-neutral-800 border border-neutral-700 text-neutral-500 text-[8px] font-bold uppercase tracking-widest rounded-md mt-0.5">
+                Beta
+              </span>
             </Link>
           )}
           <button
