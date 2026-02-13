@@ -245,8 +245,8 @@ const Billing: React.FC = () => {
                           ? 'border-white bg-neutral-800/60 ring-1 ring-white shadow-[0_0_30px_rgba(255,255,255,0.05)]'
                           : 'border-white/10 hover:border-white/20 hover:bg-white/5',
                         plan.highlight &&
-                        selectedPlan !== plan.id &&
-                        'border-amber-500/30'
+                          selectedPlan !== plan.id &&
+                          'border-amber-500/30'
                       )}
                     >
                       {plan.highlight && (

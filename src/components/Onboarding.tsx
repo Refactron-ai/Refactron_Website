@@ -209,8 +209,8 @@ const Onboarding: React.FC = () => {
                         ? 'border-white bg-neutral-900/60 ring-1 ring-white'
                         : 'border-white/10 hover:border-white/20 hover:bg-white/5',
                       plan.highlight &&
-                      selectedPlan !== plan.id &&
-                      'border-amber-500/50 shadow-[0_0_30px_rgba(245,158,11,0.1)]'
+                        selectedPlan !== plan.id &&
+                        'border-amber-500/50 shadow-[0_0_30px_rgba(245,158,11,0.1)]'
                     )}
                   >
                     {plan.highlight && (
