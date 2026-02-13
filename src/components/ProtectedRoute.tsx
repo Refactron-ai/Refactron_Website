@@ -38,12 +38,16 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   // If onboarding is completed and user tries to access onboarding page, redirect to dashboard
-  // BUT: Don't redirect if there's a pending device code (user just completed onboarding and navigating to device connect)
+  // BUT: Don't redirect if there's a pending device code OR pending Stripe redirect
   if (user && user.onboardingCompleted && location.pathname === '/onboarding') {
     const hasPendingDeviceCode = localStorage.getItem('pending_device_code');
-    if (hasPendingDeviceCode) {
+    const hasPendingStripeRedirect = localStorage.getItem(
+      'pending_stripe_redirect'
+    );
+
+    if (hasPendingDeviceCode || hasPendingStripeRedirect) {
       console.log(
-        '[ProtectedRoute] Has pending device code, allowing navigation to complete'
+        '[ProtectedRoute] Has pending redirect, allowing navigation to complete'
       );
       return <>{children}</>;
     }

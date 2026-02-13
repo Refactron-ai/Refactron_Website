@@ -25,7 +25,7 @@ const PricingSection = () => {
     },
     {
       name: 'Pro (Teams)',
-      price: '$20–40',
+      price: '$20',
       priceSuffix: '/ developer / month',
       description: 'For growing engineering teams',
       features: [

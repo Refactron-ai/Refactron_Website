@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Plus } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 import RepositorySelector from './RepositorySelector';
 import type { Repository } from '../hooks/useRepositories';
 import DashboardLayout from './DashboardLayout';
@@ -8,6 +10,47 @@ import DashboardLayout from './DashboardLayout';
 const Dashboard: React.FC = () => {
   const [isRepositorySelectorOpen, setIsRepositorySelectorOpen] =
     useState(false);
+  const location = useLocation();
+  const { updateUser } = useAuth();
+
+  // Clean up pending redirect flag and refresh user data when arriving from Stripe
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    if (query.get('success')) {
+      localStorage.removeItem('pending_stripe_redirect');
+
+      // Fetch latest user data to reflect plan upgrade
+      const refreshUserData = async () => {
+        try {
+          const token = localStorage.getItem('accessToken');
+          const apiBaseUrl =
+            process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+          const response = await fetch(`${apiBaseUrl}/api/auth/me`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            updateUser(data.user); // Update context with fresh data including new plan
+            console.log(
+              '[Dashboard] User data refreshed after Stripe payment:',
+              data.user.plan
+            );
+          }
+        } catch (error) {
+          console.error('[Dashboard] Failed to refresh user data:', error);
+        }
+      };
+
+      refreshUserData();
+
+      // Remove the query param for cleaner URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, [location, updateUser]);
 
   const handleRepositorySelect = (repository: Repository) => {
     console.log('Selected repository:', repository);

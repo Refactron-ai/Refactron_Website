@@ -5,7 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import { cn } from '../utils/cn';
 
 const Onboarding: React.FC = () => {
-  const { completeOnboarding, logout } = useAuth();
+  const { completeOnboarding, logout, createDodoCheckoutSession } = useAuth();
   const [step, setStep] = useState(1);
   const [orgName, setOrgName] = useState('');
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
@@ -29,7 +29,7 @@ const Onboarding: React.FC = () => {
     {
       id: 'pro',
       name: 'Pro (Teams)',
-      price: '$20–40',
+      price: '$20',
       suffix: '/ dev / month',
       description: 'For growing engineering teams',
       features: [
@@ -70,9 +70,34 @@ const Onboarding: React.FC = () => {
     setError('');
 
     try {
-      await completeOnboarding(orgName, selectedPlan);
-    } catch (err) {
-      setError('Failed to complete onboarding. Please try again.');
+      // Check if this is a paid plan
+      const isPaidPlan =
+        selectedPlan === 'pro' || selectedPlan === 'enterprise';
+
+      // Set flag to prevent ProtectedRoute redirect for paid plans
+      if (isPaidPlan) {
+        localStorage.setItem('pending_stripe_redirect', 'true');
+      }
+
+      // Complete onboarding, skip navigation for paid plans
+      await completeOnboarding(orgName, selectedPlan, isPaidPlan);
+
+      // For Pro plan, redirect to Stripe checkout
+      if (selectedPlan === 'pro') {
+        // Switch to Dodo Payments
+        await createDodoCheckoutSession();
+        // await createCheckoutSession(); // Stripe
+        // Flag will be cleaned up in Billing.tsx on return from Stripe
+      }
+      // For enterprise, user stays on current page or we could show contact info
+      // For free plan, completeOnboarding already navigated to dashboard
+    } catch (err: any) {
+      // Cleanup flag on error
+      localStorage.removeItem('pending_stripe_redirect');
+      console.error(err);
+      setError(
+        err.message || 'Failed to complete onboarding. Please try again.'
+      );
       setIsLoading(false);
     }
   };
