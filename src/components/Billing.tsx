@@ -113,8 +113,16 @@ const Billing: React.FC = () => {
     try {
       if (user?.dodoCustomerId) {
         await createDodoPortalSession();
-      } else {
+      } else if (user?.stripeCustomerId) {
         await createPortalSession();
+      } else if (user?.plan === 'pro') {
+        // Edge case: User is pro but missing both IDs
+        setError(
+          'Billing configuration missing. Please refresh the page. If the issue persists, contact support.'
+        );
+        setIsLoading(false);
+      } else {
+        await createPortalSession(); // Fallback for error state
       }
     } catch (err) {
       setError('Failed to open billing settings.');
@@ -237,8 +245,8 @@ const Billing: React.FC = () => {
                           ? 'border-white bg-neutral-800/60 ring-1 ring-white shadow-[0_0_30px_rgba(255,255,255,0.05)]'
                           : 'border-white/10 hover:border-white/20 hover:bg-white/5',
                         plan.highlight &&
-                          selectedPlan !== plan.id &&
-                          'border-amber-500/30'
+                        selectedPlan !== plan.id &&
+                        'border-amber-500/30'
                       )}
                     >
                       {plan.highlight && (
