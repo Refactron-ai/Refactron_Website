@@ -113,8 +113,16 @@ const Billing: React.FC = () => {
     try {
       if (user?.dodoCustomerId) {
         await createDodoPortalSession();
-      } else {
+      } else if (user?.stripeCustomerId) {
         await createPortalSession();
+      } else if (user?.plan === 'pro') {
+        // Edge case: User is pro but missing both IDs
+        setError(
+          'Billing configuration missing. Please refresh the page. If the issue persists, contact support.'
+        );
+        setIsLoading(false);
+      } else {
+        await createPortalSession(); // Fallback for error state
       }
     } catch (err) {
       setError('Failed to open billing settings.');
