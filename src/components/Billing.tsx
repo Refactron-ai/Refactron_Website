@@ -13,7 +13,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 
 const Billing: React.FC = () => {
-  const { user, createCheckoutSession, createPortalSession } = useAuth();
+  const {
+    user,
+    createPortalSession,
+    createDodoCheckoutSession,
+    createDodoPortalSession,
+  } = useAuth();
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -92,9 +97,11 @@ const Billing: React.FC = () => {
     setIsLoading(true);
     setError('');
     try {
-      // Use the specific price ID for Pro, or let backend handle default
-      // TODO: Map selectedPlan to Stripe Price ID if we have multiple paid plans
-      await createCheckoutSession();
+      // Dodo Payments Implementation
+      await createDodoCheckoutSession();
+
+      // Stripe Implementation (Preserved)
+      // await createCheckoutSession();
     } catch (err) {
       setError('Failed to start checkout. Please try again.');
       setIsLoading(false);
@@ -104,7 +111,11 @@ const Billing: React.FC = () => {
   const handlePortal = async () => {
     setIsLoading(true);
     try {
-      await createPortalSession();
+      if (user?.dodoCustomerId) {
+        await createDodoPortalSession();
+      } else {
+        await createPortalSession();
+      }
     } catch (err) {
       setError('Failed to open billing settings.');
       setIsLoading(false);

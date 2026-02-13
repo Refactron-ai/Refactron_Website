@@ -21,6 +21,9 @@ interface User {
   stripeSubscriptionId?: string | null;
   stripePriceId?: string | null;
   stripeCurrentPeriodEnd?: string | null; // Date string from JSON
+  dodoCustomerId?: string | null;
+  dodoSubscriptionId?: string | null;
+  dodoPaymentId?: string | null;
 }
 
 interface AuthContextType {
@@ -38,7 +41,9 @@ interface AuthContextType {
   ) => Promise<void>;
   updatePlan: (plan: string) => Promise<void>;
   createCheckoutSession: (priceId?: string) => Promise<void>;
+  createDodoCheckoutSession: (productId?: string) => Promise<void>;
   createPortalSession: () => Promise<void>;
+  createDodoPortalSession: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -260,6 +265,49 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
+  const createDodoCheckoutSession = useCallback(async (productId?: string) => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('No authentication token found');
+
+    const apiBaseUrl = getApiBaseUrl();
+    const response = await fetch(`${apiBaseUrl}/api/dodo/checkout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ productId }),
+    });
+
+    if (response.ok) {
+      const { url } = await response.json();
+      window.location.href = url;
+    } else {
+      throw new Error('Failed to start Dodo checkout');
+    }
+  }, []);
+
+  const createDodoPortalSession = useCallback(async () => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('No authentication token found');
+
+    const apiBaseUrl = getApiBaseUrl();
+    const response = await fetch(`${apiBaseUrl}/api/dodo/portal`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      const { url } = await response.json();
+      window.location.href = url;
+    } else {
+      throw new Error('Failed to open Dodo billing portal');
+    }
+  }, []);
+
   const createPortalSession = useCallback(async () => {
     const token = localStorage.getItem('accessToken');
     if (!token) throw new Error('No authentication token found');
@@ -294,7 +342,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         completeOnboarding,
         updatePlan,
         createCheckoutSession,
+        createDodoCheckoutSession,
         createPortalSession,
+        createDodoPortalSession,
       }}
     >
       {children}

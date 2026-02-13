@@ -5,7 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import { cn } from '../utils/cn';
 
 const Onboarding: React.FC = () => {
-  const { completeOnboarding, logout, createCheckoutSession } = useAuth();
+  const { completeOnboarding, logout, createDodoCheckoutSession } = useAuth();
   const [step, setStep] = useState(1);
   const [orgName, setOrgName] = useState('');
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
@@ -84,7 +84,9 @@ const Onboarding: React.FC = () => {
 
       // For Pro plan, redirect to Stripe checkout
       if (selectedPlan === 'pro') {
-        await createCheckoutSession();
+        // Switch to Dodo Payments
+        await createDodoCheckoutSession();
+        // await createCheckoutSession(); // Stripe
         // Flag will be cleaned up in Billing.tsx on return from Stripe
       }
       // For enterprise, user stays on current page or we could show contact info
