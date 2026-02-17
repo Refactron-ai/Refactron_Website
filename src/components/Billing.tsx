@@ -11,6 +11,7 @@ import {
 import { cn } from '../utils/cn';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
+import { getApiBaseUrl } from '../utils/urlUtils';
 
 const Billing: React.FC = () => {
   const {
@@ -20,9 +21,11 @@ const Billing: React.FC = () => {
     createDodoPortalSession,
   } = useAuth();
   const [isUpgrading, setIsUpgrading] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<string>('pro');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [billingHistory, setBillingHistory] = useState<any[]>([]);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -41,6 +44,37 @@ const Billing: React.FC = () => {
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, [location]);
+
+  useEffect(() => {
+    if (user?.plan === 'pro') {
+      setIsLoadingHistory(true);
+      // Determine which API to call based on IDs
+      const endpoint = user.dodoCustomerId
+        ? '/api/dodo/history'
+        : '/api/stripe/history'; // Fallback / future-proof
+
+      // Only fetch if it's Dodo for now as Stripe history isn't implemented yet
+      if (user.dodoCustomerId) {
+        const token = localStorage.getItem('accessToken');
+        const apiBaseUrl = getApiBaseUrl();
+
+        fetch(`${apiBaseUrl}${endpoint}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then(res => {
+            if (res.ok) return res.json();
+            throw new Error('Failed to fetch history');
+          })
+          .then(data => setBillingHistory(data))
+          .catch(err => console.error(err))
+          .finally(() => setIsLoadingHistory(false));
+      } else {
+        setIsLoadingHistory(false);
+      }
+    }
+  }, [user]);
 
   const plans = [
     {
@@ -61,6 +95,7 @@ const Billing: React.FC = () => {
       name: 'Pro (Teams)',
       price: '$20',
       suffix: '/ dev / month',
+      trial: '14-Day Free Trial',
       description: 'For growing engineering teams',
       features: [
         'Everything in Free',
@@ -175,6 +210,36 @@ const Billing: React.FC = () => {
                       <p className="text-sm text-neutral-400 mt-1">
                         Your current subscription plan
                       </p>
+                      {user?.trialEnd &&
+                        new Date(user.trialEnd) > new Date() &&
+                        user?.plan === 'pro' && (
+                          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/30 rounded-full">
+                            <svg
+                              className="w-4 h-4 text-emerald-400"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                            <span className="text-xs font-semibold text-emerald-300">
+                              Trial ends{' '}
+                              {new Date(user.trialEnd).toLocaleDateString(
+                                'en-US',
+                                {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric',
+                                }
+                              )}
+                            </span>
+                          </div>
+                        )}
                     </div>
                     {user?.plan !== 'enterprise' && user?.plan !== 'pro' ? (
                       <button
@@ -215,14 +280,63 @@ const Billing: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Billing History Placeholder */}
+                {/* Billing History */}
                 <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6">
                   <h2 className="text-xl font-semibold text-white mb-4">
                     Billing History
                   </h2>
-                  <p className="text-neutral-400 text-sm">
-                    No billing history available yet.
-                  </p>
+                  {isLoadingHistory ? (
+                    <div className="flex justify-center p-8">
+                      <Loader2 className="w-6 h-6 animate-spin text-neutral-500" />
+                    </div>
+                  ) : billingHistory.length > 0 ? (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left">
+                        <thead>
+                          <tr className="border-b border-neutral-800 text-sm text-neutral-400">
+                            <th className="pb-3 font-medium">Date</th>
+                            <th className="pb-3 font-medium">Amount</th>
+                            <th className="pb-3 font-medium">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-neutral-800">
+                          {billingHistory.map(payment => (
+                            <tr key={payment.id} className="text-sm">
+                              <td className="py-4 text-white">
+                                {new Date(payment.date).toLocaleDateString()}
+                              </td>
+                              <td className="py-4 text-white">
+                                {(payment.amount / 100).toLocaleString(
+                                  'en-US',
+                                  {
+                                    style: 'currency',
+                                    currency: payment.currency.toUpperCase(),
+                                  }
+                                )}
+                              </td>
+                              <td className="py-4">
+                                <span
+                                  className={cn(
+                                    'px-2 py-1 rounded text-xs font-medium',
+                                    payment.status === 'succeeded'
+                                      ? 'bg-emerald-500/10 text-emerald-400'
+                                      : 'bg-neutral-800 text-neutral-400'
+                                  )}
+                                >
+                                  {payment.status.charAt(0).toUpperCase() +
+                                    payment.status.slice(1)}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <p className="text-neutral-400 text-sm">
+                      No billing history available yet.
+                    </p>
+                  )}
                 </div>
               </motion.div>
             ) : (
@@ -266,6 +380,26 @@ const Billing: React.FC = () => {
                             </div>
                           )}
                         </div>
+                        {plan.trial && (
+                          <div className="mb-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 rounded-full">
+                            <svg
+                              className="w-3.5 h-3.5 text-emerald-400"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                            <span className="text-xs font-semibold text-emerald-300">
+                              {plan.trial}
+                            </span>
+                          </div>
+                        )}
                         <div className="flex items-baseline gap-1 mb-2">
                           <span className="text-4xl font-light text-white">
                             {plan.price}
