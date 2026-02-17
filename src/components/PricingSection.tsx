@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FlickeringGrid } from './ui/flickering-grid';
 import { Check } from 'lucide-react';
 import { cn } from '../utils/cn';
@@ -7,7 +6,6 @@ import EarlyAccessModal from './EarlyAccessModal';
 
 const PricingSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
 
   const tiers = [
     {
@@ -22,7 +20,7 @@ const PricingSection = () => {
       ],
       cta: 'Get started',
       highlight: false,
-      action: () => navigate('/login'),
+      action: () => (window.location.href = 'https://app.refactron.dev/login'),
     },
     {
       name: 'Pro (Teams)',
@@ -39,7 +37,7 @@ const PricingSection = () => {
       ],
       cta: 'Get started',
       highlight: true,
-      action: () => navigate('/login'),
+      action: () => (window.location.href = 'https://app.refactron.dev/login'),
     },
     {
       name: 'Enterprise',
