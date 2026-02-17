@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FlickeringGrid } from './ui/flickering-grid';
 import { Check } from 'lucide-react';
 import { cn } from '../utils/cn';
@@ -6,6 +7,7 @@ import EarlyAccessModal from './EarlyAccessModal';
 
 const PricingSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const tiers = [
     {
@@ -20,14 +22,14 @@ const PricingSection = () => {
       ],
       cta: 'Get started',
       highlight: false,
-      action: () =>
-        window.open('https://pypi.org/project/refactron/', '_blank'),
+      action: () => navigate('/login'),
     },
     {
       name: 'Pro (Teams)',
       price: '$20',
       priceSuffix: '/ developer / month',
       description: 'For growing engineering teams',
+      trial: '14-Day Free Trial',
       features: [
         'Everything in Free',
         'Autofix with verification',
@@ -35,9 +37,9 @@ const PricingSection = () => {
         'CI/CD integration',
         'Priority updates',
       ],
-      cta: 'Join early access',
+      cta: 'Get started',
       highlight: true,
-      action: () => setIsModalOpen(true),
+      action: () => navigate('/login'),
     },
     {
       name: 'Enterprise',
@@ -113,6 +115,13 @@ const PricingSection = () => {
                     )}
                   </div>
                   <p className="text-sm text-neutral-400">{tier.description}</p>
+                  {/* @ts-ignore */}
+                  {tier.trial && (
+                    <span className="inline-block mt-3 text-xs font-semibold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/20">
+                      {/* @ts-ignore */}
+                      {tier.trial}
+                    </span>
+                  )}
                 </div>
 
                 <ul className="space-y-4 mb-8 flex-1">
