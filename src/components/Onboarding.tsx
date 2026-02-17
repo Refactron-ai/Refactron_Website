@@ -31,6 +31,7 @@ const Onboarding: React.FC = () => {
       name: 'Pro (Teams)',
       price: '$20',
       suffix: '/ dev / month',
+      trial: '14-Day Free Trial',
       description: 'For growing engineering teams',
       features: [
         'Everything in Free',
@@ -223,6 +224,26 @@ const Onboarding: React.FC = () => {
                       <h3 className="text-xs font-mono text-neutral-400 uppercase tracking-wider mb-4">
                         {plan.name}
                       </h3>
+                      {plan.trial && (
+                        <div className="mb-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 rounded-full">
+                          <svg
+                            className="w-3.5 h-3.5 text-emerald-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                          </svg>
+                          <span className="text-xs font-semibold text-emerald-300">
+                            {plan.trial}
+                          </span>
+                        </div>
+                      )}
                       <div className="flex items-baseline gap-1 mb-2">
                         <span className="text-3xl font-light text-white">
                           {plan.price}
