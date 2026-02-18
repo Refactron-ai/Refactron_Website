@@ -1,77 +1,70 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-  <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17787581640"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
-      // Set default consent mode to "denied" for privacy compliance
-      gtag('consent', 'default', {
-        'analytics_storage': 'denied',
-        'ad_storage': 'denied'
-      });
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17787581640"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-      gtag('config', 'AW-17787581640');
-    </script>
+    // Set default consent mode to "denied" for privacy compliance
+    gtag('consent', 'default', {
+      'analytics_storage': 'denied',
+      'ad_storage': 'denied'
+    });
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#20B2AA" />
+    gtag('config', 'AW-17787581640');
+  </script>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="%PUBLIC_URL%/logo.png?v=6" />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png?v=6" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#20B2AA" />
 
-    <!-- Primary SEO -->
-    <title>Refactron | Safe, Verified Refactoring</title>
-    <meta
-      name="description"
-      content="Refactron is a safety-first refactoring tool that analyzes code structure and proposes incremental, reviewable changes to evolve production codebases without breaking behavior."
-    />
-    <meta
-      name="keywords"
-      content="code refactoring, safe refactoring, legacy code, technical debt, developer tools, code maintainability"
-    />
-    <meta name="author" content="Refactron" />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://refactron.dev/" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="%PUBLIC_URL%/logo.png?v=6" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.png?v=6" />
 
-    <!-- Performance -->
-    <link rel="preconnect" href="https://www.googletagmanager.com" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Primary SEO -->
+  <title>Refactron | Safe, Verified Refactoring</title>
+  <meta name="description"
+    content="Refactron is a safety-first refactoring tool that analyzes code structure and proposes incremental, reviewable changes to evolve production codebases without breaking behavior." />
+  <meta name="keywords"
+    content="code refactoring, safe refactoring, legacy code, technical debt, developer tools, code maintainability" />
+  <meta name="author" content="Refactron" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://refactron.dev/" />
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://refactron.dev/" />
-    <meta property="og:title" content="Refactron | Safe, Verified Refactoring" />
-    <meta
-      property="og:description"
-      content="Safety-first refactoring for real-world codebases. Incremental, reviewable changes with verification built in."
-    />
-    <meta property="og:image" content="https://refactron.dev/Refactron-logo-TM.png" />
-    <meta property="og:site_name" content="Refactron" />
+  <!-- Performance -->
+  <link rel="preconnect" href="https://www.googletagmanager.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Refactron | Safe, Verified Refactoring" />
-    <meta
-      name="twitter:description"
-      content="Safety-first refactoring for real-world codebases. Incremental, reviewable changes with verification built in."
-    />
-    <meta name="twitter:image" content="https://refactron.dev/Refactron-logo-TM.png" />
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://refactron.dev/" />
+  <meta property="og:title" content="Refactron | Safe, Verified Refactoring" />
+  <meta property="og:description"
+    content="Safety-first refactoring for real-world codebases. Incremental, reviewable changes with verification built in." />
+  <meta property="og:image" content="https://refactron.dev/Refactron_Hero.png" />
+  <meta property="og:site_name" content="Refactron" />
 
-    <!-- PWA -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json?v=6" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="application-name" content="Refactron" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Refactron | Safe, Verified Refactoring" />
+  <meta name="twitter:description"
+    content="Safety-first refactoring for real-world codebases. Incremental, reviewable changes with verification built in." />
+  <meta name="twitter:image" content="https://refactron.dev/Refactron_Hero.png" />
 
-    <!-- Structured Data: Organization -->
-    <script type="application/ld+json">
+  <!-- PWA -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json?v=6" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="application-name" content="Refactron" />
+
+  <!-- Structured Data: Organization -->
+  <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -93,8 +86,8 @@
     }
     </script>
 
-    <!-- Structured Data: WebSite -->
-    <script type="application/ld+json">
+  <!-- Structured Data: WebSite -->
+  <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -104,8 +97,8 @@
     }
     </script>
 
-    <!-- Structured Data: SoftwareApplication (SAFE) -->
-    <script type="application/ld+json">
+  <!-- Structured Data: SoftwareApplication (SAFE) -->
+  <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
@@ -117,10 +110,11 @@
       "downloadUrl": "https://pypi.org/project/refactron/"
     }
     </script>
-  </head>
+</head>
 
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-  </body>
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+</body>
+
 </html>
