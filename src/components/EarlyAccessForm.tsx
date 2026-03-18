@@ -72,7 +72,7 @@ const EarlyAccessForm: React.FC = () => {
       };
 
       // Send welcome email to user
-      const welcomeResult = await emailjs.send(
+      await emailjs.send(
         serviceId,
         welcomeTemplateId,
         {
@@ -83,7 +83,7 @@ const EarlyAccessForm: React.FC = () => {
       );
 
       // Send notification email to you
-      const notificationResult = await emailjs.send(
+      await emailjs.send(
         serviceId,
         notificationTemplateId,
         {
