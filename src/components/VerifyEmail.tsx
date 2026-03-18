@@ -14,13 +14,7 @@ const VerifyEmail: React.FC = () => {
   const deviceCode =
     location.state?.deviceCode || localStorage.getItem('pending_device_code');
 
-  // Debug: log device code source
-  console.log('[VerifyEmail] Device code:', deviceCode);
-  console.log('[VerifyEmail] From state:', location.state?.deviceCode);
-  console.log(
-    '[VerifyEmail] From localStorage:',
-    localStorage.getItem('pending_device_code')
-  );
+
 
   const [status, setStatus] = useState<
     'idle' | 'loading' | 'success' | 'error'

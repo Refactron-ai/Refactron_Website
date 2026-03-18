@@ -133,7 +133,6 @@ const enableAnalytics = () => {
   }
 
   // Enable other analytics services here
-  console.log('Analytics enabled');
 };
 
 const disableAnalytics = () => {
@@ -146,7 +145,6 @@ const disableAnalytics = () => {
   }
 
   // Disable other analytics services here
-  console.log('Analytics disabled');
 };
 
 // Cookie utility functions

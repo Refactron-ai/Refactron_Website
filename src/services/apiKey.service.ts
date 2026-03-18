@@ -39,7 +39,7 @@ const getAuthToken = (): string | null => {
   // Try localStorage first (primary storage used by useAuth)
   const localToken = localStorage.getItem('accessToken');
   if (localToken) {
-    console.log('Found token in localStorage');
+
     return localToken;
   }
 
@@ -47,11 +47,11 @@ const getAuthToken = (): string | null => {
   const cookies = document.cookie.split(';');
   const tokenCookie = cookies.find(c => c.trim().startsWith('accessToken='));
   if (tokenCookie) {
-    console.log('Found token in cookies');
+
     return tokenCookie.split('=')[1];
   }
 
-  console.log('No token found in localStorage or cookies');
+
   return null;
 };
 
@@ -64,7 +64,7 @@ export const createApiKey = async (
 ): Promise<CreateKeyResponse> => {
   try {
     const token = getAuthToken();
-    console.log('Token for createApiKey:', token ? 'Present' : 'Missing');
+
 
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export const createApiKey = async (
       headers['Authorization'] = `Bearer ${token}`;
     }
 
-    console.log('Request headers:', headers);
+
 
     const response = await fetch(`${API_BASE_URL}/api/keys`, {
       method: 'POST',

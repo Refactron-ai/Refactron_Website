@@ -35,10 +35,7 @@ const Dashboard: React.FC = () => {
           if (response.ok) {
             const data = await response.json();
             updateUser(data.user); // Update context with fresh data including new plan
-            console.log(
-              '[Dashboard] User data refreshed after Stripe payment:',
-              data.user.plan
-            );
+
           }
         } catch (error) {
           console.error('[Dashboard] Failed to refresh user data:', error);
@@ -53,7 +50,7 @@ const Dashboard: React.FC = () => {
   }, [location, updateUser]);
 
   const handleRepositorySelect = (repository: Repository) => {
-    console.log('Selected repository:', repository);
+
     // TODO: Create project with selected repository
     setIsRepositorySelectorOpen(false);
   };

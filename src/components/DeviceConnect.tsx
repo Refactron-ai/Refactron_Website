@@ -31,20 +31,13 @@ const DeviceConnect: React.FC = () => {
     (location.state as { deviceCode?: string })?.deviceCode ||
     searchParams.get('code');
 
-  console.log(
-    '[DeviceConnect] Loaded with code:',
-    userCode,
-    'from',
-    (location.state as { deviceCode?: string })?.deviceCode ? 'state' : 'URL'
-  );
+
 
   // Clean up pending_device_code after successful mount
   useEffect(() => {
     if (userCode) {
       localStorage.removeItem('pending_device_code');
-      console.log(
-        '[DeviceConnect] Cleaned up pending_device_code from localStorage'
-      );
+
     }
   }, [userCode]);
 

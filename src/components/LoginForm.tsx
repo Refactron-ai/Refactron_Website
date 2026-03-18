@@ -56,20 +56,11 @@ const LoginForm: React.FC = () => {
 
     // Prevent multiple navigations as auth state updates
     if (hasNavigated.current) {
-      console.log('[LoginForm] Already navigated, skipping');
+
       return;
     }
 
-    console.log('[LoginForm] Auth state:', {
-      loading,
-      isAuthenticated,
-      user,
-      deviceCode,
-    });
-    console.log(
-      '[LoginForm] user.onboardingCompleted:',
-      user?.onboardingCompleted
-    );
+
 
     if (!loading && isAuthenticated && user) {
       hasNavigated.current = true; // Mark as navigated to prevent re-runs
@@ -78,22 +69,18 @@ const LoginForm: React.FC = () => {
         // Check onboarding status before redirecting
         if (user.onboardingCompleted) {
           // Existing user with device code → device connect
-          console.log(
-            '[LoginForm] Existing user, redirecting to device connect'
-          );
+
           navigate(`/device/connect?code=${deviceCode}`, { replace: true });
         } else {
           // New user with device code → store in localStorage for post-onboarding redirect
           // ProtectedRoute will redirect to /onboarding
-          console.log(
-            '[LoginForm] New user, storing device code and redirecting to dashboard (will be intercepted by ProtectedRoute)'
-          );
+
           localStorage.setItem('pending_device_code', deviceCode);
           navigate('/dashboard', { replace: true });
         }
       } else {
         // No device code → normal dashboard redirect
-        console.log('[LoginForm] No device code, redirecting to dashboard');
+
         navigate('/dashboard', { replace: true });
       }
     }
