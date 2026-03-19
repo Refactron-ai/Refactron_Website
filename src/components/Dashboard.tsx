@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Plus, Github, ExternalLink, ArrowRight } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
@@ -21,12 +21,12 @@ const Dashboard: React.FC = () => {
   const [isLoadingProjects, setIsLoadingProjects] = useState(true);
   const [isCreatingProject, setIsCreatingProject] = useState(false);
   const location = useLocation();
-  const { user, updateUser } = useAuth();
+  const { updateUser } = useAuth();
 
   const apiBaseUrl =
     process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
 
-  const fetchProjects = async () => {
+  const fetchProjects = useCallback(async () => {
     try {
       const token = localStorage.getItem('accessToken');
       if (!token) return;
@@ -47,11 +47,11 @@ const Dashboard: React.FC = () => {
     } finally {
       setIsLoadingProjects(false);
     }
-  };
+  }, [apiBaseUrl]);
 
   useEffect(() => {
     fetchProjects();
-  }, []);
+  }, [fetchProjects]);
 
   // Clean up pending redirect flag and refresh user data when arriving from Stripe
   useEffect(() => {
