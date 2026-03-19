@@ -13,6 +13,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { getApiBaseUrl } from '../utils/urlUtils';
 
+interface BillingHistoryItem {
+  id: string;
+  date: string;
+  amount: number;
+  currency: string;
+  status: string;
+}
+
 const Billing: React.FC = () => {
   const {
     user,
@@ -24,7 +32,9 @@ const Billing: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string>('pro');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const [billingHistory, setBillingHistory] = useState<any[]>([]);
+  const [billingHistory, setBillingHistory] = useState<BillingHistoryItem[]>(
+    []
+  );
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const location = useLocation();
 
