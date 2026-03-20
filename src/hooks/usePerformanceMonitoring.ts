@@ -37,11 +37,14 @@ const usePerformanceMonitoring = () => {
           navigationTiming.loadEventEnd - navigationTiming.fetchStart;
 
         if (process.env.NODE_ENV === 'development') {
-          console.log('⚡ Performance Metrics:', {
-            'Time to First Byte (TTFB)': `${Math.round(ttfb)}ms`,
-            'DOM Content Loaded': `${Math.round(domLoad)}ms`,
-            'Window Load': `${Math.round(windowLoad)}ms`,
-          });
+          console.log(
+            '[Performance] TTFB:',
+            ttfb,
+            'DOM Load:',
+            domLoad,
+            'Window Load:',
+            windowLoad
+          );
         }
 
         // In production, send to analytics service
@@ -63,11 +66,8 @@ const usePerformanceMonitoring = () => {
         const fcp = paintTiming.find(
           entry => entry.name === 'first-contentful-paint'
         );
-
-        if (process.env.NODE_ENV === 'development' && fcp) {
-          console.log('🎨 Paint Metrics:', {
-            'First Contentful Paint (FCP)': `${Math.round(fcp.startTime)}ms`,
-          });
+        if (fcp && process.env.NODE_ENV === 'production') {
+          // Report FCP to analytics
         }
       }
 
@@ -79,15 +79,11 @@ const usePerformanceMonitoring = () => {
         const slowestResources = resourceTiming
           .sort((a, b) => b.duration - a.duration)
           .slice(0, 5);
-
-        if (process.env.NODE_ENV === 'development') {
-          console.log(
-            '📦 Slowest Resources:',
-            slowestResources.map(r => ({
-              name: r.name.split('/').pop(),
-              duration: `${Math.round(r.duration)}ms`,
-            }))
-          );
+        if (
+          slowestResources.length > 0 &&
+          process.env.NODE_ENV === 'production'
+        ) {
+          // Report slowest resources to analytics
         }
       }
     };
@@ -108,8 +104,8 @@ const usePerformanceMonitoring = () => {
           const entries = list.getEntries();
           const lastEntry = entries[entries.length - 1];
 
-          if (process.env.NODE_ENV === 'development') {
-            console.log('📊 LCP:', `${Math.round(lastEntry.startTime)}ms`);
+          if (lastEntry && process.env.NODE_ENV === 'development') {
+            console.log('[Performance] LCP:', lastEntry);
           }
 
           // In production, send to analytics
@@ -125,12 +121,11 @@ const usePerformanceMonitoring = () => {
           const entries = list.getEntries();
           entries.forEach((entry: any) => {
             const fid = entry.processingStart - entry.startTime;
-
             if (process.env.NODE_ENV === 'development') {
-              console.log(
-                '⚡ FID (First Input Delay):',
-                `${Math.round(fid)}ms`
-              );
+              console.log('[Performance] FID:', fid);
+            }
+            if (process.env.NODE_ENV === 'production') {
+              // Report FID to analytics
             }
           });
         });
@@ -138,19 +133,23 @@ const usePerformanceMonitoring = () => {
         fidObserver.observe({ entryTypes: ['first-input'] });
 
         // Cumulative Layout Shift (CLS)
-        let clsScore = 0;
+        let totalClsScore = 0;
         const clsObserver = new PerformanceObserver(list => {
           for (const entry of list.getEntries()) {
             if (!(entry as any).hadRecentInput) {
-              clsScore += (entry as any).value;
+              totalClsScore += (entry as any).value;
+              if (process.env.NODE_ENV === 'development') {
+                console.log(
+                  '[Performance] CLS Increment:',
+                  (entry as any).value,
+                  'Total:',
+                  totalClsScore
+                );
+              }
+              if (process.env.NODE_ENV === 'production') {
+                // Report CLS to analytics
+              }
             }
-          }
-
-          if (process.env.NODE_ENV === 'development') {
-            console.log(
-              '📐 CLS (Cumulative Layout Shift):',
-              clsScore.toFixed(3)
-            );
           }
         });
 

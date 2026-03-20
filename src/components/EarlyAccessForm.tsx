@@ -72,7 +72,7 @@ const EarlyAccessForm: React.FC = () => {
       };
 
       // Send welcome email to user
-      const welcomeResult = await emailjs.send(
+      await emailjs.send(
         serviceId,
         welcomeTemplateId,
         {
@@ -83,7 +83,7 @@ const EarlyAccessForm: React.FC = () => {
       );
 
       // Send notification email to you
-      const notificationResult = await emailjs.send(
+      await emailjs.send(
         serviceId,
         notificationTemplateId,
         {
@@ -92,18 +92,6 @@ const EarlyAccessForm: React.FC = () => {
         },
         publicKey
       );
-
-      console.log('Welcome email sent successfully:', welcomeResult);
-      console.log('Notification email sent successfully:', notificationResult);
-
-      // Log to console for development
-      console.log('New early access signup:', {
-        email,
-        timestamp: new Date().toISOString(),
-        userAgent: navigator.userAgent,
-        welcomeEmailSent: welcomeResult.status === 200,
-        notificationEmailSent: notificationResult.status === 200,
-      });
 
       setIsSubmitted(true);
       setEmail('');

@@ -10,6 +10,8 @@ import DashboardLayout from './DashboardLayout';
 const Dashboard: React.FC = () => {
   const [isRepositorySelectorOpen, setIsRepositorySelectorOpen] =
     useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const location = useLocation();
   const { updateUser } = useAuth();
 
@@ -35,10 +37,6 @@ const Dashboard: React.FC = () => {
           if (response.ok) {
             const data = await response.json();
             updateUser(data.user); // Update context with fresh data including new plan
-            console.log(
-              '[Dashboard] User data refreshed after Stripe payment:',
-              data.user.plan
-            );
           }
         } catch (error) {
           console.error('[Dashboard] Failed to refresh user data:', error);
@@ -52,10 +50,50 @@ const Dashboard: React.FC = () => {
     }
   }, [location, updateUser]);
 
-  const handleRepositorySelect = (repository: Repository) => {
-    console.log('Selected repository:', repository);
-    // TODO: Create project with selected repository
-    setIsRepositorySelectorOpen(false);
+  const handleRepositorySelect = async (repository: Repository) => {
+    setIsCreating(true);
+    setError(null);
+
+    try {
+      const token = localStorage.getItem('accessToken');
+      const apiBaseUrl =
+        process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+
+      const response = await fetch(`${apiBaseUrl}/api/projects`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: repository.name,
+          githubRepoId: repository.id,
+          fullName: repository.full_name,
+          cloneUrl: repository.clone_url,
+          defaultBranch: repository.default_branch,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to create project');
+      }
+
+      // Refresh user data or redirect after success
+      // For now, we'll just close the selector and ideally the dashboard would show the new project
+      setIsRepositorySelectorOpen(false);
+
+      // Optional: Redirect to the project's dashboard if we had a project slug
+      // const data = await response.json();
+      // if (data.project?.slug) navigate(`/${data.project.slug}/dashboard`);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'An unknown error occurred'
+      );
+      console.error('[Dashboard] Project creation failed:', err);
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   return (
@@ -93,13 +131,29 @@ const Dashboard: React.FC = () => {
             codebase.
           </p>
 
+          {error && (
+            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm max-w-sm mx-auto">
+              {error}
+            </div>
+          )}
+
           <div className="flex flex-col gap-4 w-full max-w-sm mx-auto">
             <button
               onClick={() => setIsRepositorySelectorOpen(true)}
-              className="w-full flex items-center justify-center gap-2 bg-white text-black font-medium px-8 py-4 rounded-xl hover:bg-neutral-200 transition-all"
+              disabled={isCreating}
+              className="w-full flex items-center justify-center gap-2 bg-white text-black font-medium px-8 py-4 rounded-xl hover:bg-neutral-200 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Plus className="w-5 h-5" />
-              <span>Create New Project</span>
+              {isCreating ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+                  <span>Creating Project...</span>
+                </>
+              ) : (
+                <>
+                  <Plus className="w-5 h-5" />
+                  <span>Create New Project</span>
+                </>
+              )}
             </button>
 
             <div className="relative py-4">
