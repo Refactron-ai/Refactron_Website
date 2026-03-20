@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { config } from '../config/env';
 import {
   useSearchParams,
   useNavigate,
@@ -84,8 +85,7 @@ const DeviceConnect: React.FC = () => {
     setErrorMessage('');
 
     try {
-      const apiBaseUrl =
-        process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+      const apiBaseUrl = config.apiBaseUrl;
       const token = localStorage.getItem('accessToken');
 
       const response = await fetch(`${apiBaseUrl}/api/oauth/device/confirm`, {

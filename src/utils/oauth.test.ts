@@ -8,6 +8,22 @@ import {
   handleOAuthCallback,
   isOAuthProviderConfigured,
 } from './oauth';
+import { config } from '../config/env';
+
+// Mock the config module
+jest.mock('../config/env', () => ({
+  __esModule: true,
+  config: {
+    googleClientId: '',
+    githubClientId: '',
+    apiBaseUrl: 'http://localhost:3001',
+  },
+  default: {
+    googleClientId: '',
+    githubClientId: '',
+    apiBaseUrl: 'http://localhost:3001',
+  },
+}));
 
 // Mock window.location
 delete (window as any).location;
@@ -51,9 +67,9 @@ describe('OAuth utility functions', () => {
   beforeEach(() => {
     sessionStorage.clear();
     window.location.href = '';
-    // Clear environment variables
-    delete process.env.REACT_APP_GOOGLE_CLIENT_ID;
-    delete process.env.REACT_APP_GITHUB_CLIENT_ID;
+    config.googleClientId = '';
+    config.githubClientId = '';
+    config.apiBaseUrl = 'http://localhost:3001';
     // Clear fetch mock
     global.fetch = jest.fn();
   });
@@ -64,7 +80,7 @@ describe('OAuth utility functions', () => {
 
   describe('isOAuthProviderConfigured', () => {
     it('should return true when Google client ID is configured', () => {
-      process.env.REACT_APP_GOOGLE_CLIENT_ID = 'test-google-client-id';
+      (config as any).googleClientId = 'test-google-client-id';
       expect(isOAuthProviderConfigured('google')).toBe(true);
     });
 
@@ -73,7 +89,7 @@ describe('OAuth utility functions', () => {
     });
 
     it('should return true when GitHub client ID is configured', () => {
-      process.env.REACT_APP_GITHUB_CLIENT_ID = 'test-github-client-id';
+      (config as any).githubClientId = 'test-github-client-id';
       expect(isOAuthProviderConfigured('github')).toBe(true);
     });
 
@@ -169,7 +185,7 @@ describe('OAuth utility functions', () => {
     });
 
     it('should redirect to Google OAuth URL with correct parameters for login', async () => {
-      process.env.REACT_APP_GOOGLE_CLIENT_ID = 'test-google-client-id';
+      (config as any).googleClientId = 'test-google-client-id';
 
       await initiateOAuth('google', 'login', {
         redirectUri: 'http://localhost:3000/auth/callback',
@@ -188,7 +204,7 @@ describe('OAuth utility functions', () => {
     });
 
     it('should redirect to Google OAuth URL with consent prompt for signup', async () => {
-      process.env.REACT_APP_GOOGLE_CLIENT_ID = 'test-google-client-id';
+      (config as any).googleClientId = 'test-google-client-id';
 
       await initiateOAuth('google', 'signup', {
         redirectUri: 'http://localhost:3000/auth/callback',
@@ -198,7 +214,7 @@ describe('OAuth utility functions', () => {
     });
 
     it('should redirect to GitHub OAuth URL with correct parameters for login', async () => {
-      process.env.REACT_APP_GITHUB_CLIENT_ID = 'test-github-client-id';
+      (config as any).githubClientId = 'test-github-client-id';
 
       await initiateOAuth('github', 'login', {
         redirectUri: 'http://localhost:3000/auth/callback',
@@ -213,7 +229,7 @@ describe('OAuth utility functions', () => {
     });
 
     it('should redirect to GitHub OAuth URL with extended scope for signup', async () => {
-      process.env.REACT_APP_GITHUB_CLIENT_ID = 'test-github-client-id';
+      (config as any).githubClientId = 'test-github-client-id';
 
       await initiateOAuth('github', 'signup', {
         redirectUri: 'http://localhost:3000/auth/callback',
@@ -224,7 +240,7 @@ describe('OAuth utility functions', () => {
     });
 
     it('should store OAuth state in sessionStorage', async () => {
-      process.env.REACT_APP_GOOGLE_CLIENT_ID = 'test-google-client-id';
+      (config as any).googleClientId = 'test-google-client-id';
 
       await initiateOAuth('google', 'login', {
         redirectUri: 'http://localhost:3000/auth/callback',
@@ -324,7 +340,7 @@ describe('OAuth utility functions', () => {
     });
 
     it('should use REACT_APP_API_BASE_URL if apiBaseUrl is not provided', async () => {
-      process.env.REACT_APP_API_BASE_URL = 'http://localhost:4000';
+      (config as any).apiBaseUrl = 'http://localhost:4000';
 
       global.fetch = jest.fn().mockResolvedValue({
         ok: true,

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { config } from '../config/env';
 import { useSearchParams, Link, useLocation } from 'react-router-dom';
 import { Check, X, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -36,8 +37,7 @@ const VerifyEmail: React.FC = () => {
     setStatus('loading');
     const verifyToken = async () => {
       try {
-        const apiBaseUrl =
-          process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+        const apiBaseUrl = config.apiBaseUrl;
         const response = await fetch(`${apiBaseUrl}/api/auth/verify-email`, {
           method: 'POST',
           headers: {

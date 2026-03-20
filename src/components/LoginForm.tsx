@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { config } from '../config/env';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -195,8 +196,7 @@ const LoginForm: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const apiBaseUrl =
-        process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+      const apiBaseUrl = config.apiBaseUrl;
       const response = await fetch(`${apiBaseUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

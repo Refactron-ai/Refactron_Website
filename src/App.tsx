@@ -23,6 +23,7 @@ import useAccessibility from './hooks/useAccessibility';
 import PageLayout from './components/PageLayout';
 
 import { ThemeProvider } from './contexts/ThemeContext';
+import { config } from './config/env';
 
 const LandingContent: React.FC = () => (
   <>
@@ -42,13 +43,7 @@ function App() {
   useAccessibility();
 
   // Support local testing via environment variable
-  const enableLocalAuth =
-    process.env.REACT_APP_ENABLE_LOCAL_AUTH === 'true' ||
-    process.env.REACT_APP_ENABLE_LOCAL_AUTH === '1';
-
-  const enableLocalDocs =
-    process.env.REACT_APP_ENABLE_LOCAL_DOCS === 'true' ||
-    process.env.REACT_APP_ENABLE_LOCAL_DOCS === '1';
+  const { enableLocalAuth, enableLocalDocs } = config;
 
   const isDocsHost =
     (typeof window !== 'undefined' &&

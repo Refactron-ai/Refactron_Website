@@ -1,6 +1,7 @@
 /**
  * OAuth utility functions for Google and GitHub authentication
  */
+import { config as envConfig } from '../config/env';
 
 export type OAuthProvider = 'google' | 'github';
 
@@ -167,8 +168,8 @@ export const initiateOAuth = (
       // Get provider-specific client ID
       const clientId =
         provider === 'google'
-          ? config.googleClientId || process.env.REACT_APP_GOOGLE_CLIENT_ID
-          : config.githubClientId || process.env.REACT_APP_GITHUB_CLIENT_ID;
+          ? config.googleClientId || envConfig.googleClientId
+          : config.githubClientId || envConfig.githubClientId;
 
       if (!clientId) {
         const providerName = provider === 'google' ? 'Google' : 'GitHub';
@@ -218,8 +219,7 @@ export const handleOAuthCallback = async (
     }
 
     const { provider, type } = stateData;
-    const apiBaseUrl =
-      config.apiBaseUrl || process.env.REACT_APP_API_BASE_URL || '';
+    const apiBaseUrl = config.apiBaseUrl || envConfig.apiBaseUrl || '';
 
     // Exchange code for token via backend API
     const response = await fetch(
@@ -283,10 +283,10 @@ export const handleOAuthCallback = async (
  * Checks if OAuth provider is configured
  */
 export const isOAuthProviderConfigured = (provider: OAuthProvider): boolean => {
-  // Keep in sync with initiateOAuth: only use REACT_APP_GOOGLE_CLIENT_ID
+  // Keep in sync with initiateOAuth: only use Google client ID from config
   if (provider === 'google') {
-    return !!process.env.REACT_APP_GOOGLE_CLIENT_ID;
+    return !!envConfig.googleClientId;
   }
-  // Keep in sync with initiateOAuth: only use REACT_APP_GITHUB_CLIENT_ID
-  return !!process.env.REACT_APP_GITHUB_CLIENT_ID;
+  // Keep in sync with initiateOAuth: only use GitHub client ID from config
+  return !!envConfig.githubClientId;
 };

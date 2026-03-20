@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { config } from '../config/env';
 
 export interface Repository {
   id: number;
@@ -39,7 +40,7 @@ export function useRepositories(): UseRepositoriesResult {
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/api/github/repositories`,
+        `${config.apiBaseUrl}/api/github/repositories`,
         {
           credentials: 'include',
           headers: {

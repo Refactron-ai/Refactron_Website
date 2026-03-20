@@ -1,6 +1,4 @@
-/**
- * Utility functions for URL handling
- */
+import { config } from '../config/env';
 
 /**
  * Gets the base URL for the current environment
@@ -17,9 +15,7 @@ export const getBaseUrl = (): string => {
   const port = window.location.port ? `:${window.location.port}` : '';
 
   // Check if we're in local development with auth enabled
-  const enableLocalAuth =
-    process.env.REACT_APP_ENABLE_LOCAL_AUTH === 'true' ||
-    process.env.REACT_APP_ENABLE_LOCAL_AUTH === '1';
+  const { enableLocalAuth } = config;
 
   // If local auth is enabled and we're on localhost, use localhost
   if (
@@ -46,6 +42,6 @@ export const getBaseUrl = (): string => {
  * Uses REACT_APP_API_BASE_URL if set, otherwise uses relative paths
  */
 export const getApiBaseUrl = (): string => {
-  const url = process.env.REACT_APP_API_BASE_URL || '';
+  const url = config.apiBaseUrl || '';
   return url.endsWith('/') ? url.slice(0, -1) : url;
 };

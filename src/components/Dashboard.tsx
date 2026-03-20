@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { config } from '../config/env';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Plus } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
@@ -23,8 +24,7 @@ const Dashboard: React.FC = () => {
       const refreshUserData = async () => {
         try {
           const token = localStorage.getItem('accessToken');
-          const apiBaseUrl =
-            process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001';
+          const apiBaseUrl = config.apiBaseUrl;
           const response = await fetch(`${apiBaseUrl}/api/auth/me`, {
             headers: {
               Authorization: `Bearer ${token}`,

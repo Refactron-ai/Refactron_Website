@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { config } from '../config/env';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle, AlertCircle } from 'lucide-react';
 import emailjs from '@emailjs/browser';
@@ -44,20 +45,15 @@ const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({
     setIsLoading(true);
 
     try {
-      const serviceId =
-        process.env.REACT_APP_EMAILJS_SERVICE_ID || 'your_service_id';
-      const welcomeTemplateId =
-        process.env.REACT_APP_EMAILJS_WELCOME_TEMPLATE_ID ||
-        'your_welcome_template_id';
-      const notificationTemplateId =
-        process.env.REACT_APP_EMAILJS_NOTIFICATION_TEMPLATE_ID ||
-        'your_notification_template_id';
-      const publicKey =
-        process.env.REACT_APP_EMAILJS_PUBLIC_KEY || 'your_public_key';
-      const fromEmail =
-        process.env.REACT_APP_FROM_EMAIL || 'hello@refactron.dev';
-      const notificationEmail =
-        process.env.REACT_APP_NOTIFICATION_EMAIL || 'hello@refactron.dev';
+      const { emailjs: emailjsConfig, emails } = config;
+      const {
+        serviceId,
+        welcomeTemplateId,
+        notificationTemplateId,
+        publicKey,
+      } = emailjsConfig;
+      const fromEmail = emails.from;
+      const notificationEmail = emails.notification;
 
       if (
         serviceId === 'your_service_id' ||

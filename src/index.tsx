@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/react';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { config } from './config/env';
 
 // Apply dark theme immediately
 if (typeof document !== 'undefined') {
@@ -11,10 +12,9 @@ if (typeof document !== 'undefined') {
 }
 
 Sentry.init({
-  dsn: process.env.REACT_APP_SENTRY_DSN,
+  dsn: config.sentryDsn,
   environment: process.env.NODE_ENV,
-  enabled:
-    process.env.NODE_ENV === 'production' && !!process.env.REACT_APP_SENTRY_DSN,
+  enabled: config.isProduction && !!config.sentryDsn,
 });
 
 const root = ReactDOM.createRoot(

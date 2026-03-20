@@ -1,4 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { config } from '../config/env';
 import { motion } from 'framer-motion';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import * as Sentry from '@sentry/react';
@@ -32,10 +33,7 @@ class ErrorBoundary extends Component<Props, State> {
     });
 
     // Log to Sentry in production if configured
-    if (
-      process.env.NODE_ENV === 'production' &&
-      process.env.REACT_APP_SENTRY_DSN
-    ) {
+    if (config.isProduction && config.sentryDsn) {
       Sentry.captureException(error, {
         extra: {
           componentStack: errorInfo.componentStack,
