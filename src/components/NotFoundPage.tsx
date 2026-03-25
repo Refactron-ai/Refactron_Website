@@ -2,8 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { FlickeringGrid } from './ui/flickering-grid';
+import { useSEO } from '../hooks/useSEO';
 
 const NotFoundPage: React.FC = () => {
+  useSEO({
+    title: '404 – Page Not Found | Refactron',
+    description: 'The page you are looking for does not exist.',
+    robots: 'noindex, follow',
+  });
+
   return (
     <div className="relative min-h-screen w-full bg-black flex flex-col items-center justify-center overflow-hidden font-space">
       <div className="absolute inset-0 w-full h-full">

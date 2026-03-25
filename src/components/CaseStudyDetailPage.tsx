@@ -3,13 +3,66 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, ExternalLink } from 'lucide-react';
 import { getCaseStudyBySlug } from '../data/caseStudies';
-
+import { useSEO } from '../hooks/useSEO';
 import TextType from './ui/text-type';
 
 const CaseStudyDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const caseStudy = slug ? getCaseStudyBySlug(slug) : undefined;
+
+  useSEO({
+    title: caseStudy?.seo?.title ?? 'Case Study | Refactron',
+    description:
+      caseStudy?.seo?.description ??
+      'Real-world refactoring transformations using Refactron — safety-first, behavior-preserving, incremental code improvements.',
+    keywords: caseStudy?.seo?.keywords,
+    ogTitle: caseStudy?.seo?.title,
+    ogDescription: caseStudy?.seo?.description,
+    ogImage: caseStudy?.seo?.ogImage,
+    twitterTitle: caseStudy?.seo?.title,
+    twitterDescription: caseStudy?.seo?.description,
+    twitterImage: caseStudy?.seo?.ogImage,
+    canonical: slug ? `https://refactron.dev/case-studies/${slug}` : undefined,
+    robots: 'index, follow',
+  });
+
+  // Inject BreadcrumbList JSON-LD
+  useEffect(() => {
+    if (!caseStudy) return;
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'breadcrumb-schema';
+    script.text = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: 'https://refactron.dev',
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Case Studies',
+          item: 'https://refactron.dev/case-studies',
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: caseStudy.customer,
+          item: `https://refactron.dev/case-studies/${caseStudy.slug}`,
+        },
+      ],
+    });
+    document.head.appendChild(script);
+    return () => {
+      const existing = document.getElementById('breadcrumb-schema');
+      if (existing) existing.remove();
+    };
+  }, [caseStudy]);
 
   // Scroll to top when component mounts or slug changes
   useEffect(() => {

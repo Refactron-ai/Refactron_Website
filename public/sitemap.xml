@@ -37,20 +37,17 @@
     </image:image>
   </url>
 
-  <!-- Case Study: VectorPay Modernization -->
+  <!-- Case Study: Legacy Code AI Refactoring -->
   <url>
-    <loc>https://refactron.dev/case-studies/vectorpay-modernization</loc>
-    <lastmod>2026-01-19</lastmod>
+    <loc>https://refactron.dev/case-studies/legacy-code-ai-refactoring</loc>
+    <lastmod>2026-03-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-
-  <!-- Case Study: OrbitAI Platform -->
-  <url>
-    <loc>https://refactron.dev/case-studies/orbitai-platform</loc>
-    <lastmod>2026-01-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://refactron.dev/Refactron_Hero.png</image:loc>
+      <image:title>Legacy Code AI Refactoring Case Study | Refactron</image:title>
+      <image:caption>How Refactron cut manual refactoring effort by 80% and doubled developer onboarding speed in a legacy enterprise codebase</image:caption>
+    </image:image>
   </url>
 
   <!-- Privacy Policy -->
@@ -69,30 +66,5 @@
     <priority>0.4</priority>
   </url>
 
-  <!-- Login -->
-  <url>
-    <loc>https://refactron.dev/login</loc>
-    <lastmod>2026-01-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://refactron.dev/Refactron-logo-TM.png</image:loc>
-      <image:title>Login | Refactron - Safe Refactoring Platform</image:title>
-      <image:caption>Login to your Refactron account to access safety-first refactoring tools and transform production codebases with verified, incremental changes</image:caption>
-    </image:image>
-  </url>
-
-  <!-- Signup -->
-  <url>
-    <loc>https://refactron.dev/signup</loc>
-    <lastmod>2026-01-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://refactron.dev/Refactron-logo-TM.png</image:loc>
-      <image:title>Sign Up | Refactron - Safe Refactoring Platform</image:title>
-      <image:caption>Create your free Refactron account to access safety-first refactoring tools and evolve production codebases with verified, incremental changes</image:caption>
-    </image:image>
-  </url>
 
 </urlset>

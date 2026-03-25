@@ -18,6 +18,13 @@ export type CaseStudyReference = {
   source: string;
 };
 
+export type CaseStudySEO = {
+  title: string;
+  description: string;
+  keywords: string;
+  ogImage?: string;
+};
+
 export type CaseStudy = {
   slug: string;
   customer: string;
@@ -37,6 +44,7 @@ export type CaseStudy = {
     role: string;
   };
   references?: CaseStudyReference[];
+  seo?: CaseStudySEO;
 };
 
 export const industryChallenges: IndustryChallenge[] = [
@@ -135,6 +143,15 @@ export const caseStudies: CaseStudy[] = [
       text: 'Refactron shifts refactoring from ad-hoc manual effort to a structured, safety-first process—making code evolution predictable and easier to trust.',
       author: 'Engineering Team',
       role: 'Enterprise Development',
+    },
+    seo: {
+      title:
+        'Legacy Code AI Refactoring Case Study | Refactron – 80% Less Effort',
+      description:
+        'See how Refactron cut manual refactoring effort by 80%, detected 78 issues per analysis, and doubled developer onboarding speed in a legacy enterprise codebase.',
+      keywords:
+        'AI code refactoring case study, legacy code modernization, technical debt reduction, behavior-preserving refactoring, Python refactoring tool',
+      ogImage: 'https://refactron.dev/Refactron_Hero.png',
     },
     references: [
       {
