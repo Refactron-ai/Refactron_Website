@@ -297,15 +297,16 @@ const Billing: React.FC = () => {
                             <th className="pb-3 font-medium">Date</th>
                             <th className="pb-3 font-medium">Amount</th>
                             <th className="pb-3 font-medium">Status</th>
+                            <th className="pb-3 font-medium text-right">Invoice</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-neutral-800">
                           {billingHistory.map(payment => (
                             <tr key={payment.id} className="text-sm">
-                              <td className="py-4 text-white">
+                              <td className="py-4 font-medium text-white">
                                 {new Date(payment.date).toLocaleDateString()}
                               </td>
-                              <td className="py-4 text-white">
+                              <td className="py-4">
                                 {(payment.amount / 100).toLocaleString(
                                   'en-US',
                                   {
@@ -326,6 +327,22 @@ const Billing: React.FC = () => {
                                   {payment.status.charAt(0).toUpperCase() +
                                     payment.status.slice(1)}
                                 </span>
+                              </td>
+                              <td className="py-4 text-right">
+                                {payment.invoiceUrl ? (
+                                  <a
+                                    href={payment.invoiceUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-primary-400 hover:text-primary-300 transition-colors inline-flex items-center gap-1 text-sm"
+                                  >
+                                    Download
+                                  </a>
+                                ) : (
+                                  <span className="text-neutral-600 cursor-not-allowed inline-flex items-center gap-1 text-sm" title="Invoice not available">
+                                    Unavailable
+                                  </span>
+                                )}
                               </td>
                             </tr>
                           ))}
@@ -359,8 +376,8 @@ const Billing: React.FC = () => {
                           ? 'border-white bg-neutral-800/60 ring-1 ring-white shadow-[0_0_30px_rgba(255,255,255,0.05)]'
                           : 'border-white/10 hover:border-white/20 hover:bg-white/5',
                         plan.highlight &&
-                          selectedPlan !== plan.id &&
-                          'border-amber-500/30'
+                        selectedPlan !== plan.id &&
+                        'border-amber-500/30'
                       )}
                     >
                       {plan.highlight && (
