@@ -37,11 +37,14 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "prettier": "^3.6.2"
+    "@sparticuz/chromium": "^143.0.4",
+    "prettier": "^3.6.2",
+    "puppeteer-core": "^24.40.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "node scripts/prerender.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src --ext .ts,.tsx,.js,.jsx --max-warnings 0",
