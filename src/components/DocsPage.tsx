@@ -17,6 +17,7 @@ import DocsSearchModal from './DocsSearchModal';
 import { WhatsNewSection } from './WhatsNewSection';
 import { CLIWorkflowsSection } from './CLIWorkflowsSection';
 import { commonDocsData, getVersionContent } from '../data/docs';
+import { useSEO } from '../hooks/useSEO';
 
 // Extract data from common docs
 const {
@@ -36,6 +37,19 @@ const DocsPage: React.FC = () => {
 
   // Get version-specific content
   const versionContent = getVersionContent(selectedVersion);
+
+  useSEO({
+    title: 'Documentation | Refactron – Refactoring API & CLI Reference',
+    description:
+      'Explore Refactron documentation: quick start guide, CLI reference, API reference, core concepts, and security practices for AI-assisted code refactoring.',
+    keywords:
+      'Refactron documentation, refactoring API, CLI reference, code refactoring guide, Python refactoring SDK',
+    ogTitle: 'Documentation | Refactron – Refactoring API & CLI Reference',
+    ogDescription:
+      'Explore Refactron documentation: quick start guide, CLI reference, API reference, core concepts, and security practices for AI-assisted code refactoring.',
+    canonical: 'https://docs.refactron.dev',
+    robots: 'index, follow',
+  });
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

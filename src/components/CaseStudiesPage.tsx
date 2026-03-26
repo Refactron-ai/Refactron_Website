@@ -4,9 +4,24 @@ import { ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { caseStudies } from '../data/caseStudies';
 import { BackgroundBeams } from './ui/background-beams';
+import { useSEO } from '../hooks/useSEO';
 
 const CaseStudiesPage: React.FC = () => {
   const navigate = useNavigate();
+
+  useSEO({
+    title: 'Case Studies | Refactron – Real-World Refactoring Transformations',
+    description:
+      'See how engineering teams use Refactron to safely modernize legacy codebases, reduce technical debt, and improve code maintainability.',
+    keywords:
+      'refactoring case studies, legacy code modernization, technical debt reduction, code quality improvement, AI code refactoring',
+    ogTitle:
+      'Case Studies | Refactron – Real-World Refactoring Transformations',
+    ogDescription:
+      'See how engineering teams use Refactron to safely modernize legacy codebases, reduce technical debt, and improve code maintainability.',
+    canonical: 'https://refactron.dev/case-studies',
+    robots: 'index, follow',
+  });
 
   return (
     <div className="relative min-h-screen bg-black text-neutral-400 font-space overflow-hidden">
