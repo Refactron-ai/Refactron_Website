@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Menu, X, ExternalLink } from 'lucide-react';
+import { Menu, X, ExternalLink, UserPlus } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   createTrackingClickHandler,
   ConversionEvents,
 } from '../utils/analytics';
-import ShimmerButton from './ui/shimmer-button';
 
 type NavItem = {
   label: string;
@@ -143,15 +142,10 @@ const NavigationBar: React.FC = () => {
                 { href: '/signup' }
               )}
             >
-              <ShimmerButton
-                className="shadow-lg h-10 px-6 text-black border-black/10"
-                background="#f5f5f5"
-                shimmerColor="rgba(0,0,0,0.2)"
-              >
-                <span className="text-sm font-medium text-black font-space">
-                  Sign Up
-                </span>
-              </ShimmerButton>
+              <button className="flex items-center gap-2 h-10 px-4 sm:px-5 bg-white border border-white/10 hover:bg-neutral-200 text-black rounded-xl font-medium text-sm transition-colors font-space">
+                <UserPlus className="w-4 h-4" />
+                <span>Get Started</span>
+              </button>
             </a>
           </div>
 
@@ -212,9 +206,10 @@ const NavigationBar: React.FC = () => {
                   { source: 'mobile_navigation' },
                   { href: '/signup' }
                 )}
-                className="w-full px-4 py-3 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold text-sm shadow-lg text-center font-space"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-white text-black font-semibold text-sm shadow-md text-center font-space hover:bg-neutral-200 transition-colors"
               >
-                Sign Up
+                <UserPlus className="w-4 h-4" />
+                <span>Get Started</span>
               </a>
             </div>
           </div>

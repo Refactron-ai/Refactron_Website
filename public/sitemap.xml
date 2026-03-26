@@ -37,17 +37,9 @@
     </image:image>
   </url>
 
-  <!-- Case Study: VectorPay Modernization -->
+  <!-- Case Study: Legacy Code AI Refactoring (Actual Data) -->
   <url>
-    <loc>https://refactron.dev/case-studies/vectorpay-modernization</loc>
-    <lastmod>2026-03-26</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Case Study: OrbitAI Platform -->
-  <url>
-    <loc>https://refactron.dev/case-studies/orbitai-platform</loc>
+    <loc>https://refactron.dev/case-studies/legacy-code-ai-refactoring</loc>
     <lastmod>2026-03-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
