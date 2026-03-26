@@ -25,3 +25,8 @@ yarn-error.log*
 
 # backend (separate repository)
 /backend/
+
+# AI context
+.agent/
+.superpowers/
+CLAUDE.md

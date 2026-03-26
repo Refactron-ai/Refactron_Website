@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 import { TextGenerateEffect } from './ui/text-generate-effect';
-import LightRays from './ui/LightRays';
+import { FlickeringGrid } from './ui/flickering-grid';
 import LogoLoop from './ui/logo-loop';
-import { Terminal, TypingAnimation, AnimatedSpan } from './ui/terminal';
-import { ArrowRight, Github, Package, Users } from 'lucide-react';
+import { ArrowRight, Github, Package, Users, Copy, Check } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText('pip install refactron').then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }, []);
+
   return (
     <section
       id="home"
@@ -15,18 +23,15 @@ const HeroSection: React.FC = () => {
     >
       {/* Spotlight Effect */}
 
-      {/* Light Rays Effect */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none z-50">
-        <LightRays
-          raysOrigin="top-center"
-          raysColor="#48d1cc"
-          raysSpeed={0.5}
-          lightSpread={0.8}
-          rayLength={1.2}
-          followMouse={true}
-          mouseInfluence={0.1}
-          noiseAmount={0.1}
-          distortion={0.05}
+      {/* Background Grid */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        <FlickeringGrid
+          color="rgba(255, 255, 255, 1)"
+          squareSize={4}
+          gridGap={6}
+          flickerChance={0.2}
+          maxOpacity={0.15}
+          className="w-full h-full [mask-image:radial-gradient(circle_at_center,white,transparent_80%)] xl:[mask-image:radial-gradient(circle_at_center,white,transparent_70%)]"
         />
       </div>
 
@@ -35,37 +40,27 @@ const HeroSection: React.FC = () => {
 
       {/* Main Hero Content */}
       <div className="relative z-10 h-screen px-4 flex items-start pt-16 sm:pt-20">
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 gap-8 lg:gap-12">
-          <div className="text-left max-w-3xl w-full lg:w-1/2">
+        <div className="flex flex-col items-center justify-center w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-12 gap-10 lg:gap-14">
+          <div className="text-center max-w-4xl w-full">
             {/* Main Headline - Improved typography with lighter weight */}
             <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-3 sm:mb-4 leading-[1.1] tracking-tight font-space">
               <TextGenerateEffect
-                words="Transform Legacy"
+                words="Refactor Code."
                 className="text-[var(--text-primary)] inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
               />
               <br />
               <div className="inline-block">
                 <TextGenerateEffect
-                  words="Code"
+                  words="Verify It's Safe"
                   className="text-[var(--text-primary)] inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl mr-3 sm:mr-4"
                 />
                 <TextGenerateEffect
-                  words="to Modern Standards."
+                  words="Ship With Confidence."
                   className="inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
                   wordClassName="text-neutral-400 font-medium"
                 />
               </div>
             </div>
-
-            {/* Tagline */}
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.0 }}
-              className="text-lg sm:text-xl md:text-2xl text-[var(--text-tertiary)] mb-4 sm:mb-5 leading-relaxed font-light font-space"
-            >
-              Refactor. Optimize. Automate.
-            </motion.p>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
@@ -73,63 +68,50 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 1.2 }}
               className="text-sm sm:text-base md:text-lg text-[var(--text-muted)] mb-5 sm:mb-6 leading-relaxed font-space"
             >
-              Refactron safely refactor and modernize legacy code{' '}
+              Refactron safely refactors and modernizes legacy code{' '}
               <br className="hidden sm:block" />
               with AI-assisted, behavior-preserving refactoring{' '}
               <br className="hidden sm:block" />
               and built-in verification.
             </motion.p>
 
-            {/* CTAs - Modern minimal design */}
+            {/* CTAs - pip install as primary, Read Docs as secondary */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.4 }}
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-5"
+              className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4 sm:mb-5"
             >
-              <a
-                href="https://pypi.org/project/refactron/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 bg-white text-black rounded-full px-6 h-12 hover:bg-neutral-100 font-medium text-base transition-all duration-300 hover:scale-[1.02] font-space"
+              {/* Primary CTA: pip install command with copy button */}
+              <button
+                onClick={handleCopy}
+                className="group inline-flex items-center gap-3 border border-white/10 text-neutral-300 rounded-xl pl-5 pr-3 h-12 hover:bg-white/5 hover:border-white/20 transition-all duration-300 hover:scale-[1.02] font-space"
+                aria-label="Copy pip install command"
               >
-                <span>Try Refactron</span>
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </a>
+                <code className="text-sm sm:text-base font-mono text-neutral-300">
+                  <span className="text-neutral-500">$ </span>
+                  pip install refactron
+                </code>
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
+                  {copied ? (
+                    <Check className="w-4 h-4 text-green-400" />
+                  ) : (
+                    <Copy className="w-4 h-4 text-neutral-400 group-hover:text-white transition-colors" />
+                  )}
+                </span>
+              </button>
+
+              {/* Secondary CTA: Read Docs */}
               <a
                 href="https://docs.refactron.dev"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 border border-neutral-700 text-neutral-300 rounded-full px-6 h-12 hover:bg-white/5 font-medium text-base transition-all duration-300 hover:scale-[1.02] font-space"
+                className="group inline-flex items-center gap-2 bg-white text-black hover:bg-neutral-200 rounded-xl px-6 h-12 font-medium text-base transition-all duration-300 hover:scale-[1.02] font-space"
               >
                 <span>Read Docs</span>
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </a>
             </motion.div>
-          </div>
-
-          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end mt-8 lg:mt-0 relative z-20">
-            <Terminal className="bg-black/80 backdrop-blur-sm border-white/10 shadow-2xl w-full max-w-lg">
-              <TypingAnimation>pip install refactron</TypingAnimation>
-              <AnimatedSpan delay={1500} className="text-green-500">
-                <span>✔ Installed successfully.</span>
-              </AnimatedSpan>
-              <TypingAnimation delay={2000}>
-                refactron analyze .
-              </TypingAnimation>
-              <AnimatedSpan delay={3500} className="text-blue-500">
-                <span>ℹ Analyzing codebase...</span>
-              </AnimatedSpan>
-              <AnimatedSpan delay={4500} className="text-green-500">
-                <span>✔ Found 12 optimization opportunities.</span>
-              </AnimatedSpan>
-              <TypingAnimation delay={5500}>
-                refactron optimize --auto
-              </TypingAnimation>
-              <AnimatedSpan delay={7000} className="text-green-500">
-                <span>✔ Refactoring complete.</span>
-              </AnimatedSpan>
-            </Terminal>
           </div>
         </div>
 

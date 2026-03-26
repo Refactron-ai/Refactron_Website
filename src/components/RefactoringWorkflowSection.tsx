@@ -1,311 +1,281 @@
 import React from 'react';
-import { Terminal, TypingAnimation, AnimatedSpan } from './ui/terminal';
-import { motion, AnimatePresence } from 'motion/react';
-import { AuroraBackground } from './ui/aurora-background';
-
-const tabs = [
-  { id: 'analyze', label: 'Analyze' },
-  { id: 'refactor', label: 'Refactor' },
-  { id: 'verify', label: 'Verify & Document' },
-];
+import { motion } from 'motion/react';
+import {
+  ScanSearch,
+  Wand2,
+  ShieldCheck,
+  CheckCircle2,
+  GitCommit,
+  GitBranch,
+  ArrowRight,
+} from 'lucide-react';
 
 const RefactoringWorkflowSection = () => {
-  const [activeTab, setActiveTab] = React.useState('analyze');
-  const [progress, setProgress] = React.useState(0);
-
-  const handleSequenceComplete = React.useCallback(() => {
-    setProgress(100);
-    setTimeout(() => {
-      setProgress(0);
-      setActiveTab(current => {
-        const currentIndex = tabs.findIndex(t => t.id === current);
-        const nextIndex = (currentIndex + 1) % tabs.length;
-        return tabs[nextIndex].id;
-      });
-    }, 2000);
-  }, []);
-
-  const analyzeContent = React.useMemo(
-    () => [
-      <TypingAnimation key="a1" duration={80}>
-        pip install refactron
-      </TypingAnimation>,
-      <TypingAnimation key="a2" delay={1000} duration={80}>
-        refactron init
-      </TypingAnimation>,
-      <AnimatedSpan key="a3" delay={2000} className="text-green-500">
-        <span>✔ Created refactron.yml</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="a4" delay={2100} className="text-green-500">
-        <span>✔ Safe mode: enabled</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="a5" delay={2200} className="text-green-500">
-        <span>✔ Telemetry: disabled by default</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="a6" delay={2500}>
-        <span>&nbsp;</span>
-      </AnimatedSpan>,
-      <TypingAnimation key="a7" delay={3000} duration={80}>
-        refactron analyze src/
-      </TypingAnimation>,
-      <AnimatedSpan key="a8" delay={4500} className="text-green-500">
-        <span>✔ Scanned 142 files</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="a9" delay={4600} className="text-green-500">
-        <span>✔ Detected 37 refactoring opportunities</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="a10" delay={4700} className="text-green-500">
-        <span>✔ High-risk changes: 0</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="a11" delay={4800} className="text-green-500">
-        <span>✔ Estimated maintainability gain: +18%</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="a12" delay={4900} className="text-green-500">
-        <span>✔ Duplication hotspots identified</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="a13" delay={5200}>
-        <span>&nbsp;</span>
-      </AnimatedSpan>,
-      <TypingAnimation key="a14" delay={5500} duration={80}>
-        refactron metrics
-      </TypingAnimation>,
-      <AnimatedSpan key="a15" delay={6500} className="text-green-500">
-        <span>✔ Cyclomatic complexity: -12%</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="a16" delay={6600} className="text-green-500">
-        <span>✔ Duplicate code blocks: 9</span>
-      </AnimatedSpan>,
-    ],
-    []
-  );
-
-  const refactorContent = React.useMemo(
-    () => [
-      <TypingAnimation key="r1" duration={80}>
-        refactron refactor src/
-      </TypingAnimation>,
-      <AnimatedSpan key="r2" delay={1500} className="text-blue-400">
-        <span>→ Extract duplicated logic in auth/utils.py</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="r3" delay={1700} className="text-blue-400">
-        <span>→ Simplify nested conditionals in payments/service.py</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="r4" delay={1900} className="text-blue-400">
-        <span>→ Replace deprecated patterns in user/handlers.py</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="r5" delay={2100} className="text-green-500">
-        <span>✔ Refactor suggestions generated</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="r6" delay={2300} className="text-yellow-500">
-        <span>✔ No changes applied</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="r7" delay={2600}>
-        <span>&nbsp;</span>
-      </AnimatedSpan>,
-      <TypingAnimation key="r8" delay={3000} duration={80}>
-        refactron autofix --safe
-      </TypingAnimation>,
-      <AnimatedSpan key="r9" delay={4500} className="text-green-500">
-        <span>✔ Applied 12 low-risk refactors</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="r10" delay={4700} className="text-green-500">
-        <span>✔ All changes behavior-safe</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="r11" delay={4900} className="text-green-500">
-        <span>✔ Changes staged (git diff available)</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="r12" delay={5200}>
-        <span>&nbsp;</span>
-      </AnimatedSpan>,
-      <TypingAnimation key="r13" delay={5500} duration={80}>
-        git diff
-      </TypingAnimation>,
-      <AnimatedSpan key="r14" delay={6500} className="text-neutral-400">
-        <span># Clean, minimal diffs ready for review</span>
-      </AnimatedSpan>,
-    ],
-    []
-  );
-
-  const verifyContent = React.useMemo(
-    () => [
-      <TypingAnimation key="v1" duration={80}>
-        refactron report
-      </TypingAnimation>,
-      <AnimatedSpan key="v2" delay={1500} className="text-green-500">
-        <span>✔ Generated refactor-report.md</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="v3" delay={1700} className="text-green-500">
-        <span>✔ Included rationale for each change</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="v4" delay={1900} className="text-green-500">
-        <span>✔ Before/after code snippets added</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="v5" delay={2200}>
-        <span>&nbsp;</span>
-      </AnimatedSpan>,
-      <TypingAnimation key="v6" delay={3000} duration={80}>
-        refactron metrics
-      </TypingAnimation>,
-      <AnimatedSpan key="v7" delay={4000} className="text-green-500">
-        <span>✔ Complexity reduced: 18%</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="v8" delay={4200} className="text-green-500">
-        <span>✔ Duplication reduced: 22%</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="v9" delay={4400} className="text-green-500">
-        <span>✔ Files improved: 19</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="v10" delay={4700}>
-        <span>&nbsp;</span>
-      </AnimatedSpan>,
-      <TypingAnimation key="v11" delay={5500} duration={80}>
-        refactron rollback
-      </TypingAnimation>,
-      <AnimatedSpan key="v12" delay={6500} className="text-green-500">
-        <span>✔ All changes reverted successfully</span>
-      </AnimatedSpan>,
-      <AnimatedSpan key="v13" delay={6800}>
-        <span>&nbsp;</span>
-      </AnimatedSpan>,
-      <TypingAnimation key="v14" delay={7500} duration={80}>
-        refactron serve-metrics
-      </TypingAnimation>,
-      <AnimatedSpan key="v15" delay={8500} className="text-green-500">
-        <span>✔ Prometheus metrics available at :9090</span>
-      </AnimatedSpan>,
-    ],
-    []
-  );
-
-  const tabInfo = {
-    analyze: {
-      title: 'Analyze',
-      description:
-        'Refactron starts in read-only mode. You get clear insight into technical debt, complexity, and risk—without touching your code.',
-    },
-    refactor: {
-      title: 'Refactor',
-      description:
-        'Refactron never rewrites your code blindly. You review suggestions first, and automation only applies changes that pass safety checks.',
-    },
-    verify: {
-      title: 'Verify & Document',
-      description:
-        'Every refactor is verified, documented, and reversible. You get proof that behavior didn’t change—and a clear record of what did.',
-    },
-  };
-
   return (
     <div className="dark">
-      <AuroraBackground className="w-full py-20 relative overflow-hidden h-auto min-h-screen bg-black">
+      <div className="w-full py-24 relative overflow-hidden h-auto min-h-screen bg-black antialiased bg-grid-white/[0.02]">
         <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-20 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-20 pointer-events-none" />
-        <div className="relative z-10 container mx-auto px-4">
-          <motion.h2
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-black to-transparent z-20 pointer-events-none" />
+
+        <div className="relative z-10 container mx-auto px-4 max-w-7xl">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-3xl md:text-5xl font-light tracking-tight text-center text-[var(--text-primary)] mb-12 font-space"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-end mb-20"
           >
-            Everything you need to refactor production code safely
-          </motion.h2>
+            <div className="lg:col-span-7">
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-[var(--text-primary)] font-space leading-[1.1]">
+                Everything you need to refactor production code safely.
+              </h2>
+            </div>
+            <div className="lg:col-span-5 lg:pl-10 flex flex-col gap-6">
+              <p className="text-base md:text-lg text-neutral-400 font-space leading-loose tracking-wide">
+                AI-assisted, behavior-preserving refactoring with verification,
+                rollback, and documentation built in.
+              </p>
+              <a
+                href="#demo"
+                className="inline-flex items-center gap-2 text-white font-medium hover:text-neutral-300 transition-colors font-space text-sm tracking-wide"
+              >
+                Explore the platform <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+          </motion.div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg md:text-xl font-light text-center text-neutral-400 mb-12 max-w-3xl mx-auto font-space"
-          >
-            AI-assisted, behavior-preserving refactoring with verification,
-            rollback, and documentation built in.
-          </motion.p>
+          {/* Bento Grid layout */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1: Deep Analysis (1/3 width) */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="md:col-span-1 rounded-3xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] transition-colors p-8 relative overflow-hidden group flex flex-col justify-between min-h-[400px]"
+            >
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center mb-6 text-sky-400/80 group-hover:scale-110 transition-transform duration-300">
+                  <ScanSearch className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-medium text-white mb-2 font-space">
+                  Deep Analysis
+                </h3>
+                <p className="text-neutral-400 text-sm leading-relaxed font-space">
+                  Refactron scans your architecture, detects technical debt, and
+                  prioritizes risk instantly—without altering a single line of
+                  code.
+                </p>
+              </div>
 
-          <div className="flex justify-center mb-8">
-            <div className="flex gap-8">
-              {tabs.map(tab => (
-                <div key={tab.id} className="flex flex-col items-center gap-3">
-                  <button
-                    onClick={() => {
-                      setActiveTab(tab.id);
-                      setProgress(0);
-                    }}
-                    className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                      activeTab === tab.id
-                        ? 'bg-white text-black shadow-lg'
-                        : 'text-neutral-400 hover:text-white hover:bg-white/5'
-                    } font-space`}
-                  >
-                    {tab.label}
-                  </button>
-                  <div className="h-[2px] w-full rounded-full overflow-hidden relative">
-                    <AnimatePresence mode="wait">
-                      {activeTab === tab.id && (
-                        <motion.div
-                          key="progress-container"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="absolute inset-0 bg-white/10 rounded-full"
-                        >
-                          <motion.div
-                            className="h-full bg-white"
-                            initial={{ width: '0%' }}
-                            animate={{ width: `${progress}%` }}
-                            transition={{ duration: 0.5, ease: 'easeOut' }}
-                          />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+              {/* Real Visualization: Analysis Output */}
+              <div className="mt-8 rounded-xl bg-[#0d1117] border border-white/5 p-4 relative overflow-hidden font-mono text-xs">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-sky-500/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 group-hover:bg-sky-500/20 transition-colors" />
+                <div className="space-y-3 relative z-10 text-neutral-300">
+                  <div className="flex items-center gap-2 text-neutral-400">
+                    <span className="text-neutral-500">❯</span> refactron
+                    analyze . --detailed
+                  </div>
+                  <div className="text-neutral-300">✓ Analyzing myproject/</div>
+                  <div className="pl-4 text-neutral-400">
+                    Files analyzed: 25
+                    <br />
+                    Issues found: 12
+                  </div>
+                  <div className="text-rose-400 font-medium mt-2">
+                    CRITICAL (2):
+                  </div>
+                  <div className="pl-4 text-rose-300/80">
+                    - SQL injection vulnerability (line 45)
+                    <br />- Hardcoded secret detected (line 78)
+                  </div>
+                  <div className="text-amber-400 font-medium mt-2">
+                    ERROR (4):
+                  </div>
+                  <div className="pl-4 text-neutral-400">
+                    - High cyclomatic complexity (line 120)
+                    <br />- Deep nesting detected (line 156)
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            </motion.div>
 
-          <div className="flex justify-center min-h-[600px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="w-full max-w-5xl"
-              >
-                <Terminal
-                  className="w-full max-w-5xl shadow-2xl border-white/10 bg-white/10 backdrop-blur-md min-h-[600px]"
-                  contentClassName="bg-black/90 text-white font-mono"
-                  onSequenceComplete={handleSequenceComplete}
-                  onProgress={setProgress}
-                >
-                  {activeTab === 'analyze' && analyzeContent}
-                  {activeTab === 'refactor' && refactorContent}
-                  {activeTab === 'verify' && verifyContent}
-                </Terminal>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          <div className="mt-8 h-24 flex justify-center">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="text-center max-w-2xl mx-auto px-4"
-              >
-                <p className="text-neutral-400 text-lg font-light leading-relaxed font-space">
-                  {tabInfo[activeTab as keyof typeof tabInfo].description}
+            {/* Card 2: Safe Autofix (2/3 width) */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="md:col-span-2 rounded-3xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] transition-colors p-8 relative overflow-hidden group flex flex-col justify-between min-h-[400px]"
+            >
+              <div className="md:w-1/2 relative z-10">
+                <div className="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center mb-6 text-indigo-400/80 group-hover:scale-110 transition-transform duration-300">
+                  <Wand2 className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-medium text-white mb-2 font-space">
+                  Safe Autofix
+                </h3>
+                <p className="text-neutral-400 text-sm leading-relaxed font-space">
+                  Refactron doesn't just guess. It understands your context
+                  across files and generates clean, pythonic syntaxes that are
+                  guaranteed to preserve origin behavior.
                 </p>
-              </motion.div>
-            </AnimatePresence>
+              </div>
+
+              {/* Mock Visualization: Code Diff snippet positioned absolutely on md screens */}
+              <div className="mt-8 md:mt-0 md:absolute md:right-8 md:top-1/2 md:-translate-y-1/2 rounded-xl bg-[#0d1117] border border-white/10 p-0 overflow-hidden w-full md:w-[45%] lg:w-[48%] shadow-2xl group-hover:-translate-y-[52%] transition-transform duration-500 text-xs font-mono">
+                {/* Diff Header */}
+                <div className="bg-[#161b22] px-4 py-3 flex flex-col gap-3 border-b border-white/5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-rose-500/40" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-amber-500/40" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/40" />
+                      </div>
+                      <span className="text-neutral-500 ml-2">myfile.py</span>
+                    </div>
+                  </div>
+                  <div className="text-neutral-400 border-t border-white/5 pt-2 flex flex-col gap-1">
+                    <span className="text-neutral-500">
+                      # Preview changes first
+                    </span>
+                    <span className="text-neutral-300">
+                      <span className="text-indigo-400/80">❯</span> refactron
+                      refactor myfile.py --preview
+                    </span>
+                  </div>
+                </div>
+                {/* Diff Content */}
+                <div className="max-h-[220px] overflow-hidden">
+                  <div className="bg-rose-500/5 text-rose-300/60 border-rose-500/20 line-through decoration-rose-500/30 px-4 py-1 border-l-2">
+                    - def proc_pmt(d, usr):
+                    <br />
+                    - &nbsp;&nbsp;if d.get('amt') &gt; 0:
+                    <br />- &nbsp;&nbsp;&nbsp;&nbsp;return usr.charge(d['amt'])
+                  </div>
+                  <div className="bg-emerald-500/5 text-emerald-300/80 px-4 py-2 border-l-2 border-emerald-500/20">
+                    + def process_payment(data: dict, user: User) -&gt; bool:
+                    <br />
+                    + &nbsp;&nbsp;amount = data.get('amount', 0)
+                    <br />
+                    + &nbsp;&nbsp;if amount &gt; 0:
+                    <br />
+                    + &nbsp;&nbsp;&nbsp;&nbsp;return user.charge(amount)
+                    <br />+ &nbsp;&nbsp;return False
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Card 3: Provable Verification (Full Width Bottom) */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="md:col-span-3 rounded-3xl border border-white/[0.08] bg-white/[0.02] hover:bg-white/[0.04] transition-colors p-8 pb-0 relative overflow-hidden group"
+            >
+              <div className="max-w-xl mx-auto text-center relative z-10 mb-10">
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6 text-emerald-400/80 mx-auto group-hover:scale-110 transition-transform duration-300">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-medium text-white mb-2 font-space">
+                  Provable Verification
+                </h3>
+                <p className="text-neutral-400 text-sm leading-relaxed font-space">
+                  Every change passes syntax validation, import integrity
+                  checks, and your existing test suite before a single file is
+                  modified. If anything fails, the original file is never
+                  touched.{' '}
+                  <code className="text-primary-400 bg-primary-500/10 px-1 py-0.5 rounded">
+                    refactron report
+                  </code>{' '}
+                  and{' '}
+                  <code className="text-primary-400 bg-primary-500/10 px-1 py-0.5 rounded">
+                    refactron rollback
+                  </code>
+                  . Never push broken code again.
+                </p>
+              </div>
+
+              {/* Pipeline Visualization */}
+              <div className="relative w-full mx-auto px-4 py-8">
+                {/* Steps */}
+                <div className="relative flex items-center justify-between">
+                  {/* Connecting track */}
+                  <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[1px] bg-white/10 z-0" />
+                  {/* Animated fill */}
+                  <motion.div
+                    className="absolute left-0 top-1/2 -translate-y-1/2 h-[1px] bg-emerald-500/40 z-0"
+                    initial={{ width: '0%' }}
+                    whileInView={{ width: '100%' }}
+                    transition={{ duration: 2, delay: 0.3, ease: 'easeOut' }}
+                    viewport={{ once: true }}
+                  />
+
+                  {[
+                    {
+                      icon: <ScanSearch className="w-4 h-4" />,
+                      label: 'Analyze',
+                      delay: 0.4,
+                    },
+                    {
+                      icon: <Wand2 className="w-4 h-4" />,
+                      label: 'Suggest',
+                      delay: 0.8,
+                    },
+                    {
+                      icon: <GitCommit className="w-4 h-4" />,
+                      label: 'Refactor',
+                      delay: 1.2,
+                      active: true,
+                    },
+                    {
+                      icon: <GitBranch className="w-4 h-4" />,
+                      label: 'Review',
+                      delay: 1.6,
+                    },
+                    {
+                      icon: <CheckCircle2 className="w-4 h-4" />,
+                      label: 'Verified',
+                      delay: 2.0,
+                      success: true,
+                    },
+                  ].map((step, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: step.delay, duration: 0.4 }}
+                      viewport={{ once: true }}
+                      className="relative z-10 flex flex-col items-center gap-3"
+                    >
+                      <div
+                        className={`w-10 h-10 rounded-full flex items-center justify-center border-2 bg-black transition-all duration-300
+                          ${
+                            step.success
+                              ? 'border-emerald-400/60 text-emerald-400 shadow-[0_0_20px_rgba(52,211,153,0.2)]'
+                              : step.active
+                                ? 'border-emerald-500/40 text-emerald-400/80'
+                                : 'border-white/15 text-neutral-400'
+                          }`}
+                      >
+                        {step.icon}
+                      </div>
+                      <span
+                        className={`text-xs font-mono whitespace-nowrap
+                        ${step.success ? 'text-emerald-400/80' : step.active ? 'text-emerald-400/80' : 'text-neutral-500'}`}
+                      >
+                        {step.label}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
-      </AuroraBackground>
+      </div>
     </div>
   );
 };
