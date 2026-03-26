@@ -17,14 +17,25 @@ Sentry.init({
     process.env.NODE_ENV === 'production' && !!process.env.REACT_APP_SENTRY_DSN,
 });
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const rootElement = document.getElementById('root') as HTMLElement;
+
+if (rootElement.hasChildNodes()) {
+  // Pre-rendered by react-snap — hydrate instead of full render
+  ReactDOM.hydrateRoot(
+    rootElement,
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+} else {
+  // Fresh render (dev mode or non-prerendered page)
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
