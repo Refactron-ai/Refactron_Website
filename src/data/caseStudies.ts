@@ -22,6 +22,12 @@ export type CaseStudy = {
   slug: string;
   customer: string;
   industry: string;
+  accentColor: string;
+  publishedAt: string;
+  author: string;
+  tags: string[];
+  views: number;
+  clicks: number;
   summary: string;
   highlight: string;
   overview: string;
@@ -80,6 +86,12 @@ export const caseStudies: CaseStudy[] = [
     slug: 'legacy-code-ai-refactoring',
     customer: 'Improving Maintainability in a Legacy Codebase',
     industry: 'Enterprise Software',
+    accentColor: '#7B9EC8',
+    publishedAt: 'January 15, 2025 at 10:00 AM',
+    author: 'Refactron Team',
+    tags: ['Legacy Code', 'Refactoring', 'Enterprise', 'Safety'],
+    views: 128,
+    clicks: 0,
     summary:
       'Automated refactoring and documentation to modernize legacy codebases, reducing technical debt and regression risks.',
     highlight:
