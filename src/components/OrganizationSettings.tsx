@@ -53,7 +53,10 @@ const OrganizationSettings: React.FC = () => {
       const data = await response.json();
       if (data.success) {
         updateUser(data.user);
-        setMessage({ type: 'success', text: 'Organization updated successfully' });
+        setMessage({
+          type: 'success',
+          text: 'Organization updated successfully',
+        });
       } else {
         setMessage({
           type: 'error',
@@ -99,7 +102,9 @@ const OrganizationSettings: React.FC = () => {
                   : 'text-neutral-600 hover:text-neutral-400'
               }`}
             >
-              {tab === 'members' ? 'Members (1)' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {tab === 'members'
+                ? 'Members (1)'
+                : tab.charAt(0).toUpperCase() + tab.slice(1)}
               {activeTab === tab && (
                 <div className="absolute bottom-0 left-0 right-0 h-px bg-white rounded-t-full" />
               )}

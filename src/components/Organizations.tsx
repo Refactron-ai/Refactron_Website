@@ -75,19 +75,25 @@ const Organizations: React.FC = () => {
           </p>
           <div className="space-y-3 text-sm">
             <div className="flex items-start gap-3">
-              <span className="text-white font-medium w-20 shrink-0">Owner</span>
+              <span className="text-white font-medium w-20 shrink-0">
+                Owner
+              </span>
               <span className="text-neutral-500">
                 Full control, can delete organization
               </span>
             </div>
             <div className="flex items-start gap-3">
-              <span className="text-white font-medium w-20 shrink-0">Admin</span>
+              <span className="text-white font-medium w-20 shrink-0">
+                Admin
+              </span>
               <span className="text-neutral-500">
                 Can manage agents and API keys
               </span>
             </div>
             <div className="flex items-start gap-3">
-              <span className="text-white font-medium w-20 shrink-0">Member</span>
+              <span className="text-white font-medium w-20 shrink-0">
+                Member
+              </span>
               <span className="text-neutral-500">Can view and use agents</span>
             </div>
           </div>

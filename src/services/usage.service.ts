@@ -33,22 +33,17 @@ const getAuthToken = (): string | null => {
   return null;
 };
 
-export const getUsageStats = async (
-  days = 30
-): Promise<UsageStatsResponse> => {
+export const getUsageStats = async (days = 30): Promise<UsageStatsResponse> => {
   try {
     const token = getAuthToken();
     const headers: HeadersInit = {};
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    const response = await fetch(
-      `${API_BASE_URL}/api/llm/usage?days=${days}`,
-      {
-        method: 'GET',
-        headers,
-        credentials: 'include',
-      }
-    );
+    const response = await fetch(`${API_BASE_URL}/api/llm/usage?days=${days}`, {
+      method: 'GET',
+      headers,
+      credentials: 'include',
+    });
 
     const data = await response.json();
 
@@ -89,7 +84,8 @@ export const updatePreferredModel = async (
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.message || 'Failed to update preferences');
+    if (!response.ok)
+      throw new Error(data.message || 'Failed to update preferences');
     return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };

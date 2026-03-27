@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import DashboardLayout from './DashboardLayout';
-import {
-  Check,
-  Loader2,
-  ArrowRight,
-  CreditCard,
-} from 'lucide-react';
+import { Check, Loader2, ArrowRight, CreditCard } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
@@ -217,7 +212,11 @@ const Billing: React.FC = () => {
                             Trial ends{' '}
                             {new Date(user.trialEnd).toLocaleDateString(
                               'en-US',
-                              { month: 'short', day: 'numeric', year: 'numeric' }
+                              {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                              }
                             )}
                           </span>
                         </div>
@@ -254,7 +253,9 @@ const Billing: React.FC = () => {
                   {currentPlan.features.map((feature, index) => (
                     <div key={index} className="flex items-center gap-2.5">
                       <Check className="w-4 h-4 text-neutral-600 shrink-0" />
-                      <span className="text-sm text-neutral-400">{feature}</span>
+                      <span className="text-sm text-neutral-400">
+                        {feature}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -408,9 +409,7 @@ const Billing: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center pt-6 border-t border-white/[0.06]">
-                {error && (
-                  <p className="text-red-400 text-sm mb-5">{error}</p>
-                )}
+                {error && <p className="text-red-400 text-sm mb-5">{error}</p>}
                 <div className="flex items-center gap-6">
                   <button
                     onClick={() => setIsUpgrading(false)}
@@ -421,9 +420,7 @@ const Billing: React.FC = () => {
                   <button
                     onClick={handleUpgrade}
                     disabled={
-                      isLoading ||
-                      !selectedPlan ||
-                      selectedPlan === user?.plan
+                      isLoading || !selectedPlan || selectedPlan === user?.plan
                     }
                     className="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-3 text-sm font-semibold text-black transition-colors hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed"
                   >

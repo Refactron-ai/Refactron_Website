@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import {
-  Check,
-  Copy,
-  ArrowRight,
-  Lock,
-  Terminal,
-} from 'lucide-react';
+import { Check, Copy, ArrowRight, Lock, Terminal } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { listApiKeys } from '../services/apiKey.service';
@@ -28,9 +22,7 @@ const CodeBlock: React.FC<{
     }`}
   >
     <span className={dim ? 'text-neutral-700' : 'text-neutral-400'}>
-      <span className={dim ? 'text-neutral-800' : 'text-neutral-600'}>
-        ${' '}
-      </span>
+      <span className={dim ? 'text-neutral-800' : 'text-neutral-600'}>$ </span>
       {command}
     </span>
     {onCopy && (
@@ -321,7 +313,11 @@ const Dashboard: React.FC = () => {
                     <div className="flex-1 min-w-0 pt-0.5">
                       <p
                         className={`text-base font-medium ${
-                          isDimmed ? 'text-neutral-700' : step.done ? 'text-neutral-400' : 'text-white'
+                          isDimmed
+                            ? 'text-neutral-700'
+                            : step.done
+                              ? 'text-neutral-400'
+                              : 'text-white'
                         }`}
                       >
                         {step.title}
@@ -340,7 +336,8 @@ const Dashboard: React.FC = () => {
           <div className="mt-10 flex items-center gap-2 rounded-xl border border-white/[0.05] bg-white/[0.02] px-4 py-3">
             <div className="h-1.5 w-1.5 rounded-full bg-emerald-500/70" />
             <p className="text-sm text-neutral-500">
-              All CLI analysis runs locally — your code never leaves your machine.
+              All CLI analysis runs locally — your code never leaves your
+              machine.
             </p>
           </div>
         </motion.div>

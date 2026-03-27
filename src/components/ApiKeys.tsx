@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from './DashboardLayout';
 import ConfirmationModal from './ConfirmationModal';
-import { Copy, Trash2, AlertCircle, Check, Lock, ArrowRight } from 'lucide-react';
+import {
+  Copy,
+  Trash2,
+  AlertCircle,
+  Check,
+  Lock,
+  ArrowRight,
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import * as apiKeyService from '../services/apiKey.service';
@@ -168,7 +175,9 @@ const ApiKeys: React.FC = () => {
     });
   };
 
-  const [keyUsageMap, setKeyUsageMap] = useState<Map<string, { tokens: number; cost: number }>>(new Map());
+  const [keyUsageMap, setKeyUsageMap] = useState<
+    Map<string, { tokens: number; cost: number }>
+  >(new Map());
 
   useEffect(() => {
     getUsageStats(30).then(result => {
@@ -220,7 +229,9 @@ const ApiKeys: React.FC = () => {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-2xl font-semibold text-white mb-1">API Keys</h1>
+              <h1 className="text-2xl font-semibold text-white mb-1">
+                API Keys
+              </h1>
               <p className="text-sm text-neutral-500 mt-1">
                 Manage API keys for your organization. Keys are used to
                 authenticate SDK requests.
@@ -275,76 +286,76 @@ const ApiKeys: React.FC = () => {
                 {apiKeys.map(apiKey => {
                   const keyUsage = keyUsageMap.get(apiKey.id);
                   return (
-                  <div
-                    key={apiKey.id}
-                    className="grid grid-cols-12 gap-4 px-6 py-4 border-b border-white/[0.06] last:border-b-0 items-center hover:bg-white/[0.02] transition-colors"
-                  >
-                    <div className="col-span-4">
-                      <div className="flex items-center gap-2">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-white font-medium">
-                              {apiKey.name}
-                            </span>
-                            {apiKey.revoked && (
-                              <span className="px-2 py-0.5 bg-white/[0.06] text-neutral-400 text-xs rounded-md">
-                                Revoked
+                    <div
+                      key={apiKey.id}
+                      className="grid grid-cols-12 gap-4 px-6 py-4 border-b border-white/[0.06] last:border-b-0 items-center hover:bg-white/[0.02] transition-colors"
+                    >
+                      <div className="col-span-4">
+                        <div className="flex items-center gap-2">
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-white font-medium">
+                                {apiKey.name}
                               </span>
-                            )}
-                            <span className="px-2 py-0.5 bg-white/[0.06] text-neutral-400 text-xs rounded-md">
-                              {apiKey.environment}
-                            </span>
+                              {apiKey.revoked && (
+                                <span className="px-2 py-0.5 bg-white/[0.06] text-neutral-400 text-xs rounded-md">
+                                  Revoked
+                                </span>
+                              )}
+                              <span className="px-2 py-0.5 bg-white/[0.06] text-neutral-400 text-xs rounded-md">
+                                {apiKey.environment}
+                              </span>
+                            </div>
+                            <code className="text-sm text-neutral-400 font-mono">
+                              {maskKey(apiKey.keyPrefix)}
+                            </code>
                           </div>
-                          <code className="text-sm text-neutral-400 font-mono">
-                            {maskKey(apiKey.keyPrefix)}
-                          </code>
                         </div>
                       </div>
-                    </div>
-                    <div className="col-span-2 text-neutral-400 text-sm">
-                      {formatDate(apiKey.createdAt)}
-                    </div>
-                    <div className="col-span-2 text-neutral-400 text-sm">
-                      {apiKey.lastUsedAt
-                        ? formatDate(apiKey.lastUsedAt)
-                        : 'Never'}
-                    </div>
-                    <div className="col-span-2">
-                      {keyUsage ? (
-                        <div>
-                          <p className="text-sm text-neutral-300 font-mono">
-                            {keyUsage.tokens.toLocaleString()}
-                          </p>
-                          <p className="text-xs text-neutral-600">
-                            ${keyUsage.cost.toFixed(4)}
-                          </p>
-                        </div>
-                      ) : (
-                        <span className="text-xs text-neutral-700">—</span>
-                      )}
-                    </div>
-                    <div className="col-span-2 flex items-center gap-2 justify-end">
-                      {!apiKey.revoked && (
+                      <div className="col-span-2 text-neutral-400 text-sm">
+                        {formatDate(apiKey.createdAt)}
+                      </div>
+                      <div className="col-span-2 text-neutral-400 text-sm">
+                        {apiKey.lastUsedAt
+                          ? formatDate(apiKey.lastUsedAt)
+                          : 'Never'}
+                      </div>
+                      <div className="col-span-2">
+                        {keyUsage ? (
+                          <div>
+                            <p className="text-sm text-neutral-300 font-mono">
+                              {keyUsage.tokens.toLocaleString()}
+                            </p>
+                            <p className="text-xs text-neutral-600">
+                              ${keyUsage.cost.toFixed(4)}
+                            </p>
+                          </div>
+                        ) : (
+                          <span className="text-xs text-neutral-700">—</span>
+                        )}
+                      </div>
+                      <div className="col-span-2 flex items-center gap-2 justify-end">
+                        {!apiKey.revoked && (
+                          <button
+                            onClick={() => handleRevokeKey(apiKey.id)}
+                            className="p-2 hover:bg-yellow-500/10 rounded-lg transition-colors text-neutral-400 hover:text-yellow-400"
+                            title="Revoke key"
+                            disabled={loading}
+                          >
+                            <AlertCircle className="w-4 h-4" />
+                          </button>
+                        )}
                         <button
-                          onClick={() => handleRevokeKey(apiKey.id)}
-                          className="p-2 hover:bg-yellow-500/10 rounded-lg transition-colors text-neutral-400 hover:text-yellow-400"
-                          title="Revoke key"
+                          onClick={() => handleDeleteKey(apiKey.id)}
+                          className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-neutral-400 hover:text-red-400"
+                          title="Delete key"
                           disabled={loading}
                         >
-                          <AlertCircle className="w-4 h-4" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
-                      )}
-                      <button
-                        onClick={() => handleDeleteKey(apiKey.id)}
-                        className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-neutral-400 hover:text-red-400"
-                        title="Delete key"
-                        disabled={loading}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      </div>
                     </div>
-                  </div>
-                );
+                  );
                 })}
               </>
             )}
