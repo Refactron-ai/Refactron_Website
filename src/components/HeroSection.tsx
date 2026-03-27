@@ -43,21 +43,21 @@ const HeroSection: React.FC = () => {
         <div className="flex flex-col items-center justify-center w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-12 gap-10 lg:gap-14">
           <div className="text-center max-w-4xl w-full">
             {/* Main Headline - Improved typography with lighter weight */}
-            <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-3 sm:mb-4 leading-[1.1] tracking-tight font-space">
+            <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold mb-3 sm:mb-4 leading-[1.1] tracking-tight font-space">
               <TextGenerateEffect
                 words="Refactor Code."
-                className="text-[var(--text-primary)] inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
+                className="text-[var(--text-primary)] inline-block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal"
               />
               <br />
               <div className="inline-block">
                 <TextGenerateEffect
                   words="Verify It's Safe"
-                  className="text-[var(--text-primary)] inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl mr-3 sm:mr-4"
+                  className="text-[var(--text-primary)] inline-block text-4xl sm:text-5xl md:text-6xl lg:text-7xl mr-3 sm:mr-4 font-normal"
                 />
                 <TextGenerateEffect
                   words="Ship With Confidence."
-                  className="inline-block text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
-                  wordClassName="text-neutral-400 font-medium"
+                  className="inline-block text-4xl sm:text-5xl md:text-6xl lg:text-7xl"
+                  wordClassName="text-neutral-400 font-semibold"
                 />
               </div>
             </div>
