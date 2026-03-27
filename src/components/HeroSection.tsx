@@ -72,7 +72,7 @@ const HeroSection: React.FC = () => {
               <br className="hidden sm:block" />
               with behavior-preserving refactoring{' '}
               <br className="hidden sm:block" />
-              with deterministic verification.
+              and deterministic verification.
             </motion.p>
 
             {/* CTAs - pip install as primary, Read Docs as secondary */}
