@@ -70,9 +70,9 @@ const HeroSection: React.FC = () => {
             >
               Refactron safely refactors and modernizes legacy code{' '}
               <br className="hidden sm:block" />
-              with AI-assisted, behavior-preserving refactoring{' '}
+              with behavior-preserving refactoring{' '}
               <br className="hidden sm:block" />
-              and built-in verification.
+              and deterministic verification.
             </motion.p>
 
             {/* CTAs - pip install as primary, Read Docs as secondary */}
