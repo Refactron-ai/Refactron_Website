@@ -104,7 +104,7 @@ const Onboarding: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col font-space relative overflow-hidden">
+    <div className="min-h-screen bg-black flex flex-col font-space relative overflow-x-hidden">
       {/* Grid Background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_70%,transparent_100%)]"></div>
@@ -114,7 +114,7 @@ const Onboarding: React.FC = () => {
       <header className="relative z-10 flex justify-between items-center px-8 py-6">
         <div className="flex items-center gap-2">
           <img src="/logo.png" alt="Refactron" className="w-6 h-6" />
-          <span className="text-white text-lg font-light">Refactron</span>
+          <span className="text-white text-lg font-normal">Refactron</span>
         </div>
         <div className="flex items-center gap-6 text-sm text-neutral-500 font-mono">
           <a
@@ -135,7 +135,7 @@ const Onboarding: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex items-center justify-center relative z-10 px-4 py-12">
+      <main className="flex-1 flex items-center justify-center relative z-10 px-4 py-8">
         <AnimatePresence mode="wait">
           {step === 1 ? (
             <motion.div
@@ -147,7 +147,7 @@ const Onboarding: React.FC = () => {
               className="w-full max-w-md"
             >
               <div className="text-center mb-12">
-                <h1 className="text-4xl font-light text-white mb-4">
+                <h1 className="text-4xl font-semibold text-white mb-4">
                   Create Your Organization
                 </h1>
                 <p className="text-neutral-500">
@@ -169,7 +169,7 @@ const Onboarding: React.FC = () => {
                     value={orgName}
                     onChange={e => setOrgName(e.target.value)}
                     placeholder="e.g. Acme Corp"
-                    className="w-full bg-neutral-900/50 border border-neutral-800 rounded-lg px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:border-neutral-600 transition-colors"
+                    className="w-full bg-neutral-900/50 border border-neutral-800 rounded-xl px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:border-neutral-600 transition-colors"
                     autoFocus
                   />
                 </div>
@@ -177,7 +177,7 @@ const Onboarding: React.FC = () => {
                 <button
                   type="submit"
                   disabled={!orgName.trim()}
-                  className="w-full bg-white text-black font-medium py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-white text-black font-medium py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Continue <ArrowRight className="w-4 h-4" />
                 </button>
@@ -192,92 +192,88 @@ const Onboarding: React.FC = () => {
               transition={{ duration: 0.4 }}
               className="w-full max-w-5xl"
             >
-              <div className="text-center mb-12">
-                <h1 className="text-4xl font-light text-white mb-4">
+              <div className="text-center mb-6">
+                <h1 className="text-3xl font-semibold text-white mb-2">
                   Choose Your Plan
                 </h1>
-                <p className="text-neutral-500">Start simple, Scale safely.</p>
+                <p className="text-neutral-500 text-sm">
+                  Start simple, Scale safely.
+                </p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
                 {plans.map(plan => (
                   <div
                     key={plan.id}
                     onClick={() => setSelectedPlan(plan.id)}
                     className={cn(
-                      'relative p-8 bg-black/50 backdrop-blur-sm border rounded-xl cursor-pointer transition-all duration-300',
+                      'relative flex flex-col p-7 rounded-3xl bg-white/[0.02] border cursor-pointer transition-all duration-300',
                       selectedPlan === plan.id
-                        ? 'border-white bg-neutral-900/60 ring-1 ring-white'
-                        : 'border-white/10 hover:border-white/20 hover:bg-white/5',
-                      plan.highlight &&
-                        selectedPlan !== plan.id &&
-                        'border-amber-500/50 shadow-[0_0_30px_rgba(245,158,11,0.1)]'
+                        ? 'border-white ring-1 ring-white bg-white/[0.05]'
+                        : plan.highlight
+                          ? 'border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.05)] bg-white/[0.04] hover:border-white/30'
+                          : 'border-white/[0.08] hover:border-white/[0.15] hover:bg-white/[0.04]'
                     )}
                   >
                     {plan.highlight && (
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-amber-500 text-black text-[10px] font-bold uppercase tracking-wider rounded-full">
+                      <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-white/[0.08] border border-white/10 text-neutral-300 text-xs font-bold uppercase tracking-wider rounded-full backdrop-blur-md">
                         Most Popular
                       </div>
                     )}
 
                     <div className="mb-6">
-                      <h3 className="text-xs font-mono text-neutral-400 uppercase tracking-wider mb-4">
+                      <h3 className="text-xs font-medium text-neutral-400 uppercase tracking-wider mb-3">
                         {plan.name}
                       </h3>
-                      {plan.trial && (
-                        <div className="mb-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-500/30 rounded-full">
-                          <svg
-                            className="w-3.5 h-3.5 text-emerald-400"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-                          <span className="text-xs font-semibold text-emerald-300">
-                            {plan.trial}
-                          </span>
-                        </div>
-                      )}
-                      <div className="flex items-baseline gap-1 mb-2">
+                      <div className="flex items-baseline gap-1 mb-1">
                         <span className="text-3xl font-light text-white">
                           {plan.price}
                         </span>
                         {plan.suffix && (
-                          <span className="text-xs text-neutral-500">
+                          <span className="text-sm text-neutral-500">
                             {plan.suffix}
                           </span>
                         )}
                       </div>
-                      <p className="text-sm text-neutral-400 leading-relaxed">
+                      <p className="text-sm text-neutral-400">
                         {plan.description}
                       </p>
+                      {plan.trial && (
+                        <span className="inline-block mt-3 text-xs font-medium text-neutral-300 bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                          {plan.trial}
+                        </span>
+                      )}
                     </div>
 
-                    <ul className="space-y-3">
+                    <ul className="space-y-3 mb-6 flex-1">
                       {plan.features.map((feature, i) => (
-                        <li
-                          key={i}
-                          className="flex items-start gap-3 text-sm text-neutral-300"
-                        >
-                          <Check className="w-4 h-4 text-white shrink-0 mt-0.5" />
-                          <span className="leading-snug">{feature}</span>
+                        <li key={i} className="flex items-start gap-3">
+                          <Check className="w-5 h-5 text-neutral-500 shrink-0" />
+                          <span className="text-sm text-neutral-300 leading-relaxed">
+                            {feature}
+                          </span>
                         </li>
                       ))}
                     </ul>
 
-                    {selectedPlan === plan.id && (
-                      <div className="absolute bottom-4 right-4 text-white">
-                        <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider">
-                          Selected <Check className="w-4 h-4" />
-                        </div>
-                      </div>
-                    )}
+                    <div
+                      className={cn(
+                        'w-full py-3 px-6 font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm',
+                        selectedPlan === plan.id
+                          ? 'bg-white text-black'
+                          : plan.highlight
+                            ? 'bg-white text-black hover:bg-neutral-200'
+                            : 'bg-transparent border border-white/10 text-white hover:bg-white/5 hover:border-white/20'
+                      )}
+                    >
+                      {selectedPlan === plan.id ? (
+                        <>
+                          <Check className="w-4 h-4" /> Selected
+                        </>
+                      ) : (
+                        'Choose plan'
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -298,7 +294,7 @@ const Onboarding: React.FC = () => {
                 <button
                   onClick={handleFinalSubmit}
                   disabled={isLoading || !selectedPlan}
-                  className="bg-white text-black font-medium px-8 py-3 rounded-lg flex items-center gap-2 hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="bg-white text-black font-medium px-8 py-3 rounded-xl flex items-center gap-2 hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
