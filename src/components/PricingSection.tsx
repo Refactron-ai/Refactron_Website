@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FlickeringGrid } from './ui/flickering-grid';
 import { Check } from 'lucide-react';
 import { cn } from '../utils/cn';
 import EarlyAccessModal from './EarlyAccessModal';
@@ -62,38 +61,28 @@ const PricingSection = () => {
         id="pricing"
         className="relative w-full bg-black flex flex-col items-center justify-center overflow-hidden py-20 lg:py-32 font-space"
       >
-        <div className="absolute inset-0 w-full h-full">
-          <FlickeringGrid
-            className="z-0 absolute inset-0 size-full [mask-image:radial-gradient(450px_circle_at_center,white,transparent)]"
-            squareSize={4}
-            gridGap={6}
-            color="#60A5FA"
-            maxOpacity={0.5}
-            flickerChance={0.1}
-          />
-        </div>
-
         <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-center text-white mb-6 tracking-tight">
-            Simple pricing. Scale when you’re ready.
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-white font-space leading-[1.1] text-center mb-6">
+            Simple pricing. <br className="hidden md:block" />
+            Scale when you’re ready.
           </h2>
-          <p className="text-lg md:text-xl text-neutral-400 text-center max-w-2xl mb-16">
+          <p className="text-base md:text-lg text-neutral-400 font-space leading-loose tracking-wide text-center max-w-2xl mb-16 mx-auto">
             Start free. Pay when Refactron starts saving real engineering time.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full z-10">
             {tiers.map((tier, index) => (
               <div
                 key={index}
                 className={cn(
-                  'relative flex flex-col p-8 bg-black/50 backdrop-blur-sm border transition-all duration-300',
+                  'relative flex flex-col p-8 rounded-3xl bg-white/[0.02] border transition-all duration-300',
                   tier.highlight
-                    ? 'border-amber-500/50 shadow-[0_0_30px_rgba(245,158,11,0.1)]'
-                    : 'border-white/10 hover:border-white/20'
+                    ? 'border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.05)] bg-white/[0.04]'
+                    : 'border-white/[0.08] hover:border-white/[0.15] hover:bg-white/[0.04]'
                 )}
               >
                 {tier.highlight && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-amber-500 text-black text-xs font-bold uppercase tracking-wider rounded-full">
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-white/[0.08] border border-white/10 text-neutral-300 text-xs font-bold uppercase tracking-wider rounded-full backdrop-blur-md">
                     Most Popular
                   </div>
                 )}
@@ -107,16 +96,15 @@ const PricingSection = () => {
                       {tier.price}
                     </span>
                     {tier.priceSuffix && (
-                      <span className="text-sm text-neutral-400">
+                      <span className="text-sm text-neutral-500">
                         {tier.priceSuffix}
                       </span>
                     )}
                   </div>
                   <p className="text-sm text-neutral-400">{tier.description}</p>
-                  {/* @ts-ignore */}
+
                   {tier.trial && (
-                    <span className="inline-block mt-3 text-xs font-semibold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full border border-emerald-400/20">
-                      {/* @ts-ignore */}
+                    <span className="inline-block mt-3 text-xs font-medium text-neutral-300 bg-white/5 px-3 py-1 rounded-full border border-white/10">
                       {tier.trial}
                     </span>
                   )}
@@ -125,8 +113,8 @@ const PricingSection = () => {
                 <ul className="space-y-4 mb-8 flex-1">
                   {tier.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-white shrink-0" />
-                      <span className="text-sm text-neutral-300">
+                      <Check className="w-5 h-5 text-neutral-500 shrink-0" />
+                      <span className="text-sm text-neutral-300 leading-relaxed">
                         {feature}
                       </span>
                     </li>
@@ -136,10 +124,10 @@ const PricingSection = () => {
                 <button
                   onClick={tier.action}
                   className={cn(
-                    'w-full py-3 px-6 font-medium transition-colors duration-200',
+                    'w-full py-4 px-6 font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-2',
                     tier.highlight
-                      ? 'bg-amber-500 text-black hover:bg-amber-400'
-                      : 'bg-white/10 text-white hover:bg-white/20'
+                      ? 'bg-white text-black hover:bg-neutral-200 shadow-lg hover:shadow-xl'
+                      : 'bg-transparent border border-white/10 text-white hover:bg-white/5 hover:border-white/20'
                   )}
                 >
                   {tier.cta}
