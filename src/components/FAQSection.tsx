@@ -48,7 +48,6 @@ const FAQSection = () => {
   return (
     <section className="w-full py-20 lg:py-32 bg-black font-space">
       <div className="max-w-5xl mx-auto px-6 lg:px-8">
-
         {/* Large display heading */}
         <h2 className="text-[clamp(4rem,12vw,8rem)] font-extrabold tracking-tight text-white leading-none mb-16">
           FAQ
