@@ -221,7 +221,7 @@ const SignupForm: React.FC = () => {
         initial={{ opacity: 0, x: -30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="w-full lg:w-1/2 flex flex-col justify-center px-24 py-12 relative overflow-hidden"
+        className="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-14 lg:px-20 py-12 relative overflow-hidden"
       >
         <AnimatePresence mode="wait">
           {!success ? (
@@ -258,7 +258,7 @@ const SignupForm: React.FC = () => {
                 transition={{ duration: 0.5, delay: 0.3 }}
                 className="mb-10"
               >
-                <h1 className="text-3xl font-normal text-white mb-2">
+                <h1 className="text-3xl font-semibold text-white mb-2">
                   Create your account
                 </h1>
                 <p className="text-neutral-500 text-sm">
@@ -273,7 +273,7 @@ const SignupForm: React.FC = () => {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    className="mb-6 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg text-sm"
+                    className="mb-6 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl text-sm"
                   >
                     {errors.general}
                   </motion.div>
@@ -285,7 +285,7 @@ const SignupForm: React.FC = () => {
                 type="button"
                 onClick={() => handleSocialSignup('google')}
                 disabled={isLoading || oauthLoading !== null}
-                className="w-full flex items-center justify-center gap-3 bg-neutral-900/50 border border-neutral-800 text-white font-medium px-4 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-900 mb-3"
+                className="w-full flex items-center justify-center gap-3 bg-neutral-900/50 border border-neutral-800 text-white font-medium px-4 py-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-900 mb-3"
               >
                 {oauthLoading === 'google' ? (
                   <span>Connecting...</span>
@@ -328,7 +328,7 @@ const SignupForm: React.FC = () => {
                     required
                     value={formData.email}
                     onChange={handleChange}
-                    className="block w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 transition-all"
+                    className="block w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-xl text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 transition-all"
                     placeholder="you@example.com"
                   />
                   {errors.email && (
@@ -353,7 +353,7 @@ const SignupForm: React.FC = () => {
                       required
                       value={formData.password}
                       onChange={handleChange}
-                      className="block w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 transition-all pr-12"
+                      className="block w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-xl text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 transition-all pr-12"
                       placeholder="At least 8 characters"
                     />
                     <button
@@ -392,7 +392,7 @@ const SignupForm: React.FC = () => {
                       required
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      className="block w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 transition-all pr-12"
+                      className="block w-full px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-xl text-white placeholder-neutral-600 focus:outline-none focus:ring-1 focus:ring-white/40 focus:border-white/40 transition-all pr-12"
                       placeholder="Confirm your password"
                     />
                     <button
@@ -420,7 +420,7 @@ const SignupForm: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-2 bg-white text-black font-medium px-6 py-3 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 mt-6"
+                  className="w-full flex items-center justify-center gap-2 bg-white text-black font-medium px-6 py-3 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 mt-6"
                 >
                   {isLoading ? (
                     <span>Creating account...</span>
@@ -503,7 +503,7 @@ const SignupForm: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="text-4xl font-light text-neutral-600 mb-2"
+            className="text-4xl font-normal text-neutral-500 mb-2"
           >
             Understand code.
           </motion.h2>
@@ -511,7 +511,7 @@ const SignupForm: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="text-5xl font-light text-white mb-8"
+            className="text-5xl font-semibold text-white mb-8"
           >
             Improve it safely.
           </motion.h2>
