@@ -18,6 +18,8 @@ import LogoutOverlay from './LogoutOverlay';
 import LoadingSpinner from './LoadingSpinner';
 import { AuthProvider, useAuth } from '../hooks/useAuth';
 import SlugRedirect from './SlugRedirect';
+import Repositories from './Repositories';
+import Usage from './Usage';
 
 /**
  * AuthAppContent - Internal component to access useAuth hook
@@ -92,6 +94,50 @@ const AuthAppContent: React.FC = () => {
               <ProtectedRoute>
                 <PageTransition>
                   <Dashboard />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Repositories Route - Redirect legacy */}
+          <Route
+            path="/repositories"
+            element={
+              <ProtectedRoute>
+                <SlugRedirect to="repositories" />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Repositories Route - Slug based */}
+          <Route
+            path="/:slug/repositories"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <Repositories />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Usage Route - Redirect legacy */}
+          <Route
+            path="/usage"
+            element={
+              <ProtectedRoute>
+                <SlugRedirect to="usage" />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Usage Route - Slug based */}
+          <Route
+            path="/:slug/usage"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <Usage />
                 </PageTransition>
               </ProtectedRoute>
             }

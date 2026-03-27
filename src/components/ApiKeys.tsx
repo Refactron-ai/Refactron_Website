@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from './DashboardLayout';
 import ConfirmationModal from './ConfirmationModal';
-import { Copy, Trash2, AlertCircle, Check } from 'lucide-react';
+import { Copy, Trash2, AlertCircle, Check, Lock, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 import * as apiKeyService from '../services/apiKey.service';
+import { getUsageStats, UsageRecord } from '../services/usage.service';
 
 interface ApiKey {
   id: string;
@@ -16,6 +19,8 @@ interface ApiKey {
 }
 
 const ApiKeys: React.FC = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [keyName, setKeyName] = useState('');
@@ -163,6 +168,51 @@ const ApiKeys: React.FC = () => {
     });
   };
 
+  const [keyUsageMap, setKeyUsageMap] = useState<Map<string, { tokens: number; cost: number }>>(new Map());
+
+  useEffect(() => {
+    getUsageStats(30).then(result => {
+      if (result.success && result.usage) {
+        const map = new Map<string, { tokens: number; cost: number }>();
+        result.usage.forEach((record: UsageRecord) => {
+          const existing = map.get(record.apiKeyId) ?? { tokens: 0, cost: 0 };
+          map.set(record.apiKeyId, {
+            tokens: existing.tokens + record.totalTokens,
+            cost: existing.cost + record.estimatedCost,
+          });
+        });
+        setKeyUsageMap(map);
+      }
+    });
+  }, []);
+
+  const isPro = user?.plan === 'pro' || user?.plan === 'enterprise';
+
+  if (!isPro) {
+    return (
+      <DashboardLayout>
+        <div className="p-8 max-w-xl mx-auto flex flex-col items-center text-center pt-24">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.03] mb-6">
+            <Lock className="h-5 w-5 text-neutral-500" />
+          </div>
+          <h2 className="text-lg font-semibold text-white mb-2">
+            API Keys require Pro
+          </h2>
+          <p className="text-sm text-neutral-500 max-w-xs mb-6">
+            Generate API keys to unlock Pro features like autofix in the CLI.
+          </p>
+          <button
+            onClick={() => navigate('/settings/billing')}
+            className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-neutral-200"
+          >
+            Upgrade to Pro
+            <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout>
       <div className="p-8">
@@ -170,8 +220,8 @@ const ApiKeys: React.FC = () => {
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2">API Keys</h1>
-              <p className="text-neutral-400">
+              <h1 className="text-2xl font-semibold text-white mb-1">API Keys</h1>
+              <p className="text-sm text-neutral-500 mt-1">
                 Manage API keys for your organization. Keys are used to
                 authenticate SDK requests.
               </p>
@@ -179,7 +229,7 @@ const ApiKeys: React.FC = () => {
             <button
               onClick={() => setIsCreateModalOpen(true)}
               disabled={loading}
-              className="px-6 py-3 bg-transparent border border-neutral-700 text-white rounded-lg font-medium hover:bg-neutral-800 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-5 py-2.5 bg-transparent border border-white/[0.10] text-white rounded-xl font-medium hover:bg-white/[0.04] transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
               <span className="text-xl font-light">+</span>
               Create Key
@@ -197,7 +247,7 @@ const ApiKeys: React.FC = () => {
           {/* API Keys Table */}
           <div className="mb-6">
             <div className="mb-4">
-              <h2 className="text-lg font-semibold text-white">
+              <h2 className="text-base font-semibold text-white">
                 Your API Keys ({apiKeys.length})
               </h2>
             </div>
@@ -213,18 +263,21 @@ const ApiKeys: React.FC = () => {
             ) : (
               <>
                 {/* Table Header */}
-                <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-neutral-800 text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-white/[0.08] text-xs font-bold uppercase tracking-widest text-neutral-600">
                   <div className="col-span-4">Key</div>
-                  <div className="col-span-3">Created</div>
-                  <div className="col-span-3">Last Used</div>
+                  <div className="col-span-2">Created</div>
+                  <div className="col-span-2">Last Used</div>
+                  <div className="col-span-2">Usage (30d)</div>
                   <div className="col-span-2"></div>
                 </div>
 
                 {/* Table Rows */}
-                {apiKeys.map(apiKey => (
+                {apiKeys.map(apiKey => {
+                  const keyUsage = keyUsageMap.get(apiKey.id);
+                  return (
                   <div
                     key={apiKey.id}
-                    className="grid grid-cols-12 gap-4 px-6 py-4 border-b border-neutral-800 last:border-b-0 items-center hover:bg-neutral-800/30 transition-colors"
+                    className="grid grid-cols-12 gap-4 px-6 py-4 border-b border-white/[0.06] last:border-b-0 items-center hover:bg-white/[0.02] transition-colors"
                   >
                     <div className="col-span-4">
                       <div className="flex items-center gap-2">
@@ -234,11 +287,11 @@ const ApiKeys: React.FC = () => {
                               {apiKey.name}
                             </span>
                             {apiKey.revoked && (
-                              <span className="px-2 py-0.5 bg-neutral-800 text-neutral-400 text-xs rounded">
+                              <span className="px-2 py-0.5 bg-white/[0.06] text-neutral-400 text-xs rounded-md">
                                 Revoked
                               </span>
                             )}
-                            <span className="px-2 py-0.5 bg-neutral-800 text-neutral-400 text-xs rounded">
+                            <span className="px-2 py-0.5 bg-white/[0.06] text-neutral-400 text-xs rounded-md">
                               {apiKey.environment}
                             </span>
                           </div>
@@ -248,13 +301,27 @@ const ApiKeys: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="col-span-3 text-neutral-400 text-sm">
+                    <div className="col-span-2 text-neutral-400 text-sm">
                       {formatDate(apiKey.createdAt)}
                     </div>
-                    <div className="col-span-3 text-neutral-400 text-sm">
+                    <div className="col-span-2 text-neutral-400 text-sm">
                       {apiKey.lastUsedAt
                         ? formatDate(apiKey.lastUsedAt)
                         : 'Never'}
+                    </div>
+                    <div className="col-span-2">
+                      {keyUsage ? (
+                        <div>
+                          <p className="text-sm text-neutral-300 font-mono">
+                            {keyUsage.tokens.toLocaleString()}
+                          </p>
+                          <p className="text-xs text-neutral-600">
+                            ${keyUsage.cost.toFixed(4)}
+                          </p>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-neutral-700">—</span>
+                      )}
                     </div>
                     <div className="col-span-2 flex items-center gap-2 justify-end">
                       {!apiKey.revoked && (
@@ -277,13 +344,14 @@ const ApiKeys: React.FC = () => {
                       </button>
                     </div>
                   </div>
-                ))}
+                );
+                })}
               </>
             )}
           </div>
 
           {/* Usage Instructions */}
-          <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6">
+          <div className="bg-white/[0.02] border border-white/[0.08] rounded-2xl p-6">
             <div className="flex items-start gap-2 mb-4">
               <div className="w-2 h-2 bg-white rounded-full mt-2"></div>
               <div>
@@ -296,7 +364,7 @@ const ApiKeys: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-[#0a0a0a] rounded-lg p-4 border border-neutral-800">
+            <div className="bg-[#0d1117] rounded-xl p-4 border border-white/[0.06]">
               <pre className="text-sm text-neutral-300 font-mono">
                 <code>{`from refactron import RefactronClient
 
@@ -311,8 +379,8 @@ session_id = client.create_session(name="My Agent")`}</code>
       {/* Create API Key Modal */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[#0f0f0f] border border-neutral-800 rounded-2xl p-8 max-w-xl w-full">
-            <h2 className="text-2xl font-bold text-white mb-6">
+          <div className="bg-[#0a0a0a] border border-white/[0.08] rounded-2xl p-8 max-w-xl w-full">
+            <h2 className="text-xl font-semibold text-white mb-6">
               Create API Key
             </h2>
 
@@ -326,7 +394,7 @@ session_id = client.create_session(name="My Agent")`}</code>
                 value={keyName}
                 onChange={e => setKeyName(e.target.value)}
                 placeholder="e.g., Production"
-                className="w-full bg-transparent border border-neutral-700 rounded-lg px-4 py-3 text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-600 transition-colors"
+                className="w-full bg-transparent border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:border-white/20 transition-colors"
                 disabled={loading}
               />
             </div>
@@ -340,10 +408,10 @@ session_id = client.create_session(name="My Agent")`}</code>
                 <button
                   onClick={() => setEnvironment('test')}
                   disabled={loading}
-                  className={`py-3 px-6 rounded-lg font-medium transition-colors ${
+                  className={`py-3 px-6 rounded-xl font-medium transition-colors ${
                     environment === 'test'
                       ? 'bg-white text-black'
-                      : 'bg-transparent border border-neutral-700 text-white hover:bg-neutral-800'
+                      : 'bg-transparent border border-white/[0.08] text-white hover:bg-white/[0.04]'
                   }`}
                 >
                   Test
@@ -351,10 +419,10 @@ session_id = client.create_session(name="My Agent")`}</code>
                 <button
                   onClick={() => setEnvironment('live')}
                   disabled={loading}
-                  className={`py-3 px-6 rounded-lg font-medium transition-colors ${
+                  className={`py-3 px-6 rounded-xl font-medium transition-colors ${
                     environment === 'live'
                       ? 'bg-white text-black'
-                      : 'bg-transparent border border-neutral-700 text-white hover:bg-neutral-800'
+                      : 'bg-transparent border border-white/[0.08] text-white hover:bg-white/[0.04]'
                   }`}
                 >
                   Live
@@ -375,14 +443,14 @@ session_id = client.create_session(name="My Agent")`}</code>
                   setError(null);
                 }}
                 disabled={loading}
-                className="py-3 px-6 bg-transparent border border-neutral-700 text-white rounded-lg font-medium hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="py-3 px-6 bg-transparent border border-white/[0.08] text-white rounded-xl font-medium hover:bg-white/[0.04] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Cancel
               </button>
               <button
                 onClick={handleCreateKey}
                 disabled={loading || !keyName.trim()}
-                className="py-3 px-6 bg-neutral-600 text-white rounded-lg font-medium hover:bg-neutral-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="py-3 px-6 bg-white text-black rounded-xl font-medium hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Creating...' : 'Create Key'}
               </button>
@@ -394,9 +462,9 @@ session_id = client.create_session(name="My Agent")`}</code>
       {/* New Key Display Modal */}
       {newlyCreatedKey && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-[#0f0f0f] border border-neutral-800 rounded-2xl p-8 max-w-2xl w-full">
-            <h2 className="text-2xl font-bold text-white mb-4">
-              API Key Created!
+          <div className="bg-[#0a0a0a] border border-white/[0.08] rounded-2xl p-8 max-w-2xl w-full">
+            <h2 className="text-xl font-semibold text-white mb-4">
+              API Key Created
             </h2>
 
             <div className="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
@@ -411,7 +479,7 @@ session_id = client.create_session(name="My Agent")`}</code>
                 Your API Key
               </label>
               <div className="flex gap-2">
-                <code className="flex-1 bg-[#0a0a0a] border border-neutral-800 rounded-lg px-4 py-3 text-white font-mono text-sm break-all">
+                <code className="flex-1 bg-[#0d1117] border border-white/[0.06] rounded-xl px-4 py-3 text-white font-mono text-sm break-all">
                   {newlyCreatedKey}
                 </code>
                 <button

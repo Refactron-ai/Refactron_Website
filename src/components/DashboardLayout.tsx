@@ -3,23 +3,18 @@ import { useAuth } from '../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Home,
-  Layers,
-  Users,
-  AlertCircle,
-  Search,
-  Terminal,
-  FlaskConical,
+  GitBranch,
   ChevronRight,
   ChevronDown,
   BookOpen,
   Plus,
   LogOut,
-  Bot,
   Menu,
   Key,
   CreditCard,
   Github,
   Building,
+  BarChart2,
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -63,14 +58,19 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '') + '-organization';
 
-  const menuItems = [
+  const workspaceItems = [
     { icon: Home, label: 'Home', path: `/${orgSlug}/dashboard` },
-    { icon: Layers, label: 'Sessions' },
-    { icon: Users, label: 'Users' },
-    { icon: AlertCircle, label: 'Issues' },
-    { icon: Search, label: 'Research Room' },
-    { icon: Terminal, label: 'Codebase Intelligence' },
-    { icon: FlaskConical, label: 'Experiments' },
+    {
+      icon: GitBranch,
+      label: 'Repositories',
+      path: `/${orgSlug}/repositories`,
+    },
+    { icon: BarChart2, label: 'Usage', path: `/${orgSlug}/usage` },
+    { icon: Key, label: 'API Keys', path: `/${orgSlug}/settings/api-keys` },
+  ];
+
+  const accountItems = [
+    { icon: CreditCard, label: 'Billing', path: '/settings/billing' },
   ];
 
   const formatOrgName = (name: string | null | undefined) => {
@@ -98,7 +98,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       <motion.aside
         initial={false}
         animate={{ width: isSidebarCollapsed ? 64 : 240 }}
-        className="flex flex-col border-r border-neutral-800 bg-black z-20"
+        className="flex flex-col border-r border-white/[0.08] bg-black z-20"
       >
         {/* Logo Section */}
         <div
@@ -156,7 +156,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -10, scale: 0.95 }}
                   transition={{ duration: 0.15, ease: 'easeOut' }}
-                  className="absolute top-full left-4 right-4 mt-1 bg-[#1a1c1e] border border-neutral-800 rounded-xl shadow-2xl z-50 overflow-hidden"
+                  className="absolute top-full left-4 right-4 mt-1 bg-[#0d0d0d] border border-white/[0.08] rounded-xl shadow-2xl z-50 overflow-hidden"
                 >
                   <div className="p-1">
                     <button className="w-full flex items-center justify-between p-2 bg-neutral-800/50 rounded-lg group transition-colors">
@@ -188,73 +188,75 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         )}
 
         {/* Navigation */}
-        <div className="flex-1 px-3 space-y-8 overflow-y-auto scrollbar-hide">
-          {/* Agents Section */}
+        <div className="flex-1 px-3 space-y-6 overflow-y-auto scrollbar-hide">
+          {/* Workspace Section */}
           <div>
             {!isSidebarCollapsed && (
-              <p className="px-3 text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-2">
-                Agents
-              </p>
-            )}
-            <button className="w-full flex items-center justify-between p-2 hover:bg-neutral-900 rounded-lg transition-colors group">
-              <div className="flex items-center gap-3">
-                <Bot className="w-5 h-5 text-neutral-400 group-hover:text-white transition-colors" />
-                {!isSidebarCollapsed && (
-                  <span className="text-sm text-neutral-400 group-hover:text-white transition-colors">
-                    Agents
-                  </span>
-                )}
-              </div>
-              {!isSidebarCollapsed && (
-                <ChevronRight className="w-4 h-4 text-neutral-600" />
-              )}
-            </button>
-          </div>
-
-          {/* Management Section */}
-          <div>
-            {!isSidebarCollapsed && (
-              <p className="px-3 text-[10px] font-bold text-neutral-500 uppercase tracking-widest mb-2">
-                Management
+              <p className="px-3 text-[10px] font-bold text-neutral-600 uppercase tracking-widest mb-2">
+                Workspace
               </p>
             )}
             <div className="space-y-1">
-              {menuItems.map(item => {
-                const isActive = item.path === location.pathname;
-                return item.path ? (
+              {workspaceItems.map(item => {
+                const isActive = location.pathname === item.path;
+                return (
                   <Link
                     key={item.label}
                     to={item.path}
                     className={`w-full flex items-center gap-3 p-2 rounded-lg transition-colors group ${isSidebarCollapsed ? 'justify-center' : ''} ${
                       isActive
-                        ? 'bg-neutral-900 text-white'
-                        : 'text-neutral-400 hover:bg-neutral-900 hover:text-white'
+                        ? 'bg-white/[0.06] text-white'
+                        : 'text-neutral-500 hover:bg-white/[0.04] hover:text-white'
                     }`}
+                    title={isSidebarCollapsed ? item.label : undefined}
                   >
                     <item.icon
-                      className={`w-5 h-5 ${isActive ? 'text-white' : 'text-neutral-400 group-hover:text-white'}`}
+                      className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-white' : 'text-neutral-500 group-hover:text-white'}`}
                     />
                     {!isSidebarCollapsed && (
                       <span className="text-sm font-medium">{item.label}</span>
                     )}
                   </Link>
-                ) : (
-                  <button
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Account Section */}
+          <div>
+            {!isSidebarCollapsed && (
+              <p className="px-3 text-[10px] font-bold text-neutral-600 uppercase tracking-widest mb-2">
+                Account
+              </p>
+            )}
+            <div className="space-y-1">
+              {accountItems.map(item => {
+                const isActive = location.pathname === item.path;
+                return (
+                  <Link
                     key={item.label}
-                    className={`w-full flex items-center gap-3 p-2 rounded-lg transition-colors group ${isSidebarCollapsed ? 'justify-center' : ''} text-neutral-400 hover:bg-neutral-900 hover:text-white`}
+                    to={item.path}
+                    className={`w-full flex items-center gap-3 p-2 rounded-lg transition-colors group ${isSidebarCollapsed ? 'justify-center' : ''} ${
+                      isActive
+                        ? 'bg-white/[0.06] text-white'
+                        : 'text-neutral-500 hover:bg-white/[0.04] hover:text-white'
+                    }`}
+                    title={isSidebarCollapsed ? item.label : undefined}
                   >
-                    <item.icon className="w-5 h-5 text-neutral-400 group-hover:text-white" />
+                    <item.icon
+                      className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-white' : 'text-neutral-500 group-hover:text-white'}`}
+                    />
                     {!isSidebarCollapsed && (
                       <span className="text-sm font-medium">{item.label}</span>
                     )}
-                  </button>
+                  </Link>
                 );
               })}
             </div>
           </div>
         </div>
 
-        <div className="p-4 space-y-2 border-t border-neutral-800">
+        <div className="p-4 space-y-2 border-t border-white/[0.08]">
           <button
             onClick={user?.githubConnected ? undefined : handleGitHubConnect}
             disabled={user?.githubConnected}
@@ -337,7 +339,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ duration: 0.15, ease: 'easeOut' }}
-                      className="absolute bottom-full left-0 right-0 mb-2 bg-[#1a1c1e] border border-neutral-800 rounded-xl shadow-2xl z-50 overflow-hidden"
+                      className="absolute bottom-full left-0 right-0 mb-2 bg-[#0d0d0d] border border-white/[0.08] rounded-xl shadow-2xl z-50 overflow-hidden"
                     >
                       <div className="p-1">
                         <div className="px-3 py-2 mb-1">
@@ -349,7 +351,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                           </p>
                         </div>
 
-                        <div className="h-px bg-neutral-800 my-1" />
+                        <div className="h-px bg-white/[0.06] my-1" />
 
                         <div className="space-y-0.5">
                           <button
@@ -361,27 +363,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                               Organizations
                             </span>
                           </button>
-                          <button
-                            onClick={() =>
-                              navigate(`/${orgSlug}/settings/api-keys`)
-                            }
-                            className="w-full flex items-center gap-3 p-2 hover:bg-neutral-800/50 rounded-lg group transition-colors text-neutral-400 hover:text-white"
-                          >
-                            <Key className="w-4 h-4" />
-                            <span className="text-xs font-medium">
-                              API Keys
-                            </span>
-                          </button>
-                          <button
-                            onClick={() => navigate('/settings/billing')}
-                            className="w-full flex items-center gap-3 p-2 hover:bg-neutral-800/50 rounded-lg group transition-colors text-neutral-400 hover:text-white"
-                          >
-                            <CreditCard className="w-4 h-4" />
-                            <span className="text-xs font-medium">Billing</span>
-                          </button>
                         </div>
 
-                        <div className="h-px bg-neutral-800 my-1" />
+                        <div className="h-px bg-white/[0.06] my-1" />
 
                         <button
                           onClick={logout}
