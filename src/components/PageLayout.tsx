@@ -7,20 +7,26 @@ type PageLayoutProps = {
   children: React.ReactNode;
   mainClassName?: string;
   wrapperClassName?: string;
+  transparentBg?: boolean;
 };
 
 const PageLayout: React.FC<PageLayoutProps> = ({
   children,
   mainClassName = '',
   wrapperClassName = '',
+  transparentBg = false,
 }) => {
   return (
     <div
-      className={`min-h-screen bg-[var(--bg-primary)] text-[var(--text-secondary)] flex flex-col ${wrapperClassName}`}
-      style={{
-        background:
-          'linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
-      }}
+      className={`min-h-screen text-[var(--text-secondary)] flex flex-col ${!transparentBg ? 'bg-[var(--bg-primary)]' : ''} ${wrapperClassName}`}
+      style={
+        transparentBg
+          ? { background: 'transparent' }
+          : {
+              background:
+                'linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
+            }
+      }
     >
       <NavigationBar />
       <main

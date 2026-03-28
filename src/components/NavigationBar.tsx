@@ -82,7 +82,11 @@ const NavigationBar: React.FC = () => {
         isVisible ? 'translate-y-0' : '-translate-y-[200%]'
       } ${
         isScrolled
-          ? 'w-[90%] max-w-5xl bg-[var(--glass-bg)] backdrop-blur-xl border-b border-[var(--glass-border)] shadow-lg rounded-2xl mt-2 opacity-100'
+          ? `w-[90%] max-w-5xl backdrop-blur-xl border-b shadow-lg rounded-2xl mt-2 opacity-100 ${
+              location.pathname === '/changelog'
+                ? 'bg-black/30 border-white/10'
+                : 'bg-[var(--glass-bg)] border-[var(--glass-border)]'
+            }`
           : 'w-[95%] max-w-6xl bg-[rgba(10,10,10,0)] backdrop-blur-none border-transparent shadow-none rounded-2xl mt-2 opacity-100'
       }`}
     >

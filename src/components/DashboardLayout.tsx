@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, ReactNode } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  ReactNode,
+} from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -15,8 +21,20 @@ import {
   Github,
   Building,
   BarChart2,
+  Settings,
+  Bell,
+  Shield,
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { getApiBaseUrl } from '../utils/urlUtils';
+
+interface Notification {
+  id: string;
+  type: string;
+  message: string;
+  read: boolean;
+  createdAt: string;
+}
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -29,8 +47,58 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isOrgDropdownOpen, setIsOrgDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const orgDropdownRef = useRef<HTMLDivElement>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
+  const notifRef = useRef<HTMLDivElement>(null);
+
+  const apiBase = getApiBaseUrl();
+  const token = localStorage.getItem('accessToken');
+
+  const fetchNotifications = useCallback(async () => {
+    try {
+      const res = await fetch(`${apiBase}/api/notifications`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setNotifications(data.notifications ?? []);
+      }
+    } catch {}
+  }, [apiBase, token]);
+
+  useEffect(() => {
+    fetchNotifications();
+    // Poll every 60s
+    const interval = setInterval(fetchNotifications, 60000);
+    return () => clearInterval(interval);
+  }, [fetchNotifications]);
+
+  const handleOpenNotif = async () => {
+    setIsNotifOpen(v => !v);
+    // Mark all read when opened
+    if (!isNotifOpen && notifications.some(n => !n.read)) {
+      try {
+        await fetch(`${apiBase}/api/notifications/read-all`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+      } catch {}
+    }
+  };
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  const formatNotifTime = (iso: string) => {
+    const diff = Date.now() - new Date(iso).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs}h ago`;
+    return `${Math.floor(hrs / 24)}d ago`;
+  };
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -46,6 +114,12 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         !profileDropdownRef.current.contains(event.target as Node)
       ) {
         setIsProfileDropdownOpen(false);
+      }
+      if (
+        notifRef.current &&
+        !notifRef.current.contains(event.target as Node)
+      ) {
+        setIsNotifOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -71,6 +145,10 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
   const accountItems = [
     { icon: CreditCard, label: 'Billing', path: '/settings/billing' },
+    { icon: Settings, label: 'Account', path: '/settings/account' },
+    ...(user?.plan === 'enterprise'
+      ? [{ icon: Shield, label: 'Audit Logs', path: '/settings/audit-logs' }]
+      : []),
   ];
 
   const formatOrgName = (name: string | null | undefined) => {
@@ -257,6 +335,84 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         </div>
 
         <div className="p-4 space-y-2 border-t border-white/[0.08]">
+          {/* Notifications Bell */}
+          <div className="relative" ref={notifRef}>
+            <button
+              onClick={handleOpenNotif}
+              className={`w-full flex items-center p-2 rounded-lg transition-colors group ${isSidebarCollapsed ? 'justify-center' : 'justify-between'} hover:bg-neutral-900 text-neutral-400 hover:text-white`}
+              title={
+                isSidebarCollapsed
+                  ? `Notifications${unreadCount > 0 ? ` (${unreadCount})` : ''}`
+                  : undefined
+              }
+            >
+              <div className="flex items-center gap-3 relative">
+                <div className="relative">
+                  <Bell className="w-5 h-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-teal-500 text-[8px] font-bold text-black leading-none">
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  )}
+                </div>
+                {!isSidebarCollapsed && (
+                  <span className="text-sm font-medium">Notifications</span>
+                )}
+              </div>
+              {!isSidebarCollapsed && unreadCount > 0 && (
+                <span className="text-[10px] font-medium text-teal-500">
+                  {unreadCount} new
+                </span>
+              )}
+            </button>
+
+            <AnimatePresence>
+              {isNotifOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{ duration: 0.15, ease: 'easeOut' }}
+                  className="absolute bottom-full left-0 right-0 mb-2 bg-[#0d0d0d] border border-white/[0.08] rounded-xl shadow-2xl z-50 overflow-hidden"
+                  style={{ width: isSidebarCollapsed ? 240 : undefined }}
+                >
+                  <div className="px-3 py-2.5 border-b border-white/[0.06] flex items-center justify-between">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-600">
+                      Notifications
+                    </p>
+                  </div>
+                  {notifications.length === 0 ? (
+                    <div className="px-4 py-5 text-center">
+                      <p className="text-xs text-neutral-600">
+                        No notifications yet.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="max-h-64 overflow-y-auto">
+                      {notifications.slice(0, 10).map(n => (
+                        <div
+                          key={n.id}
+                          className={`px-3 py-2.5 border-b border-white/[0.04] last:border-0 ${
+                            !n.read ? 'bg-white/[0.02]' : ''
+                          }`}
+                        >
+                          <p
+                            className={`text-xs leading-snug ${n.read ? 'text-neutral-600' : 'text-neutral-300'}`}
+                          >
+                            {n.message}
+                          </p>
+                          <p className="text-[10px] text-neutral-700 mt-1">
+                            {formatNotifTime(n.createdAt)}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
           <button
             onClick={user?.githubConnected ? undefined : handleGitHubConnect}
             disabled={user?.githubConnected}

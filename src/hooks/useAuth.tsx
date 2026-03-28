@@ -26,6 +26,7 @@ interface User {
   dodoPaymentId?: string | null;
   trialEnd?: string | null; // Date string from JSON
   preferredModel?: string | null;
+  oauthProvider?: string | null;
 }
 
 interface AuthContextType {

@@ -57,6 +57,15 @@ const Repositories: React.FC = () => {
       (r.description ?? '').toLowerCase().includes(search.toLowerCase())
   );
 
+  // Feature 5: Language breakdown
+  const langCounts = repos.reduce<Record<string, number>>((acc, repo) => {
+    if (repo.language) acc[repo.language] = (acc[repo.language] ?? 0) + 1;
+    return acc;
+  }, {});
+  const topLangs = Object.entries(langCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6);
+
   const formatUpdated = (iso: string) => {
     const diff = Date.now() - new Date(iso).getTime();
     const days = Math.floor(diff / 86400000);
@@ -109,6 +118,26 @@ const Repositories: React.FC = () => {
             </div>
           ) : (
             <>
+              {/* Language breakdown */}
+              {topLangs.length > 0 && (
+                <div className="mb-5 rounded-2xl border border-white/[0.08] bg-white/[0.02] px-5 py-4">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-600 mb-3">
+                    Languages
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {topLangs.map(([lang, count]) => (
+                      <span
+                        key={lang}
+                        className="flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.03] px-3 py-1 text-xs text-neutral-400"
+                      >
+                        {lang}
+                        <span className="text-neutral-600">{count}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Search */}
               <div className="relative mb-4">
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-600" />
