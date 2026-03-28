@@ -230,7 +230,7 @@ const LoginForm: React.FC = () => {
       }
 
       setSuccess(true);
-      login(data.accessToken, data.user);
+      await login(data.accessToken, data.user);
       setTimeout(() => {
         if (deviceCode) {
           // Check onboarding status before redirecting

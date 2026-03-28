@@ -34,7 +34,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   loading: boolean;
   loggingOut: boolean;
-  login: (token: string, user: User) => void;
+  login: (token: string, user: User) => Promise<void>;
   logout: () => Promise<void>;
   updateUser: (user: User) => void;
   completeOnboarding: (
@@ -134,8 +134,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     checkAuth();
   }, []);
 
-  const login = useCallback((token: string, userData: User) => {
+  const login = useCallback(async (token: string, userData: User) => {
     localStorage.setItem('accessToken', token);
+    const apiBaseUrl = getApiBaseUrl();
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+        return;
+      }
+    } catch {
+      /* fall back to login / OAuth payload */
+    }
     setUser(userData);
   }, []);
 
