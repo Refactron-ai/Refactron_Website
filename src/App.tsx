@@ -21,6 +21,8 @@ import SkipToMain from './components/SkipToMain';
 import usePerformanceMonitoring from './hooks/usePerformanceMonitoring';
 import useAccessibility from './hooks/useAccessibility';
 import PageLayout from './components/PageLayout';
+import Changelog from './components/Changelog';
+import SecurityPage from './components/SecurityPage';
 
 import { ThemeProvider } from './contexts/ThemeContext';
 
@@ -113,6 +115,22 @@ function App() {
                 />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/terms-of-service" element={<TermsOfService />} />
+                <Route
+                  path="/changelog"
+                  element={
+                    <PageLayout transparentBg mainClassName="pt-0 sm:pt-0">
+                      <Changelog />
+                    </PageLayout>
+                  }
+                />
+                <Route
+                  path="/security"
+                  element={
+                    <PageLayout>
+                      <SecurityPage />
+                    </PageLayout>
+                  }
+                />
                 <Route
                   path="/about"
                   element={

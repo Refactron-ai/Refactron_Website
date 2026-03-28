@@ -20,6 +20,8 @@ import { AuthProvider, useAuth } from '../hooks/useAuth';
 import SlugRedirect from './SlugRedirect';
 import Repositories from './Repositories';
 import Usage from './Usage';
+import AccountSettings from './AccountSettings';
+import AuditLogs from './AuditLogs';
 
 /**
  * AuthAppContent - Internal component to access useAuth hook
@@ -184,6 +186,30 @@ const AuthAppContent: React.FC = () => {
               <ProtectedRoute>
                 <PageTransition>
                   <ApiKeys />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Audit Logs Route */}
+          <Route
+            path="/settings/audit-logs"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <AuditLogs />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Account Settings Route */}
+          <Route
+            path="/settings/account"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <AccountSettings />
                 </PageTransition>
               </ProtectedRoute>
             }

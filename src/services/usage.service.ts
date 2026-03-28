@@ -68,9 +68,9 @@ export const getUsageStats = async (days = 30): Promise<UsageStatsResponse> => {
   }
 };
 
-export const updatePreferredModel = async (
-  model: string | null
-): Promise<{ success: boolean; error?: string }> => {
+export const updatePreferences = async (prefs: {
+  preferredModel?: string | null;
+}): Promise<{ success: boolean; error?: string }> => {
   try {
     const token = getAuthToken();
     const headers: HeadersInit = { 'Content-Type': 'application/json' };
@@ -80,7 +80,7 @@ export const updatePreferredModel = async (
       method: 'PATCH',
       headers,
       credentials: 'include',
-      body: JSON.stringify({ preferredModel: model }),
+      body: JSON.stringify(prefs),
     });
 
     const data = await response.json();

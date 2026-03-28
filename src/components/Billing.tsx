@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { getApiBaseUrl } from '../utils/urlUtils';
 import DashboardLayout from './DashboardLayout';
-import { Check, Loader2, ArrowRight, CreditCard } from 'lucide-react';
+import { Check, Loader2, ArrowRight, CreditCard, Download } from 'lucide-react';
 import { cn } from '../utils/cn';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import { getApiBaseUrl } from '../utils/urlUtils';
 
 const Billing: React.FC = () => {
   const {
     user,
+    updateUser,
     createPortalSession,
     createDodoCheckoutSession,
     createDodoPortalSession,
@@ -27,38 +28,38 @@ const Billing: React.FC = () => {
     if (query.get('success')) {
       localStorage.removeItem('pending_stripe_redirect');
       window.history.replaceState({}, document.title, window.location.pathname);
+      // Refresh user state so plan badge reflects DB immediately
+      const token = localStorage.getItem('accessToken');
+      const apiBaseUrl = getApiBaseUrl();
+      fetch(`${apiBaseUrl}/api/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then(res => res.ok ? res.json() : null)
+        .then(data => { if (data?.user) updateUser(data.user); })
+        .catch(() => {});
     }
     if (query.get('canceled')) {
       localStorage.removeItem('pending_stripe_redirect');
       setError('Subscription process was canceled.');
       window.history.replaceState({}, document.title, window.location.pathname);
     }
-  }, [location]);
+  }, [location, updateUser]);
 
   useEffect(() => {
-    if (user?.plan === 'pro') {
+    if (user?.plan === 'pro' && user.dodoCustomerId) {
       setIsLoadingHistory(true);
-      const endpoint = user.dodoCustomerId
-        ? '/api/dodo/history'
-        : '/api/stripe/history';
-
-      if (user.dodoCustomerId) {
-        const token = localStorage.getItem('accessToken');
-        const apiBaseUrl = getApiBaseUrl();
-
-        fetch(`${apiBaseUrl}${endpoint}`, {
-          headers: { Authorization: `Bearer ${token}` },
+      const token = localStorage.getItem('accessToken');
+      const apiBaseUrl = getApiBaseUrl();
+      fetch(`${apiBaseUrl}/api/dodo/history`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then(res => {
+          if (res.ok) return res.json();
+          throw new Error('Failed to fetch history');
         })
-          .then(res => {
-            if (res.ok) return res.json();
-            throw new Error('Failed to fetch history');
-          })
-          .then(data => setBillingHistory(data))
-          .catch(err => console.error(err))
-          .finally(() => setIsLoadingHistory(false));
-      } else {
-        setIsLoadingHistory(false);
-      }
+        .then(data => setBillingHistory(data))
+        .catch(err => console.error(err))
+        .finally(() => setIsLoadingHistory(false));
     }
   }, [user]);
 
@@ -117,6 +118,10 @@ const Billing: React.FC = () => {
 
   const handleUpgrade = async () => {
     if (!selectedPlan) return;
+    if (selectedPlan === 'enterprise') {
+      setError('To set up an Enterprise plan, contact us at team@refactron.dev');
+      return;
+    }
     setIsLoading(true);
     setError('');
     try {
@@ -173,6 +178,11 @@ const Billing: React.FC = () => {
               transition={{ duration: 0.2 }}
               className="space-y-4"
             >
+              {error && (
+                <div className="rounded-xl border border-amber-500/20 bg-amber-500/[0.06] px-4 py-3">
+                  <p className="text-sm text-amber-300">{error}</p>
+                </div>
+              )}
               {/* Current Plan */}
               <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6">
                 <p className="text-xs font-bold uppercase tracking-widest text-neutral-600 mb-4">
@@ -222,31 +232,44 @@ const Billing: React.FC = () => {
                         </div>
                       )}
                   </div>
-                  {user?.plan !== 'enterprise' && user?.plan !== 'pro' ? (
-                    <button
-                      onClick={() => {
-                        setSelectedPlan(user?.plan || 'free');
-                        setIsUpgrading(true);
-                      }}
-                      className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-neutral-200"
-                    >
-                      Upgrade Plan
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handlePortal}
-                      disabled={isLoading}
-                      className="inline-flex items-center gap-2 rounded-xl border border-white/[0.10] px-4 py-2 text-sm font-medium text-neutral-300 transition-colors hover:bg-white/[0.04] disabled:opacity-50"
-                    >
-                      {isLoading ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <CreditCard className="w-4 h-4" />
-                      )}
-                      Manage Subscription
-                    </button>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {user?.plan === 'pro' && (
+                      <button
+                        onClick={() => {
+                          setError('To set up an Enterprise plan, contact us at team@refactron.dev');
+                        }}
+                        className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-neutral-200"
+                      >
+                        Upgrade to Enterprise
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                    {user?.plan !== 'enterprise' && user?.plan !== 'pro' ? (
+                      <button
+                        onClick={() => {
+                          setSelectedPlan(user?.plan || 'free');
+                          setIsUpgrading(true);
+                        }}
+                        className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-neutral-200"
+                      >
+                        Upgrade Plan
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handlePortal}
+                        disabled={isLoading}
+                        className="inline-flex items-center gap-2 rounded-xl border border-white/[0.10] px-4 py-2 text-sm font-medium text-neutral-300 transition-colors hover:bg-white/[0.04] disabled:opacity-50"
+                      >
+                        {isLoading ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <CreditCard className="w-4 h-4" />
+                        )}
+                        Manage Subscription
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="mt-5 space-y-2.5 pt-5 border-t border-white/[0.06]">
@@ -277,7 +300,7 @@ const Billing: React.FC = () => {
                     {billingHistory.map(payment => (
                       <div
                         key={payment.id}
-                        className="grid grid-cols-3 gap-4 px-6 py-3.5 text-sm hover:bg-white/[0.02] transition-colors"
+                        className="grid grid-cols-4 gap-4 px-6 py-3.5 text-sm hover:bg-white/[0.02] transition-colors"
                       >
                         <span className="text-neutral-400">
                           {new Date(payment.date).toLocaleDateString()}
@@ -300,6 +323,21 @@ const Billing: React.FC = () => {
                             {payment.status.charAt(0).toUpperCase() +
                               payment.status.slice(1)}
                           </span>
+                        </span>
+                        <span className="flex justify-end">
+                          {payment.invoiceUrl ? (
+                            <a
+                              href={payment.invoiceUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-white transition-colors"
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                              Invoice
+                            </a>
+                          ) : (
+                            <span className="text-xs text-neutral-700">—</span>
+                          )}
                         </span>
                       </div>
                     ))}

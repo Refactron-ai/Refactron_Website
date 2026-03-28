@@ -134,6 +134,14 @@ const Footer: React.FC = () => {
                     Examples
                   </a>
                 </li>
+                <li>
+                  <a
+                    href="/changelog"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    Changelog
+                  </a>
+                </li>
               </ul>
             </div>
 
@@ -147,6 +155,14 @@ const Footer: React.FC = () => {
                     className="text-neutral-400 hover:text-white text-sm transition-colors"
                   >
                     About
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/security"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    Security
                   </a>
                 </li>
                 <li>
