@@ -18,7 +18,9 @@ const sectionDotColor: Record<string, string> = {
 };
 
 function EntryCard({ entry, index }: { entry: ChangelogEntry; index: number }) {
-  const [expandedSections, setExpandedSections] = useState<Record<number, boolean>>({});
+  const [expandedSections, setExpandedSections] = useState<
+    Record<number, boolean>
+  >({});
 
   const toggle = (i: number) => {
     setExpandedSections(prev => ({ ...prev, [i]: !prev[i] }));
@@ -72,7 +74,11 @@ function EntryCard({ entry, index }: { entry: ChangelogEntry; index: number }) {
                     <ChevronRight
                       className={`w-3.5 h-3.5 transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}
                     />
-                    <span>{isExpanded ? section.label : `${section.label} / Housekeeping...`}</span>
+                    <span>
+                      {isExpanded
+                        ? section.label
+                        : `${section.label} / Housekeeping...`}
+                    </span>
                   </button>
 
                   {isExpanded && (
@@ -84,8 +90,13 @@ function EntryCard({ entry, index }: { entry: ChangelogEntry; index: number }) {
                       className="mt-4 pl-5 border-l border-white/[0.06] space-y-4"
                     >
                       {section.items.map((item, ii) => (
-                        <p key={ii} className="text-sm text-neutral-400 leading-relaxed">
-                          <span className="font-semibold text-neutral-200">{item.label}:</span>{' '}
+                        <p
+                          key={ii}
+                          className="text-sm text-neutral-400 leading-relaxed"
+                        >
+                          <span className="font-semibold text-neutral-200">
+                            {item.label}:
+                          </span>{' '}
                           {item.description}
                         </p>
                       ))}
@@ -96,7 +107,9 @@ function EntryCard({ entry, index }: { entry: ChangelogEntry; index: number }) {
                 /* Normal section */
                 <div>
                   <div className="flex items-center gap-2 mb-4">
-                    <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${sectionDotColor[section.type] ?? 'bg-neutral-500'}`} />
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full shrink-0 ${sectionDotColor[section.type] ?? 'bg-neutral-500'}`}
+                    />
                     <p className="text-xs font-bold uppercase tracking-widest text-neutral-500">
                       {section.label}
                     </p>
@@ -106,7 +119,9 @@ function EntryCard({ entry, index }: { entry: ChangelogEntry; index: number }) {
                       <li key={ii} className="flex items-start gap-3 text-sm">
                         <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-neutral-600" />
                         <p className="text-neutral-400 leading-relaxed">
-                          <span className="font-semibold text-neutral-200">{item.label}:</span>{' '}
+                          <span className="font-semibold text-neutral-200">
+                            {item.label}:
+                          </span>{' '}
                           {item.description}
                         </p>
                       </li>
@@ -126,18 +141,24 @@ const Changelog: React.FC = () => {
   useEffect(() => {
     const prev = document.body.style.background;
     document.body.style.background = 'transparent';
-    return () => { document.body.style.background = prev; };
+    return () => {
+      document.body.style.background = prev;
+    };
   }, []);
 
   useSEO({
     title: 'Changelog | Refactron',
-    description: "See what's new in Refactron — release notes, improvements, and bug fixes.",
+    description:
+      "See what's new in Refactron — release notes, improvements, and bug fixes.",
     canonical: 'https://refactron.dev/changelog',
     robots: 'index, follow',
   });
 
   return (
-    <div className="relative font-space antialiased min-h-screen" style={{ background: 'transparent' }}>
+    <div
+      className="relative font-space antialiased min-h-screen"
+      style={{ background: 'transparent' }}
+    >
       {/* Fixed background image */}
       <div
         style={{
@@ -151,7 +172,14 @@ const Changelog: React.FC = () => {
         }}
       />
       {/* Dim layer */}
-      <div style={{ position: 'fixed', inset: 0, zIndex: 1, background: 'rgba(0,0,0,0.68)' }} />
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 1,
+          background: 'rgba(0,0,0,0.68)',
+        }}
+      />
       {/* Corner vignette — fades to near-black at all edges */}
       <div
         style={{
@@ -163,7 +191,10 @@ const Changelog: React.FC = () => {
         }}
       />
 
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24" style={{ zIndex: 10 }}>
+      <div
+        className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-24"
+        style={{ zIndex: 10 }}
+      >
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}

@@ -34,8 +34,10 @@ const Billing: React.FC = () => {
       fetch(`${apiBaseUrl}/api/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-        .then(res => res.ok ? res.json() : null)
-        .then(data => { if (data?.user) updateUser(data.user); })
+        .then(res => (res.ok ? res.json() : null))
+        .then(data => {
+          if (data?.user) updateUser(data.user);
+        })
         .catch(() => {});
     }
     if (query.get('canceled')) {
@@ -119,7 +121,9 @@ const Billing: React.FC = () => {
   const handleUpgrade = async () => {
     if (!selectedPlan) return;
     if (selectedPlan === 'enterprise') {
-      setError('To set up an Enterprise plan, contact us at team@refactron.dev');
+      setError(
+        'To set up an Enterprise plan, contact us at team@refactron.dev'
+      );
       return;
     }
     setIsLoading(true);
@@ -236,7 +240,9 @@ const Billing: React.FC = () => {
                     {user?.plan === 'pro' && (
                       <button
                         onClick={() => {
-                          setError('To set up an Enterprise plan, contact us at team@refactron.dev');
+                          setError(
+                            'To set up an Enterprise plan, contact us at team@refactron.dev'
+                          );
                         }}
                         className="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-neutral-200"
                       >

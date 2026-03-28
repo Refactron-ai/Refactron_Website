@@ -222,12 +222,10 @@ const Dashboard: React.FC = () => {
   };
 
   const handleAnalyzeCopy = () => {
-    navigator.clipboard
-      .writeText('refactron analyze --repo .')
-      .then(() => {
-        setAnalyzeCopied(true);
-        setTimeout(() => setAnalyzeCopied(false), 2000);
-      });
+    navigator.clipboard.writeText('refactron analyze --repo .').then(() => {
+      setAnalyzeCopied(true);
+      setTimeout(() => setAnalyzeCopied(false), 2000);
+    });
   };
 
   const handleConnectGitHub = async () => {
@@ -525,7 +523,8 @@ const Dashboard: React.FC = () => {
             </p>
           ) : repoCount !== null && repoCount > 0 ? (
             <p className="text-sm text-neutral-500">
-              {repoCount} {repoCount === 1 ? 'repository' : 'repositories'} connected.{' '}
+              {repoCount} {repoCount === 1 ? 'repository' : 'repositories'}{' '}
+              connected.{' '}
               <Link
                 to={`/${orgSlug}/repositories`}
                 className="text-neutral-400 hover:text-white transition-colors"

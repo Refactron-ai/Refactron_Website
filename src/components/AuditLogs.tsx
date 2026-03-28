@@ -20,17 +20,27 @@ const actionLabel: Record<string, { label: string; color: string }> = {
   api_key_revoked: { label: 'API Key Revoked', color: 'text-amber-400' },
   password_changed: { label: 'Password Changed', color: 'text-purple-400' },
   profile_updated: { label: 'Profile Updated', color: 'text-neutral-400' },
-  subscription_created: { label: 'Subscription Created', color: 'text-emerald-400' },
-  subscription_cancelled: { label: 'Subscription Cancelled', color: 'text-red-400' },
+  subscription_created: {
+    label: 'Subscription Created',
+    color: 'text-emerald-400',
+  },
+  subscription_cancelled: {
+    label: 'Subscription Cancelled',
+    color: 'text-red-400',
+  },
 };
 
 const formatDate = (iso: string) => {
   const d = new Date(iso);
-  return d.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  }) + ' · ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  return (
+    d.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    }) +
+    ' · ' +
+    d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+  );
 };
 
 const AuditLogs: React.FC = () => {
@@ -49,9 +59,12 @@ const AuditLogs: React.FC = () => {
     async (p: number) => {
       setLoading(true);
       try {
-        const res = await fetch(`${apiBase}/api/audit-logs?page=${p}&pageSize=20`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await fetch(
+          `${apiBase}/api/audit-logs?page=${p}&pageSize=20`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         if (res.ok) {
           const data = await res.json();
           setLogs(data.logs ?? []);
@@ -128,13 +141,16 @@ const AuditLogs: React.FC = () => {
             </div>
           ) : logs.length === 0 ? (
             <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-8 text-center">
-              <p className="text-sm text-neutral-600">No audit events recorded yet.</p>
+              <p className="text-sm text-neutral-600">
+                No audit events recorded yet.
+              </p>
             </div>
           ) : (
             <>
               {/* Summary */}
               <p className="text-xs text-neutral-600 mb-4">
-                Showing {(page - 1) * 20 + 1}–{Math.min(page * 20, total)} of {total} events
+                Showing {(page - 1) * 20 + 1}–{Math.min(page * 20, total)} of{' '}
+                {total} events
               </p>
 
               {/* Table */}
@@ -153,11 +169,15 @@ const AuditLogs: React.FC = () => {
                     <div
                       key={log.id}
                       className={`grid grid-cols-[1fr_auto_auto] items-center px-5 py-3.5 text-sm ${
-                        i !== logs.length - 1 ? 'border-b border-white/[0.04]' : ''
+                        i !== logs.length - 1
+                          ? 'border-b border-white/[0.04]'
+                          : ''
                       }`}
                     >
                       <div>
-                        <span className={`font-medium ${meta.color}`}>{meta.label}</span>
+                        <span className={`font-medium ${meta.color}`}>
+                          {meta.label}
+                        </span>
                         {log.details && (
                           <p className="text-xs text-neutral-700 mt-0.5 truncate max-w-xs">
                             {log.details}

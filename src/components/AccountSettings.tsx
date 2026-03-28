@@ -11,14 +11,20 @@ const AccountSettings: React.FC = () => {
   // Profile state
   const [fullName, setFullName] = useState(user?.fullName ?? '');
   const [savingProfile, setSavingProfile] = useState(false);
-  const [profileMsg, setProfileMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
+  const [profileMsg, setProfileMsg] = useState<{
+    type: 'ok' | 'err';
+    text: string;
+  } | null>(null);
 
   // Password state
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [savingPassword, setSavingPassword] = useState(false);
-  const [passwordMsg, setPasswordMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
+  const [passwordMsg, setPasswordMsg] = useState<{
+    type: 'ok' | 'err';
+    text: string;
+  } | null>(null);
 
   const apiBase = getApiBaseUrl();
   const token = localStorage.getItem('accessToken');
@@ -42,7 +48,10 @@ const AccountSettings: React.FC = () => {
         updateUser(data.user);
         setProfileMsg({ type: 'ok', text: 'Profile updated.' });
       } else {
-        setProfileMsg({ type: 'err', text: data.message ?? 'Failed to update profile.' });
+        setProfileMsg({
+          type: 'err',
+          text: data.message ?? 'Failed to update profile.',
+        });
       }
     } catch {
       setProfileMsg({ type: 'err', text: 'Network error. Please try again.' });
@@ -58,7 +67,10 @@ const AccountSettings: React.FC = () => {
       return;
     }
     if (newPassword.length < 8) {
-      setPasswordMsg({ type: 'err', text: 'Password must be at least 8 characters.' });
+      setPasswordMsg({
+        type: 'err',
+        text: 'Password must be at least 8 characters.',
+      });
       return;
     }
     setSavingPassword(true);
@@ -79,7 +91,10 @@ const AccountSettings: React.FC = () => {
         setConfirmPassword('');
         setPasswordMsg({ type: 'ok', text: 'Password changed successfully.' });
       } else {
-        setPasswordMsg({ type: 'err', text: data.message ?? 'Failed to change password.' });
+        setPasswordMsg({
+          type: 'err',
+          text: data.message ?? 'Failed to change password.',
+        });
       }
     } catch {
       setPasswordMsg({ type: 'err', text: 'Network error. Please try again.' });
@@ -161,7 +176,9 @@ const AccountSettings: React.FC = () => {
                       : 'border border-red-500/20 bg-red-500/[0.06] text-red-400'
                   }`}
                 >
-                  {profileMsg.type === 'ok' && <Check className="h-3.5 w-3.5 shrink-0" />}
+                  {profileMsg.type === 'ok' && (
+                    <Check className="h-3.5 w-3.5 shrink-0" />
+                  )}
                   {profileMsg.text}
                 </div>
               )}
@@ -188,8 +205,10 @@ const AccountSettings: React.FC = () => {
             {user?.oauthProvider ? (
               <p className="text-sm text-neutral-600">
                 You signed in with{' '}
-                <span className="capitalize text-neutral-500">{user.oauthProvider}</span>. Password
-                login is not available for OAuth accounts.
+                <span className="capitalize text-neutral-500">
+                  {user.oauthProvider}
+                </span>
+                . Password login is not available for OAuth accounts.
               </p>
             ) : (
               <form onSubmit={handleChangePassword} className="space-y-4">
@@ -238,14 +257,21 @@ const AccountSettings: React.FC = () => {
                         : 'border border-red-500/20 bg-red-500/[0.06] text-red-400'
                     }`}
                   >
-                    {passwordMsg.type === 'ok' && <Check className="h-3.5 w-3.5 shrink-0" />}
+                    {passwordMsg.type === 'ok' && (
+                      <Check className="h-3.5 w-3.5 shrink-0" />
+                    )}
                     {passwordMsg.text}
                   </div>
                 )}
 
                 <button
                   type="submit"
-                  disabled={savingPassword || !currentPassword || !newPassword || !confirmPassword}
+                  disabled={
+                    savingPassword ||
+                    !currentPassword ||
+                    !newPassword ||
+                    !confirmPassword
+                  }
                   className="inline-flex items-center gap-2 rounded-xl border border-white/[0.10] bg-white/[0.04] px-4 py-2 text-sm font-medium text-neutral-300 transition-colors hover:border-white/20 hover:bg-white/[0.07] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {savingPassword ? 'Updating…' : 'Update password'}

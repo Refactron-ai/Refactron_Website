@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BarChart2, Lock, ArrowRight, Check, Activity, Settings2 } from 'lucide-react';
+import {
+  BarChart2,
+  Lock,
+  ArrowRight,
+  Check,
+  Activity,
+  Settings2,
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import {
@@ -11,10 +18,22 @@ import {
 import DashboardLayout from './DashboardLayout';
 
 const AVAILABLE_MODELS = [
-  { id: 'llama-3.3-70b-versatile', label: 'Llama 3.3 70B', note: 'Default · best quality' },
-  { id: 'llama-3.1-8b-instant', label: 'Llama 3.1 8B', note: 'Faster · lower cost' },
+  {
+    id: 'llama-3.3-70b-versatile',
+    label: 'Llama 3.3 70B',
+    note: 'Default · best quality',
+  },
+  {
+    id: 'llama-3.1-8b-instant',
+    label: 'Llama 3.1 8B',
+    note: 'Faster · lower cost',
+  },
   { id: 'gemma2-9b-it', label: 'Gemma 2 9B', note: 'Google · compact' },
-  { id: 'mixtral-8x7b-32768', label: 'Mixtral 8x7B', note: '32k context window' },
+  {
+    id: 'mixtral-8x7b-32768',
+    label: 'Mixtral 8x7B',
+    note: '32k context window',
+  },
 ];
 
 const PLAN_QUOTA: Record<string, number | null> = {
@@ -56,7 +75,10 @@ const formatRelativeTime = (iso: string): string => {
 const SkeletonRow: React.FC = () => (
   <div className="grid grid-cols-12 gap-4 px-5 py-3.5 border-b border-white/[0.04] last:border-0">
     {[4, 4, 2, 2].map((cols, i) => (
-      <div key={i} className={`col-span-${cols} h-3.5 rounded-md bg-white/[0.04] animate-pulse`} />
+      <div
+        key={i}
+        className={`col-span-${cols} h-3.5 rounded-md bg-white/[0.04] animate-pulse`}
+      />
     ))}
   </div>
 );
@@ -73,8 +95,12 @@ const StatCard: React.FC<{
     transition={{ duration: 0.4, delay: index * 0.07 }}
     className="rounded-3xl border border-white/[0.08] bg-white/[0.02] p-6 hover:border-white/[0.15] hover:bg-white/[0.04] transition-all"
   >
-    <p className="text-xs font-bold uppercase tracking-widest text-neutral-600 mb-3">{label}</p>
-    <p className="text-3xl font-semibold text-white font-space leading-none">{value}</p>
+    <p className="text-xs font-bold uppercase tracking-widest text-neutral-600 mb-3">
+      {label}
+    </p>
+    <p className="text-3xl font-semibold text-white font-space leading-none">
+      {value}
+    </p>
     <p className="text-sm text-neutral-500 mt-2">{sub}</p>
   </motion.div>
 );
@@ -100,7 +126,10 @@ function niceUpperBound(max: number): number {
   return Math.ceil(max / 5) * 5;
 }
 
-const TrendChart: React.FC<{ records: UsageRecord[]; days: number }> = ({ records, days }) => {
+const TrendChart: React.FC<{ records: UsageRecord[]; days: number }> = ({
+  records,
+  days,
+}) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const buckets: Bucket[] = useMemo(() => {
@@ -113,8 +142,8 @@ const TrendChart: React.FC<{ records: UsageRecord[]; days: number }> = ({ record
         days <= 7
           ? d.toLocaleDateString('en-US', { weekday: 'short' })
           : days <= 30
-          ? String(d.getDate())
-          : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            ? String(d.getDate())
+            : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       const fullLabel = d.toLocaleDateString('en-US', {
         weekday: 'long',
         month: 'long',
@@ -153,7 +182,10 @@ const TrendChart: React.FC<{ records: UsageRecord[]; days: number }> = ({ record
       className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5 mb-6"
     >
       {/* Header row */}
-      <div className="flex items-center justify-between mb-4" style={{ minHeight: 20 }}>
+      <div
+        className="flex items-center justify-between mb-4"
+        style={{ minHeight: 20 }}
+      >
         <p className="text-xs font-bold uppercase tracking-widest text-neutral-600">
           Daily Activity
         </p>
@@ -162,13 +194,21 @@ const TrendChart: React.FC<{ records: UsageRecord[]; days: number }> = ({ record
             <span className="text-white font-semibold">{hovered.count}</span>
             {' calls'}
             {hovered.tokens > 0 && (
-              <> · <span className="text-neutral-300">{formatTokens(hovered.tokens)} tok</span></>
+              <>
+                {' '}
+                ·{' '}
+                <span className="text-neutral-300">
+                  {formatTokens(hovered.tokens)} tok
+                </span>
+              </>
             )}
             {' · '}
             <span className="text-neutral-400">{hovered.fullLabel}</span>
           </p>
         ) : (
-          <p className="text-xs font-mono text-neutral-700">hover a bar for details</p>
+          <p className="text-xs font-mono text-neutral-700">
+            hover a bar for details
+          </p>
         )}
       </div>
 
@@ -198,10 +238,7 @@ const TrendChart: React.FC<{ records: UsageRecord[]; days: number }> = ({ record
         {/* Bars + x-axis */}
         <div className="flex-1 flex flex-col">
           {/* Bars area — position:relative for grid lines */}
-          <div
-            className="relative w-full"
-            style={{ height: CHART_H }}
-          >
+          <div className="relative w-full" style={{ height: CHART_H }}>
             {/* Horizontal grid lines */}
             {yTicks.map(frac => (
               <div
@@ -209,9 +246,10 @@ const TrendChart: React.FC<{ records: UsageRecord[]; days: number }> = ({ record
                 className="absolute left-0 right-0 pointer-events-none"
                 style={{
                   bottom: `${frac * 100}%`,
-                  borderTop: frac === 1.0
-                    ? '1px solid rgba(255,255,255,0.08)'
-                    : '1px dashed rgba(255,255,255,0.05)',
+                  borderTop:
+                    frac === 1.0
+                      ? '1px solid rgba(255,255,255,0.08)'
+                      : '1px dashed rgba(255,255,255,0.05)',
                 }}
               />
             ))}
@@ -241,8 +279,8 @@ const TrendChart: React.FC<{ records: UsageRecord[]; days: number }> = ({ record
                         backgroundColor: isHov
                           ? 'rgba(255,255,255,0.6)'
                           : b.count > 0
-                          ? 'rgba(255,255,255,0.22)'
-                          : 'rgba(255,255,255,0.05)',
+                            ? 'rgba(255,255,255,0.22)'
+                            : 'rgba(255,255,255,0.05)',
                       }}
                       transition={{
                         height: {
@@ -260,7 +298,10 @@ const TrendChart: React.FC<{ records: UsageRecord[]; days: number }> = ({ record
           </div>
 
           {/* X-axis labels */}
-          <div className="flex gap-px" style={{ height: XAXIS_H, paddingTop: 5 }}>
+          <div
+            className="flex gap-px"
+            style={{ height: XAXIS_H, paddingTop: 5 }}
+          >
             {buckets.map((b, i) => (
               <div
                 key={b.isoKey}
@@ -268,9 +309,10 @@ const TrendChart: React.FC<{ records: UsageRecord[]; days: number }> = ({ record
                 style={{
                   fontSize: 9,
                   lineHeight: 1,
-                  color: hoveredIndex === i
-                    ? 'rgba(255,255,255,0.45)'
-                    : 'rgba(255,255,255,0.2)',
+                  color:
+                    hoveredIndex === i
+                      ? 'rgba(255,255,255,0.45)'
+                      : 'rgba(255,255,255,0.2)',
                   fontFamily: 'JetBrains Mono, monospace',
                   transition: 'color 0.12s',
                 }}
@@ -303,8 +345,8 @@ const QuotaBar: React.FC<{
         status === 'over'
           ? 'border-red-500/20 bg-red-500/[0.04]'
           : status === 'warning'
-          ? 'border-amber-500/20 bg-amber-500/[0.03]'
-          : 'border-white/[0.08] bg-white/[0.02]'
+            ? 'border-amber-500/20 bg-amber-500/[0.03]'
+            : 'border-white/[0.08] bg-white/[0.02]'
       }`}
     >
       <div className="flex items-center justify-between mb-2.5">
@@ -322,8 +364,8 @@ const QuotaBar: React.FC<{
               status === 'over'
                 ? 'text-red-400'
                 : status === 'warning'
-                ? 'text-amber-400'
-                : 'text-white'
+                  ? 'text-amber-400'
+                  : 'text-white'
             }
           >
             {formatTokens(tokensUsed)}
@@ -337,13 +379,18 @@ const QuotaBar: React.FC<{
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className={`h-full rounded-full ${
-            status === 'over' ? 'bg-red-500' : status === 'warning' ? 'bg-amber-400' : 'bg-white/50'
+            status === 'over'
+              ? 'bg-red-500'
+              : status === 'warning'
+                ? 'bg-amber-400'
+                : 'bg-white/50'
           }`}
         />
       </div>
       {status === 'over' && (
         <p className="mt-2 text-xs text-red-400">
-          You've used your full monthly quota. Upgrade to Enterprise for unlimited tokens.
+          You've used your full monthly quota. Upgrade to Enterprise for
+          unlimited tokens.
         </p>
       )}
       {status === 'warning' && (
@@ -357,9 +404,21 @@ const QuotaBar: React.FC<{
 
 /* ── Tab nav ── */
 const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
-  { id: 'overview', label: 'Overview', icon: <BarChart2 className="h-3.5 w-3.5" /> },
-  { id: 'activity', label: 'Activity', icon: <Activity className="h-3.5 w-3.5" /> },
-  { id: 'settings', label: 'Settings', icon: <Settings2 className="h-3.5 w-3.5" /> },
+  {
+    id: 'overview',
+    label: 'Overview',
+    icon: <BarChart2 className="h-3.5 w-3.5" />,
+  },
+  {
+    id: 'activity',
+    label: 'Activity',
+    icon: <Activity className="h-3.5 w-3.5" />,
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    icon: <Settings2 className="h-3.5 w-3.5" />,
+  },
 ];
 
 /* ══════════════════════════════════════════════════════════════════ */
@@ -386,7 +445,8 @@ const Usage: React.FC = () => {
   const isPro = user?.plan === 'pro' || user?.plan === 'enterprise';
   const plan = user?.plan ?? 'free';
   const quota = PLAN_QUOTA[plan] ?? null;
-  const periodLabel = PERIODS.find(p => p.days === activePeriod)?.label ?? '30d';
+  const periodLabel =
+    PERIODS.find(p => p.days === activePeriod)?.label ?? '30d';
 
   const handleSaveModel = async () => {
     setModelSaving(true);
@@ -436,7 +496,8 @@ const Usage: React.FC = () => {
             Usage monitoring requires Pro
           </h2>
           <p className="text-sm text-neutral-500 max-w-xs mb-6">
-            Track LLM token usage, costs, and activity history with a Pro or Enterprise plan.
+            Track LLM token usage, costs, and activity history with a Pro or
+            Enterprise plan.
           </p>
           <button
             onClick={() => navigate('/settings/billing')}
@@ -465,8 +526,12 @@ const Usage: React.FC = () => {
                 <BarChart2 className="h-4 w-4 text-neutral-400" />
               </div>
               <div>
-                <h1 className="text-2xl font-semibold text-white leading-tight">Usage</h1>
-                <p className="text-sm text-neutral-500 mt-0.5">LLM token consumption and activity</p>
+                <h1 className="text-2xl font-semibold text-white leading-tight">
+                  Usage
+                </h1>
+                <p className="text-sm text-neutral-500 mt-0.5">
+                  LLM token consumption and activity
+                </p>
               </div>
             </div>
             {activeTab !== 'settings' && (
@@ -513,7 +578,6 @@ const Usage: React.FC = () => {
           )}
 
           <AnimatePresence mode="wait">
-
             {/* ── OVERVIEW ── */}
             {activeTab === 'overview' && (
               <motion.div
@@ -526,30 +590,49 @@ const Usage: React.FC = () => {
                 <div className="grid grid-cols-3 gap-4 mb-6">
                   <StatCard
                     label="LLM Calls"
-                    value={loading || totalRequests === null ? '—' : totalRequests.toLocaleString()}
+                    value={
+                      loading || totalRequests === null
+                        ? '—'
+                        : totalRequests.toLocaleString()
+                    }
                     sub={`last ${periodLabel}`}
                     index={0}
                   />
                   <StatCard
                     label="Tokens Used"
-                    value={loading || totalTokens === null ? '—' : formatTokens(totalTokens)}
+                    value={
+                      loading || totalTokens === null
+                        ? '—'
+                        : formatTokens(totalTokens)
+                    }
                     sub={`last ${periodLabel}`}
                     index={1}
                   />
                   <StatCard
                     label="Est. Cost"
-                    value={loading || totalCost === null ? '—' : formatCost(totalCost)}
+                    value={
+                      loading || totalCost === null
+                        ? '—'
+                        : formatCost(totalCost)
+                    }
                     sub={`last ${periodLabel}`}
                     index={2}
                   />
                 </div>
 
                 {quota !== null && (
-                  <QuotaBar tokensUsed={monthlyTokens} quota={quota} plan={plan} />
+                  <QuotaBar
+                    tokensUsed={monthlyTokens}
+                    quota={quota}
+                    plan={plan}
+                  />
                 )}
 
                 {loading ? (
-                  <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5 mb-6 animate-pulse" style={{ height: 200 }} />
+                  <div
+                    className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5 mb-6 animate-pulse"
+                    style={{ height: 200 }}
+                  />
                 ) : (
                   <TrendChart records={records} days={activePeriod} />
                 )}
@@ -562,7 +645,10 @@ const Usage: React.FC = () => {
                     className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-white/[0.01] px-5 py-3.5"
                   >
                     <p className="text-sm text-neutral-600">
-                      <span className="text-neutral-400 font-medium">{records.length}</span> total records
+                      <span className="text-neutral-400 font-medium">
+                        {records.length}
+                      </span>{' '}
+                      total records
                     </p>
                     <button
                       onClick={() => setActiveTab('activity')}
@@ -587,17 +673,31 @@ const Usage: React.FC = () => {
               >
                 <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] overflow-hidden">
                   <div className="grid grid-cols-12 gap-4 px-5 py-3 border-b border-white/[0.06]">
-                    <p className="col-span-3 text-xs font-bold uppercase tracking-widest text-neutral-600">Time</p>
-                    <p className="col-span-4 text-xs font-bold uppercase tracking-widest text-neutral-600">Model</p>
-                    <p className="col-span-3 text-xs font-bold uppercase tracking-widest text-neutral-600">Tokens</p>
-                    <p className="col-span-2 text-right text-xs font-bold uppercase tracking-widest text-neutral-600">Cost</p>
+                    <p className="col-span-3 text-xs font-bold uppercase tracking-widest text-neutral-600">
+                      Time
+                    </p>
+                    <p className="col-span-4 text-xs font-bold uppercase tracking-widest text-neutral-600">
+                      Model
+                    </p>
+                    <p className="col-span-3 text-xs font-bold uppercase tracking-widest text-neutral-600">
+                      Tokens
+                    </p>
+                    <p className="col-span-2 text-right text-xs font-bold uppercase tracking-widest text-neutral-600">
+                      Cost
+                    </p>
                   </div>
 
                   {loading ? (
-                    <>{[...Array(8)].map((_, i) => <SkeletonRow key={i} />)}</>
+                    <>
+                      {[...Array(8)].map((_, i) => (
+                        <SkeletonRow key={i} />
+                      ))}
+                    </>
                   ) : records.length === 0 ? (
                     <div className="px-5 py-16 text-center">
-                      <p className="text-sm text-neutral-600">No LLM usage recorded yet.</p>
+                      <p className="text-sm text-neutral-600">
+                        No LLM usage recorded yet.
+                      </p>
                       <p className="text-xs text-neutral-700 mt-1.5 max-w-xs mx-auto">
                         Usage is logged automatically when you run{' '}
                         <code className="font-mono">refactron analyze</code> or{' '}
@@ -637,7 +737,8 @@ const Usage: React.FC = () => {
 
                 {!loading && records.length > 0 && (
                   <p className="mt-4 text-center text-sm text-neutral-600">
-                    {records.length} record{records.length !== 1 ? 's' : ''} · last {periodLabel}
+                    {records.length} record{records.length !== 1 ? 's' : ''} ·
+                    last {periodLabel}
                   </p>
                 )}
               </motion.div>
@@ -655,7 +756,9 @@ const Usage: React.FC = () => {
                 <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6">
                   <div className="flex items-start justify-between mb-5">
                     <div>
-                      <p className="text-base font-semibold text-white mb-1">Preferred Model</p>
+                      <p className="text-base font-semibold text-white mb-1">
+                        Preferred Model
+                      </p>
                       <p className="text-sm text-neutral-500">
                         Used when the CLI doesn't specify a model explicitly.
                       </p>
@@ -664,12 +767,16 @@ const Usage: React.FC = () => {
                       onClick={handleSaveModel}
                       disabled={
                         modelSaving ||
-                        selectedModel === (user?.preferredModel || 'llama-3.3-70b-versatile')
+                        selectedModel ===
+                          (user?.preferredModel || 'llama-3.3-70b-versatile')
                       }
                       className="inline-flex items-center gap-1.5 rounded-xl bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       {modelSaved ? (
-                        <><Check className="h-3.5 w-3.5 text-emerald-600" />Saved</>
+                        <>
+                          <Check className="h-3.5 w-3.5 text-emerald-600" />
+                          Saved
+                        </>
                       ) : modelSaving ? (
                         'Saving…'
                       ) : (
@@ -690,7 +797,9 @@ const Usage: React.FC = () => {
                       >
                         <div
                           className={`mt-0.5 h-3.5 w-3.5 rounded-full border flex-shrink-0 flex items-center justify-center ${
-                            selectedModel === m.id ? 'border-white bg-white' : 'border-white/[0.20]'
+                            selectedModel === m.id
+                              ? 'border-white bg-white'
+                              : 'border-white/[0.20]'
                           }`}
                         >
                           {selectedModel === m.id && (
@@ -698,8 +807,12 @@ const Usage: React.FC = () => {
                           )}
                         </div>
                         <div>
-                          <p className="text-sm font-medium text-white font-mono">{m.label}</p>
-                          <p className="text-xs text-neutral-600 mt-0.5">{m.note}</p>
+                          <p className="text-sm font-medium text-white font-mono">
+                            {m.label}
+                          </p>
+                          <p className="text-xs text-neutral-600 mt-0.5">
+                            {m.note}
+                          </p>
                         </div>
                       </button>
                     ))}
@@ -707,7 +820,6 @@ const Usage: React.FC = () => {
                 </div>
               </motion.div>
             )}
-
           </AnimatePresence>
         </motion.div>
       </div>

@@ -96,11 +96,16 @@ const SecurityPage: React.FC = () => {
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03]">
                   {section.icon}
                 </div>
-                <h2 className="text-lg font-semibold text-white tracking-tight">{section.title}</h2>
+                <h2 className="text-lg font-semibold text-white tracking-tight">
+                  {section.title}
+                </h2>
               </div>
               <ul className="space-y-3">
                 {section.items.map((item, j) => (
-                  <li key={j} className="flex items-start gap-3 text-sm text-neutral-400 leading-relaxed">
+                  <li
+                    key={j}
+                    className="flex items-start gap-3 text-sm text-neutral-400 leading-relaxed"
+                  >
                     <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-neutral-600" />
                     {item}
                   </li>
@@ -121,22 +126,25 @@ const SecurityPage: React.FC = () => {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03]">
               <Mail className="h-5 w-5 text-neutral-400" />
             </div>
-            <h2 className="text-lg font-semibold text-white tracking-tight">Responsible Disclosure</h2>
+            <h2 className="text-lg font-semibold text-white tracking-tight">
+              Responsible Disclosure
+            </h2>
           </div>
           <p className="text-sm text-neutral-400 leading-relaxed mb-3">
-            If you discover a security vulnerability, please email us immediately at{' '}
+            If you discover a security vulnerability, please email us
+            immediately at{' '}
             <a
               href="mailto:security@refactron.dev"
               className="text-white hover:text-neutral-300 transition-colors"
             >
               security@refactron.dev
             </a>
-            . We ask that you give us reasonable time to investigate and address the issue before
-            public disclosure.
+            . We ask that you give us reasonable time to investigate and address
+            the issue before public disclosure.
           </p>
           <p className="text-sm text-neutral-500 leading-relaxed">
-            We acknowledge all reports within 48 hours and aim to resolve critical issues within 7
-            business days.
+            We acknowledge all reports within 48 hours and aim to resolve
+            critical issues within 7 business days.
           </p>
         </motion.div>
 

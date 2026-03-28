@@ -1,4 +1,10 @@
-import React, { useState, useRef, useEffect, useCallback, ReactNode } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  ReactNode,
+} from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -334,7 +340,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             <button
               onClick={handleOpenNotif}
               className={`w-full flex items-center p-2 rounded-lg transition-colors group ${isSidebarCollapsed ? 'justify-center' : 'justify-between'} hover:bg-neutral-900 text-neutral-400 hover:text-white`}
-              title={isSidebarCollapsed ? `Notifications${unreadCount > 0 ? ` (${unreadCount})` : ''}` : undefined}
+              title={
+                isSidebarCollapsed
+                  ? `Notifications${unreadCount > 0 ? ` (${unreadCount})` : ''}`
+                  : undefined
+              }
             >
               <div className="flex items-center gap-3 relative">
                 <div className="relative">
@@ -350,7 +360,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                 )}
               </div>
               {!isSidebarCollapsed && unreadCount > 0 && (
-                <span className="text-[10px] font-medium text-teal-500">{unreadCount} new</span>
+                <span className="text-[10px] font-medium text-teal-500">
+                  {unreadCount} new
+                </span>
               )}
             </button>
 
@@ -371,7 +383,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                   </div>
                   {notifications.length === 0 ? (
                     <div className="px-4 py-5 text-center">
-                      <p className="text-xs text-neutral-600">No notifications yet.</p>
+                      <p className="text-xs text-neutral-600">
+                        No notifications yet.
+                      </p>
                     </div>
                   ) : (
                     <div className="max-h-64 overflow-y-auto">
@@ -382,7 +396,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
                             !n.read ? 'bg-white/[0.02]' : ''
                           }`}
                         >
-                          <p className={`text-xs leading-snug ${n.read ? 'text-neutral-600' : 'text-neutral-300'}`}>
+                          <p
+                            className={`text-xs leading-snug ${n.read ? 'text-neutral-600' : 'text-neutral-300'}`}
+                          >
                             {n.message}
                           </p>
                           <p className="text-[10px] text-neutral-700 mt-1">

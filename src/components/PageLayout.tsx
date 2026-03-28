@@ -19,10 +19,14 @@ const PageLayout: React.FC<PageLayoutProps> = ({
   return (
     <div
       className={`min-h-screen text-[var(--text-secondary)] flex flex-col ${!transparentBg ? 'bg-[var(--bg-primary)]' : ''} ${wrapperClassName}`}
-      style={transparentBg ? { background: 'transparent' } : {
-        background:
-          'linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
-      }}
+      style={
+        transparentBg
+          ? { background: 'transparent' }
+          : {
+              background:
+                'linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
+            }
+      }
     >
       <NavigationBar />
       <main
