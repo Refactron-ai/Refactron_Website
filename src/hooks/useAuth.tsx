@@ -164,7 +164,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [navigate]);
 
   const updateUser = useCallback((userData: User) => {
-    setUser(userData);
+    setUser(prev => (prev ? { ...prev, ...userData } : userData));
   }, []);
 
   const completeOnboarding = useCallback(
