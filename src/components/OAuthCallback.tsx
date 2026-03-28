@@ -66,8 +66,8 @@ const OAuthCallback: React.FC = () => {
         });
 
         if (result.success && result.data) {
-          // Update auth state
-          login(result.data.accessToken, result.data.user);
+          // Update auth state (hydrates from /api/auth/me for full user fields)
+          await login(result.data.accessToken, result.data.user);
 
           setStatus('success');
 
