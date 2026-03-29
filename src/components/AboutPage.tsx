@@ -540,7 +540,9 @@ const AboutPage: React.FC = () => {
               Questions or want to learn more?
             </p>
             <a
-              href="mailto:hello@refactron.dev"
+              href="https://cal.com/omsherikar/queries-refactron"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-block px-8 py-4 bg-transparent border border-white/10 text-white rounded-xl hover:bg-white/5 hover:border-white/20 transition-all font-medium font-space"
             >
               Get in touch with us

@@ -12,7 +12,7 @@ import { useAuth } from '../hooks/useAuth';
  */
 const OAuthCallback: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, updateUser } = useAuth();
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>(
     'loading'
@@ -66,8 +66,13 @@ const OAuthCallback: React.FC = () => {
         });
 
         if (result.success && result.data) {
-          // Update auth state (hydrates from /api/auth/me for full user fields)
-          await login(result.data.accessToken, result.data.user);
+          if (result.isConnect) {
+            // Connect flow — keep existing session, just refresh user state
+            updateUser(result.data.user);
+          } else {
+            // Login / signup flow — replace session with new tokens
+            await login(result.data.accessToken, result.data.user);
+          }
 
           setStatus('success');
 
@@ -107,7 +112,7 @@ const OAuthCallback: React.FC = () => {
     return () => {
       mountedRef.current = false;
     };
-  }, [searchParams, navigate, login]);
+  }, [searchParams, navigate, login, updateUser]);
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-black relative overflow-hidden">

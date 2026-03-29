@@ -206,7 +206,12 @@ export const handleOAuthCallback = async (
   code: string,
   state: string,
   config: OAuthConfig
-): Promise<{ success: boolean; error?: string; data?: any }> => {
+): Promise<{
+  success: boolean;
+  error?: string;
+  data?: any;
+  isConnect?: boolean;
+}> => {
   try {
     // Validate state
     const stateData = validateOAuthState(state);
@@ -220,8 +225,46 @@ export const handleOAuthCallback = async (
     const { provider, type } = stateData;
     const apiBaseUrl =
       config.apiBaseUrl || process.env.REACT_APP_API_BASE_URL || '';
+    const redirectUri =
+      config.redirectUri || `${window.location.origin}/auth/callback`;
 
-    // Exchange code for token via backend API
+    // Connect flow — use dedicated authenticated endpoint, preserve existing session
+    if (type === 'connect') {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        return {
+          success: false,
+          error: 'You must be logged in to connect a GitHub account.',
+        };
+      }
+
+      const response = await fetch(
+        `${apiBaseUrl}/api/auth/connect/${provider}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: 'include',
+          body: JSON.stringify({ code, redirectUri }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return {
+          success: false,
+          error: data.message || `Failed to connect ${provider} account.`,
+        };
+      }
+
+      // Return isConnect flag so OAuthCallback knows not to replace the session
+      return { success: true, data, isConnect: true };
+    }
+
+    // Login / signup flow — exchange code for tokens as normal
     const response = await fetch(
       `${apiBaseUrl}/api/auth/callback/${provider}`,
       {
@@ -230,13 +273,7 @@ export const handleOAuthCallback = async (
           'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({
-          code,
-          state,
-          type, // 'login' or 'signup'
-          redirectUri:
-            config.redirectUri || `${window.location.origin}/auth/callback`,
-        }),
+        body: JSON.stringify({ code, state, type, redirectUri }),
       }
     );
 

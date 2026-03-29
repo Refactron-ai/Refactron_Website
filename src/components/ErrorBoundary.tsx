@@ -127,7 +127,7 @@ class ErrorBoundary extends Component<Props, State> {
               <p className="mt-8 text-sm text-gray-600">
                 If this problem persists, please{' '}
                 <a
-                  href="mailto:hello@refactron.dev"
+                  href="mailto:om@refactron.dev"
                   className="text-primary-600 hover:text-primary-700 font-semibold underline"
                 >
                   contact our support team

@@ -51,7 +51,7 @@ const PricingSection = () => {
       ],
       cta: 'Talk to us',
       highlight: false,
-      action: () => (window.location.href = 'mailto:hello@refactron.dev'),
+      action: () => (window.location.href = 'mailto:om@refactron.dev'),
     },
   ];
 
