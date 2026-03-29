@@ -44,9 +44,9 @@ const EarlyAccessForm: React.FC = () => {
       const publicKey =
         process.env.REACT_APP_EMAILJS_PUBLIC_KEY || 'your_public_key';
       const fromEmail =
-        process.env.REACT_APP_FROM_EMAIL || 'hello@refactron.dev';
+        process.env.REACT_APP_FROM_EMAIL || 'om@refactron.dev';
       const notificationEmail =
-        process.env.REACT_APP_NOTIFICATION_EMAIL || 'hello@refactron.dev';
+        process.env.REACT_APP_NOTIFICATION_EMAIL || 'om@refactron.dev';
 
       // Check if environment variables are properly set
       if (
@@ -299,10 +299,10 @@ const EarlyAccessForm: React.FC = () => {
                   <p className="text-xs sm:text-sm text-[var(--text-muted)] px-2">
                     Questions? Reach out to us at{' '}
                     <a
-                      href="mailto:hello@refactron.dev"
+                      href="mailto:om@refactron.dev"
                       className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium break-all"
                     >
-                      hello@refactron.dev
+                      om@refactron.dev
                     </a>
                   </p>
 

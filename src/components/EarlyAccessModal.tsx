@@ -55,9 +55,9 @@ const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({
       const publicKey =
         process.env.REACT_APP_EMAILJS_PUBLIC_KEY || 'your_public_key';
       const fromEmail =
-        process.env.REACT_APP_FROM_EMAIL || 'hello@refactron.dev';
+        process.env.REACT_APP_FROM_EMAIL || 'om@refactron.dev';
       const notificationEmail =
-        process.env.REACT_APP_NOTIFICATION_EMAIL || 'hello@refactron.dev';
+        process.env.REACT_APP_NOTIFICATION_EMAIL || 'om@refactron.dev';
 
       if (
         serviceId === 'your_service_id' ||

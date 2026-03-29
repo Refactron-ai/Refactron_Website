@@ -225,7 +225,9 @@ const CaseStudiesPage: React.FC = () => {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="/#early-access"
+              href="https://cal.com/omsherikar/queries-refactron"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 bg-white text-black font-semibold px-8 py-4 rounded-xl hover:bg-neutral-200 transition-all duration-300"
             >
               Book a Session

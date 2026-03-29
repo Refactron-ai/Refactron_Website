@@ -167,7 +167,9 @@ const Footer: React.FC = () => {
                 </li>
                 <li>
                   <a
-                    href="mailto:hello@refactron.dev"
+                    href="https://cal.com/omsherikar/queries-refactron"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-neutral-400 hover:text-white text-sm transition-colors"
                   >
                     Contact

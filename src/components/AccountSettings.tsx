@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { User, Lock, AlertTriangle, Check } from 'lucide-react';
+import { User, Lock, AlertTriangle, Check, Github } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import DashboardLayout from './DashboardLayout';
 import { getApiBaseUrl } from '../utils/urlUtils';
@@ -26,8 +26,35 @@ const AccountSettings: React.FC = () => {
     text: string;
   } | null>(null);
 
+  // GitHub disconnect state
+  const [disconnecting, setDisconnecting] = useState(false);
+  const [confirmDisconnect, setConfirmDisconnect] = useState(false);
+  const [disconnectError, setDisconnectError] = useState('');
+
   const apiBase = getApiBaseUrl();
   const token = localStorage.getItem('accessToken');
+
+  const handleDisconnectGitHub = async () => {
+    setDisconnecting(true);
+    setDisconnectError('');
+    try {
+      const res = await fetch(`${apiBase}/api/auth/disconnect/github`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        updateUser(data.user);
+        setConfirmDisconnect(false);
+      } else {
+        setDisconnectError(data.message ?? 'Failed to disconnect GitHub.');
+      }
+    } catch {
+      setDisconnectError('Network error. Please try again.');
+    } finally {
+      setDisconnecting(false);
+    }
+  };
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -277,6 +304,69 @@ const AccountSettings: React.FC = () => {
                   {savingPassword ? 'Updating…' : 'Update password'}
                 </button>
               </form>
+            )}
+          </section>
+
+          {/* GitHub Integration Section */}
+          <section className="rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6 mb-4">
+            <div className="flex items-center gap-2 mb-5">
+              <Github className="h-3.5 w-3.5 text-neutral-600" />
+              <p className="text-xs font-bold uppercase tracking-widest text-neutral-600">
+                GitHub Integration
+              </p>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <span
+                  className={`h-2 w-2 rounded-full ${
+                    user?.githubConnected ? 'bg-emerald-500' : 'bg-neutral-700'
+                  }`}
+                />
+                <span className="text-sm text-neutral-400">
+                  {user?.githubConnected ? 'Connected' : 'Not connected'}
+                </span>
+              </div>
+
+              {user?.githubConnected && !confirmDisconnect && (
+                <button
+                  onClick={() => setConfirmDisconnect(true)}
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/[0.10] bg-white/[0.04] px-4 py-2 text-sm font-medium text-neutral-300 transition-colors hover:border-white/20 hover:bg-white/[0.07] hover:text-white"
+                >
+                  Disconnect
+                </button>
+              )}
+            </div>
+
+            {confirmDisconnect && (
+              <div className="mt-4 rounded-xl border border-amber-500/20 bg-amber-500/[0.04] px-4 py-3 space-y-3">
+                <p className="text-sm text-amber-400/80">
+                  Are you sure? This will unlink your GitHub account from
+                  Refactron.
+                </p>
+                {disconnectError && (
+                  <p className="text-sm text-red-400">{disconnectError}</p>
+                )}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleDisconnectGitHub}
+                    disabled={disconnecting}
+                    className="inline-flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/[0.06] px-4 py-2 text-sm font-medium text-red-400 transition-colors hover:border-red-500/50 hover:text-red-300 disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {disconnecting ? 'Disconnecting…' : 'Yes, disconnect'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setConfirmDisconnect(false);
+                      setDisconnectError('');
+                    }}
+                    disabled={disconnecting}
+                    className="inline-flex items-center gap-2 rounded-xl border border-white/[0.10] bg-white/[0.04] px-4 py-2 text-sm font-medium text-neutral-400 transition-colors hover:text-white disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
             )}
           </section>
 
