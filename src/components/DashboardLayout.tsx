@@ -217,7 +217,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
   const workspaceItems: NavItemDef[] = [
     { icon: Home, label: 'Home', path: `/${orgSlug}/dashboard` },
-    { icon: GitBranch, label: 'Repositories', path: `/${orgSlug}/repositories` },
+    {
+      icon: GitBranch,
+      label: 'Repositories',
+      path: `/${orgSlug}/repositories`,
+    },
     { icon: BarChart2, label: 'Usage', path: `/${orgSlug}/usage` },
     { icon: Key, label: 'API Keys', path: `/${orgSlug}/settings/api-keys` },
   ];

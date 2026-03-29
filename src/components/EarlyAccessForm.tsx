@@ -43,8 +43,7 @@ const EarlyAccessForm: React.FC = () => {
         'your_notification_template_id';
       const publicKey =
         process.env.REACT_APP_EMAILJS_PUBLIC_KEY || 'your_public_key';
-      const fromEmail =
-        process.env.REACT_APP_FROM_EMAIL || 'om@refactron.dev';
+      const fromEmail = process.env.REACT_APP_FROM_EMAIL || 'om@refactron.dev';
       const notificationEmail =
         process.env.REACT_APP_NOTIFICATION_EMAIL || 'om@refactron.dev';
 
