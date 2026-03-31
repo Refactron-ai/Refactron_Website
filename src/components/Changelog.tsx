@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import useSEO from '../hooks/useSEO';
 import changelog, { ChangelogEntry } from '../data/changelog';
+import webChangelog from '../data/webChangelog';
 
 const tagStyles: Record<string, string> = {
   new: 'border-teal-500/30 bg-teal-500/[0.08] text-teal-400',
@@ -137,7 +138,11 @@ function EntryCard({ entry, index }: { entry: ChangelogEntry; index: number }) {
   );
 }
 
+type Tab = 'web' | 'cli';
+
 const Changelog: React.FC = () => {
+  const [tab, setTab] = useState<Tab>('web');
+
   useEffect(() => {
     const prev = document.body.style.background;
     document.body.style.background = 'transparent';
@@ -153,6 +158,8 @@ const Changelog: React.FC = () => {
     canonical: 'https://refactron.dev/changelog',
     robots: 'index, follow',
   });
+
+  const entries = tab === 'web' ? webChangelog : changelog;
 
   return (
     <div
@@ -200,7 +207,7 @@ const Changelog: React.FC = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-16"
+          className="mb-10"
         >
           <h1 className="text-6xl md:text-7xl font-bold text-white tracking-tight leading-none mb-4">
             Changelog
@@ -210,9 +217,31 @@ const Changelog: React.FC = () => {
           </p>
         </motion.div>
 
+        {/* Tab switcher */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="flex gap-1 mb-10 p-1 rounded-xl bg-white/[0.04] border border-white/[0.08] w-fit"
+        >
+          {(['web', 'cli'] as Tab[]).map(t => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                tab === t
+                  ? 'bg-white text-black'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              {t === 'web' ? 'Web App' : 'CLI Package'}
+            </button>
+          ))}
+        </motion.div>
+
         {/* Entries */}
         <div className="space-y-4">
-          {changelog.map((entry, i) => (
+          {entries.map((entry, i) => (
             <EntryCard key={entry.version} entry={entry} index={i} />
           ))}
         </div>

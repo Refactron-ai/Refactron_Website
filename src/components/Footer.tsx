@@ -1,9 +1,60 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Github, Linkedin } from 'lucide-react';
 import DiscordIcon from '../icons/DiscordIcon';
 import XIcon from '../icons/XIcon';
 import CookiePreferencesModal from './CookiePreferencesModal';
 import { useCookieConsent, CookiePreferences } from '../hooks/useCookieConsent';
+import { getApiBaseUrl } from '../utils/urlUtils';
+
+type OverallStatus = 'operational' | 'degraded' | 'outage' | 'loading';
+
+const STATUS_LABEL: Record<OverallStatus, string> = {
+  operational: 'All systems operational.',
+  degraded: 'Partial degradation.',
+  outage: 'Service disruption.',
+  loading: 'Checking…',
+};
+
+const DOT_COLOR: Record<OverallStatus, string> = {
+  operational: 'bg-emerald-400',
+  degraded: 'bg-amber-400',
+  outage: 'bg-red-400',
+  loading: 'bg-neutral-500',
+};
+
+const FALLBACK_URL = 'https://status.refactron.dev';
+
+function StatusBadge() {
+  const [status, setStatus] = useState<OverallStatus>('loading');
+  const [href, setHref] = useState('/status');
+
+  useEffect(() => {
+    const apiBase = getApiBaseUrl();
+    fetch(`${apiBase}/api/status`)
+      .then(r => r.json())
+      .then(json => setStatus(json?.data?.overall ?? 'operational'))
+      .catch(() => {
+        setStatus('operational');
+        setHref(FALLBACK_URL);
+      });
+  }, []);
+
+  const isExternal = href.startsWith('http');
+
+  return (
+    <a
+      href={href}
+      target={isExternal ? '_blank' : undefined}
+      rel={isExternal ? 'noopener noreferrer' : undefined}
+      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/[0.04] hover:bg-white/[0.07] transition-colors text-xs text-neutral-400 font-space"
+    >
+      <span
+        className={`h-2 w-2 rounded-full shrink-0 ${DOT_COLOR[status]} ${status === 'operational' ? 'animate-pulse' : ''}`}
+      />
+      {STATUS_LABEL[status]}
+    </a>
+  );
+}
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -33,7 +84,7 @@ const Footer: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 text-neutral-400 mb-8">
+            <div className="flex items-center gap-4 text-neutral-400">
               <a
                 href="https://x.com/refactron"
                 target="_blank"
@@ -62,7 +113,7 @@ const Footer: React.FC = () => {
                 <Github className="w-5 h-5" />
               </a>
               <a
-                href="https://discord.gg/zynEKJq8"
+                href="https://discord.gg/t27EkxHFA"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white transition-colors"
@@ -71,10 +122,6 @@ const Footer: React.FC = () => {
                 <DiscordIcon className="w-5 h-5" />
               </a>
             </div>
-
-            <p className="text-sm text-neutral-500 mt-24">
-              © {currentYear} Refactron™. All rights reserved.
-            </p>
           </div>
 
           {/* Links Columns */}
@@ -167,6 +214,14 @@ const Footer: React.FC = () => {
                 </li>
                 <li>
                   <a
+                    href="/status"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    Status
+                  </a>
+                </li>
+                <li>
+                  <a
                     href="https://cal.com/omsherikar/queries-refactron"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -194,6 +249,14 @@ const Footer: React.FC = () => {
               </ul>
             </div>
           </div>
+        </div>
+
+        {/* Copyright */}
+        <div className="mt-10 pt-6 border-t border-neutral-900 flex items-center justify-between gap-4 flex-wrap">
+          <p className="text-sm text-neutral-500">
+            © {currentYear} Refactron™. All rights reserved.
+          </p>
+          <StatusBadge />
         </div>
       </div>
 

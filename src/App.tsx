@@ -23,6 +23,7 @@ import useAccessibility from './hooks/useAccessibility';
 import PageLayout from './components/PageLayout';
 import Changelog from './components/Changelog';
 import SecurityPage from './components/SecurityPage';
+import StatusPage from './components/StatusPage';
 
 import { ThemeProvider } from './contexts/ThemeContext';
 
@@ -131,6 +132,7 @@ function App() {
                     </PageLayout>
                   }
                 />
+                <Route path="/status" element={<StatusPage />} />
                 <Route
                   path="/about"
                   element={
