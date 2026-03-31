@@ -40,10 +40,12 @@
   "devDependencies": {
     "@sparticuz/chromium": "^143.0.4",
     "prettier": "^3.6.2",
-    "puppeteer-core": "^24.40.0"
+    "puppeteer-core": "^24.40.0",
+    "sitemap": "^9.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
+    "prebuild": "node scripts/generate-sitemap.js",
     "build": "react-scripts build",
     "postbuild": "node scripts/prerender.js",
     "test": "react-scripts test",

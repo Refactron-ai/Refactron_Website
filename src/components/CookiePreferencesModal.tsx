@@ -188,10 +188,10 @@ const CookiePreferencesModal: React.FC<CookiePreferencesModalProps> = ({
             </div>
 
             {/* Info Box */}
-            <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+            <div className="mt-6 p-4 bg-[rgba(32,178,170,0.08)] border border-[rgba(32,178,170,0.2)] rounded-lg">
               <div className="flex items-start gap-3">
-                <AlertCircle className="h-5 w-5 text-blue-400 mt-0.5" />
-                <div className="text-sm text-blue-200">
+                <AlertCircle className="h-5 w-5 text-[#20B2AA] mt-0.5" />
+                <div className="text-sm text-neutral-300">
                   <p className="font-medium mb-1">Important Information</p>
                   <p>
                     Your preferences will be saved and applied immediately. You

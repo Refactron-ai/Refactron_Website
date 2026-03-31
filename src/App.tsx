@@ -1,13 +1,18 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import HeroSection from './components/HeroSection';
 import RefactoringWorkflowSection from './components/RefactoringWorkflowSection';
 import WhatWeDoSection from './components/WhatWeDoSection';
 import PricingSection from './components/PricingSection';
 import FAQSection from './components/FAQSection';
-import CaseStudiesPage from './components/CaseStudiesPage';
-import CaseStudyDetailPage from './components/CaseStudyDetailPage';
+import BlogPage from './components/BlogPage';
+import BlogPostPage from './components/BlogPostPage';
 import AboutPage from './components/AboutPage';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
@@ -98,19 +103,28 @@ function App() {
                     </PageLayout>
                   }
                 />
+                {/* Legacy redirects — preserve old /case-studies URLs */}
                 <Route
                   path="/case-studies"
+                  element={<Navigate to="/blog" replace />}
+                />
+                <Route
+                  path="/case-studies/:slug"
+                  element={<Navigate to="/blog" replace />}
+                />
+                <Route
+                  path="/blog"
                   element={
                     <PageLayout>
-                      <CaseStudiesPage />
+                      <BlogPage />
                     </PageLayout>
                   }
                 />
                 <Route
-                  path="/case-studies/:slug"
+                  path="/blog/:slug"
                   element={
                     <PageLayout mainClassName="pt-0 sm:pt-0">
-                      <CaseStudyDetailPage />
+                      <BlogPostPage />
                     </PageLayout>
                   }
                 />
@@ -162,7 +176,19 @@ function App() {
               <CookieManager />
             </>
           )}
-          <Analytics />
+          <Analytics
+            beforeSend={event => {
+              try {
+                const consent = localStorage.getItem('cookie-consent');
+                const prefs = localStorage.getItem('cookie-preferences');
+                if (!consent || !prefs) return null;
+                const parsed = JSON.parse(prefs);
+                return parsed.analytics === true ? event : null;
+              } catch {
+                return null;
+              }
+            }}
+          />
         </Router>
       </ErrorBoundary>
     </ThemeProvider>
