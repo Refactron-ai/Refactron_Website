@@ -16,7 +16,6 @@ const blogSlugs = slugMatches.map(m => m[1]);
 const staticRoutes = [
   { url: '/',                changefreq: 'weekly',  priority: 1.0 },
   { url: '/blog',            changefreq: 'weekly',  priority: 0.9 },
-  { url: '/pricing',         changefreq: 'monthly', priority: 0.9 },
   { url: '/about',           changefreq: 'monthly', priority: 0.6 },
   { url: '/changelog',       changefreq: 'weekly',  priority: 0.7 },
   { url: '/security',        changefreq: 'monthly', priority: 0.5 },
