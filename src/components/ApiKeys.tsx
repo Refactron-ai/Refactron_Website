@@ -25,17 +25,32 @@ interface ApiKey {
   updatedAt: string;
 }
 
+interface TeamApiKey extends ApiKey {
+  teamId?: string | null;
+  user?: { id: string; email: string; fullName: string | null };
+}
+
 const ApiKeys: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
+  const [teamApiKeys, setTeamApiKeys] = useState<TeamApiKey[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isCreateTeamKeyOpen, setIsCreateTeamKeyOpen] = useState(false);
+  const [teamKeyName, setTeamKeyName] = useState('');
+  const [teamKeyEnvironment, setTeamKeyEnvironment] = useState<'test' | 'live'>(
+    'live'
+  );
   const [keyName, setKeyName] = useState('');
   const [environment, setEnvironment] = useState<'test' | 'live'>('live');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [newlyCreatedKey, setNewlyCreatedKey] = useState<string | null>(null);
   const [copiedKey, setCopiedKey] = useState(false);
+
+  const effectivePlan = user?.effectivePlan ?? user?.plan ?? 'free';
+  const isTeamOwnerOrAdmin =
+    user?.teamRole === 'owner' || user?.teamRole === 'admin';
 
   // Confirmation Modal State
   const [confirmModal, setConfirmModal] = useState<{
@@ -57,7 +72,9 @@ const ApiKeys: React.FC = () => {
   // Load API keys on mount
   useEffect(() => {
     loadApiKeys();
-  }, []);
+    if (isTeamOwnerOrAdmin) loadTeamApiKeys();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isTeamOwnerOrAdmin]);
 
   const loadApiKeys = async () => {
     setLoading(true);
@@ -72,6 +89,79 @@ const ApiKeys: React.FC = () => {
     }
 
     setLoading(false);
+  };
+
+  const loadTeamApiKeys = async () => {
+    const response = await apiKeyService.listTeamApiKeys();
+    if (response.success && response.apiKeys) {
+      setTeamApiKeys(response.apiKeys as TeamApiKey[]);
+    }
+  };
+
+  const handleCreateTeamKey = async () => {
+    if (!teamKeyName.trim()) return;
+    setLoading(true);
+    setError(null);
+    const response = await apiKeyService.createTeamApiKey(
+      teamKeyName.trim(),
+      teamKeyEnvironment
+    );
+    if (response.success && response.apiKey) {
+      setIsCreateTeamKeyOpen(false);
+      setTeamKeyName('');
+      setTeamKeyEnvironment('live');
+      setNewlyCreatedKey(response.apiKey.key || null);
+      loadTeamApiKeys(); // background refresh, no await
+    } else {
+      setError(response.error || 'Failed to create team API key');
+    }
+    setLoading(false);
+  };
+
+  const handleDeleteTeamKey = (keyId: string) => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'danger',
+      title: 'Delete Team API Key',
+      message:
+        'Are you sure you want to delete this team API key? This action cannot be undone.',
+      confirmText: 'Delete Key',
+      action: async () => {
+        setLoading(true);
+        setError(null);
+        const response = await apiKeyService.deleteApiKey(keyId);
+        if (response.success) {
+          await loadTeamApiKeys();
+        } else {
+          setError(response.error || 'Failed to delete team API key');
+        }
+        setLoading(false);
+        closeConfirmModal();
+      },
+    });
+  };
+
+  const handleRevokeTeamKey = (keyId: string) => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'warning',
+      title: 'Revoke Team API Key',
+      message:
+        'Are you sure you want to revoke this team API key? All team members using it will immediately lose access.',
+      confirmText: 'Revoke Key',
+      action: async () => {
+        setLoading(true);
+        setError(null);
+        const response = await apiKeyService.revokeApiKey(keyId);
+        if (response.success) {
+          await loadTeamApiKeys();
+        } else {
+          setError(response.error || 'Failed to revoke team API key');
+        }
+        setLoading(false);
+        closeConfirmModal();
+      },
+    });
   };
 
   const handleCreateKey = async () => {
@@ -89,16 +179,11 @@ const ApiKeys: React.FC = () => {
     );
 
     if (response.success && response.apiKey) {
-      // Store the newly created key to display it
-      setNewlyCreatedKey(response.apiKey.key || null);
-
-      // Reload the list
-      await loadApiKeys();
-
-      // Close create modal
       setIsCreateModalOpen(false);
       setKeyName('');
       setEnvironment('live');
+      setNewlyCreatedKey(response.apiKey.key || null);
+      loadApiKeys(); // background refresh, no await
     } else {
       setError(response.error || 'Failed to create API key');
     }
@@ -195,7 +280,7 @@ const ApiKeys: React.FC = () => {
     });
   }, []);
 
-  const isPro = user?.plan === 'pro' || user?.plan === 'enterprise';
+  const isPro = effectivePlan === 'pro' || effectivePlan === 'enterprise';
 
   if (!isPro) {
     return (
@@ -384,6 +469,130 @@ session_id = client.create_session(name="My Agent")`}</code>
               </pre>
             </div>
           </div>
+
+          {/* Team API Keys — visible to team owners/admins only */}
+          {isTeamOwnerOrAdmin && (
+            <div className="mt-10">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-base font-semibold text-white">
+                    Team API Keys ({teamApiKeys.length})
+                  </h2>
+                  <p className="text-xs text-neutral-500 mt-0.5">
+                    Keys shared across your team. Any member can authenticate
+                    with these.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setIsCreateTeamKeyOpen(true)}
+                  disabled={loading}
+                  className="px-5 py-2.5 bg-transparent border border-white/[0.10] text-white rounded-xl font-medium hover:bg-white/[0.04] transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                >
+                  <span className="text-xl font-light">+</span>
+                  Create Team Key
+                </button>
+              </div>
+
+              {teamApiKeys.length === 0 ? (
+                <div className="text-center py-12 text-neutral-400">
+                  No team keys yet. Create one to share access with your team.
+                </div>
+              ) : (
+                <>
+                  {/* Table Header */}
+                  <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-white/[0.08] text-xs font-bold uppercase tracking-widest text-neutral-600">
+                    <div className="col-span-4">Key</div>
+                    <div className="col-span-2">Created</div>
+                    <div className="col-span-2">Last Used</div>
+                    <div className="col-span-2">Usage (30d)</div>
+                    <div className="col-span-2"></div>
+                  </div>
+
+                  {/* Table Rows */}
+                  {teamApiKeys.map(k => {
+                    const keyUsage = keyUsageMap.get(k.id);
+                    return (
+                      <div
+                        key={k.id}
+                        className="grid grid-cols-12 gap-4 px-6 py-4 border-b border-white/[0.06] last:border-b-0 items-center hover:bg-white/[0.02] transition-colors"
+                      >
+                        <div className="col-span-4">
+                          <div className="flex items-center gap-2">
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="text-white font-medium">
+                                  {k.name}
+                                </span>
+                                {k.revoked && (
+                                  <span className="px-2 py-0.5 bg-white/[0.06] text-neutral-400 text-xs rounded-md">
+                                    Revoked
+                                  </span>
+                                )}
+                                <span className="px-2 py-0.5 bg-white/[0.06] text-neutral-400 text-xs rounded-md">
+                                  {k.environment}
+                                </span>
+                                <span className="px-2 py-0.5 bg-white/[0.04] text-neutral-600 text-xs rounded-md border border-white/[0.06]">
+                                  Team
+                                </span>
+                              </div>
+                              <code className="text-sm text-neutral-400 font-mono">
+                                {maskKey(k.keyPrefix)}
+                              </code>
+                              {k.user && (
+                                <p className="text-xs text-neutral-600 mt-0.5">
+                                  by {k.user.fullName ?? k.user.email}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-span-2 text-neutral-400 text-sm">
+                          {formatDate(k.createdAt)}
+                        </div>
+                        <div className="col-span-2 text-neutral-400 text-sm">
+                          {k.lastUsedAt ? formatDate(k.lastUsedAt) : 'Never'}
+                        </div>
+                        <div className="col-span-2">
+                          {keyUsage ? (
+                            <div>
+                              <p className="text-sm text-neutral-300 font-mono">
+                                {keyUsage.tokens.toLocaleString()}
+                              </p>
+                              <p className="text-xs text-neutral-600">
+                                ${keyUsage.cost.toFixed(4)}
+                              </p>
+                            </div>
+                          ) : (
+                            <span className="text-xs text-neutral-700">—</span>
+                          )}
+                        </div>
+                        <div className="col-span-2 flex items-center gap-2 justify-end">
+                          {!k.revoked && (
+                            <button
+                              onClick={() => handleRevokeTeamKey(k.id)}
+                              className="p-2 hover:bg-yellow-500/10 rounded-lg transition-colors text-neutral-400 hover:text-yellow-400"
+                              title="Revoke key"
+                              disabled={loading}
+                            >
+                              <AlertCircle className="w-4 h-4" />
+                            </button>
+                          )}
+                          <button
+                            onClick={() => handleDeleteTeamKey(k.id)}
+                            className="p-2 hover:bg-red-500/10 rounded-lg transition-colors text-neutral-400 hover:text-red-400"
+                            title="Delete key"
+                            disabled={loading}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -472,7 +681,7 @@ session_id = client.create_session(name="My Agent")`}</code>
 
       {/* New Key Display Modal */}
       {newlyCreatedKey && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-60 p-4">
           <div className="bg-[#0a0a0a] border border-white/[0.08] rounded-2xl p-8 max-w-2xl w-full">
             <h2 className="text-xl font-semibold text-white mb-4">
               API Key Created
@@ -518,6 +727,92 @@ session_id = client.create_session(name="My Agent")`}</code>
             >
               Done
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Create Team API Key Modal */}
+      {isCreateTeamKeyOpen && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-[#0a0a0a] border border-white/[0.08] rounded-2xl p-8 max-w-xl w-full">
+            <h2 className="text-xl font-semibold text-white mb-2">
+              Create Team API Key
+            </h2>
+            <p className="text-sm text-neutral-500 mb-6">
+              This key can be used by any team member in their CLI.
+            </p>
+
+            {/* Key Name Input */}
+            <div className="mb-6">
+              <label className="block text-white text-sm font-medium mb-3">
+                Key Name
+              </label>
+              <input
+                type="text"
+                value={teamKeyName}
+                onChange={e => setTeamKeyName(e.target.value)}
+                placeholder="e.g., CI/CD Pipeline"
+                className="w-full bg-transparent border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:border-white/20 transition-colors"
+                disabled={loading}
+              />
+            </div>
+
+            {/* Environment Selection */}
+            <div className="mb-6">
+              <label className="block text-white text-sm font-medium mb-3">
+                Environment
+              </label>
+              <div className="grid grid-cols-2 gap-4">
+                <button
+                  onClick={() => setTeamKeyEnvironment('test')}
+                  disabled={loading}
+                  className={`py-3 px-6 rounded-xl font-medium transition-colors ${
+                    teamKeyEnvironment === 'test'
+                      ? 'bg-white text-black'
+                      : 'bg-transparent border border-white/[0.08] text-white hover:bg-white/[0.04]'
+                  }`}
+                >
+                  Test
+                </button>
+                <button
+                  onClick={() => setTeamKeyEnvironment('live')}
+                  disabled={loading}
+                  className={`py-3 px-6 rounded-xl font-medium transition-colors ${
+                    teamKeyEnvironment === 'live'
+                      ? 'bg-white text-black'
+                      : 'bg-transparent border border-white/[0.08] text-white hover:bg-white/[0.04]'
+                  }`}
+                >
+                  Live
+                </button>
+              </div>
+              <p className="text-neutral-500 text-sm mt-2 font-mono">
+                refactron_{teamKeyEnvironment}_
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                onClick={() => {
+                  setIsCreateTeamKeyOpen(false);
+                  setTeamKeyName('');
+                  setTeamKeyEnvironment('live');
+                  setError(null);
+                }}
+                disabled={loading}
+                className="py-3 px-6 bg-transparent border border-white/[0.08] text-white rounded-xl font-medium hover:bg-white/[0.04] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleCreateTeamKey}
+                disabled={loading || !teamKeyName.trim()}
+                className="py-3 px-6 bg-white text-black rounded-xl font-medium hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading ? 'Creating...' : 'Create Key'}
+              </button>
+            </div>
           </div>
         </div>
       )}

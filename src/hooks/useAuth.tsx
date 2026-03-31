@@ -27,6 +27,9 @@ interface User {
   trialEnd?: string | null; // Date string from JSON
   preferredModel?: string | null;
   oauthProvider?: string | null;
+  teamRole?: string | null;
+  teamName?: string | null;
+  effectivePlan?: string | null;
 }
 
 interface AuthContextType {

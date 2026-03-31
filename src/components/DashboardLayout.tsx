@@ -24,7 +24,15 @@ import {
   Settings,
   Bell,
   Shield,
+  Users,
   LucideIcon,
+  Trash2,
+  CheckCheck,
+  AlertTriangle,
+  Clock,
+  X,
+  Check,
+  CheckCircle2,
 } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { getApiBaseUrl } from '../utils/urlUtils';
@@ -37,6 +45,7 @@ interface Notification {
   message: string;
   read: boolean;
   createdAt: string;
+  metadata?: { inviteToken?: string } | null;
 }
 
 interface DashboardLayoutProps {
@@ -77,11 +86,89 @@ function toOrgSlug(name?: string | null): string {
 
 function formatNotifTime(iso: string): string {
   const mins = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+  if (mins < 1) return 'just now';
   if (mins < 60) return `${mins}m ago`;
   const hrs = Math.floor(mins / 60);
   if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
+  const days = Math.floor(hrs / 24);
+  if (days < 7) return `${days}d ago`;
+  return new Date(iso).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+  });
 }
+
+const BILLING_TYPES = new Set([
+  'subscription_created',
+  'subscription_cancelled',
+  'trial_warning',
+  'quota_warning_80',
+  'quota_warning_95',
+  'quota_exceeded',
+]);
+
+interface NotifMeta {
+  icon: LucideIcon;
+  iconClass: string;
+  bgClass: string;
+  label: string;
+}
+const TYPE_META: Record<string, NotifMeta> = {
+  team_invite_received: {
+    icon: Users,
+    iconClass: 'text-teal-400',
+    bgClass: 'bg-teal-400/10',
+    label: 'Team Invite',
+  },
+  team_invite_sent: {
+    icon: Users,
+    iconClass: 'text-neutral-400',
+    bgClass: 'bg-white/[0.06]',
+    label: 'Team',
+  },
+  subscription_created: {
+    icon: CheckCircle2,
+    iconClass: 'text-emerald-400',
+    bgClass: 'bg-emerald-400/10',
+    label: 'Billing',
+  },
+  subscription_cancelled: {
+    icon: CreditCard,
+    iconClass: 'text-red-400',
+    bgClass: 'bg-red-400/10',
+    label: 'Billing',
+  },
+  trial_warning: {
+    icon: Clock,
+    iconClass: 'text-amber-400',
+    bgClass: 'bg-amber-400/10',
+    label: 'Trial',
+  },
+  quota_warning_80: {
+    icon: AlertTriangle,
+    iconClass: 'text-amber-400',
+    bgClass: 'bg-amber-400/10',
+    label: 'Quota',
+  },
+  quota_warning_95: {
+    icon: AlertTriangle,
+    iconClass: 'text-orange-400',
+    bgClass: 'bg-orange-400/10',
+    label: 'Quota',
+  },
+  quota_exceeded: {
+    icon: AlertTriangle,
+    iconClass: 'text-red-400',
+    bgClass: 'bg-red-400/10',
+    label: 'Quota',
+  },
+};
+const DEFAULT_META: NotifMeta = {
+  icon: Bell,
+  iconClass: 'text-neutral-500',
+  bgClass: 'bg-white/[0.06]',
+  label: 'System',
+};
 
 // ── sub-components ────────────────────────────────────────────────────────────
 
@@ -136,7 +223,7 @@ function NavItem({
 const SIDEBAR_KEY = 'sidebar-collapsed';
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
-  const { user, logout } = useAuth();
+  const { user, logout, updateUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -147,10 +234,19 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifTotal, setNotifTotal] = useState(0);
+  const [notifPage, setNotifPage] = useState(1);
+  const [notifLoadingMore, setNotifLoadingMore] = useState(false);
+  const [notifFilter, setNotifFilter] = useState<
+    'all' | 'unread' | 'team' | 'billing'
+  >('all');
+  // notifId → 'accepting' | 'declining' | 'accepted' | 'declined' | string (error msg)
+  const [inviteActions, setInviteActions] = useState<Record<string, string>>(
+    {}
+  );
 
   const orgDropdownRef = useRef<HTMLDivElement>(null);
   const profileDropdownRef = useRef<HTMLDivElement>(null);
-  const notifRef = useRef<HTMLDivElement>(null);
 
   const apiBase = getApiBaseUrl();
   const token = localStorage.getItem('accessToken');
@@ -164,29 +260,162 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
   // ── notifications ────────────────────────────────────────────────────────
 
-  const fetchNotifications = useCallback(async () => {
-    try {
-      const res = await fetch(`${apiBase}/api/notifications`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setNotifications(data.notifications ?? []);
-      }
-    } catch {}
-  }, [apiBase, token]);
+  const fetchNotifications = useCallback(
+    async (page = 1, append = false) => {
+      try {
+        const res = await fetch(
+          `${apiBase}/api/notifications?page=${page}&limit=20`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          if (append) {
+            setNotifications(prev => [...prev, ...(data.notifications ?? [])]);
+          } else {
+            setNotifications(data.notifications ?? []);
+          }
+          setNotifTotal(data.total ?? 0);
+        }
+      } catch {}
+    },
+    [apiBase, token]
+  );
 
   useEffect(() => {
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 60000);
+    const interval = setInterval(() => fetchNotifications(), 60000);
     return () => clearInterval(interval);
   }, [fetchNotifications]);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
+  const handleAcceptInvite = useCallback(
+    async (notifId: string, inviteToken: string) => {
+      setInviteActions(prev => ({ ...prev, [notifId]: 'accepting' }));
+      try {
+        const res = await fetch(`${apiBase}/api/team/invites/accept`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ token: inviteToken }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message ?? 'Failed to accept invite');
+        // Clear inviteToken so buttons disappear without removing the notification message
+        setNotifications(prev =>
+          prev.map(n => (n.id === notifId ? { ...n, metadata: null } : n))
+        );
+        setInviteActions(prev => ({ ...prev, [notifId]: 'accepted' }));
+        // Refresh auth so sidebar shows Team nav immediately
+        const meRes = await fetch(`${apiBase}/api/auth/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (meRes.ok) {
+          const meData = await meRes.json();
+          if (meData.user) updateUser(meData.user);
+        }
+      } catch (err) {
+        const msg =
+          err instanceof Error ? err.message : 'Failed to accept invite';
+        setInviteActions(prev => ({ ...prev, [notifId]: msg }));
+        setTimeout(
+          () => setInviteActions(prev => ({ ...prev, [notifId]: '' })),
+          4000
+        );
+      }
+    },
+    [apiBase, token, updateUser]
+  );
+
+  const handleDeclineInvite = useCallback(
+    async (notifId: string, inviteToken: string) => {
+      setInviteActions(prev => ({ ...prev, [notifId]: 'declining' }));
+      try {
+        const res = await fetch(`${apiBase}/api/team/invites/decline`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ token: inviteToken }),
+        });
+        const data = await res.json();
+        if (!res.ok)
+          throw new Error(data.message ?? 'Failed to decline invite');
+        // Clear inviteToken so buttons disappear without removing the notification message
+        setNotifications(prev =>
+          prev.map(n => (n.id === notifId ? { ...n, metadata: null } : n))
+        );
+      } catch (err) {
+        const msg =
+          err instanceof Error ? err.message : 'Failed to decline invite';
+        setInviteActions(prev => ({ ...prev, [notifId]: msg }));
+        setTimeout(
+          () => setInviteActions(prev => ({ ...prev, [notifId]: '' })),
+          4000
+        );
+      }
+    },
+    [apiBase, token]
+  );
+
+  const handleMarkRead = useCallback(
+    async (notifId: string) => {
+      setNotifications(prev =>
+        prev.map(n => (n.id === notifId ? { ...n, read: true } : n))
+      );
+      try {
+        await fetch(`${apiBase}/api/notifications/${notifId}/read`, {
+          method: 'PATCH',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      } catch {}
+    },
+    [apiBase, token]
+  );
+
+  const handleDeleteNotification = useCallback(
+    async (notifId: string) => {
+      setNotifications(prev => prev.filter(n => n.id !== notifId));
+      setNotifTotal(prev => Math.max(0, prev - 1));
+      try {
+        await fetch(`${apiBase}/api/notifications/${notifId}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      } catch {}
+    },
+    [apiBase, token]
+  );
+
+  const handleClearAll = useCallback(async () => {
+    setNotifications([]);
+    setNotifTotal(0);
+    try {
+      await fetch(`${apiBase}/api/notifications`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch {}
+  }, [apiBase, token]);
+
+  const handleLoadMore = useCallback(async () => {
+    const nextPage = notifPage + 1;
+    setNotifLoadingMore(true);
+    await fetchNotifications(nextPage, true);
+    setNotifPage(nextPage);
+    setNotifLoadingMore(false);
+  }, [notifPage, fetchNotifications]);
+
   const handleOpenNotif = async () => {
-    setIsNotifOpen(v => !v);
-    if (!isNotifOpen && notifications.some(n => !n.read)) {
+    const opening = !isNotifOpen;
+    setIsNotifOpen(opening);
+    setNotifFilter('all');
+    if (opening && notifications.some(n => !n.read)) {
       try {
         await fetch(`${apiBase}/api/notifications/read-all`, {
           method: 'POST',
@@ -205,7 +434,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         setIsOrgDropdownOpen(false);
       if (!profileDropdownRef.current?.contains(e.target as Node))
         setIsProfileDropdownOpen(false);
-      if (!notifRef.current?.contains(e.target as Node)) setIsNotifOpen(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -229,8 +457,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const accountItems: NavItemDef[] = [
     { icon: CreditCard, label: 'Billing', path: '/settings/billing' },
     { icon: Settings, label: 'Account', path: '/settings/account' },
-    ...(user?.plan === 'enterprise'
+    ...(user?.effectivePlan === 'enterprise' || user?.plan === 'enterprise'
       ? [{ icon: Shield, label: 'Audit Logs', path: '/settings/audit-logs' }]
+      : []),
+    ...(user?.plan === 'enterprise' || user?.teamRole != null
+      ? [{ icon: Users, label: 'Team', path: '/settings/team' }]
       : []),
   ];
 
@@ -253,8 +484,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const badge = planBadgeLabel(user?.plan);
   const formattedOrgName = formatOrgName(user?.organizationName);
 
-  const dropdownPopover =
-    'absolute bottom-full left-0 right-0 mb-2 bg-[#0d0d0d] border border-white/[0.08] rounded-xl shadow-2xl z-50 overflow-hidden';
+  const dropdownPopover = collapsed
+    ? 'absolute bottom-0 left-full ml-2 w-60 bg-[#0d0d0d] border border-white/[0.08] rounded-xl shadow-2xl z-50 overflow-hidden'
+    : 'absolute bottom-full left-0 right-0 mb-2 bg-[#0d0d0d] border border-white/[0.08] rounded-xl shadow-2xl z-50 overflow-hidden';
   const popoverMotion = {
     initial: { opacity: 0, y: 10, scale: 0.95 },
     animate: { opacity: 1, y: 0, scale: 1 },
@@ -270,7 +502,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
       <motion.aside
         initial={false}
         animate={{ width: collapsed ? 64 : 240 }}
-        className="flex flex-col border-r border-white/[0.08] bg-black z-20 overflow-hidden"
+        className="flex flex-col border-r border-white/[0.08] bg-black z-20"
+        style={{ minWidth: collapsed ? 64 : 240 }}
       >
         {/* Logo */}
         <div className="relative flex items-center px-4 py-5">
@@ -400,76 +633,35 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
         {/* Bottom actions */}
         <div className="p-4 space-y-1 border-t border-white/[0.08]">
           {/* Notifications */}
-          <div className="relative" ref={notifRef}>
-            <button
-              onClick={handleOpenNotif}
-              title={
-                collapsed
-                  ? `Notifications${unreadCount > 0 ? ` (${unreadCount})` : ''}`
-                  : undefined
-              }
-              className={`w-full flex items-center p-2 rounded-lg transition-colors text-neutral-400 hover:bg-neutral-900 hover:text-white group
-                ${collapsed ? 'justify-center' : 'justify-between'}`}
-            >
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <Bell className="w-5 h-5" />
-                  {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-teal-500 text-[8px] font-bold text-black leading-none">
-                      {unreadCount > 9 ? '9+' : unreadCount}
-                    </span>
-                  )}
-                </div>
-                {!collapsed && (
-                  <span className="text-sm font-medium">Notifications</span>
+          <button
+            onClick={handleOpenNotif}
+            title={
+              collapsed
+                ? `Notifications${unreadCount > 0 ? ` (${unreadCount})` : ''}`
+                : undefined
+            }
+            className={`w-full flex items-center p-2 rounded-lg transition-colors text-neutral-400 hover:bg-neutral-900 hover:text-white
+              ${collapsed ? 'justify-center' : 'justify-between'}`}
+          >
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Bell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-teal-500 text-[8px] font-bold text-black leading-none">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
                 )}
               </div>
-              {!collapsed && unreadCount > 0 && (
-                <span className="text-[10px] font-medium text-teal-500">
-                  {unreadCount} new
-                </span>
+              {!collapsed && (
+                <span className="text-sm font-medium">Notifications</span>
               )}
-            </button>
-
-            <AnimatePresence>
-              {isNotifOpen && (
-                <motion.div
-                  {...popoverMotion}
-                  className={dropdownPopover}
-                  style={collapsed ? { width: 240 } : undefined}
-                >
-                  <div className="px-3 py-2.5 border-b border-white/[0.06]">
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-600">
-                      Notifications
-                    </p>
-                  </div>
-                  {notifications.length === 0 ? (
-                    <p className="px-4 py-5 text-center text-xs text-neutral-600">
-                      No notifications yet.
-                    </p>
-                  ) : (
-                    <div className="max-h-64 overflow-y-auto">
-                      {notifications.slice(0, 10).map(n => (
-                        <div
-                          key={n.id}
-                          className={`px-3 py-2.5 border-b border-white/[0.04] last:border-0 ${!n.read ? 'bg-white/[0.02]' : ''}`}
-                        >
-                          <p
-                            className={`text-xs leading-snug ${n.read ? 'text-neutral-600' : 'text-neutral-300'}`}
-                          >
-                            {n.message}
-                          </p>
-                          <p className="text-[10px] text-neutral-700 mt-1">
-                            {formatNotifTime(n.createdAt)}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+            </div>
+            {!collapsed && unreadCount > 0 && (
+              <span className="text-[10px] font-medium text-teal-500">
+                {unreadCount} new
+              </span>
+            )}
+          </button>
 
           {/* GitHub */}
           <button
@@ -541,11 +733,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
             <AnimatePresence>
               {isProfileDropdownOpen && (
-                <motion.div
-                  {...popoverMotion}
-                  className={dropdownPopover}
-                  style={collapsed ? { width: 200 } : undefined}
-                >
+                <motion.div {...popoverMotion} className={dropdownPopover}>
                   <div className="p-1">
                     <div className="flex items-center gap-2.5 px-3 py-2.5">
                       <Avatar initial={initial} badge={badge} />
@@ -593,6 +781,331 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
 
       {/* Main content */}
       <main className="flex-1 overflow-y-auto bg-[#0a0a0a]">{children}</main>
+
+      {/* ── Notification Drawer ──────────────────────────────────────────── */}
+      <AnimatePresence>
+        {isNotifOpen &&
+          (() => {
+            const filteredNotifs = notifications.filter(n => {
+              if (notifFilter === 'unread') return !n.read;
+              if (notifFilter === 'team') return n.type.startsWith('team_');
+              if (notifFilter === 'billing') return BILLING_TYPES.has(n.type);
+              return true;
+            });
+
+            const todayStart = new Date().setHours(0, 0, 0, 0);
+            const yesterdayStart = todayStart - 86400000;
+            const groups: { label: string; items: Notification[] }[] = [
+              { label: 'Today', items: [] },
+              { label: 'Yesterday', items: [] },
+              { label: 'Earlier', items: [] },
+            ];
+            for (const n of filteredNotifs) {
+              const t = new Date(n.createdAt).getTime();
+              if (t >= todayStart) groups[0].items.push(n);
+              else if (t >= yesterdayStart) groups[1].items.push(n);
+              else groups[2].items.push(n);
+            }
+            const groupedNotifs = groups.filter(g => g.items.length > 0);
+
+            return (
+              <>
+                {/* Backdrop */}
+                <motion.div
+                  className="fixed inset-0 z-40 bg-black/50"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => setIsNotifOpen(false)}
+                />
+
+                {/* Drawer */}
+                <motion.div
+                  className="fixed right-0 top-0 h-full w-[420px] bg-[#0d0d0d] border-l border-white/[0.08] z-50 flex flex-col shadow-2xl"
+                  initial={{ x: '100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: '100%' }}
+                  transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+                >
+                  {/* Header */}
+                  <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.08] flex-shrink-0">
+                    <div className="flex items-center gap-2.5">
+                      <h2 className="text-sm font-semibold text-white">
+                        Notifications
+                      </h2>
+                      {unreadCount > 0 && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-500/15 text-teal-400 border border-teal-500/20">
+                          {unreadCount} new
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-0.5">
+                      {unreadCount > 0 && (
+                        <button
+                          onClick={async () => {
+                            try {
+                              await fetch(
+                                `${apiBase}/api/notifications/read-all`,
+                                {
+                                  method: 'POST',
+                                  headers: { Authorization: `Bearer ${token}` },
+                                }
+                              );
+                              setNotifications(prev =>
+                                prev.map(n => ({ ...n, read: true }))
+                              );
+                            } catch {}
+                          }}
+                          title="Mark all as read"
+                          className="p-2 rounded-lg text-neutral-500 hover:text-white hover:bg-white/[0.06] transition-colors"
+                        >
+                          <CheckCheck className="w-4 h-4" />
+                        </button>
+                      )}
+                      {notifications.length > 0 && (
+                        <button
+                          onClick={handleClearAll}
+                          title="Clear all"
+                          className="p-2 rounded-lg text-neutral-500 hover:text-red-400 hover:bg-red-400/[0.06] transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
+                      <button
+                        onClick={() => setIsNotifOpen(false)}
+                        className="p-2 rounded-lg text-neutral-500 hover:text-white hover:bg-white/[0.06] transition-colors"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Filter tabs */}
+                  <div className="flex items-center gap-0.5 px-4 py-2.5 border-b border-white/[0.06] flex-shrink-0">
+                    {(['all', 'unread', 'team', 'billing'] as const).map(f => {
+                      const count =
+                        f === 'all'
+                          ? notifications.length
+                          : f === 'unread'
+                            ? notifications.filter(n => !n.read).length
+                            : f === 'team'
+                              ? notifications.filter(n =>
+                                  n.type.startsWith('team_')
+                                ).length
+                              : notifications.filter(n =>
+                                  BILLING_TYPES.has(n.type)
+                                ).length;
+                      return (
+                        <button
+                          key={f}
+                          onClick={() => setNotifFilter(f)}
+                          className={`text-xs px-2.5 py-1.5 rounded-lg transition-colors capitalize flex items-center gap-1.5 ${
+                            notifFilter === f
+                              ? 'bg-white/[0.08] text-white'
+                              : 'text-neutral-600 hover:text-neutral-300'
+                          }`}
+                        >
+                          {f}
+                          {count > 0 && (
+                            <span
+                              className={`text-[9px] px-1.5 py-0.5 rounded-full ${
+                                notifFilter === f
+                                  ? 'bg-white/[0.1] text-neutral-400'
+                                  : 'bg-white/[0.05] text-neutral-700'
+                              }`}
+                            >
+                              {count}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Notification list */}
+                  <div className="flex-1 overflow-y-auto">
+                    {filteredNotifs.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center h-full pb-20">
+                        <Bell className="w-10 h-10 text-neutral-800 mb-3" />
+                        <p className="text-sm text-neutral-600">
+                          {notifFilter === 'unread'
+                            ? "You're all caught up"
+                            : notifFilter === 'team'
+                              ? 'No team notifications'
+                              : notifFilter === 'billing'
+                                ? 'No billing notifications'
+                                : 'No notifications yet'}
+                        </p>
+                      </div>
+                    ) : (
+                      <div>
+                        {groupedNotifs.map(group => (
+                          <div key={group.label}>
+                            <p className="sticky top-0 px-5 py-2 text-[10px] font-semibold uppercase tracking-widest text-neutral-700 bg-[#0d0d0d]">
+                              {group.label}
+                            </p>
+                            {group.items.map(n => {
+                              const meta = TYPE_META[n.type] ?? DEFAULT_META;
+                              const IconComp = meta.icon;
+                              const inviteToken = n.metadata?.inviteToken;
+                              const isInvite =
+                                n.type === 'team_invite_received' &&
+                                !!inviteToken;
+                              const actionState = inviteActions[n.id] ?? '';
+                              const isActing =
+                                actionState === 'accepting' ||
+                                actionState === 'declining';
+                              const isDone =
+                                actionState === 'accepted' ||
+                                actionState === 'declined';
+                              const isError =
+                                !!actionState && !isActing && !isDone;
+
+                              return (
+                                <div
+                                  key={n.id}
+                                  className={`group flex gap-3.5 px-5 py-4 border-b border-white/[0.04] last:border-0 transition-colors hover:bg-white/[0.02] ${!n.read ? 'bg-white/[0.01]' : ''}`}
+                                >
+                                  {/* Unread dot */}
+                                  <div className="flex flex-col items-center pt-1.5 flex-shrink-0">
+                                    <div
+                                      className={`w-1.5 h-1.5 rounded-full ${!n.read ? 'bg-teal-400' : 'bg-transparent'}`}
+                                    />
+                                  </div>
+
+                                  {/* Type icon */}
+                                  <div
+                                    className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${meta.bgClass}`}
+                                  >
+                                    <IconComp
+                                      className={`w-4 h-4 ${meta.iconClass}`}
+                                    />
+                                  </div>
+
+                                  {/* Content */}
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-start justify-between gap-2">
+                                      <p
+                                        className={`text-[13px] leading-snug ${n.read ? 'text-neutral-500' : 'text-neutral-200'}`}
+                                      >
+                                        {n.message}
+                                      </p>
+                                      {/* Per-item actions — visible on hover */}
+                                      <div className="flex-shrink-0 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        {!n.read && (
+                                          <button
+                                            onClick={() => handleMarkRead(n.id)}
+                                            title="Mark as read"
+                                            className="p-1 rounded text-neutral-600 hover:text-white hover:bg-white/[0.08] transition-colors"
+                                          >
+                                            <Check className="w-3 h-3" />
+                                          </button>
+                                        )}
+                                        <button
+                                          onClick={() =>
+                                            handleDeleteNotification(n.id)
+                                          }
+                                          title="Delete"
+                                          className="p-1 rounded text-neutral-600 hover:text-red-400 hover:bg-red-400/[0.08] transition-colors"
+                                        >
+                                          <X className="w-3 h-3" />
+                                        </button>
+                                      </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-1.5 mt-1">
+                                      <span className="text-[11px] text-neutral-700">
+                                        {formatNotifTime(n.createdAt)}
+                                      </span>
+                                      <span className="text-neutral-800">
+                                        ·
+                                      </span>
+                                      <span className="text-[11px] text-neutral-700">
+                                        {meta.label}
+                                      </span>
+                                    </div>
+
+                                    {/* Invite actions */}
+                                    {isInvite && !isDone && (
+                                      <div className="mt-3 flex items-center gap-2">
+                                        {isError ? (
+                                          <p className="text-[11px] text-red-400">
+                                            {actionState}
+                                          </p>
+                                        ) : (
+                                          <>
+                                            <button
+                                              onClick={() =>
+                                                handleAcceptInvite(
+                                                  n.id,
+                                                  inviteToken!
+                                                )
+                                              }
+                                              disabled={isActing}
+                                              className="px-3 py-1.5 rounded-lg text-xs font-medium bg-teal-500/15 text-teal-300 border border-teal-500/20 hover:bg-teal-500/25 disabled:opacity-40 transition-colors"
+                                            >
+                                              {actionState === 'accepting'
+                                                ? 'Accepting…'
+                                                : 'Accept'}
+                                            </button>
+                                            <button
+                                              onClick={() =>
+                                                handleDeclineInvite(
+                                                  n.id,
+                                                  inviteToken!
+                                                )
+                                              }
+                                              disabled={isActing}
+                                              className="px-3 py-1.5 rounded-lg text-xs font-medium text-neutral-500 hover:text-neutral-300 hover:bg-white/[0.05] disabled:opacity-40 transition-colors"
+                                            >
+                                              {actionState === 'declining'
+                                                ? 'Declining…'
+                                                : 'Decline'}
+                                            </button>
+                                          </>
+                                        )}
+                                      </div>
+                                    )}
+
+                                    {isDone && isInvite && (
+                                      <p
+                                        className={`mt-1.5 text-xs font-medium ${actionState === 'accepted' ? 'text-emerald-500' : 'text-neutral-600'}`}
+                                      >
+                                        {actionState === 'accepted'
+                                          ? '✓ Joined the team'
+                                          : 'Invite declined'}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+
+                            {/* Load more */}
+                            {notifications.length < notifTotal && (
+                              <div className="px-5 py-4 text-center border-t border-white/[0.04]">
+                                <button
+                                  onClick={handleLoadMore}
+                                  disabled={notifLoadingMore}
+                                  className="text-xs text-neutral-600 hover:text-white transition-colors disabled:opacity-40"
+                                >
+                                  {notifLoadingMore
+                                    ? 'Loading…'
+                                    : `Load more (${notifTotal - notifications.length} remaining)`}
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              </>
+            );
+          })()}
+      </AnimatePresence>
     </div>
   );
 };

@@ -8,10 +8,18 @@ interface ApiKeyResponse {
   keyPrefix: string;
   environment: 'test' | 'live';
   revoked: boolean;
+  teamId?: string | null;
   lastUsedAt: string | null;
   createdAt: string;
   updatedAt: string;
   key?: string; // Only present when creating a new key
+  user?: { id: string; email: string; fullName: string | null };
+}
+
+interface ListTeamKeysResponse {
+  success: boolean;
+  apiKeys?: ApiKeyResponse[];
+  error?: string;
 }
 
 interface CreateKeyResponse {
@@ -167,6 +175,64 @@ export const revokeApiKey = async (
     return {
       success: false,
       error: error.message || 'Failed to revoke API key',
+    };
+  }
+};
+
+/**
+ * List team-scoped API keys (owner/admin only)
+ */
+export const listTeamApiKeys = async (): Promise<ListTeamKeysResponse> => {
+  try {
+    const token = getAuthToken();
+    const headers: HeadersInit = token
+      ? { Authorization: `Bearer ${token}` }
+      : {};
+    const response = await fetch(`${API_BASE_URL}/api/keys/team`, {
+      method: 'GET',
+      headers,
+      credentials: 'include',
+    });
+    const data = await response.json();
+    if (!response.ok)
+      throw new Error(data.error || 'Failed to fetch team API keys');
+    return data;
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || 'Failed to fetch team API keys',
+    };
+  }
+};
+
+/**
+ * Create a team-scoped API key (owner/admin only).
+ * Backend resolves teamId from the authenticated user's membership.
+ */
+export const createTeamApiKey = async (
+  name: string,
+  environment: 'test' | 'live'
+): Promise<CreateKeyResponse> => {
+  try {
+    const token = getAuthToken();
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+    const response = await fetch(`${API_BASE_URL}/api/keys`, {
+      method: 'POST',
+      headers,
+      credentials: 'include',
+      body: JSON.stringify({ name, environment, teamScoped: true }),
+    });
+    const data = await response.json();
+    if (!response.ok)
+      throw new Error(data.error || 'Failed to create team API key');
+    return data;
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message || 'Failed to create team API key',
     };
   }
 };
