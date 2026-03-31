@@ -101,14 +101,14 @@ const HeroSection: React.FC = () => {
                 </span>
               </button>
 
-              {/* Secondary CTA: Read Docs */}
+              {/* Secondary CTA: Book Demo */}
               <a
-                href="https://docs.refactron.dev"
+                href="https://cal.com/omsherikar/refactron-demo"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-2 bg-white text-black hover:bg-neutral-200 rounded-xl px-6 h-12 font-medium text-base transition-all duration-300 hover:scale-[1.02] font-space"
               >
-                <span>Read Docs</span>
+                <span>Book a Demo</span>
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </a>
             </motion.div>

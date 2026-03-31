@@ -51,9 +51,14 @@ const PricingSection = () => {
         'Audit logs & compliance support',
         'Dedicated support',
       ],
-      cta: 'Talk to us',
+      cta: 'Book a Demo',
       highlight: false,
-      action: () => (window.location.href = 'mailto:om@refactron.dev'),
+      action: () =>
+        window.open(
+          'https://cal.com/omsherikar/refactron-demo',
+          '_blank',
+          'noopener,noreferrer'
+        ),
     },
   ];
 
