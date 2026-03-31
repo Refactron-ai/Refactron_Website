@@ -22,6 +22,7 @@ import Repositories from './Repositories';
 import Usage from './Usage';
 import AccountSettings from './AccountSettings';
 import AuditLogs from './AuditLogs';
+import TeamManagement from './TeamManagement';
 
 /**
  * AuthAppContent - Internal component to access useAuth hook
@@ -198,6 +199,18 @@ const AuthAppContent: React.FC = () => {
               <ProtectedRoute>
                 <PageTransition>
                   <AuditLogs />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Protected Team Management Route */}
+          <Route
+            path="/settings/team"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <TeamManagement />
                 </PageTransition>
               </ProtectedRoute>
             }

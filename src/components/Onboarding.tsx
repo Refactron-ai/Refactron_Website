@@ -35,7 +35,8 @@ const Onboarding: React.FC = () => {
       description: 'For growing engineering teams',
       features: [
         'Everything in Free',
-        'Autofix with verification',
+        'LLM-powered analysis & autofix',
+        'AI refactoring with verification',
         'Metrics & maintainability reports',
         'CI/CD integration',
         'Priority updates',
@@ -49,6 +50,7 @@ const Onboarding: React.FC = () => {
       description: 'For production & regulated environments',
       features: [
         'Everything in Pro',
+        'Team management & collaboration',
         'On-prem / private deployments',
         'Advanced verification controls',
         'Audit logs & compliance support',

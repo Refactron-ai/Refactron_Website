@@ -442,8 +442,9 @@ const Usage: React.FC = () => {
   const [modelSaving, setModelSaving] = useState(false);
   const [modelSaved, setModelSaved] = useState(false);
 
-  const isPro = user?.plan === 'pro' || user?.plan === 'enterprise';
-  const plan = user?.plan ?? 'free';
+  const effectivePlan = user?.effectivePlan ?? user?.plan ?? 'free';
+  const isPro = effectivePlan === 'pro' || effectivePlan === 'enterprise';
+  const plan = effectivePlan;
   const quota = PLAN_QUOTA[plan] ?? null;
   const periodLabel =
     PERIODS.find(p => p.days === activePeriod)?.label ?? '30d';
