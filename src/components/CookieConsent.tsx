@@ -10,52 +10,41 @@ export interface CookiePreferences {
 
 interface CookieConsentProps {
   onAccept: (preferences: CookiePreferences) => void;
-  onReject: () => void;
   onCustomize: () => void;
   onCancel: () => void;
 }
 
 const CookieConsent: React.FC<CookieConsentProps> = ({
   onAccept,
-  onReject,
   onCustomize,
   onCancel,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Check if user has already made a choice
-    const hasConsent = localStorage.getItem('cookie-consent');
-    if (!hasConsent) {
-      // Show popup after 2.5 seconds delay
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 2500);
-
-      return () => clearTimeout(timer);
-    }
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 2500);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleAcceptAll = () => {
-    const preferences: CookiePreferences = {
+    onAccept({
       necessary: true,
       analytics: true,
       marketing: true,
       functional: true,
-    };
-    onAccept(preferences);
+    });
     setIsVisible(false);
   };
 
   const handleRejectAll = () => {
-    const preferences: CookiePreferences = {
-      necessary: true, // Always true as these are required
+    onAccept({
+      necessary: true,
       analytics: false,
       marketing: false,
       functional: false,
-    };
-    onReject();
-    onAccept(preferences);
+    });
     setIsVisible(false);
   };
 
@@ -69,7 +58,7 @@ const CookieConsent: React.FC<CookieConsentProps> = ({
   return (
     <>
       {/* Backdrop with blur effect */}
-      <div className="fixed inset-0 z-40 bg-black bg-opacity-20 backdrop-blur-sm transition-all duration-300 ease-out" />
+      <div className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-all duration-300 ease-out" />
 
       {/* Cookie popup */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-[#0D0D0D] border border-white/10 shadow-2xl rounded-xl w-[90%] max-w-2xl transform transition-all duration-300 ease-out font-space animate-in slide-in-from-bottom-4 fade-in">

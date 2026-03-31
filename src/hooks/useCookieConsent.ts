@@ -20,17 +20,6 @@ export const useCookieConsent = () => {
   const [hasConsent, setHasConsent] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Handle analytics consent
-  const handleAnalyticsConsent = useCallback((analyticsEnabled: boolean) => {
-    if (analyticsEnabled) {
-      // Enable analytics tracking
-      enableAnalytics();
-    } else {
-      // Disable analytics tracking
-      disableAnalytics();
-    }
-  }, []);
-
   // Load saved preferences on mount
   useEffect(() => {
     const loadPreferences = () => {
@@ -59,30 +48,24 @@ export const useCookieConsent = () => {
   }, []);
 
   // Save preferences to localStorage
-  const savePreferences = useCallback(
-    (newPreferences: CookiePreferences) => {
-      try {
-        localStorage.setItem(
-          'cookie-preferences',
-          JSON.stringify(newPreferences)
-        );
-        localStorage.setItem('cookie-consent', 'true');
-        localStorage.setItem('cookie-consent-date', new Date().toISOString());
+  const savePreferences = useCallback((newPreferences: CookiePreferences) => {
+    try {
+      localStorage.setItem(
+        'cookie-preferences',
+        JSON.stringify(newPreferences)
+      );
+      localStorage.setItem('cookie-consent', 'true');
+      localStorage.setItem('cookie-consent-date', new Date().toISOString());
 
-        setPreferences(newPreferences);
-        setHasConsent(true);
+      setPreferences(newPreferences);
+      setHasConsent(true);
 
-        // Trigger analytics based on preferences
-        handleAnalyticsConsent(newPreferences.analytics);
-
-        return true;
-      } catch (error) {
-        console.error('Error saving cookie preferences:', error);
-        return false;
-      }
-    },
-    [handleAnalyticsConsent]
-  );
+      return true;
+    } catch (error) {
+      console.error('Error saving cookie preferences:', error);
+      return false;
+    }
+  }, []);
 
   // Check if a specific cookie category is enabled
   const isCategoryEnabled = useCallback(
@@ -102,9 +85,6 @@ export const useCookieConsent = () => {
       setHasConsent(false);
       setPreferences(DEFAULT_PREFERENCES);
 
-      // Disable all tracking
-      disableAnalytics();
-
       return true;
     } catch (error) {
       console.error('Error resetting cookie consent:', error);
@@ -120,33 +100,6 @@ export const useCookieConsent = () => {
     isCategoryEnabled,
     resetConsent,
   };
-};
-
-// Analytics management functions
-const enableAnalytics = () => {
-  // Enable Vercel Analytics
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('consent', 'update', {
-      analytics_storage: 'granted',
-      ad_storage: 'granted',
-    });
-  }
-
-  // Enable other analytics services here
-  console.log('Analytics enabled');
-};
-
-const disableAnalytics = () => {
-  // Disable Vercel Analytics
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('consent', 'update', {
-      analytics_storage: 'denied',
-      ad_storage: 'denied',
-    });
-  }
-
-  // Disable other analytics services here
-  console.log('Analytics disabled');
 };
 
 // Cookie utility functions
@@ -200,10 +153,3 @@ export const cookieUtils = {
     }
   },
 };
-
-// Declare gtag for TypeScript
-declare global {
-  interface Window {
-    gtag: (...args: any[]) => void;
-  }
-}

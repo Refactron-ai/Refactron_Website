@@ -15,7 +15,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { label: 'About', href: '/about' },
   { label: 'Pricing', target: '#pricing' },
-  { label: 'Case Studies', href: '/case-studies' },
+  { label: 'Blogs', href: '/blog' },
   { label: 'Docs', href: 'https://docs.refactron.dev' },
   { label: 'Login', href: '/login' },
 ];

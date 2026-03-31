@@ -8,33 +8,6 @@ const CookieManager: React.FC = () => {
     useCookieConsent();
   const [showPreferencesModal, setShowPreferencesModal] = useState(false);
 
-  const handleAccept = (newPreferences: CookiePreferences) => {
-    savePreferences(newPreferences);
-  };
-
-  const handleReject = () => {
-    const rejectPreferences: CookiePreferences = {
-      necessary: true,
-      analytics: false,
-      marketing: false,
-      functional: false,
-    };
-    savePreferences(rejectPreferences);
-  };
-
-  const handleCustomize = () => {
-    setShowPreferencesModal(true);
-  };
-
-  const handleCancel = () => {
-    // User dismissed the banner without making a choice
-    // This is allowed - they can make a choice later via footer link
-  };
-
-  const handleSavePreferences = (newPreferences: CookiePreferences) => {
-    savePreferences(newPreferences);
-  };
-
   // Don't render anything while loading or if user has already given consent
   if (isLoading || hasConsent) {
     return null;
@@ -43,16 +16,20 @@ const CookieManager: React.FC = () => {
   return (
     <>
       <CookieConsent
-        onAccept={handleAccept}
-        onReject={handleReject}
-        onCustomize={handleCustomize}
-        onCancel={handleCancel}
+        onAccept={savePreferences}
+        onCustomize={() => setShowPreferencesModal(true)}
+        onCancel={() => {
+          // User dismissed the banner without making a choice.
+          // They can revisit via the footer "Cookie Settings" link.
+        }}
       />
 
       <CookiePreferencesModal
         isOpen={showPreferencesModal}
         onClose={() => setShowPreferencesModal(false)}
-        onSave={handleSavePreferences}
+        onSave={(newPreferences: CookiePreferences) => {
+          savePreferences(newPreferences);
+        }}
         currentPreferences={preferences}
       />
     </>

@@ -175,10 +175,10 @@ const Footer: React.FC = () => {
                 </li>
                 <li>
                   <a
-                    href="/case-studies"
+                    href="/blog"
                     className="text-neutral-400 hover:text-white text-sm transition-colors"
                   >
-                    Examples
+                    Blogs
                   </a>
                 </li>
                 <li>
