@@ -239,8 +239,7 @@ That is the specific problem Refactron was built to solve.`,
   },
   {
     slug: 'why-we-built-verification-engine-first',
-    title:
-      'Why We Built a Verification Engine Before an AI Refactoring Engine',
+    title: 'Why We Built a Verification Engine Before an AI Refactoring Engine',
     featured: true,
     industry: 'Product',
     accentColor: '#3D6B4F',
@@ -481,7 +480,7 @@ Next in this series: FastAPI — modern codebase, different patterns, different 
     views: 2841,
     clicks: 103,
     summary:
-      'Engineering teams talk about technical debt as if it\'s a known quantity. In practice most teams don\'t pay it down. They defer it until the codebase becomes something nobody wants to touch. This is not a discipline problem — it\'s a risk problem.',
+      "Engineering teams talk about technical debt as if it's a known quantity. In practice most teams don't pay it down. They defer it until the codebase becomes something nobody wants to touch. This is not a discipline problem — it's a risk problem.",
     body: `Engineering teams talk about technical debt as if it's a known quantity — something you accumulate, acknowledge, and eventually pay down. In practice most teams don't pay it down. They defer it, sprint after sprint, until the codebase becomes something nobody wants to touch.
 
 This is not a discipline problem. It's a risk problem. Refactoring production code is genuinely dangerous when you don't have a reliable way to verify that the change preserved behavior. So teams make the rational decision: leave it alone. Ship the feature. Deal with the debt later.

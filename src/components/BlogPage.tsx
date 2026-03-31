@@ -24,7 +24,10 @@ function getIcon(industry: string, size = 64) {
         height={size}
         {...{ stroke: attr.stroke, fill: attr.fill }}
       >
-        <path d="M32 8 L52 16 L52 34 Q52 50 32 56 Q12 50 12 34 L12 16 Z" {...attr} />
+        <path
+          d="M32 8 L52 16 L52 34 Q52 50 32 56 Q12 50 12 34 L12 16 Z"
+          {...attr}
+        />
         <polyline points="22,32 28,38 42,26" {...attr} />
       </svg>
     );
@@ -39,7 +42,10 @@ function getIcon(industry: string, size = 64) {
         height={size}
         {...{ stroke: attr.stroke, fill: attr.fill }}
       >
-        <path d="M40 8 Q50 8 52 18 Q54 26 48 32 L20 56 Q16 60 12 56 Q8 52 12 48 L36 20 Q32 14 34 10 Z" {...attr} />
+        <path
+          d="M40 8 Q50 8 52 18 Q54 26 48 32 L20 56 Q16 60 12 56 Q8 52 12 48 L36 20 Q32 14 34 10 Z"
+          {...attr}
+        />
         <line x1="34" y1="18" x2="44" y2="28" {...attr} />
         <circle cx="15" cy="52" r="2" {...attr} />
       </svg>
@@ -55,7 +61,10 @@ function getIcon(industry: string, size = 64) {
         height={size}
         {...{ stroke: attr.stroke, fill: attr.fill }}
       >
-        <path d="M16 10 L48 10 L48 10 Q48 28 32 32 Q16 36 16 54 L48 54 Q48 36 32 32 Q16 28 16 10 Z" {...attr} />
+        <path
+          d="M16 10 L48 10 L48 10 Q48 28 32 32 Q16 36 16 54 L48 54 Q48 36 32 32 Q16 28 16 10 Z"
+          {...attr}
+        />
         <line x1="16" y1="10" x2="48" y2="10" {...attr} />
         <line x1="16" y1="54" x2="48" y2="54" {...attr} />
         <path d="M24 46 Q32 42 40 46" {...attr} />
@@ -370,7 +379,9 @@ const BlogPage: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-neutral-500 text-sm">No posts match your search.</p>
+              <p className="text-neutral-500 text-sm">
+                No posts match your search.
+              </p>
             )}
           </>
         )}
