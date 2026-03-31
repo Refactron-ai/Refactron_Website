@@ -15,13 +15,25 @@ const path = require('path');
 const fs = require('fs');
 const http = require('http');
 
-// Pages to pre-render (public marketing pages only)
+// Extract blog slugs from posts.ts via regex (same approach as generate-sitemap.js)
+const postsFile = fs.readFileSync(
+  path.join(__dirname, '../src/data/posts.ts'),
+  'utf-8'
+);
+const blogSlugs = [...postsFile.matchAll(/slug:\s*['"]([^'"]+)['"]/g)].map(
+  m => m[1]
+);
+
+// Pages to pre-render
 const PAGES = [
   '/',
-  '/case-studies',
+  '/blog',
   '/about',
+  '/changelog',
+  '/security',
   '/privacy-policy',
   '/terms-of-service',
+  ...blogSlugs.map(slug => `/blog/${slug}`),
 ];
 
 const BUILD_DIR = path.resolve(__dirname, '..', 'build');
