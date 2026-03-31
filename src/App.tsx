@@ -1,5 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import HeroSection from './components/HeroSection';
 import RefactoringWorkflowSection from './components/RefactoringWorkflowSection';
@@ -99,8 +104,14 @@ function App() {
                   }
                 />
                 {/* Legacy redirects — preserve old /case-studies URLs */}
-                <Route path="/case-studies" element={<Navigate to="/blog" replace />} />
-                <Route path="/case-studies/:slug" element={<Navigate to="/blog" replace />} />
+                <Route
+                  path="/case-studies"
+                  element={<Navigate to="/blog" replace />}
+                />
+                <Route
+                  path="/case-studies/:slug"
+                  element={<Navigate to="/blog" replace />}
+                />
                 <Route
                   path="/blog"
                   element={
