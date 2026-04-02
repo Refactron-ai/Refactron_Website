@@ -727,6 +727,83 @@ refactron analyze .
 
 Start with understanding. Nothing changes until you ask it to.`,
   },
+  {
+    slug: 'why-refactron-runs-locally',
+    title:
+      'Why We Built Refactron to Run Locally — Your Code Stays on Your Machine',
+    industry: 'Product',
+    accentColor: '#2D6A8F',
+    publishedAt: 'April 2, 2026',
+    author: 'Om Sherikar',
+    tags: ['Privacy', 'Security', 'Architecture', 'Local-first'],
+    views: 0,
+    clicks: 0,
+    featured: false,
+    summary:
+      'Cloud-based AI tools process your code on external servers. We chose a different architecture — and here is why that decision matters for teams working on production codebases.',
+    body: `When we were deciding how to architect Refactron, one of the earliest and most consequential decisions we made was this: the tool would run entirely on your machine. Your code would never touch our servers. Not for analysis, not for refactoring, not for verification.
+
+This was not the obvious choice. Cloud-based processing would have made certain things easier to build. It would have made the business model simpler — usage metrics, centralized telemetry, the ability to improve our models on real codebases over time. Almost every competitor in this space processes your code in the cloud because it gives them leverage.
+
+We chose not to. Here is why.
+
+## The problem with sending your code to someone else's server
+
+When you use a cloud-based AI coding tool, here is what happens in practice.
+
+You paste a function, or connect a repository, or let the tool run against your codebase. That code — your payment processing logic, your authentication layer, your proprietary business rules — travels to an external server. It gets processed by a model. A response comes back.
+
+What happens to it in between is, in most cases, not fully transparent. Terms of service vary. Data retention policies vary. What gets logged, what gets used for model training, what gets stored — these are questions that most developers using these tools have never actually read the answer to.
+
+For personal projects this is a tolerable risk. For production codebases at companies where code is a competitive asset, it is a different calculation entirely. Many engineering teams at regulated companies — finance, healthcare, defense adjacent — cannot use cloud-based AI coding tools at all because their legal and compliance teams will not allow it. Not because the tools are bad, but because sending proprietary code to an external server is a policy violation regardless of what the tool does with it.
+
+## What local-first actually means
+
+Refactron installs as a CLI tool via pip. When you run refactron analyze ., the analysis happens on your machine using your local Python environment. The AST parsing, the static analysis, the rule evaluation — all of it runs locally.
+
+When you run refactron autofix . --verify, the verification engine runs locally. The three checks — syntax validation, import integrity, and the test suite gate — all execute in your local environment against your local test suite. The result that determines whether a file gets modified is computed locally.
+
+Nothing about your code is transmitted anywhere. The only thing that touches our servers is authentication — confirming your API key is valid — and even that contains no code, no file paths, no analysis results.
+
+Your code stays on your machine. That is not a marketing claim. It is how the architecture works.
+
+## Why this matters more than most teams realize
+
+The conversation about AI coding tools and code security usually focuses on the dramatic scenarios — a breach, a leak, a public incident. Those scenarios are real but they are not the primary risk.
+
+The primary risk is quieter. It is that code which represents real competitive advantage — the pricing logic, the fraud detection model, the recommendation algorithm — leaves the building without anyone making a deliberate decision that it should. It leaves because a developer used a helpful tool, because the default behavior of the tool is to process code in the cloud, and because no one thought to check.
+
+Local-first architecture removes this risk by default. There is no opt-in required. There is no setting to configure. Code simply does not leave the machine because the tool does not have a mechanism to send it anywhere.
+
+## The compliance argument
+
+For teams working in regulated environments, this distinction is not a nice-to-have. It is what determines whether a tool can be used at all.
+
+Security teams evaluating developer tooling ask a consistent set of questions. Does this tool transmit source code? To whom? Under what terms? What is the data retention policy? Is it SOC 2 compliant? Can it be used in our air-gapped environment?
+
+Refactron's answers to these questions are straightforward. It does not transmit source code. There is no retention policy for source code because there is no source code to retain. It works in air-gapped environments because it has no runtime dependency on external servers. The compliance conversation is short because there is very little to evaluate.
+
+This is not something most AI coding tools can say.
+
+## The tradeoff we made
+
+We are honest about what local-first costs. Cloud-based tools can improve continuously by learning from the codebases they process. They can offer suggestions that are informed by patterns seen across millions of repositories. They can get smarter over time in ways that a purely local tool cannot.
+
+Refactron's analysis is deterministic and rule-based. It finds what its analyzers are designed to find. It does not learn from your codebase in ways that accumulate over time. The tradeoffs are real.
+
+We made this choice deliberately because we believe the developers who most need a safe refactoring tool — the engineers maintaining production codebases that represent years of accumulated work — are exactly the developers who cannot afford to have that code processed externally. Safety-first means local-first. The two are not separable.
+
+## What this means in practice
+
+\`\`\`
+pip install refactron
+refactron analyze .
+\`\`\`
+
+Everything that happens after that command runs on your machine. The output you see is generated locally. The issues it finds are found locally. When you run autofix with verification, every check that determines whether your file is modified runs locally.
+
+Your codebase stays yours.`,
+  },
 ];
 
 export const getBlogPostBySlug = (slug: string) =>
