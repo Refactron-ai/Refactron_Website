@@ -808,7 +808,7 @@ Your codebase stays yours.`,
     slug: 'refactron-is-now-a-nodejs-package',
     title:
       "Refactron Is Now a Node.js Package. Here's Why That Changes Everything.",
-    industry: 'Product',
+    industry: 'Release',
     accentColor: '#1A7F4B',
     publishedAt: 'April 6, 2026',
     author: 'Om Sherikar',

@@ -1,6 +1,9 @@
 import React from 'react';
 import NavigationBar from './NavigationBar';
 import Footer from './Footer';
+import AnnouncementBanner, {
+  useAnnouncementBanner,
+} from './AnnouncementBanner';
 import { cn } from '../lib/utils';
 
 type PageLayoutProps = {
@@ -16,6 +19,8 @@ const PageLayout: React.FC<PageLayoutProps> = ({
   wrapperClassName = '',
   transparentBg = false,
 }) => {
+  const { visible, dismiss } = useAnnouncementBanner();
+
   return (
     <div
       className={`min-h-screen text-[var(--text-secondary)] flex flex-col ${!transparentBg ? 'bg-[var(--bg-primary)]' : ''} ${wrapperClassName}`}
@@ -28,11 +33,16 @@ const PageLayout: React.FC<PageLayoutProps> = ({
             }
       }
     >
-      <NavigationBar />
+      {visible && <AnnouncementBanner onDismiss={dismiss} />}
+      <NavigationBar bannerVisible={visible} />
       <main
         id="main-content"
         tabIndex={-1}
-        className={cn('flex-1 pt-24 sm:pt-28', mainClassName)}
+        className={cn(
+          'flex-1',
+          visible ? 'pt-32 sm:pt-36' : 'pt-24 sm:pt-28',
+          mainClassName
+        )}
       >
         {children}
       </main>

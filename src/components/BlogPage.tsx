@@ -16,6 +16,24 @@ function getIcon(industry: string, size = 64) {
 
   const lower = industry.toLowerCase();
 
+  if (lower.includes('release') || lower.includes('package')) {
+    // Open box with upward arrow — shipping / release
+    return (
+      <svg
+        viewBox="0 0 64 64"
+        width={size}
+        height={size}
+        {...{ stroke: attr.stroke, fill: attr.fill }}
+      >
+        <polyline points="8,22 32,10 56,22" {...attr} />
+        <polyline points="8,22 8,50 56,50 56,22" {...attr} />
+        <polyline points="20,22 20,38 44,38 44,22" {...attr} />
+        <line x1="32" y1="10" x2="32" y2="50" {...attr} />
+        <polyline points="24,18 32,10 40,18" {...attr} />
+      </svg>
+    );
+  }
+
   if (lower.includes('product')) {
     return (
       <svg

@@ -20,7 +20,13 @@ const navItems: NavItem[] = [
   { label: 'Login', href: '/login' },
 ];
 
-const NavigationBar: React.FC = () => {
+type NavigationBarProps = {
+  bannerVisible?: boolean;
+};
+
+const NavigationBar: React.FC<NavigationBarProps> = ({
+  bannerVisible = false,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -78,9 +84,9 @@ const NavigationBar: React.FC = () => {
           ? '0 10px 15px -3px rgba(0, 0, 0, 0.95), 0 4px 6px -2px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
           : '0 4px 6px -1px rgba(0, 0, 0, 0.9), 0 2px 4px -1px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
       }}
-      className={`fixed top-0 left-1/2 -translate-x-1/2 z-40 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
-        isVisible ? 'translate-y-0' : '-translate-y-[200%]'
-      } ${
+      className={`fixed left-1/2 -translate-x-1/2 z-40 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+        bannerVisible ? 'top-9' : 'top-0'
+      } ${isVisible ? 'translate-y-0' : '-translate-y-[200%]'} ${
         isScrolled
           ? `w-[90%] max-w-5xl backdrop-blur-xl border-b shadow-lg rounded-2xl mt-2 opacity-100 ${
               location.pathname === '/changelog'
