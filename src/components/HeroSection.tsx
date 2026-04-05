@@ -1,20 +1,46 @@
-import React, { useState, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { TextGenerateEffect } from './ui/text-generate-effect';
 import { FlickeringGrid } from './ui/flickering-grid';
 import LogoLoop from './ui/logo-loop';
 import { ArrowRight, Github, Package, Users, Copy, Check } from 'lucide-react';
 
+const INSTALLERS = [
+  { label: 'py', command: 'pip install refactron', color: '#4B8BBE' },
+  { label: 'npm', command: 'npm install -g refactron', color: '#CC3534' },
+];
+
 const HeroSection: React.FC = () => {
+  const [activeIdx, setActiveIdx] = useState(0);
   const [copied, setCopied] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setActiveIdx(i => (i + 1) % INSTALLERS.length);
+    }, 3000);
+  }, []);
+
+  useEffect(() => {
+    resetTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [resetTimer]);
+
+  const handleToggle = useCallback(() => {
+    setActiveIdx(i => (i + 1) % INSTALLERS.length);
+    resetTimer();
+  }, [resetTimer]);
 
   const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText('pip install refactron').then(() => {
+    navigator.clipboard.writeText(INSTALLERS[activeIdx].command).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     });
-  }, []);
+  }, [activeIdx]);
 
   return (
     <section
@@ -82,24 +108,58 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 1.4 }}
               className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4 sm:mb-5"
             >
-              {/* Primary CTA: pip install command with copy button */}
-              <button
-                onClick={handleCopy}
-                className="group inline-flex items-center gap-3 border border-white/10 text-neutral-300 rounded-xl pl-5 pr-3 h-12 hover:bg-white/5 hover:border-white/20 transition-all duration-300 hover:scale-[1.02] font-space"
-                aria-label="Copy pip install command"
-              >
-                <code className="text-sm sm:text-base font-mono text-neutral-300">
-                  <span className="text-neutral-500">$ </span>
-                  pip install refactron
-                </code>
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
+              {/* Primary CTA: install command with auto-cycling pip/npm */}
+              <div className="group inline-flex items-center gap-3 border border-white/10 text-neutral-300 rounded-xl pl-4 pr-3 h-12 hover:bg-white/5 hover:border-white/20 transition-all duration-300 hover:scale-[1.02] font-space">
+                {/* Ecosystem badge — click to toggle */}
+                <button
+                  onClick={handleToggle}
+                  className="shrink-0 w-8 text-center text-[10px] font-bold py-0.5 rounded font-mono transition-colors duration-300"
+                  style={{
+                    color: INSTALLERS[activeIdx].color,
+                    background: `${INSTALLERS[activeIdx].color}22`,
+                  }}
+                  aria-label="Switch package manager"
+                >
+                  {INSTALLERS[activeIdx].label}
+                </button>
+
+                {/* Command text — crossfades */}
+                <div
+                  className="relative overflow-hidden cursor-pointer"
+                  onClick={handleToggle}
+                >
+                  {/* Invisible sizer — always sized to the longest command */}
+                  <code className="invisible flex justify-center text-sm sm:text-base font-mono whitespace-nowrap pointer-events-none select-none">
+                    <span>$ </span>npm install -g refactron
+                  </code>
+                  <AnimatePresence mode="wait">
+                    <motion.code
+                      key={activeIdx}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute inset-0 flex items-center justify-center text-sm sm:text-base font-mono text-neutral-300 whitespace-nowrap"
+                    >
+                      <span className="text-neutral-500">$ </span>
+                      {INSTALLERS[activeIdx].command}
+                    </motion.code>
+                  </AnimatePresence>
+                </div>
+
+                {/* Copy button */}
+                <button
+                  onClick={handleCopy}
+                  className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors"
+                  aria-label="Copy install command"
+                >
                   {copied ? (
                     <Check className="w-4 h-4 text-green-400" />
                   ) : (
                     <Copy className="w-4 h-4 text-neutral-400 group-hover:text-white transition-colors" />
                   )}
-                </span>
-              </button>
+                </button>
+              </div>
 
               {/* Secondary CTA: Book Demo */}
               <a
