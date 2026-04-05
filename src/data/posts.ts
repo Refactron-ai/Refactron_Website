@@ -804,6 +804,142 @@ Everything that happens after that command runs on your machine. The output you 
 
 Your codebase stays yours.`,
   },
+  {
+    slug: 'refactron-is-now-a-nodejs-package',
+    title:
+      "Refactron Is Now a Node.js Package. Here's Why That Changes Everything.",
+    industry: 'Product',
+    accentColor: '#1A7F4B',
+    publishedAt: 'April 6, 2026',
+    author: 'Om Sherikar',
+    tags: ['npm', 'TypeScript', 'Architecture', 'Blast Radius', 'v2.0'],
+    views: 0,
+    clicks: 0,
+    featured: false,
+    summary:
+      'Refactron v2.0 is a TypeScript rewrite distributed as an npm package. Same verification guarantees, new blast radius analysis, temporal safety intelligence, and support for both Python and TypeScript codebases.',
+    body: `When we shipped Refactron to PyPI last year, the positioning was deliberate: safety-first refactoring for Python production codebases. Python only. One language, done properly.
+
+That boundary made sense at the time. The verification engine — the three checks that prove a change is safe before touching the filesystem — was built on Python-native tools. libcst for CST validation. importlib for import integrity. pytest for the test gate. The moat was real but it was also Python-shaped.
+
+We've been rethinking that.
+
+Not the moat — that stays. Every change must still pass syntax validation, import integrity, and your test suite before a single file is written. The atomic write protocol doesn't change. The inviolable rule doesn't change.
+
+What changes is the language the tool speaks.
+
+## What we're building
+
+Refactron v2.0 is a TypeScript rewrite, distributed as an npm package, designed to work on any codebase regardless of language.
+
+\`\`\`
+npm install -g refactron
+\`\`\`
+
+The commands are identical to the Python version. The verification pipeline is identical. The safety guarantees are identical. What's different is everything underneath — and one genuinely new capability that the Python version couldn't have.
+
+## Why TypeScript
+
+The Python package worked. The verification engine worked. The analysis worked. But the internals were messy in ways that made adding new language support harder than it needed to be.
+
+TypeScript as the orchestration layer changes the architecture in a meaningful way. The core verification engine calls an adapter interface. The adapter handles the language-specific tools as subprocesses. Adding Go support means writing one new adapter file. The verification engine, the CLI, the pipeline — none of it changes.
+
+This is the language adapter pattern and it's the right architecture for a tool that wants to work on any production codebase, not just Python ones.
+
+The Python tools still run for Python code. When you point Refactron at a .py file, it still calls python3 -c "import ast; ast.parse(...)" for syntax validation. It still runs pytest for the test gate. Nothing about the Python verification changes — it just runs as a subprocess now, which is cleaner.
+
+TypeScript and JavaScript codebases get the TypeScript compiler for syntax and import checks, and jest or vitest for the test gate. The output format is identical. The verification result contract is the same.
+
+## The new thing: blast radius
+
+The Python package told you what was wrong with a file. The TypeScript rewrite tells you something the Python version couldn't: how much of your codebase would be affected if a fix went wrong.
+
+We call it blast radius.
+
+Before any fix is applied, Refactron builds two graphs from your project's AST — a reverse import graph and a function-level call graph. It walks those graphs transitively to find every file, every function, and every test that depends on the code being changed.
+
+Then it shows you:
+
+\`\`\`
+HIGH  process_payment() — cyclomatic complexity 18
+      Blast radius: 23 files · 41 functions · 6 test files
+      ████████████████░░░░  CRITICAL — touch with extreme care
+
+LOW   validateCard() — missing return type
+      Blast radius: 3 files · 4 functions · 1 test file
+      ████░░░░░░░░░░░░░░░░  LOW — safe to autofix
+\`\`\`
+
+This changes how you prioritize. Not "this function is complex" but "this function is complex and 23 other files depend on it." That's a genuinely different piece of information.
+
+The blast radius also changes how strict the verification engine is. A TRIVIAL blast radius — zero dependents, cosmetic change — runs a syntax check only, fast path under 50ms. A CRITICAL blast radius runs all three checks with a 2-minute test timeout and won't apply the fix unless confidence is above 97%. The safety guarantee scales with the actual risk.
+
+## Temporal safety intelligence
+
+The second new capability uses something you already have: your git history.
+
+Refactron parses git log per file and computes three signals — change velocity (how many times this file was modified in the last 6 months), days since last touch, and co-change pairs (files that always change together, a hidden coupling signal).
+
+A function with a high blast radius that hasn't been touched in two years and has a change velocity near zero gets a DANGER flag. Not because the code is necessarily broken, but because nobody has looked at it recently, everything depends on it, and touching it without full verification is exactly how production incidents happen.
+
+This costs nothing. No API calls. No external services. It runs on your local git history in under a second.
+
+## What the npm distribution means
+
+Python developers who already use Refactron: nothing changes. pip install refactron continues to work. The PyPI package stays maintained.
+
+TypeScript and JavaScript developers who couldn't use Refactron before: npm install -g refactron now gives you the same verification guarantees.
+
+For mixed codebases — Python backend, TypeScript frontend — point Refactron at the whole repository:
+
+\`\`\`
+refactron analyze .
+
+Detected  Python 3.11 · TypeScript 5.2
+Scanning  ████████████████████  131 files · 1.2s
+
+── Python ─────────────────────────────────
+CRITICAL (1):  SQL Injection · src/api/views.py:47
+               Blast radius: 23 files · CRITICAL
+
+── TypeScript ─────────────────────────────
+HIGH (2):  Any type assertion · src/dashboard/UserView.tsx:124
+           Blast radius: 7 files · MEDIUM
+\`\`\`
+
+One command. Both languages. Issues grouped by language with their blast radii.
+
+## What stays exactly the same
+
+The verification engine has not changed. The three-check pipeline — syntax, imports, test gate — still runs before any file is modified. The atomic write still uses the temp-file-then-rename pattern. The original file is still never touched unless safe_to_apply is true.
+
+The moat is the same. The architecture that delivers it is better.
+
+## What's still Python-only
+
+The v2.0 npm package ships with two language adapters: Python and TypeScript. JavaScript (.js, .jsx) is included in the TypeScript adapter. Other languages — Go, Rust, Java — are on the roadmap but not in v2.0.
+
+If your codebase is Python only, the npm package works. If it's TypeScript only, the npm package works. If it's mixed, the npm package works. If it's Go — not yet.
+
+## Try it
+
+\`\`\`
+npm install -g refactron
+refactron analyze .
+\`\`\`
+
+Analysis is read-only. It won't change anything. See what's there, see the blast radius on each issue, see which ones are safe to autofix.
+
+When you're ready:
+
+\`\`\`
+refactron autofix . --verify
+\`\`\`
+
+Everything that passes gets applied. Everything that would break something gets blocked with an explanation. Your original files are untouched until there's proof of safety.
+
+That's the same guarantee it's always been. Now it works on more of your codebase.`,
+  },
 ];
 
 export const getBlogPostBySlug = (slug: string) =>
