@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Check, X } from 'lucide-react';
 
 /* ─── Data ─────────────────────────────────────────────────────── */
 
@@ -32,23 +31,22 @@ const SUPPORT_ROWS: Row[] = [
   { label: 'TypeScript', values: [true, true, true, true] },
 ];
 
-/* ─── Cell ─────────────────────────────────────────────────────── */
+/* ─── Cell marks ──────────────────────────────────────────────────
+ * Monochrome data-viz: "yes" is a filled white dot inside a thin
+ * ring; "no" is a small horizontal dash. No iconography, no color.
+ */
 
 const Cell: React.FC<{ on: boolean }> = ({ on }) =>
   on ? (
     <span
       aria-label="Yes"
-      className="inline-flex items-center justify-center text-emerald-300/90"
+      className="relative inline-flex items-center justify-center w-3 h-3"
     >
-      <Check className="w-[14px] h-[14px]" strokeWidth={2} aria-hidden />
+      <span className="absolute inset-0 rounded-full ring-1 ring-white/25" />
+      <span className="absolute w-[7px] h-[7px] rounded-full bg-white/90" />
     </span>
   ) : (
-    <span
-      aria-label="No"
-      className="inline-flex items-center justify-center text-neutral-600"
-    >
-      <X className="w-[13px] h-[13px]" strokeWidth={2} aria-hidden />
-    </span>
+    <span aria-label="No" className="inline-block w-2.5 h-px bg-white/20" />
   );
 
 /* ─── Section ──────────────────────────────────────────────────── */
@@ -91,20 +89,22 @@ const ComparisonSection: React.FC = () => {
           whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-10% 0px' }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-5xl mx-auto relative rounded-[28px] border border-white/[0.07] bg-gradient-to-b from-white/[0.022] to-white/[0.005] overflow-hidden shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)]"
+          className="max-w-5xl mx-auto relative rounded-[28px] border border-white/[0.06] bg-white/[0.012] overflow-hidden"
         >
+          {/* Static dot grid — matches Workflow / WhatWeDo cards */}
           <div
             aria-hidden="true"
-            className="absolute -right-24 -top-24 w-[280px] h-[280px] rounded-full blur-3xl pointer-events-none opacity-40"
+            className="absolute inset-0 pointer-events-none opacity-[0.35]"
             style={{
-              background:
-                'radial-gradient(closest-side, rgba(32,178,170,0.08), transparent)',
+              backgroundImage:
+                'radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px)',
+              backgroundSize: '18px 18px',
             }}
           />
 
           <div className="relative">
             {/* Column headers */}
-            <div className="grid grid-cols-[minmax(0,1.45fr)_repeat(4,minmax(0,1fr))] border-b border-white/[0.07]">
+            <div className="grid grid-cols-[minmax(0,1.45fr)_repeat(4,minmax(0,1fr))] border-b border-white/[0.06]">
               <div className="px-6 md:px-8 py-5 md:py-6 flex items-end">
                 <span className="text-[10px] font-mono text-neutral-700 tracking-[0.28em]">
                   CAPABILITIES
@@ -113,8 +113,10 @@ const ComparisonSection: React.FC = () => {
               {PRODUCTS.map((p, i) => (
                 <div
                   key={p}
-                  className={`px-3 md:px-4 py-5 md:py-6 text-center border-l border-white/[0.05] ${
-                    i === 0 ? 'bg-white/[0.035] border-l-white/[0.12]' : ''
+                  className={`px-3 md:px-4 py-5 md:py-6 text-center border-l ${
+                    i === 0
+                      ? 'bg-white/[0.025] border-l-white/[0.22]'
+                      : 'border-l-white/[0.05]'
                   }`}
                 >
                   <span
@@ -141,8 +143,10 @@ const ComparisonSection: React.FC = () => {
                 {row.values.map((v, colIdx) => (
                   <div
                     key={colIdx}
-                    className={`flex items-center justify-center px-2 py-4 md:py-[18px] border-l border-white/[0.05] ${
-                      colIdx === 0 ? 'bg-white/[0.02]' : ''
+                    className={`flex items-center justify-center px-2 py-4 md:py-[18px] border-l ${
+                      colIdx === 0
+                        ? 'bg-white/[0.018] border-l-white/[0.22]'
+                        : 'border-l-white/[0.05]'
                     }`}
                   >
                     <Cell on={v} />
@@ -151,16 +155,16 @@ const ComparisonSection: React.FC = () => {
               </div>
             ))}
 
-            <div className="grid grid-cols-[minmax(0,1.45fr)_repeat(4,minmax(0,1fr))] border-t border-white/[0.07] bg-white/[0.015]">
+            <div className="grid grid-cols-[minmax(0,1.45fr)_repeat(4,minmax(0,1fr))] border-t border-white/[0.06] bg-white/[0.012]">
               <div className="px-6 md:px-8 py-3 md:py-4 flex items-center">
                 <span className="text-[10px] font-mono text-neutral-600 tracking-[0.28em]">
                   LANGUAGE SUPPORT
                 </span>
               </div>
-              <div className="bg-white/[0.02] border-l border-white/[0.08]" />
-              <div className="border-l border-white/[0.05]" />
-              <div className="border-l border-white/[0.05]" />
-              <div className="border-l border-white/[0.05]" />
+              <div className="bg-white/[0.018] border-l border-l-white/[0.22]" />
+              <div className="border-l border-l-white/[0.05]" />
+              <div className="border-l border-l-white/[0.05]" />
+              <div className="border-l border-l-white/[0.05]" />
             </div>
 
             {SUPPORT_ROWS.map(row => (
@@ -174,8 +178,10 @@ const ComparisonSection: React.FC = () => {
                 {row.values.map((v, colIdx) => (
                   <div
                     key={colIdx}
-                    className={`flex items-center justify-center py-3 md:py-4 border-l border-white/[0.05] ${
-                      colIdx === 0 ? 'bg-white/[0.02]' : ''
+                    className={`flex items-center justify-center py-3 md:py-4 border-l ${
+                      colIdx === 0
+                        ? 'bg-white/[0.018] border-l-white/[0.22]'
+                        : 'border-l-white/[0.05]'
                     }`}
                   >
                     <Cell on={v} />

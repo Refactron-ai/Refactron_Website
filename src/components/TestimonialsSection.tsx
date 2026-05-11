@@ -138,7 +138,7 @@ function MockMedia({ kind }: { kind: 'chart' | 'diff' }) {
         {[26, 46, 35, 56, 40].map((px, i) => (
           <div
             key={i}
-            className="flex-1 rounded-t bg-gradient-to-t from-teal-500/30 to-teal-500/70"
+            className="flex-1 rounded-t bg-gradient-to-t from-neutral-300/50 to-neutral-700/80"
             style={{ height: `${px}px` }}
           />
         ))}
@@ -252,10 +252,10 @@ const TestimonialsSection: React.FC = () => {
       className="relative w-full overflow-hidden bg-[#f3f3f2] py-24 lg:py-28 text-neutral-900 antialiased font-space"
       aria-labelledby="testimonials-heading"
     >
-      {/* Minimal backdrop: fine grid + soft radial (brand-neutral, editorial) */}
+      {/* Minimal editorial backdrop — fine grid + a soft neutral vignette */}
       <div aria-hidden className="pointer-events-none absolute inset-0 z-[1]">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(24,24,27,0.028)_1px,transparent_1px),linear-gradient(90deg,rgba(24,24,27,0.028)_1px,transparent_1px)] bg-[length:44px_44px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_72%_52%_at_50%_-18%,rgba(32,178,170,0.065),transparent_58%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_72%_52%_at_50%_-18%,rgba(24,24,27,0.04),transparent_58%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_55%_at_50%_108%,rgba(24,24,27,0.035),transparent_52%)]" />
       </div>
 

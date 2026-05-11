@@ -109,19 +109,21 @@ const QuickstartSection: React.FC = () => {
             </h2>
           </header>
 
-          <div className="relative rounded-[24px] lg:rounded-[28px] border border-white/[0.07] bg-gradient-to-b from-white/[0.022] to-white/[0.005] overflow-hidden shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)]">
+          <div className="relative rounded-[24px] lg:rounded-[28px] border border-white/[0.06] bg-white/[0.012] overflow-hidden">
+            {/* Static dot grid — matches Workflow / WhatWeDo / Comparison */}
             <div
               aria-hidden="true"
-              className="absolute -left-16 -top-16 w-[200px] h-[200px] lg:w-[240px] lg:h-[240px] rounded-full blur-3xl pointer-events-none opacity-50"
+              className="absolute inset-0 pointer-events-none opacity-[0.35]"
               style={{
-                background:
-                  'radial-gradient(closest-side, rgba(255,255,255,0.05), transparent)',
+                backgroundImage:
+                  'radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px)',
+                backgroundSize: '18px 18px',
               }}
             />
 
             <div className="relative z-10">
               <div
-                className="flex border-b border-white/[0.07] bg-white/[0.03]"
+                className="flex border-b border-white/[0.06] bg-white/[0.02]"
                 role="tablist"
                 aria-label="Install with npm or pip"
               >
@@ -147,9 +149,7 @@ const QuickstartSection: React.FC = () => {
                       {STACKS[id].tabLabel}
                       <span
                         className={`absolute bottom-0 left-3 right-3 sm:left-5 sm:right-5 h-px transition-opacity duration-200 ${
-                          isActive
-                            ? 'bg-neutral-400/80 opacity-100'
-                            : 'opacity-0'
+                          isActive ? 'bg-white/55 opacity-100' : 'opacity-0'
                         }`}
                         aria-hidden
                       />
@@ -169,7 +169,7 @@ const QuickstartSection: React.FC = () => {
                 className="px-4 pb-5 pt-0 md:px-6 md:pb-6"
               >
                 <div
-                  className="rounded-xl border border-white/[0.06] bg-black/40 backdrop-blur-sm p-4 sm:p-5 overflow-x-auto min-h-[248px]"
+                  className="rounded-xl border border-white/[0.06] bg-black/40 p-4 sm:p-5 overflow-x-auto min-h-[248px]"
                   aria-live="polite"
                   aria-atomic="true"
                 >
@@ -182,10 +182,8 @@ const QuickstartSection: React.FC = () => {
                         {i > 0 && '\n\n'}
                         <span className="text-neutral-600">{line.comment}</span>
                         {'\n'}
-                        <span className="text-neutral-500">$ </span>
-                        <span className="text-emerald-400/95">
-                          {line.command}
-                        </span>
+                        <span className="text-white/45">›&nbsp;</span>
+                        <span className="text-white/95">{line.command}</span>
                       </React.Fragment>
                     ))}
                   </pre>
