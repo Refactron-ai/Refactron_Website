@@ -20,7 +20,6 @@ const CookieManager: React.FC = () => {
         onCustomize={() => setShowPreferencesModal(true)}
         onCancel={() => {
           // User dismissed the banner without making a choice.
-          // They can revisit via the footer "Cookie Settings" link.
         }}
       />
 

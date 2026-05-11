@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Github, Linkedin } from 'lucide-react';
 import DiscordIcon from '../icons/DiscordIcon';
 import XIcon from '../icons/XIcon';
-import CookiePreferencesModal from './CookiePreferencesModal';
-import { useCookieConsent, CookiePreferences } from '../hooks/useCookieConsent';
 import { getApiBaseUrl } from '../utils/urlUtils';
 
 type OverallStatus = 'operational' | 'degraded' | 'outage' | 'loading';
@@ -58,12 +56,6 @@ function StatusBadge() {
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
-  const { preferences, savePreferences } = useCookieConsent();
-  const [showCookieModal, setShowCookieModal] = useState(false);
-
-  const handleSavePreferences = (newPreferences: CookiePreferences) => {
-    savePreferences(newPreferences);
-  };
 
   return (
     <footer className="bg-black text-white py-12 border-t border-neutral-900 font-space">
@@ -140,18 +132,26 @@ const Footer: React.FC = () => {
                 </li>
                 <li>
                   <a
-                    href="/#pricing"
+                    href="/#comparison"
                     className="text-neutral-400 hover:text-white text-sm transition-colors"
                   >
-                    Pricing
+                    Comparison
                   </a>
                 </li>
                 <li>
                   <a
-                    href="/terms-of-service"
+                    href="/#quickstart"
                     className="text-neutral-400 hover:text-white text-sm transition-colors"
                   >
-                    Terms
+                    Quickstart
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/#pricing"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    Pricing
                   </a>
                 </li>
               </ul>
@@ -175,6 +175,14 @@ const Footer: React.FC = () => {
                 </li>
                 <li>
                   <a
+                    href="/research"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    Research
+                  </a>
+                </li>
+                <li>
+                  <a
                     href="/blog"
                     className="text-neutral-400 hover:text-white text-sm transition-colors"
                   >
@@ -187,6 +195,14 @@ const Footer: React.FC = () => {
                     className="text-neutral-400 hover:text-white text-sm transition-colors"
                   >
                     Changelog
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/status"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
+                  >
+                    Status
                   </a>
                 </li>
               </ul>
@@ -214,24 +230,6 @@ const Footer: React.FC = () => {
                 </li>
                 <li>
                   <a
-                    href="/status"
-                    className="text-neutral-400 hover:text-white text-sm transition-colors"
-                  >
-                    Status
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://cal.com/omsherikar/queries-refactron"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-neutral-400 hover:text-white text-sm transition-colors"
-                  >
-                    Contact
-                  </a>
-                </li>
-                <li>
-                  <a
                     href="/privacy-policy"
                     className="text-neutral-400 hover:text-white text-sm transition-colors"
                   >
@@ -239,12 +237,12 @@ const Footer: React.FC = () => {
                   </a>
                 </li>
                 <li>
-                  <button
-                    onClick={() => setShowCookieModal(true)}
-                    className="text-neutral-400 hover:text-white text-sm transition-colors text-left"
+                  <a
+                    href="/terms-of-service"
+                    className="text-neutral-400 hover:text-white text-sm transition-colors"
                   >
-                    Cookie Settings
-                  </button>
+                    Terms
+                  </a>
                 </li>
               </ul>
             </div>
@@ -259,14 +257,6 @@ const Footer: React.FC = () => {
           <StatusBadge />
         </div>
       </div>
-
-      {/* Cookie Preferences Modal */}
-      <CookiePreferencesModal
-        isOpen={showCookieModal}
-        onClose={() => setShowCookieModal(false)}
-        onSave={handleSavePreferences}
-        currentPreferences={preferences}
-      />
     </footer>
   );
 };

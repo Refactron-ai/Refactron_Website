@@ -9,8 +9,11 @@ import { Analytics } from '@vercel/analytics/react';
 import HeroSection from './components/HeroSection';
 import RefactoringWorkflowSection from './components/RefactoringWorkflowSection';
 import WhatWeDoSection from './components/WhatWeDoSection';
+import ComparisonSection from './components/ComparisonSection';
+import QuickstartSection from './components/QuickstartSection';
 import PricingSection from './components/PricingSection';
 import FAQSection from './components/FAQSection';
+import TestimonialsSection from './components/TestimonialsSection';
 import BlogPage from './components/BlogPage';
 import BlogPostPage from './components/BlogPostPage';
 import AboutPage from './components/AboutPage';
@@ -28,6 +31,7 @@ import useAccessibility from './hooks/useAccessibility';
 import PageLayout from './components/PageLayout';
 import Changelog from './components/Changelog';
 import SecurityPage from './components/SecurityPage';
+import ResearchPage from './components/ResearchPage';
 import StatusPage from './components/StatusPage';
 
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -37,6 +41,9 @@ const LandingContent: React.FC = () => (
     <HeroSection />
     <RefactoringWorkflowSection />
     <WhatWeDoSection />
+    <ComparisonSection />
+    <QuickstartSection />
+    <TestimonialsSection />
     <PricingSection />
     <FAQSection />
   </>
@@ -143,6 +150,14 @@ function App() {
                   element={
                     <PageLayout>
                       <SecurityPage />
+                    </PageLayout>
+                  }
+                />
+                <Route
+                  path="/research"
+                  element={
+                    <PageLayout mainClassName="flex min-h-0 flex-col">
+                      <ResearchPage />
                     </PageLayout>
                   }
                 />
