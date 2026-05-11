@@ -164,6 +164,111 @@ const AsciiBackdrop: React.FC<{
   );
 };
 
+/* ─── Hands-reaching ASCII backdrop ──────────────────────────────
+ * Two tapering blades sweep in from opposite corners, almost
+ * touching in the centre — the Creation-of-Adam composition. Each
+ * cell's character is chosen from a density palette (▓ ▒ ░ · ' ')
+ * based on its signed-distance to the nearest blade's spine.
+ * Deterministic — built once at module load.
+ */
+
+interface HandBlade {
+  /** Origin point in screen units (col, row*2). Usually off-canvas. */
+  ax: number;
+  ay: number;
+  /** Fingertip point. */
+  bx: number;
+  by: number;
+  /** Half-width at the origin (wrist). */
+  thickStart: number;
+  /** Half-width at the fingertip. */
+  thickEnd: number;
+}
+
+const HAND_BLADES: HandBlade[] = [
+  /* Left "arm" — sweeps in from lower-left, fingertip just left of centre */
+  { ax: -8, ay: 78, bx: 78, by: 46, thickStart: 9.5, thickEnd: 0.6 },
+  /* Right "arm" — sweeps in from upper-right, fingertip just right of centre */
+  { ax: 168, ay: 22, bx: 84, by: 50, thickStart: 9.5, thickEnd: 0.6 },
+];
+
+const HANDS_COLS = 160;
+const HANDS_ROWS = 48;
+
+const HANDS_PATTERN: string = (() => {
+  let s = 271828 >>> 0;
+  const rng = (): number => {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 4294967296;
+  };
+
+  const bladeSD = (c: number, r: number, b: HandBlade): number => {
+    const x = c;
+    const y = r * 2; /* char aspect correction */
+    const dx = b.bx - b.ax;
+    const dy = b.by - b.ay;
+    const len2 = dx * dx + dy * dy;
+    const t = Math.max(
+      0,
+      Math.min(1, ((x - b.ax) * dx + (y - b.ay) * dy) / len2)
+    );
+    const closestX = b.ax + t * dx;
+    const closestY = b.ay + t * dy;
+    const ddx = x - closestX;
+    const ddy = y - closestY;
+    const dist = Math.sqrt(ddx * ddx + ddy * ddy);
+    const thickness = b.thickStart + (b.thickEnd - b.thickStart) * t;
+    return dist - thickness;
+  };
+
+  const lines: string[] = [];
+  for (let r = 0; r < HANDS_ROWS; r++) {
+    let row = '';
+    for (let c = 0; c < HANDS_COLS; c++) {
+      const sd = Math.min(
+        bladeSD(c, r, HAND_BLADES[0]),
+        bladeSD(c, r, HAND_BLADES[1])
+      );
+      let ch: string;
+      if (sd < -4) ch = '▓';
+      else if (sd < -2) ch = rng() < 0.6 ? '▓' : '▒';
+      else if (sd < -0.5) ch = '▒';
+      else if (sd < 0.4) ch = '░';
+      else if (sd < 1.5) ch = rng() < 0.45 ? '·' : ' ';
+      else ch = ' ';
+      row += ch;
+    }
+    lines.push(row);
+  }
+  return lines.join('\n');
+})();
+
+const HandsAsciiBackdrop: React.FC = () => {
+  /* Vignette: visible in the middle band where the reaching happens,
+   * fading at the corners so it never fights with the section edges. */
+  const mask =
+    'radial-gradient(ellipse 95% 78% at 50% 50%, black 35%, rgba(0,0,0,0.55) 78%, transparent 100%)';
+  return (
+    <div
+      aria-hidden
+      className="absolute inset-0 pointer-events-none select-none overflow-hidden"
+      style={{ maskImage: mask, WebkitMaskImage: mask }}
+    >
+      <pre
+        className="absolute inset-0 m-0 font-mono whitespace-pre overflow-hidden"
+        style={{
+          fontSize: '13px',
+          lineHeight: '1.05',
+          letterSpacing: '0.06em',
+          color: 'rgba(255,255,255,0.075)',
+        }}
+      >
+        {HANDS_PATTERN}
+      </pre>
+    </div>
+  );
+};
+
 /* ─── Data ────────────────────────────────────────────────────── */
 
 const identityFields: { key: string; value: string }[] = [
@@ -780,6 +885,7 @@ const AboutPage: React.FC = () => {
 
       {/* ─── Founder + Origin Story ────────────────────────────────── */}
       <section className="relative w-full py-24 lg:py-28 overflow-hidden">
+        <HandsAsciiBackdrop />
         {sectionFades}
         <div className="relative z-10 max-w-6xl mx-auto px-4">
           <motion.div {...fadeUp} className="mb-10 space-y-3">
