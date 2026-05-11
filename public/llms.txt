@@ -1,0 +1,35 @@
+# Refactron
+
+> Refactron is a deterministic, behavior-preserving refactoring engine for legacy code. No LLM in the loop. Every change is verified before it touches disk. Runs locally; nothing is sent to external services.
+
+Refactron is built for developers who maintain production codebases and need to evolve legacy code without breaking it. The analysis surfaces architectural debt (circular dependencies, duplicated code, deprecated APIs, missing type hints, callback-based async, etc.); the refactoring engine applies deterministic, idempotent transforms; verification gates (syntax → imports → tests → invariants) run before any file is rewritten; rollback is a single command.
+
+Refactron is **not** an LLM-based code generator. The engine is rule-based and deterministic — given the same input, it produces the same output. This is the moat: predictability, reviewability, and provability.
+
+- Language support: Python, TypeScript, JavaScript today. Go, Rust, and Java are on the roadmap.
+- Install: `pip install refactron` or `npm install -g refactron`.
+- Locality: runs entirely on your machine; no telemetry by default.
+- Founder: Om Sherikar. Bengaluru, India. Built solo.
+
+## Docs
+
+- [Refactron — landing](https://refactron.dev/): Hero, pipeline, comparison with Cursor / SonarQube / CodeAnt, quickstart, FAQ.
+- [About Refactron](https://refactron.dev/about): The origin story (the hackathon moment), the founder, and the five safety constraints (read-only first, human-in-the-loop, verification, incremental steps, rollback).
+- [Security](https://refactron.dev/security): Privacy practices, encryption, local-first architecture, responsible-disclosure policy.
+- [Research](https://refactron.dev/research): The technical paper on deterministic refactoring + behavior-preservation.
+- [Changelog](https://refactron.dev/changelog): Release history and recent shipped features.
+- [Blog](https://refactron.dev/blog): Case studies running Refactron on real open-source codebases (Django, FastAPI, etc.) and technical deep-dives.
+
+## Examples
+
+- [I Ran Refactron on Django's Codebase](https://refactron.dev/blog/i-ran-refactron-on-djangos-codebase): 300,000+ LOC, 18 years of Python contributors — what the analyzer surfaced.
+- [Quickstart](https://refactron.dev/#quickstart): Install, analyze, preview refactors, apply with verification — 60 seconds end-to-end.
+- [Pipeline overview](https://refactron.dev/#workflows): Analyze → Refactor → Verify → Document. Each stage is independently inspectable.
+
+## Optional
+
+- [Privacy Policy](https://refactron.dev/privacy-policy)
+- [Terms of Service](https://refactron.dev/terms-of-service)
+- [PyPI package](https://pypi.org/project/refactron/)
+- [GitHub organisation](https://github.com/refactron-ai)
+- [LinkedIn](https://www.linkedin.com/company/refactron)

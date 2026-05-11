@@ -12,7 +12,7 @@ const PricingSection = () => {
       price: '$0',
       description: 'For individual developers & evaluation',
       features: [
-        'Local analysis & refactor suggestions',
+        'Local analysis & legacy code detection',
         'Safe-mode refactoring',
         'Git diffs & reports',
         'Open-source & personal use',
@@ -29,10 +29,11 @@ const PricingSection = () => {
       trial: '14-Day Free Trial',
       features: [
         'Everything in Free',
-        'LLM-powered analysis & autofix',
-        'AI refactoring with verification',
-        'Metrics & maintainability reports',
+        'Full refactoring engine',
+        'Verification engine with all three checks',
+        'Documentation engine',
         'CI/CD integration',
+        'Metrics and technical debt reports',
         'Priority updates',
       ],
       cta: 'Get started',

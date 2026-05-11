@@ -45,7 +45,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "node scripts/generate-sitemap.js",
+    "prebuild": "node scripts/generate-sitemap.js && node scripts/generate-llms-full.js",
     "build": "react-scripts build",
     "postbuild": "node scripts/prerender.js",
     "test": "react-scripts test",

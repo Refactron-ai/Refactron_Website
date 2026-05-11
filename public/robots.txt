@@ -1,24 +1,66 @@
-# Refactron Website - Robots.txt
+# Refactron Website — robots.txt
 # https://refactron.dev
 
-# Default rules for all crawlers
+# ─── AI / LLM crawlers ───────────────────────────────────────────
+# Refactron wants to be discoverable in AI search results AND
+# referenced in foundation-model knowledge. We explicitly allow
+# both retrieval and training bots.
+
+# Retrieval bots (live AI search — answer engines)
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: Claude-SearchBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+User-agent: YouBot
+Allow: /
+
+# Training bots (long-term LLM memory)
+User-agent: GPTBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: anthropic-ai
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Meta-ExternalAgent
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: Bytespider
+Allow: /
+User-agent: cohere-ai
+Allow: /
+User-agent: cohere-training-data-crawler
+Allow: /
+User-agent: Diffbot
+Allow: /
+User-agent: FacebookBot
+Allow: /
+
+# ─── Default rules for all other crawlers ────────────────────────
 User-agent: *
 Allow: /
+Allow: /css/
+Allow: /js/
+Allow: /images/
+Allow: /static/
 Disallow: /api/
 Disallow: /_next/
 Disallow: /static/js/*.map
 Disallow: /static/css/*.map
 
-# Sitemap
-Sitemap: https://refactron.dev/sitemap.xml
-
-# Allow all crawlers to access all content
-Allow: /css/
-Allow: /js/
-Allow: /images/
-Allow: /static/
-
-# Specific bot instructions for major search engines
+# ─── Search engine crawlers (explicit polite settings) ───────────
 User-agent: Googlebot
 Allow: /
 Crawl-delay: 1
@@ -46,17 +88,7 @@ User-agent: YandexBot
 Allow: /
 Crawl-delay: 2
 
-# Block AI training bots (optional - uncomment if needed)
-# User-agent: GPTBot
-# Disallow: /
-
-# User-agent: CCBot
-# Disallow: /
-
-# User-agent: anthropic-ai
-# Disallow: /
-
-# Block common bad bots
+# ─── Blocked: SEO-tool scrapers ──────────────────────────────────
 User-agent: AhrefsBot
 Disallow: /
 
@@ -65,6 +97,10 @@ Disallow: /
 
 User-agent: MJ12bot
 Disallow: /
+
+# ─── Sitemaps + LLM index ────────────────────────────────────────
+Sitemap: https://refactron.dev/sitemap.xml
+Sitemap: https://refactron.dev/llms.txt
 
 # Host directive
 Host: refactron.dev

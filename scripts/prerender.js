@@ -31,6 +31,7 @@ const PAGES = [
   '/about',
   '/changelog',
   '/security',
+  '/research',
   '/privacy-policy',
   '/terms-of-service',
   ...blogSlugs.map(slug => `/blog/${slug}`),
