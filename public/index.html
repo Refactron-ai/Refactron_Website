@@ -29,9 +29,9 @@
   <!-- Primary SEO -->
   <title>Refactron | Safe, Verified Refactoring</title>
   <meta name="description"
-    content="Refactron is a safety-first refactoring tool that analyzes code structure and proposes incremental, reviewable changes to evolve production codebases without breaking behavior." />
+    content="Refactron is a deterministic, behavior-preserving refactoring engine for legacy code — no LLM in the loop, verified before every write. Runs locally." />
   <meta name="keywords"
-    content="code refactoring, safe refactoring, legacy code, technical debt, developer tools, code maintainability" />
+    content="deterministic refactoring, behavior-preserving refactoring, legacy code modernization, no-LLM code refactoring tool, safe refactoring engine, verified code refactoring, Python refactoring, TypeScript refactoring, technical debt, local-first developer tools" />
   <meta name="author" content="Refactron" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://refactron.dev/" />
@@ -46,7 +46,7 @@
   <meta property="og:url" content="https://refactron.dev/" />
   <meta property="og:title" content="Refactron | Safe, Verified Refactoring" />
   <meta property="og:description"
-    content="Safety-first refactoring for real-world codebases. Incremental, reviewable changes with verification built in." />
+    content="Deterministic, behavior-preserving refactoring engine for legacy code. No LLM in the loop. Verified before every write." />
   <meta property="og:image" content="https://refactron.dev/Refactron_Hero.png" />
   <meta property="og:site_name" content="Refactron" />
 
@@ -54,7 +54,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Refactron | Safe, Verified Refactoring" />
   <meta name="twitter:description"
-    content="Safety-first refactoring for real-world codebases. Incremental, reviewable changes with verification built in." />
+    content="Deterministic, behavior-preserving refactoring engine for legacy code. No LLM in the loop. Verified before every write." />
   <meta name="twitter:image" content="https://refactron.dev/Refactron_Hero.png" />
 
   <!-- PWA -->
@@ -97,7 +97,7 @@
     }
     </script>
 
-  <!-- Structured Data: SoftwareApplication (SAFE) -->
+  <!-- Structured Data: SoftwareApplication -->
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -105,9 +105,83 @@
       "name": "Refactron",
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "macOS, Linux, Windows",
-      "programmingLanguage": "Python",
-      "description": "Safety-first refactoring tool that analyzes code structure and proposes incremental, reviewable changes with verification.",
-      "downloadUrl": "https://pypi.org/project/refactron/"
+      "programmingLanguage": ["Python", "TypeScript", "JavaScript"],
+      "description": "Deterministic, behavior-preserving refactoring engine for legacy code. No LLM in the loop. Every change is verified before it touches disk. Runs locally.",
+      "downloadUrl": "https://pypi.org/project/refactron/",
+      "url": "https://refactron.dev",
+      "softwareVersion": "0.5",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "featureList": [
+        "Deterministic, rule-based refactoring engine (no LLM)",
+        "Behavior-preserving structural transforms",
+        "Verification gates (syntax, imports, tests, invariants) before write",
+        "Read-only analysis by default",
+        "Human-in-the-loop approval for every change",
+        "One-command rollback (no git required)",
+        "Runs fully local — no code leaves your machine"
+      ]
+    }
+    </script>
+
+  <!-- Structured Data: FAQPage — sourced from src/components/FAQSection.tsx -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does Refactron change my code automatically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Every structural refactor is shown as a readable diff. Low-risk changes can apply automatically. High-risk changes always ask for approval first. You are always in control."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Refactron ensure changes are safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Every refactor goes through verification checks to preserve behavior. Changes are incremental, measurable, and fully reversible."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this on production or legacy code?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Refactron is designed for long-lived and production codebases where safety, traceability, and control matter most."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my code sent to external services?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "By default, Refactron runs locally with telemetry disabled. Private and on-prem deployment options are planned for teams with strict security requirements."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which languages are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Python, TypeScript, and JavaScript are fully supported today. Go, Rust, and Java are on the roadmap."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this open source?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The core platform is proprietary. Some tooling and libraries are open for early access and community feedback."
+          }
+        }
+      ]
     }
     </script>
 </head>
