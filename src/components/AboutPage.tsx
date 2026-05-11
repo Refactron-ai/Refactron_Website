@@ -49,6 +49,121 @@ const DotGridBackdrop: React.FC<{ opacity?: number }> = ({
   />
 );
 
+/* ─── ASCII backdrop ─────────────────────────────────────────────
+ * A deliberately beautiful character-pattern backdrop. Two layers:
+ *   - "mist"  — dense, faint scatter of punctuation glyphs.
+ *   - "stars" — sparse, brighter accents.
+ * Both are generated once at module load with a seeded RNG so the
+ * pattern is stable. Density rises with distance from the centre
+ * so the foreground content stays readable. A radial mask fades
+ * both layers toward the centre.
+ */
+
+const ASCII_MIST_CHARS = '·.:,;-_=/<>()[]{}|';
+const ASCII_STAR_CHARS = '01░▒+*✦';
+const ASCII_COLS = 180;
+const ASCII_ROWS = 80;
+
+function buildAsciiPattern(
+  cols: number,
+  rows: number,
+  chars: string,
+  seed: number,
+  centerSparsity: number,
+  edgeDensity: number
+): string {
+  let s = seed >>> 0;
+  const rng = () => {
+    s = (s * 1664525 + 1013904223) >>> 0;
+    return s / 4294967296;
+  };
+  const lines: string[] = [];
+  for (let r = 0; r < rows; r++) {
+    let row = '';
+    for (let c = 0; c < cols; c++) {
+      const dx = (c - cols / 2) / (cols / 2);
+      const dy = (r - rows / 2) / (rows / 2);
+      const dist = Math.min(1, Math.sqrt(dx * dx + dy * dy));
+      /* spaceP = probability of placing a SPACE; high in the centre. */
+      const spaceP = centerSparsity - dist * edgeDensity;
+      if (rng() < spaceP) {
+        row += ' ';
+      } else {
+        row += chars[Math.floor(rng() * chars.length)];
+      }
+    }
+    lines.push(row);
+  }
+  return lines.join('\n');
+}
+
+const ASCII_MIST = buildAsciiPattern(
+  ASCII_COLS,
+  ASCII_ROWS,
+  ASCII_MIST_CHARS,
+  1234567,
+  0.92,
+  0.55
+);
+
+const ASCII_STARS = buildAsciiPattern(
+  ASCII_COLS,
+  ASCII_ROWS,
+  ASCII_STAR_CHARS,
+  98765432,
+  0.995,
+  0.04
+);
+
+const AsciiBackdrop: React.FC<{
+  /** Radial mask centre; defaults to the headline area on the left. */
+  maskAt?: string;
+}> = ({ maskAt = '50% 50%' }) => {
+  const mask = `radial-gradient(ellipse 75% 60% at ${maskAt}, transparent 0%, rgba(0,0,0,0.55) 55%, black 100%)`;
+  return (
+    <div
+      aria-hidden
+      className="absolute inset-0 pointer-events-none select-none overflow-hidden"
+      style={{ maskImage: mask, WebkitMaskImage: mask }}
+    >
+      <style>{`
+        @keyframes rfn-ascii-breath {
+          0%, 100% { opacity: 0.85; }
+          50%      { opacity: 1; }
+        }
+        .rfn-ascii-breath { animation: rfn-ascii-breath 9s ease-in-out infinite; }
+      `}</style>
+
+      {/* Mist layer */}
+      <pre
+        className="rfn-ascii-breath absolute inset-0 m-0 font-mono whitespace-pre overflow-hidden"
+        style={{
+          fontSize: '11px',
+          lineHeight: '1.18',
+          letterSpacing: '0.18em',
+          color: 'rgba(255,255,255,0.05)',
+        }}
+      >
+        {ASCII_MIST}
+      </pre>
+
+      {/* Stars layer */}
+      <pre
+        className="rfn-ascii-breath absolute inset-0 m-0 font-mono whitespace-pre overflow-hidden"
+        style={{
+          fontSize: '11px',
+          lineHeight: '1.18',
+          letterSpacing: '0.18em',
+          color: 'rgba(255,255,255,0.13)',
+          animationDelay: '-3s',
+        }}
+      >
+        {ASCII_STARS}
+      </pre>
+    </div>
+  );
+};
+
 /* ─── Data ────────────────────────────────────────────────────── */
 
 const identityFields: { key: string; value: string }[] = [
@@ -626,7 +741,7 @@ const AboutPage: React.FC = () => {
     <div className="relative bg-black font-space antialiased overflow-x-hidden">
       {/* ─── Hero ────────────────────────────────────────────────────── */}
       <section className="relative w-full min-h-[80vh] flex items-center overflow-hidden bg-black">
-        <DotGridBackdrop opacity={0.45} />
+        <AsciiBackdrop maskAt="32% 50%" />
         {sectionFades}
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-20 lg:py-0">
@@ -1084,7 +1199,7 @@ const AboutPage: React.FC = () => {
             transition={{ duration: 0.6 }}
             className={`${cardChrome} p-10 md:p-14 lg:p-16`}
           >
-            <DotGridBackdrop />
+            <AsciiBackdrop maskAt="35% 55%" />
 
             <div className="relative space-y-8">
               <p className={eyebrow}>A letter</p>
