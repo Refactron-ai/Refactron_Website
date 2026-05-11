@@ -163,30 +163,6 @@ const approachSteps: { title: string; detail: string }[] = [
   },
 ];
 
-/* Severity tag — purely monochrome. Brightness encodes severity. */
-const SeverityTag: React.FC<{ severity: DigestSeverity }> = ({ severity }) => {
-  const config = {
-    err: { label: 'ERR', dot: 0.85, text: 0.85 },
-    warn: { label: 'WARN', dot: 0.55, text: 0.65 },
-    info: { label: 'INFO', dot: 0.3, text: 0.45 },
-  }[severity];
-  return (
-    <span className="inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-md border border-white/[0.08] bg-white/[0.02]">
-      <span
-        className="w-1 h-1 rounded-full"
-        style={{ background: `rgba(255,255,255,${config.dot})` }}
-        aria-hidden
-      />
-      <span
-        className="text-[9px] font-mono uppercase tracking-[0.18em]"
-        style={{ color: `rgba(255,255,255,${config.text})` }}
-      >
-        {config.label}
-      </span>
-    </span>
-  );
-};
-
 /* Bullet glyph — small monochrome marker for prose lists. */
 const ListMarker: React.FC = () => (
   <span
@@ -194,6 +170,340 @@ const ListMarker: React.FC = () => (
     className="mt-[7px] mr-3 inline-block w-[18px] h-px shrink-0 bg-white/25"
   />
 );
+
+/* Inline terminal-style severity token: [ERR] / [WARN] / [INFO]. */
+const SeverityToken: React.FC<{ severity: DigestSeverity }> = ({
+  severity,
+}) => {
+  const cfg = {
+    err: { label: 'ERR ', alpha: 0.9 },
+    warn: { label: 'WARN', alpha: 0.62 },
+    info: { label: 'INFO', alpha: 0.36 },
+  }[severity];
+  return (
+    <span
+      className="font-mono text-[11px] tracking-[0.08em] tabular-nums"
+      style={{ color: `rgba(255,255,255,${cfg.alpha})` }}
+    >
+      {cfg.label}
+    </span>
+  );
+};
+
+/* ─── Per-constraint SVG visuals for What Safe Means ─────────────── */
+
+const SafetyVisual: React.FC<{ num: string }> = ({ num }) => {
+  const stroke = 'rgba(255,255,255,0.4)';
+  const bright = 'rgba(255,255,255,0.92)';
+  const dim = 'rgba(255,255,255,0.18)';
+  const veryDim = 'rgba(255,255,255,0.08)';
+  const mono = '"JetBrains Mono", ui-monospace, monospace';
+
+  switch (num) {
+    /* 01 — Read-only state diagram: READ filled, WRITE crossed out */
+    case '01':
+      return (
+        <svg
+          viewBox="0 0 220 36"
+          className="w-full max-w-[260px] h-auto"
+          aria-hidden
+        >
+          <rect
+            x="2"
+            y="8"
+            width="86"
+            height="22"
+            rx="5"
+            fill="rgba(255,255,255,0.12)"
+            stroke="rgba(255,255,255,0.4)"
+          />
+          <circle cx="14" cy="19" r="2.5" fill={bright} />
+          <text
+            x="58"
+            y="23"
+            textAnchor="middle"
+            fontSize="10"
+            fontFamily={mono}
+            fill={bright}
+            letterSpacing="2"
+          >
+            READ
+          </text>
+
+          <line
+            x1="92"
+            y1="19"
+            x2="124"
+            y2="19"
+            stroke={dim}
+            strokeWidth="0.8"
+            strokeDasharray="3 3"
+          />
+
+          <rect
+            x="128"
+            y="8"
+            width="90"
+            height="22"
+            rx="5"
+            stroke={veryDim}
+            fill="rgba(255,255,255,0.018)"
+          />
+          <text
+            x="173"
+            y="23"
+            textAnchor="middle"
+            fontSize="10"
+            fontFamily={mono}
+            fill="rgba(255,255,255,0.32)"
+            letterSpacing="2"
+          >
+            WRITE
+          </text>
+          <line
+            x1="134"
+            y1="19"
+            x2="212"
+            y2="19"
+            stroke="rgba(255,255,255,0.32)"
+            strokeWidth="1"
+          />
+        </svg>
+      );
+
+    /* 02 — proposed → approved with check */
+    case '02':
+      return (
+        <svg
+          viewBox="0 0 220 36"
+          className="w-full max-w-[260px] h-auto"
+          aria-hidden
+        >
+          <rect
+            x="2"
+            y="8"
+            width="80"
+            height="22"
+            rx="5"
+            fill="rgba(255,255,255,0.03)"
+            stroke={dim}
+          />
+          <text
+            x="42"
+            y="23"
+            textAnchor="middle"
+            fontSize="9"
+            fontFamily={mono}
+            fill="rgba(255,255,255,0.5)"
+            letterSpacing="2"
+          >
+            PROPOSED
+          </text>
+
+          <path
+            d="M 86 19 L 132 19 M 124 14 L 132 19 L 124 24"
+            stroke={stroke}
+            strokeWidth="1"
+            fill="none"
+          />
+
+          <rect
+            x="136"
+            y="8"
+            width="82"
+            height="22"
+            rx="5"
+            fill="rgba(255,255,255,0.14)"
+            stroke="rgba(255,255,255,0.42)"
+          />
+          <text
+            x="170"
+            y="23"
+            textAnchor="middle"
+            fontSize="9"
+            fontFamily={mono}
+            fill={bright}
+            letterSpacing="2"
+          >
+            APPROVED
+          </text>
+          <path
+            d="M 198 16 L 202 21 L 210 12"
+            stroke={bright}
+            strokeWidth="1.4"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+
+    /* 03 — verification stack: 3 rows × {check + label} */
+    case '03':
+      return (
+        <svg
+          viewBox="0 0 220 60"
+          className="w-full max-w-[260px] h-auto"
+          aria-hidden
+        >
+          {[
+            { y: 12, label: 'syntax' },
+            { y: 30, label: 'tests' },
+            { y: 48, label: 'invariants' },
+          ].map((row, i) => (
+            <g key={i}>
+              <line
+                x1="4"
+                y1={row.y}
+                x2="44"
+                y2={row.y}
+                stroke="rgba(255,255,255,0.18)"
+              />
+              <path
+                d={`M 48 ${row.y - 2} L 52 ${row.y + 3} L 60 ${row.y - 6}`}
+                stroke={bright}
+                strokeWidth="1.4"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <text
+                x="68"
+                y={row.y + 3}
+                fontSize="10"
+                fontFamily={mono}
+                fill="rgba(255,255,255,0.55)"
+                letterSpacing="1"
+              >
+                {row.label}
+              </text>
+              <text
+                x="214"
+                y={row.y + 3}
+                fontSize="9"
+                textAnchor="end"
+                fontFamily={mono}
+                fill="rgba(255,255,255,0.32)"
+                letterSpacing="1"
+              >
+                pass
+              </text>
+            </g>
+          ))}
+        </svg>
+      );
+
+    /* 04 — five incremental nodes, decreasing brightness */
+    case '04':
+      return (
+        <svg
+          viewBox="0 0 220 36"
+          className="w-full max-w-[260px] h-auto"
+          aria-hidden
+        >
+          {[0, 1, 2, 3, 4].map(i => {
+            const cx = 16 + i * 47;
+            const r = 5;
+            const alpha = 0.95 - i * 0.16;
+            return (
+              <g key={i}>
+                {i < 4 && (
+                  <line
+                    x1={cx + r + 2}
+                    y1="18"
+                    x2={cx + 47 - r - 2}
+                    y2="18"
+                    stroke={dim}
+                    strokeWidth="1"
+                    strokeDasharray={i >= 3 ? '2 2' : undefined}
+                  />
+                )}
+                <circle
+                  cx={cx}
+                  cy="18"
+                  r={r}
+                  fill={`rgba(255,255,255,${alpha})`}
+                  stroke={i === 4 ? 'rgba(255,255,255,0.35)' : undefined}
+                  strokeDasharray={i === 4 ? '1.5 1.5' : undefined}
+                />
+              </g>
+            );
+          })}
+        </svg>
+      );
+
+    /* 05 — rollback loop arrow */
+    case '05':
+      return (
+        <svg
+          viewBox="0 0 220 50"
+          className="w-full max-w-[260px] h-auto"
+          aria-hidden
+        >
+          <circle cx="200" cy="36" r="3" fill={bright} />
+          <text
+            x="196"
+            y="32"
+            textAnchor="end"
+            fontSize="9"
+            fontFamily={mono}
+            fill="rgba(255,255,255,0.4)"
+            letterSpacing="1"
+          >
+            now
+          </text>
+
+          <circle
+            cx="20"
+            cy="36"
+            r="3"
+            fill="rgba(255,255,255,0.3)"
+            stroke="rgba(255,255,255,0.45)"
+          />
+          <text
+            x="24"
+            y="32"
+            fontSize="9"
+            fontFamily={mono}
+            fill="rgba(255,255,255,0.4)"
+            letterSpacing="1"
+          >
+            prev
+          </text>
+
+          <path
+            d="M 200 33 C 200 14, 20 14, 20 32"
+            stroke="rgba(255,255,255,0.45)"
+            strokeWidth="1"
+            strokeDasharray="3 3"
+            fill="none"
+          />
+          <path
+            d="M 16 28 L 20 34 L 24 28"
+            stroke={bright}
+            strokeWidth="1.4"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <text
+            x="110"
+            y="11"
+            textAnchor="middle"
+            fontSize="9"
+            fontFamily={mono}
+            fill="rgba(255,255,255,0.5)"
+            letterSpacing="2"
+          >
+            undo
+          </text>
+        </svg>
+      );
+
+    default:
+      return null;
+  }
+};
 
 const AboutPage: React.FC = () => {
   useSEO({
@@ -405,35 +715,66 @@ const AboutPage: React.FC = () => {
               className="lg:col-span-6 mt-10 lg:mt-0 order-2"
             >
               <div
-                className={`${cardChrome} min-h-[320px] p-6 md:p-7 flex flex-col`}
+                className={`${cardChrome} min-h-[320px] p-5 md:p-6 flex flex-col`}
               >
                 <DotGridBackdrop />
-                <div className="relative flex items-center gap-2 mb-5">
-                  <p className="text-[10px] font-mono uppercase tracking-[0.24em] text-neutral-600">
-                    Sample health digest
-                  </p>
-                  <span className="text-[10px] font-mono text-neutral-700 ml-auto">
+
+                {/* Terminal header strip */}
+                <div className="relative flex items-center gap-2.5 mb-4 pb-3 border-b border-white/[0.05]">
+                  <span className="flex items-center gap-1.5" aria-hidden>
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/25" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/15" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/10" />
+                  </span>
+                  <span className="text-[10px] font-mono text-neutral-600 tracking-[0.18em]">
+                    ~/legacy-monolith
+                  </span>
+                  <span className="ml-auto text-[10px] font-mono text-neutral-700 tracking-wider tabular-nums">
                     5 findings
                   </span>
                 </div>
-                <ul className="relative space-y-2.5 flex-1">
-                  {problemDigestRows.map(row => (
-                    <li
-                      key={row.title}
-                      className="rounded-lg border border-white/[0.06] bg-black/40 px-3.5 py-3 transition-colors hover:border-white/[0.12]"
-                    >
-                      <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <SeverityTag severity={row.severity} />
-                        <span className="text-sm font-medium text-white font-space">
-                          {row.title}
-                        </span>
+
+                {/* Terminal body */}
+                <div className="relative flex-1 font-mono">
+                  <p className="text-[12px] leading-[1.7]">
+                    <span className="text-white/45">›&nbsp;</span>
+                    <span className="text-white/95">refactron analyze .</span>
+                  </p>
+                  <p className="text-[11px] text-neutral-600 mt-1 leading-relaxed">
+                    ✓ scanned 1,284 files · 8.2s
+                  </p>
+
+                  <div className="mt-4 space-y-3">
+                    {problemDigestRows.map(row => (
+                      <div key={row.title} className="text-[12px] leading-snug">
+                        <div className="flex items-baseline gap-2">
+                          <span className="text-neutral-700 select-none">
+                            [
+                          </span>
+                          <SeverityToken severity={row.severity} />
+                          <span className="text-neutral-700 select-none">
+                            ]
+                          </span>
+                          <span className="text-white/85 font-space text-[13px]">
+                            {row.title}
+                          </span>
+                        </div>
+                        <p className="text-[11.5px] text-neutral-500 mt-1 pl-[3.5rem] leading-snug">
+                          {row.detail}
+                        </p>
                       </div>
-                      <p className="text-[13px] text-neutral-500 font-space leading-snug">
-                        {row.detail}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
+                    ))}
+                  </div>
+
+                  <div className="mt-5 pt-3 border-t border-white/[0.04] text-[11px] text-neutral-500 leading-relaxed">
+                    <span className="text-neutral-700">─</span>{' '}
+                    <span className="text-white/55">2 errors</span>
+                    <span className="text-neutral-700"> · </span>
+                    <span className="text-white/50">2 warnings</span>
+                    <span className="text-neutral-700"> · </span>
+                    <span className="text-white/35">1 info</span>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -456,33 +797,58 @@ const AboutPage: React.FC = () => {
                 className={`${cardChrome} min-h-[320px] p-6 md:p-7 flex flex-col`}
               >
                 <DotGridBackdrop />
-                <div className="relative flex items-center gap-2 mb-6">
+                <div className="relative flex items-center gap-2 mb-5">
                   <p className="text-[10px] font-mono uppercase tracking-[0.24em] text-neutral-600">
-                    Structured analysis run
+                    Analysis pipeline
                   </p>
                   <span className="text-[10px] font-mono text-neutral-700 ml-auto tabular-nums">
-                    {approachSteps.length} steps
+                    {approachSteps.length} stages
                   </span>
                 </div>
-                <ol className="relative space-y-5 flex-1 list-none m-0 p-0">
-                  {approachSteps.map((step, i) => (
-                    <li key={step.title} className="flex gap-4">
+
+                {/* Tiny pipeline overview — 5 dots connected by a hairline */}
+                <div className="relative mb-6 flex items-center" aria-hidden>
+                  {approachSteps.map((_, i) => (
+                    <React.Fragment key={i}>
                       <span
-                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-white/[0.1] bg-white/[0.03] text-[11px] font-mono text-neutral-300 tabular-nums"
-                        aria-hidden
-                      >
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
-                      <div className="min-w-0 pt-0.5">
-                        <h3 className="text-sm font-medium text-white font-space leading-snug">
-                          {step.title}
-                        </h3>
-                        <p className="text-[13px] text-neutral-500 font-space leading-relaxed mt-1">
-                          {step.detail}
-                        </p>
-                      </div>
-                    </li>
+                        className="w-1.5 h-1.5 rounded-full"
+                        style={{
+                          background: `rgba(255,255,255,${0.9 - i * 0.13})`,
+                        }}
+                      />
+                      {i < approachSteps.length - 1 && (
+                        <span className="flex-1 h-px bg-white/[0.12]" />
+                      )}
+                    </React.Fragment>
                   ))}
+                </div>
+
+                {/* Vertical pipeline with continuous connector line */}
+                <ol className="relative flex-1 list-none m-0 p-0">
+                  <span
+                    aria-hidden
+                    className="absolute left-[14px] top-3 bottom-3 w-px bg-gradient-to-b from-transparent via-white/[0.14] to-transparent"
+                  />
+                  <div className="space-y-5">
+                    {approachSteps.map((step, i) => (
+                      <li key={step.title} className="relative flex gap-4">
+                        <span
+                          className="relative z-10 flex h-[28px] w-[28px] shrink-0 items-center justify-center rounded-full border border-white/[0.18] bg-black text-[10px] font-mono text-white/85 tabular-nums"
+                          aria-hidden
+                        >
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                        <div className="min-w-0 pt-0.5">
+                          <h3 className="text-sm font-medium text-white font-space leading-snug">
+                            {step.title}
+                          </h3>
+                          <p className="text-[13px] text-neutral-500 font-space leading-relaxed mt-1">
+                            {step.detail}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </div>
                 </ol>
               </div>
             </motion.div>
@@ -551,28 +917,39 @@ const AboutPage: React.FC = () => {
               return (
                 <article
                   key={c.num}
-                  className={`${cardChrome} p-6 lg:p-7 ${
+                  className={`${cardChrome} p-6 lg:p-7 flex flex-col ${
                     isLast
                       ? 'md:col-span-2 md:max-w-2xl md:mx-auto md:w-full'
                       : ''
                   }`}
                 >
                   <DotGridBackdrop />
-                  <div className="relative flex items-start justify-between gap-4">
+
+                  {/* Top row: number + outcome chip */}
+                  <div className="relative flex items-center justify-between gap-4">
                     <span className="text-[10px] font-mono text-neutral-600 tabular-nums tracking-[0.24em]">
                       {c.num}
                     </span>
-                    <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-neutral-500 text-right">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-white/65 text-right px-2 py-0.5 rounded-md border border-white/[0.08] bg-white/[0.025]">
                       {c.outcomeLabel}
                     </span>
                   </div>
-                  <h3 className="relative mt-5 text-lg font-semibold text-white font-space leading-snug">
+
+                  {/* The visual */}
+                  <div className="relative mt-6 mb-6 flex items-center justify-center min-h-[60px]">
+                    <SafetyVisual num={c.num} />
+                  </div>
+
+                  {/* Title + description */}
+                  <h3 className="relative text-lg font-semibold text-white font-space leading-snug">
                     {c.title}
                   </h3>
                   <p className="relative mt-2 text-sm text-neutral-500 font-space leading-relaxed">
                     {c.description}
                   </p>
-                  <div className="relative mt-5 pt-5 border-t border-white/[0.06]">
+
+                  {/* Outcome — bottom anchored */}
+                  <div className="relative mt-5 pt-5 border-t border-white/[0.06] flex-1 flex items-end">
                     <p className="text-sm text-neutral-300 font-space leading-relaxed">
                       {c.outcome}
                     </p>
