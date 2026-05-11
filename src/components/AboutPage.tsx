@@ -1,7 +1,7 @@
 import React from 'react';
 import useSEO from '../hooks/useSEO';
 import { motion } from 'framer-motion';
-import { Linkedin } from 'lucide-react';
+import { Linkedin, RotateCcw } from 'lucide-react';
 import XIcon from '../icons/XIcon';
 
 const FOUNDER_X_HREF = 'https://x.com/OSherikar';
@@ -409,23 +409,12 @@ const SafetyRollback: React.FC = () => (
           border: '1px solid rgba(255,255,255,0.1)',
         }}
       >
-        <svg viewBox="0 0 22 22" width="20" height="20" aria-hidden>
-          <path
-            d="M 5 8 L 5 4 L 2 7"
-            stroke="rgba(255,255,255,0.95)"
-            strokeWidth="1.5"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M 5 8 A 6 6 0 1 1 5 16"
-            stroke="rgba(255,255,255,0.9)"
-            strokeWidth="1.5"
-            fill="none"
-            strokeLinecap="round"
-          />
-        </svg>
+        <RotateCcw
+          aria-hidden
+          className="text-white/95"
+          strokeWidth={1.75}
+          size={20}
+        />
       </div>
 
       {/* now */}
