@@ -1,13 +1,15 @@
 import React from 'react';
 import useSEO from '../hooks/useSEO';
 import { motion } from 'framer-motion';
-import { Check, Linkedin } from 'lucide-react';
+import { Linkedin } from 'lucide-react';
 import XIcon from '../icons/XIcon';
 
 const FOUNDER_X_HREF = 'https://x.com/OSherikar';
 const FOUNDER_LINKEDIN_HREF = 'https://www.linkedin.com/in/omsherikar0229/';
 /** Founder portrait in public/Profile/ */
 const FOUNDER_PORTRAIT_SRC = '/Profile/Om_Sherikar.png';
+
+/* ─── Shared style tokens ─────────────────────────────────────── */
 
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
@@ -17,13 +19,50 @@ const fadeUp = {
 };
 
 const eyebrow =
-  'text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-500 mb-4';
+  'text-[10px] font-mono uppercase tracking-[0.28em] text-neutral-500';
 
-const panelSurface =
-  'relative overflow-hidden rounded-3xl border border-white/[0.1] bg-gradient-to-br from-white/[0.06] via-white/[0.02] to-black/60 shadow-[0_24px_80px_-24px_rgba(0,0,0,0.85)] ring-1 ring-white/[0.04]';
+/* Card recipe matching Workflow / WhatWeDo / Comparison / Quickstart. */
+const cardChrome =
+  'relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.012]';
 
-const panelInnerGlow =
-  'pointer-events-none absolute -top-24 right-0 h-48 w-48 rounded-full bg-white/[0.06] blur-3xl';
+/* Section-level top/bottom black fade overlays. */
+const sectionFades = (
+  <>
+    <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-20 pointer-events-none" />
+    <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-black to-transparent z-20 pointer-events-none" />
+  </>
+);
+
+/* Inline static dot-grid backdrop matching the rest of the site. */
+const DotGridBackdrop: React.FC<{ opacity?: number }> = ({
+  opacity = 0.35,
+}) => (
+  <div
+    aria-hidden
+    className="absolute inset-0 pointer-events-none"
+    style={{
+      opacity,
+      backgroundImage:
+        'radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px)',
+      backgroundSize: '18px 18px',
+    }}
+  />
+);
+
+/* ─── Data ────────────────────────────────────────────────────── */
+
+const identityFields: { key: string; value: string }[] = [
+  { key: 'role', value: 'founder · solo' },
+  { key: 'building', value: 'refactron · v0.5.x' },
+];
+
+const receipts: string[] = [
+  '3,500+ PyPI downloads',
+  'No paid marketing',
+  'Industry beta users',
+  'India Ascends · Lightspeed',
+  'F6S founder grant',
+];
 
 const safetyConstraints = [
   {
@@ -66,7 +105,7 @@ const safetyConstraints = [
   },
 ];
 
-type DigestSeverity = 'error' | 'warning' | 'info';
+type DigestSeverity = 'err' | 'warn' | 'info';
 
 const problemDigestRows: {
   severity: DigestSeverity;
@@ -74,17 +113,17 @@ const problemDigestRows: {
   detail: string;
 }[] = [
   {
-    severity: 'error',
+    severity: 'err',
     title: 'Circular dependency',
     detail: 'module_a imports module_b; module_b imports module_a.',
   },
   {
-    severity: 'warning',
+    severity: 'warn',
     title: 'Duplicated code',
     detail: '847 lines duplicated across 12 files.',
   },
   {
-    severity: 'warning',
+    severity: 'warn',
     title: 'High complexity',
     detail: 'Cyclomatic complexity 28 (threshold 10).',
   },
@@ -94,7 +133,7 @@ const problemDigestRows: {
     detail: '38% overall.',
   },
   {
-    severity: 'error',
+    severity: 'err',
     title: 'Technical debt',
     detail: 'Overall risk flagged as high.',
   },
@@ -124,17 +163,37 @@ const approachSteps: { title: string; detail: string }[] = [
   },
 ];
 
-const severityChipClass: Record<DigestSeverity, string> = {
-  error: 'border-rose-500/25 bg-rose-500/10 text-rose-300/95',
-  warning: 'border-amber-500/25 bg-amber-500/10 text-amber-200/95',
-  info: 'border-sky-500/25 bg-sky-500/10 text-sky-200/95',
+/* Severity tag — purely monochrome. Brightness encodes severity. */
+const SeverityTag: React.FC<{ severity: DigestSeverity }> = ({ severity }) => {
+  const config = {
+    err: { label: 'ERR', dot: 0.85, text: 0.85 },
+    warn: { label: 'WARN', dot: 0.55, text: 0.65 },
+    info: { label: 'INFO', dot: 0.3, text: 0.45 },
+  }[severity];
+  return (
+    <span className="inline-flex items-center gap-1.5 px-1.5 py-0.5 rounded-md border border-white/[0.08] bg-white/[0.02]">
+      <span
+        className="w-1 h-1 rounded-full"
+        style={{ background: `rgba(255,255,255,${config.dot})` }}
+        aria-hidden
+      />
+      <span
+        className="text-[9px] font-mono uppercase tracking-[0.18em]"
+        style={{ color: `rgba(255,255,255,${config.text})` }}
+      >
+        {config.label}
+      </span>
+    </span>
+  );
 };
 
-const severityLabel: Record<DigestSeverity, string> = {
-  error: 'Error',
-  warning: 'Warning',
-  info: 'Info',
-};
+/* Bullet glyph — small monochrome marker for prose lists. */
+const ListMarker: React.FC = () => (
+  <span
+    aria-hidden
+    className="mt-[7px] mr-3 inline-block w-[18px] h-px shrink-0 bg-white/25"
+  />
+);
 
 const AboutPage: React.FC = () => {
   useSEO({
@@ -152,214 +211,192 @@ const AboutPage: React.FC = () => {
 
   return (
     <div className="relative bg-black font-space antialiased overflow-x-hidden">
-      {/* ─── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative w-full min-h-[85vh] flex items-center overflow-hidden bg-black">
-        <div
-          className="absolute inset-0 pointer-events-none z-0 bg-[radial-gradient(ellipse_85%_55%_at_50%_-10%,rgba(255,255,255,0.07),transparent_55%)]"
-          aria-hidden
-        />
-        {/* Line grid - visible in center, fades on all four sides */}
-        <div
-          className="absolute inset-0 pointer-events-none z-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)
-            `,
-            backgroundSize: '44px 44px',
-            maskImage: `
-              radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 75%)
-            `,
-            WebkitMaskImage: `
-              radial-gradient(ellipse 80% 70% at 50% 50%, black 30%, transparent 75%)
-            `,
-          }}
-        />
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-20 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-black to-transparent z-20 pointer-events-none" />
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-16 lg:py-0">
-          <motion.div
-            {...fadeUp}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 lg:items-end"
-          >
-            <div className="lg:col-span-7 space-y-6">
-              <p className={eyebrow}>My story</p>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight font-space leading-[1.08]">
-                <span className="bg-gradient-to-br from-white via-white to-neutral-400 bg-clip-text text-transparent">
-                  About Refactron
-                </span>
-              </h1>
-            </div>
-            <div className="lg:col-span-5 lg:pl-6 xl:pl-10">
-              <div className="h-px w-12 bg-gradient-to-r from-white/45 to-transparent mb-6 hidden lg:block" />
-              <p className="text-base md:text-lg text-neutral-400 font-space leading-relaxed">
-                Every codebase has code nobody wants to touch.{' '}
-                <span className="text-neutral-200">
-                  I built Refactron to change that.
-                </span>
+      {/* ─── Hero ────────────────────────────────────────────────────── */}
+      <section className="relative w-full min-h-[80vh] flex items-center overflow-hidden bg-black">
+        <DotGridBackdrop opacity={0.45} />
+        {sectionFades}
+
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-20 lg:py-0">
+          <motion.div {...fadeUp} className="max-w-5xl space-y-8">
+            <h1 className="text-5xl md:text-6xl lg:text-[5.5rem] font-semibold tracking-tight text-white font-space leading-[1.04]">
+              Every codebase has code
+              <br />
+              <span className="text-neutral-500">nobody wants to touch.</span>
+            </h1>
+
+            <div className="max-w-2xl space-y-3">
+              <p className="text-lg md:text-xl text-neutral-300 font-space leading-relaxed">
+                Refactron exists to change that.
+              </p>
+              <p className="text-base md:text-lg text-neutral-500 font-space leading-relaxed">
+                Built so you can refactor the old code and{' '}
+                <span className="text-neutral-300">prove nothing broke</span>.
               </p>
             </div>
+
+            <p className="text-[11px] font-mono text-neutral-600 tracking-[0.22em] pt-4">
+              — Om Sherikar, founder
+            </p>
           </motion.div>
         </div>
       </section>
 
-      {/* ─── Founder ───────────────────────────────────────────────────────── */}
-      <section className="relative w-full py-20 lg:py-28 bg-black border-t border-white/[0.06]">
-        <div
-          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent pointer-events-none"
-          aria-hidden
-        />
-        <div className="relative z-10 max-w-4xl mx-auto px-4">
-          <motion.div
+      {/* ─── Founder + Origin Story ────────────────────────────────── */}
+      <section className="relative w-full py-24 lg:py-28 overflow-hidden">
+        {sectionFades}
+        <div className="relative z-10 max-w-6xl mx-auto px-4">
+          <motion.div {...fadeUp} className="mb-10 space-y-3">
+            <p className={eyebrow}>Founder · Origin</p>
+            <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-white font-space leading-[1.1]">
+              Built by Om Sherikar.
+            </h2>
+          </motion.div>
+
+          <motion.article
             {...fadeUp}
-            className={`${panelSurface} p-8 md:p-10 lg:p-12`}
+            className={`${cardChrome} p-8 md:p-10 lg:p-12`}
           >
-            <div className={panelInnerGlow} aria-hidden />
-            <div className="relative grid gap-10 md:gap-12 md:grid-cols-[minmax(0,13.5rem)_1fr] md:items-start">
-              <figure className="mx-auto w-full max-w-[216px] shrink-0 md:mx-0 md:max-w-none">
-                <div className="relative isolate mx-auto w-full max-w-[216px] md:max-w-none">
-                  {/* Soft outer glow */}
+            <DotGridBackdrop />
+
+            <div className="relative grid gap-10 md:gap-12 md:grid-cols-[minmax(0,15rem)_1fr] md:items-start">
+              {/* Portrait */}
+              <figure className="mx-auto w-full max-w-[220px] md:mx-0 md:max-w-none">
+                <div className="relative overflow-hidden rounded-2xl border border-white/[0.1] bg-black aspect-[4/5] shadow-[0_24px_60px_-24px_rgba(0,0,0,0.9)]">
+                  <img
+                    src={FOUNDER_PORTRAIT_SRC}
+                    alt="Portrait of Om Sherikar, founder of Refactron"
+                    className="h-full w-full object-cover object-[center_32%] scale-[1.14]"
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <div
-                    className="pointer-events-none absolute -inset-8 rounded-[2rem] bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.14)_0%,transparent_68%)] blur-2xl opacity-90"
+                    className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_72%_at_50%_42%,transparent_30%,rgba(0,0,0,0.5)_65%,rgb(0,0,0)_100%)]"
                     aria-hidden
                   />
                   <div
-                    className="pointer-events-none absolute -inset-4 rounded-3xl shadow-[0_0_52px_-8px_rgba(255,255,255,0.28),0_0_100px_-28px_rgba(255,255,255,0.12)]"
+                    className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/[0.08]"
                     aria-hidden
                   />
-                  <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-black aspect-[4/5] shadow-[0_12px_48px_-12px_rgba(0,0,0,0.95)] ring-1 ring-white/[0.06]">
-                    <img
-                      src={FOUNDER_PORTRAIT_SRC}
-                      alt="Portrait of Om Sherikar, founder of Refactron"
-                      className="h-full w-full object-cover object-[center_32%] scale-[1.14]"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {/* Vignette: hide wall / frame at edges; keeps subject readable */}
-                    <div
-                      className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_58%_74%_at_50%_42%,transparent_26%,rgba(0,0,0,0.55)_62%,rgb(0,0,0)_100%)]"
-                      aria-hidden
-                    />
-                    <div
-                      className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-inset ring-white/[0.08]"
-                      aria-hidden
-                    />
-                  </div>
                 </div>
                 <figcaption className="sr-only">
                   Om Sherikar, founder of Refactron.
                 </figcaption>
               </figure>
 
-              <div className="space-y-8 min-w-0">
-                <div className="space-y-3">
-                  <p className={eyebrow}>Founder</p>
-                  <h2 className="text-3xl md:text-4xl font-semibold text-white font-space tracking-tight">
-                    Built by Om Sherikar
-                  </h2>
-                  <p className="text-neutral-400 font-space leading-relaxed">
-                    Second year B.Tech IT student at RGIPT Amethi. Solo founder.
-                    Building in public.
+              {/* Bio / origin story */}
+              <div className="space-y-7 min-w-0">
+                {/* Identity block — JSON-config feel */}
+                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1.5 font-mono text-[12px]">
+                  {identityFields.map(f => (
+                    <div key={f.key} className="flex gap-2 truncate">
+                      <dt className="text-neutral-600 tabular-nums">
+                        {f.key}:
+                      </dt>
+                      <dd className="text-neutral-300 truncate">{f.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+
+                <div className="h-px bg-white/[0.06]" />
+
+                {/* The moment */}
+                <div className="space-y-4">
+                  <p className="text-[10px] font-mono uppercase tracking-[0.28em] text-neutral-600">
+                    The moment
                   </p>
-                </div>
-                <div className="space-y-5 text-base md:text-lg text-neutral-400 font-space leading-relaxed">
-                  <p>
-                    I watched a team avoid an entire part of their codebase at a
-                    hackathon because nobody wanted to risk breaking it. That
-                    moment stuck with me. I could not find a tool that would
-                    actually go in, fix the legacy code, and prove nothing
-                    broke.
+                  <p className="text-base md:text-lg text-neutral-300 font-space leading-relaxed">
+                    At a hackathon, I watched a team avoid an entire part of
+                    their codebase. Nobody wanted to risk breaking it. That
+                    moment stuck with me.
                   </p>
-                  <p className="text-neutral-200 font-medium">
+                  <p className="text-base md:text-lg text-neutral-400 font-space leading-relaxed">
+                    I looked for a tool that would actually go in, fix the
+                    legacy code, and prove nothing broke. Couldn&apos;t find
+                    one.
+                  </p>
+                  <p className="text-base md:text-lg text-white font-medium font-space leading-relaxed">
                     So I built one.
                   </p>
                 </div>
-                <ul className="flex flex-wrap gap-2.5">
-                  {[
-                    '3,500+ PyPI downloads',
-                    'No paid marketing',
-                    'Industry beta users',
-                    'India Ascends · Lightspeed',
-                    'F6S founder grant',
-                  ].map(label => (
+
+                {/* Receipts */}
+                <ul className="flex flex-wrap gap-2">
+                  {receipts.map(label => (
                     <li
                       key={label}
-                      className="text-xs md:text-sm text-neutral-400 font-space px-3.5 py-1.5 rounded-full border border-white/[0.08] bg-black/40"
+                      className="text-[11px] font-mono text-neutral-400 px-2.5 py-1 rounded-md border border-white/[0.08] bg-white/[0.018] tracking-wide"
                     >
                       {label}
                     </li>
                   ))}
                 </ul>
-                <div className="flex flex-wrap gap-3 pt-1">
+
+                {/* Social */}
+                <div className="flex flex-wrap gap-3 pt-2">
                   <a
                     href={FOUNDER_X_HREF}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-sm font-medium text-white font-space hover:bg-white/[0.08] hover:border-white/20 transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/[0.1] bg-white/[0.02] text-sm text-neutral-200 font-space hover:bg-white/[0.05] hover:border-white/20 transition-colors"
                   >
-                    <XIcon className="w-4 h-4 shrink-0" aria-hidden />
+                    <XIcon className="w-3.5 h-3.5 shrink-0" aria-hidden />
                     Follow on X
                   </a>
                   <a
                     href={FOUNDER_LINKEDIN_HREF}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/10 bg-white/[0.03] text-sm font-medium text-white font-space hover:bg-white/[0.07] hover:border-white/20 transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-white/[0.1] bg-white/[0.02] text-sm text-neutral-200 font-space hover:bg-white/[0.05] hover:border-white/20 transition-colors"
                   >
-                    <Linkedin className="w-4 h-4 shrink-0" aria-hidden />
+                    <Linkedin className="w-3.5 h-3.5 shrink-0" aria-hidden />
                     Connect on LinkedIn
                   </a>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </motion.article>
         </div>
       </section>
 
-      {/* ─── The Problem ──────────────────────────────────────────────────── */}
-      <section className="relative w-full py-24 overflow-hidden bg-grid-white/[0.02]">
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-20 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-black to-transparent z-20 pointer-events-none" />
+      {/* ─── The Problem ──────────────────────────────────────────── */}
+      <section className="relative w-full py-24 overflow-hidden">
+        {sectionFades}
         <div className="relative z-10 max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
-            {/* Content */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="lg:col-span-6 space-y-8 order-1"
+              className="lg:col-span-6 space-y-7 order-1"
             >
               <div className="space-y-4">
                 <p className={eyebrow}>Context</p>
-                <h2 className="text-5xl md:text-6xl font-semibold text-white tracking-tight font-space leading-[1.1]">
-                  The Problem
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight font-space leading-[1.08]">
+                  The Problem.
                 </h2>
-                <p className="text-base md:text-lg text-neutral-400 font-space leading-loose">
+                <p className="text-base md:text-lg text-neutral-400 font-space leading-relaxed max-w-xl">
                   Most production codebases carry significant technical debt,
                   but refactoring them is often avoided.
                 </p>
               </div>
-              <ul className="space-y-4">
+              <ul className="space-y-3.5 max-w-xl">
                 {[
-                  'Manual refactoring is slow, expensive, and risky',
-                  'Automated tools focus on generation without guaranteeing correctness',
-                  'Teams postpone structural improvements, making codebases harder to maintain',
+                  'Manual refactoring is slow, expensive, and risky.',
+                  'Automated tools focus on generation without guaranteeing correctness.',
+                  'Teams postpone structural improvements, making codebases harder to maintain.',
                 ].map((item, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-3 text-sm text-neutral-400 font-space leading-relaxed"
+                    className="flex items-start text-base text-neutral-300 font-space leading-relaxed"
                   >
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/[0.08] text-neutral-300">
-                      <Check className="h-3 w-3 stroke-[2.5]" aria-hidden />
-                    </span>
-                    {item}
+                    <ListMarker />
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
             </motion.div>
 
-            {/* Visual */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -368,53 +405,46 @@ const AboutPage: React.FC = () => {
               className="lg:col-span-6 mt-10 lg:mt-0 order-2"
             >
               <div
-                className={`${panelSurface} min-h-[320px] lg:min-h-[380px] p-6 md:p-8 flex flex-col`}
+                className={`${cardChrome} min-h-[320px] p-6 md:p-7 flex flex-col`}
               >
-                <div className={panelInnerGlow} aria-hidden />
-                <div className="relative flex items-center gap-2 mb-6">
-                  <span
-                    className="h-2 w-2 rounded-full bg-rose-400/90 shadow-[0_0_12px_rgba(251,113,133,0.45)]"
-                    aria-hidden
-                  />
-                  <p className="text-xs font-medium text-neutral-400 uppercase tracking-wider">
+                <DotGridBackdrop />
+                <div className="relative flex items-center gap-2 mb-5">
+                  <p className="text-[10px] font-mono uppercase tracking-[0.24em] text-neutral-600">
                     Sample health digest
                   </p>
+                  <span className="text-[10px] font-mono text-neutral-700 ml-auto">
+                    5 findings
+                  </span>
                 </div>
-                <div className="relative space-y-3 flex-1">
+                <ul className="relative space-y-2.5 flex-1">
                   {problemDigestRows.map(row => (
-                    <div
+                    <li
                       key={row.title}
-                      className="rounded-xl border border-white/[0.06] bg-black/50 px-4 py-3 backdrop-blur-sm transition-colors hover:border-white/[0.12]"
+                      className="rounded-lg border border-white/[0.06] bg-black/40 px-3.5 py-3 transition-colors hover:border-white/[0.12]"
                     >
-                      <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                        <span
-                          className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md border ${severityChipClass[row.severity]}`}
-                        >
-                          {severityLabel[row.severity]}
-                        </span>
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
+                        <SeverityTag severity={row.severity} />
                         <span className="text-sm font-medium text-white font-space">
                           {row.title}
                         </span>
                       </div>
-                      <p className="text-sm text-neutral-500 font-space leading-snug">
+                      <p className="text-[13px] text-neutral-500 font-space leading-snug">
                         {row.detail}
                       </p>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ─── My Approach ───────────────────────────────────────────────────── */}
-      <section className="relative w-full py-24 overflow-hidden bg-grid-white/[0.02]">
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-20 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-black to-transparent z-20 pointer-events-none" />
+      {/* ─── My Approach ──────────────────────────────────────────── */}
+      <section className="relative w-full py-24 overflow-hidden">
+        {sectionFades}
         <div className="relative z-10 max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
-            {/* Visual */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -423,32 +453,31 @@ const AboutPage: React.FC = () => {
               className="lg:col-span-6 mt-10 lg:mt-0 order-2 lg:order-1"
             >
               <div
-                className={`${panelSurface} min-h-[320px] lg:min-h-[380px] p-6 md:p-8 flex flex-col`}
+                className={`${cardChrome} min-h-[320px] p-6 md:p-7 flex flex-col`}
               >
-                <div className={panelInnerGlow} aria-hidden />
+                <DotGridBackdrop />
                 <div className="relative flex items-center gap-2 mb-6">
-                  <span
-                    className="h-2 w-2 rounded-full bg-neutral-300 shadow-[0_0_14px_rgba(255,255,255,0.2)]"
-                    aria-hidden
-                  />
-                  <p className="text-xs font-medium text-neutral-400 uppercase tracking-wider">
+                  <p className="text-[10px] font-mono uppercase tracking-[0.24em] text-neutral-600">
                     Structured analysis run
                   </p>
+                  <span className="text-[10px] font-mono text-neutral-700 ml-auto tabular-nums">
+                    {approachSteps.length} steps
+                  </span>
                 </div>
                 <ol className="relative space-y-5 flex-1 list-none m-0 p-0">
                   {approachSteps.map((step, i) => (
                     <li key={step.title} className="flex gap-4">
                       <span
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/12 bg-white/[0.05] text-xs font-semibold text-neutral-300 font-space tabular-nums shadow-[0_0_24px_-10px_rgba(255,255,255,0.15)]"
+                        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-white/[0.1] bg-white/[0.03] text-[11px] font-mono text-neutral-300 tabular-nums"
                         aria-hidden
                       >
-                        {i + 1}
+                        {String(i + 1).padStart(2, '0')}
                       </span>
                       <div className="min-w-0 pt-0.5">
                         <h3 className="text-sm font-medium text-white font-space leading-snug">
                           {step.title}
                         </h3>
-                        <p className="text-sm text-neutral-500 font-space leading-relaxed mt-1">
+                        <p className="text-[13px] text-neutral-500 font-space leading-relaxed mt-1">
                           {step.detail}
                         </p>
                       </div>
@@ -458,38 +487,35 @@ const AboutPage: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Content */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="lg:col-span-6 space-y-8 order-1 lg:order-2"
+              className="lg:col-span-6 space-y-7 order-1 lg:order-2"
             >
               <div className="space-y-4">
                 <p className={eyebrow}>How I think about it</p>
-                <h2 className="text-5xl md:text-6xl font-semibold text-white tracking-tight font-space leading-[1.1]">
-                  My Approach
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight font-space leading-[1.08]">
+                  My Approach.
                 </h2>
-                <p className="text-base md:text-lg text-neutral-400 font-space leading-loose">
+                <p className="text-base md:text-lg text-neutral-400 font-space leading-relaxed max-w-xl">
                   Refactoring as a structured engineering process, not a
                   one-shot automation problem.
                 </p>
               </div>
-              <ul className="space-y-4">
+              <ul className="space-y-3.5 max-w-xl">
                 {[
-                  'Analyzes code structure and identifies targeted improvements',
-                  'Proposes incremental refactors that preserve existing behavior',
-                  'Makes refactoring predictable, reviewable, and safe',
+                  'Analyzes code structure and identifies targeted improvements.',
+                  'Proposes incremental refactors that preserve existing behavior.',
+                  'Makes refactoring predictable, reviewable, and safe.',
                 ].map((item, i) => (
                   <li
                     key={i}
-                    className="flex items-start gap-3 text-sm text-neutral-400 font-space leading-relaxed"
+                    className="flex items-start text-base text-neutral-300 font-space leading-relaxed"
                   >
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/[0.08] text-neutral-300">
-                      <Check className="h-3 w-3 stroke-[2.5]" aria-hidden />
-                    </span>
-                    {item}
+                    <ListMarker />
+                    <span>{item}</span>
                   </li>
                 ))}
               </ul>
@@ -498,161 +524,123 @@ const AboutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ─── What "Safe" Means ────────────────────────────────────────────── */}
-      <section className="relative w-full py-24 bg-grid-white/[0.02]">
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-20 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-black to-transparent z-20 pointer-events-none" />
+      {/* ─── What Safe Means ─────────────────────────────────────── */}
+      <section className="relative w-full py-24 overflow-hidden">
+        {sectionFades}
         <div className="relative z-10 max-w-7xl mx-auto px-4">
-          {/* Section header */}
           <motion.div
             {...fadeUp}
-            className="mb-12 lg:mb-14 max-w-3xl space-y-5"
+            className="mb-12 lg:mb-14 max-w-3xl space-y-4"
           >
             <p className={eyebrow}>Principles</p>
-            <h2 className="text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight font-space leading-[1.08]">
-              <span className="bg-gradient-to-br from-white via-white to-neutral-500 bg-clip-text text-transparent">
-                What Safe Means
-              </span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-white font-space leading-[1.08]">
+              What Safe Means.
             </h2>
             <p className="text-base md:text-lg text-neutral-400 font-space leading-relaxed">
-              Safety is not a claim: it&apos;s a set of constraints I built
+              Safety isn&apos;t a claim — it&apos;s a set of constraints I built
               Refactron around.
             </p>
           </motion.div>
 
           <motion.div
             {...fadeUp}
-            className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5"
           >
             {safetyConstraints.map((c, i) => {
               const isLast = i === safetyConstraints.length - 1;
               return (
-                <div
+                <article
                   key={c.num}
-                  className={
+                  className={`${cardChrome} p-6 lg:p-7 ${
                     isLast
-                      ? 'md:col-span-2 flex justify-center pt-1'
-                      : undefined
-                  }
+                      ? 'md:col-span-2 md:max-w-2xl md:mx-auto md:w-full'
+                      : ''
+                  }`}
                 >
-                  <div
-                    className={`group relative w-full overflow-hidden rounded-2xl border border-white/[0.09] bg-gradient-to-b from-white/[0.05] to-black/50 p-6 lg:p-7 transition-all duration-300 hover:border-white/[0.16] hover:shadow-[0_0_48px_-18px_rgba(255,255,255,0.08)] ${isLast ? 'max-w-lg' : ''}`}
-                  >
-                    <div
-                      className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-70"
-                      aria-hidden
-                    />
-                    <div className="relative flex items-start justify-between gap-4">
-                      <span className="text-[11px] font-semibold text-neutral-500 tabular-nums tracking-wider font-space">
-                        {c.num}
-                      </span>
-                      <span className="text-right text-[11px] font-medium uppercase tracking-wider text-neutral-500 font-space">
-                        {c.outcomeLabel}
-                      </span>
-                    </div>
-                    <h3 className="relative mt-5 text-lg font-semibold text-white font-space leading-snug">
-                      {c.title}
-                    </h3>
-                    <p className="relative mt-2 text-sm text-neutral-500 font-space leading-relaxed">
-                      {c.description}
-                    </p>
-                    <div className="relative mt-5 border-t border-white/[0.06] pt-5">
-                      <p className="text-sm text-neutral-400 font-space leading-relaxed">
-                        {c.outcome}
-                      </p>
-                    </div>
+                  <DotGridBackdrop />
+                  <div className="relative flex items-start justify-between gap-4">
+                    <span className="text-[10px] font-mono text-neutral-600 tabular-nums tracking-[0.24em]">
+                      {c.num}
+                    </span>
+                    <span className="text-[10px] font-mono uppercase tracking-[0.22em] text-neutral-500 text-right">
+                      {c.outcomeLabel}
+                    </span>
                   </div>
-                </div>
+                  <h3 className="relative mt-5 text-lg font-semibold text-white font-space leading-snug">
+                    {c.title}
+                  </h3>
+                  <p className="relative mt-2 text-sm text-neutral-500 font-space leading-relaxed">
+                    {c.description}
+                  </p>
+                  <div className="relative mt-5 pt-5 border-t border-white/[0.06]">
+                    <p className="text-sm text-neutral-300 font-space leading-relaxed">
+                      {c.outcome}
+                    </p>
+                  </div>
+                </article>
               );
             })}
           </motion.div>
         </div>
       </section>
 
-      {/* ─── Why I'm Building Refactron ───────────────────────────────────── */}
-      <section className="relative w-full py-24 overflow-hidden bg-grid-white/[0.02]">
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-20 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-black to-transparent z-20 pointer-events-none" />
-        <div className="relative z-10 max-w-7xl mx-auto px-4">
-          <motion.div
+      {/* ─── Why I'm Building (letter close) ─────────────────────── */}
+      <section className="relative w-full py-28 lg:py-32 overflow-hidden">
+        {sectionFades}
+        <div className="relative z-10 max-w-4xl mx-auto px-4">
+          <motion.article
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className={`relative ${panelSurface} p-12 md:p-16`}
+            transition={{ duration: 0.6 }}
+            className={`${cardChrome} p-10 md:p-14 lg:p-16`}
           >
-            <div
-              className="pointer-events-none absolute -bottom-32 left-1/2 h-64 w-[120%] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.06),transparent_65%)]"
-              aria-hidden
-            />
-            {/* Decorative large quote mark */}
-            <div
-              className="absolute top-6 right-10 text-[12rem] leading-none font-serif text-white/[0.03] select-none pointer-events-none"
-              aria-hidden="true"
-            >
-              "
-            </div>
+            <DotGridBackdrop />
 
-            {/* Left accent bar */}
-            <div className="absolute left-0 top-12 bottom-12 w-[3px] rounded-full bg-gradient-to-b from-transparent via-white/25 to-transparent" />
+            <div className="relative space-y-8">
+              <p className={eyebrow}>A letter</p>
 
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-              <div className="lg:col-span-5">
-                <motion.h2
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="text-4xl md:text-5xl font-semibold tracking-tight font-space leading-[1.1]"
-                >
-                  <span className="bg-gradient-to-br from-white via-white to-neutral-400 bg-clip-text text-transparent">
-                    Why I&apos;m Building Refactron
-                  </span>
-                </motion.h2>
+              <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] font-semibold tracking-tight text-white font-space leading-[1.1]">
+                Why I&apos;m building Refactron.
+              </h2>
+
+              <div className="space-y-5 max-w-2xl text-lg md:text-xl text-neutral-300 font-space leading-[1.7]">
+                <p>
+                  The tools that existed could find legacy code, or generate new
+                  code. None of them could{' '}
+                  <span className="text-white">actually refactor</span> the old
+                  code and <span className="text-white">prove it was safe</span>
+                  .
+                </p>
+                <p className="text-neutral-400">
+                  That gap bothered me enough that I couldn&apos;t leave it
+                  alone.
+                </p>
               </div>
-              <div className="lg:col-span-7 flex flex-col gap-6">
-                <motion.p
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="text-base md:text-lg text-neutral-400 font-space leading-relaxed"
-                >
-                  I built Refactron because the tools that existed could find
-                  legacy code or generate new code but none of them could
-                  actually refactor the old code and prove it was safe.
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.28 }}
-                  className="text-base md:text-lg text-neutral-400 font-space leading-relaxed"
-                >
-                  That gap bothered me enough that I could not leave it alone.
-                </motion.p>
+
+              <div className="pt-4 flex items-center gap-3">
+                <span className="h-px w-8 bg-white/30" aria-hidden />
+                <span className="text-[11px] font-mono text-neutral-400 tracking-[0.22em]">
+                  Om
+                </span>
               </div>
             </div>
-          </motion.div>
+          </motion.article>
         </div>
       </section>
 
-      {/* ─── Contact ──────────────────────────────────────────────────────── */}
+      {/* ─── Contact ─────────────────────────────────────────────── */}
       <section className="relative w-full py-20 bg-black border-t border-white/[0.06]">
-        <div
-          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent pointer-events-none"
-          aria-hidden
-        />
         <div className="max-w-7xl mx-auto px-4 text-center">
           <motion.div {...fadeUp} className="space-y-6">
-            <p className="text-xl text-neutral-300 font-space font-light">
-              Questions or want to learn more?
+            <p className="text-lg md:text-xl text-neutral-300 font-space">
+              Questions, or want to learn more?
             </p>
             <a
               href="https://cal.com/omsherikar/queries-refactron"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-8 py-4 rounded-xl border border-white/15 bg-white/[0.06] text-white font-medium font-space shadow-[0_0_40px_-12px_rgba(255,255,255,0.08)] hover:bg-white/10 hover:border-white/25 transition-all"
+              className="inline-flex items-center justify-center px-7 py-3.5 rounded-xl border border-white/15 bg-white/[0.04] text-white font-medium font-space text-sm hover:bg-white/[0.08] hover:border-white/25 transition-colors"
             >
               Get in touch
             </a>
