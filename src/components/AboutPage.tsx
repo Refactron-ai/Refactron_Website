@@ -505,6 +505,169 @@ const SafetyVisual: React.FC<{ num: string }> = ({ num }) => {
   }
 };
 
+/* ─── Hero glassmorphic chip module ──────────────────────────────
+ * Dark glass / satin-finish tile that reads as a single hardware
+ * module ("REFACTRON · ENGINE"). Soft top-edge highlight, inset
+ * shadow, subtle radial pulse on the core, a small mono logo
+ * glyph in the corner, an LED-style status row, and surrounding
+ * mono labels. Pure CSS — no SVG hairlines, no iso slabs.
+ */
+
+const ChipCoreDie: React.FC = () => {
+  /* A 9x9 grid of dots that fade radially from the centre,
+   * suggesting a chip die seen from above. The centre pulses very
+   * subtly via a single CSS keyframe. */
+  const cells: { alpha: number; emphasize: boolean }[] = [];
+  const N = 9;
+  for (let i = 0; i < N * N; i++) {
+    const r = Math.floor(i / N) - (N - 1) / 2;
+    const c = (i % N) - (N - 1) / 2;
+    const d = Math.sqrt(r * r + c * c);
+    const alpha = Math.max(0, 0.62 - d * 0.13);
+    cells.push({ alpha, emphasize: r === 0 && c === 0 });
+  }
+  return (
+    <div
+      className="relative grid grid-cols-9 gap-[6px]"
+      aria-hidden
+      style={{ width: 156 }}
+    >
+      {cells.map((cell, i) => (
+        <span
+          key={i}
+          className={cell.emphasize ? 'rfn-die-core' : ''}
+          style={{
+            width: 4,
+            height: 4,
+            borderRadius: '50%',
+            background: `rgba(255,255,255,${cell.alpha})`,
+            boxShadow: cell.emphasize
+              ? '0 0 8px rgba(255,255,255,0.6)'
+              : undefined,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+const HeroChipModule: React.FC = () => (
+  <div className="relative w-full max-w-[420px] mx-auto select-none">
+    {/* Inline pulse keyframe used by the core */}
+    <style>{`
+      @keyframes rfn-die-pulse {
+        0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(255,255,255,0.55); }
+        50%      { opacity: 0.55; box-shadow: 0 0 12px rgba(255,255,255,0.85); }
+      }
+      .rfn-die-core { animation: rfn-die-pulse 2.6s ease-in-out infinite; }
+    `}</style>
+
+    {/* Surrounding mono labels */}
+    <div className="absolute -top-2 left-2 text-[9px] font-mono text-neutral-600 tracking-[0.28em]">
+      FIG · 01
+    </div>
+    <div className="absolute -bottom-2 right-2 text-[9px] font-mono text-neutral-600 tracking-[0.28em]">
+      DETERMINISTIC · V0.5
+    </div>
+    <div
+      className="absolute top-1/2 -right-3 -translate-y-1/2 text-[8.5px] font-mono text-neutral-700 tracking-[0.34em] hidden xl:block"
+      style={{ writingMode: 'vertical-rl' }}
+    >
+      ANALYZE · REFACTOR · VERIFY · DOCUMENT
+    </div>
+
+    {/* The chip */}
+    <div
+      className="relative aspect-square rounded-[28px]"
+      style={{
+        background: `
+          radial-gradient(ellipse 70% 40% at 50% 0%, rgba(255,255,255,0.06), transparent 65%),
+          linear-gradient(180deg, rgba(255,255,255,0.022) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.85) 100%)
+        `,
+        boxShadow: `
+          inset 0 1px 0 rgba(255,255,255,0.08),
+          inset 0 -1px 0 rgba(0,0,0,0.7),
+          inset 0 0 60px rgba(0,0,0,0.5),
+          0 30px 60px -20px rgba(0,0,0,0.9),
+          0 0 90px -20px rgba(255,255,255,0.025)
+        `,
+        border: '1px solid rgba(255,255,255,0.05)',
+      }}
+    >
+      {/* Top-edge soft highlight */}
+      <div
+        aria-hidden
+        className="absolute inset-x-6 top-0 h-px"
+        style={{
+          background:
+            'linear-gradient(to right, transparent, rgba(255,255,255,0.18), transparent)',
+        }}
+      />
+
+      {/* Top-right logo glyph */}
+      <div className="absolute top-5 right-5" aria-hidden>
+        <svg viewBox="0 0 22 22" className="w-[22px] h-[22px]">
+          {/* Stylized "R" glyph */}
+          <path
+            d="M 5 4 L 13 4 Q 17 4 17 8 Q 17 11 14 12 L 17 18 L 14 18 L 11 12 L 8 12 L 8 18 L 5 18 Z M 8 7 L 8 9 L 13 9 Q 14 9 14 8 Q 14 7 13 7 Z"
+            fill="rgba(255,255,255,0.4)"
+          />
+        </svg>
+      </div>
+
+      {/* Center die */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="relative">
+          {/* Soft inner halo */}
+          <div
+            aria-hidden
+            className="absolute inset-0 -m-6 rounded-full"
+            style={{
+              background:
+                'radial-gradient(ellipse 60% 60% at 50% 50%, rgba(255,255,255,0.06), transparent 70%)',
+            }}
+          />
+          <div className="relative">
+            <ChipCoreDie />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom-left product label */}
+      <div className="absolute bottom-5 left-5 text-[10.5px] font-mono leading-[1.35] tracking-[0.24em]">
+        <div className="text-white/55">REFACTRON</div>
+        <div className="text-white/35">ENGINE</div>
+      </div>
+
+      {/* Bottom-right status LEDs — first one pulses (active) */}
+      <div className="absolute bottom-5 right-5 flex items-center gap-1.5">
+        {[
+          { a: 0.95, pulse: true },
+          { a: 0.55, pulse: false },
+          { a: 0.55, pulse: false },
+          { a: 0.55, pulse: false },
+          { a: 0.3, pulse: false },
+        ].map((led, i) => (
+          <span
+            key={i}
+            aria-hidden
+            className={led.pulse ? 'rfn-die-core' : ''}
+            style={{
+              width: 5,
+              height: 5,
+              borderRadius: '50%',
+              background: `rgba(255,255,255,${led.a})`,
+              boxShadow: led.pulse
+                ? '0 0 6px rgba(255,255,255,0.55)'
+                : undefined,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
 const AboutPage: React.FC = () => {
   useSEO({
     title: 'About Refactron | Safety-First Refactoring Engine',
@@ -527,26 +690,35 @@ const AboutPage: React.FC = () => {
         {sectionFades}
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-20 lg:py-0">
-          <motion.div {...fadeUp} className="max-w-5xl space-y-8">
-            <h1 className="text-5xl md:text-6xl lg:text-[5.5rem] font-semibold tracking-tight text-white font-space leading-[1.04]">
-              Every codebase has code
-              <br />
-              <span className="text-neutral-500">nobody wants to touch.</span>
-            </h1>
+          <motion.div
+            {...fadeUp}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center"
+          >
+            <div className="lg:col-span-7 space-y-8">
+              <h1 className="text-5xl md:text-6xl lg:text-[5.5rem] font-semibold tracking-tight text-white font-space leading-[1.04]">
+                Every codebase has code
+                <br />
+                <span className="text-neutral-500">nobody wants to touch.</span>
+              </h1>
 
-            <div className="max-w-2xl space-y-3">
-              <p className="text-lg md:text-xl text-neutral-300 font-space leading-relaxed">
-                Refactron exists to change that.
-              </p>
-              <p className="text-base md:text-lg text-neutral-500 font-space leading-relaxed">
-                Built so you can refactor the old code and{' '}
-                <span className="text-neutral-300">prove nothing broke</span>.
+              <div className="max-w-2xl space-y-3">
+                <p className="text-lg md:text-xl text-neutral-300 font-space leading-relaxed">
+                  Refactron exists to change that.
+                </p>
+                <p className="text-base md:text-lg text-neutral-500 font-space leading-relaxed">
+                  Built so you can refactor the old code and{' '}
+                  <span className="text-neutral-300">prove nothing broke</span>.
+                </p>
+              </div>
+
+              <p className="text-[11px] font-mono text-neutral-600 tracking-[0.22em] pt-4">
+                — Om Sherikar, founder
               </p>
             </div>
 
-            <p className="text-[11px] font-mono text-neutral-600 tracking-[0.22em] pt-4">
-              — Om Sherikar, founder
-            </p>
+            <div className="lg:col-span-5 hidden lg:flex items-center justify-center">
+              <HeroChipModule />
+            </div>
           </motion.div>
         </div>
       </section>
