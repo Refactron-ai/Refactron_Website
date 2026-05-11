@@ -190,316 +190,267 @@ const SeverityToken: React.FC<{ severity: DigestSeverity }> = ({
   );
 };
 
-/* ─── Per-constraint SVG visuals for What Safe Means ─────────────── */
+/* ─── Tactile glassmorphic visuals for What Safe Means ────────────
+ * Each constraint gets its own miniature "control surface" — a
+ * small CSS-built widget with a satin gradient, soft inset shadow,
+ * and a single iconic affordance. Same glass language as the hero
+ * chip module, scaled down per card.
+ */
+
+/* Base recipes — reused across the five visuals. */
+const glassBase: React.CSSProperties = {
+  background:
+    'linear-gradient(180deg, rgba(255,255,255,0.045) 0%, rgba(0,0,0,0.35) 100%)',
+  boxShadow:
+    'inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.55), 0 6px 14px -4px rgba(0,0,0,0.55)',
+  border: '1px solid rgba(255,255,255,0.06)',
+};
+
+const glassActive: React.CSSProperties = {
+  background:
+    'linear-gradient(180deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.02) 100%)',
+  boxShadow:
+    'inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.5), 0 8px 16px -4px rgba(0,0,0,0.6), 0 0 22px -6px rgba(255,255,255,0.18)',
+  border: '1px solid rgba(255,255,255,0.18)',
+};
+
+const glassDim: React.CSSProperties = {
+  background:
+    'linear-gradient(180deg, rgba(255,255,255,0.025) 0%, rgba(0,0,0,0.4) 100%)',
+  boxShadow:
+    'inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.45), 0 4px 10px -3px rgba(0,0,0,0.4)',
+  border: '1px dashed rgba(255,255,255,0.14)',
+};
+
+/* 01 — Read-only first */
+const SafetyReadOnly: React.FC = () => (
+  <div className="w-full flex items-center justify-center gap-3 py-1">
+    <div
+      className="px-3.5 py-2 rounded-xl flex items-center gap-2"
+      style={glassActive}
+    >
+      <span className="w-1.5 h-1.5 rounded-full bg-white/95 shadow-[0_0_6px_rgba(255,255,255,0.55)]" />
+      <span className="text-[10px] font-mono text-white/95 tracking-[0.2em]">
+        READ
+      </span>
+    </div>
+
+    <div className="flex-shrink-0 w-7 border-t border-dashed border-white/15" />
+
+    <div
+      className="relative px-3.5 py-2 rounded-xl"
+      style={{ ...glassBase, opacity: 0.78 }}
+    >
+      <span className="text-[10px] font-mono text-white/35 tracking-[0.2em]">
+        WRITE
+      </span>
+      <span
+        aria-hidden
+        className="absolute left-2 right-2 top-1/2 h-px bg-white/55"
+      />
+    </div>
+  </div>
+);
+
+/* 02 — You approve every change */
+const SafetyApprove: React.FC = () => (
+  <div className="w-full max-w-[200px] mx-auto flex flex-col gap-1.5">
+    <div
+      className="px-3 py-2 rounded-lg flex items-center justify-between"
+      style={glassDim}
+    >
+      <span className="text-[9px] font-mono text-white/45 tracking-[0.22em]">
+        PROPOSED
+      </span>
+      <span className="w-1 h-1 rounded-full bg-white/30" />
+    </div>
+
+    <div className="flex justify-center -my-1" aria-hidden>
+      <svg viewBox="0 0 14 10" width="14" height="10">
+        <path
+          d="M 7 1 L 7 7 M 4 4.5 L 7 7 L 10 4.5"
+          stroke="rgba(255,255,255,0.45)"
+          strokeWidth="1"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+
+    <div
+      className="px-3 py-2 rounded-lg flex items-center justify-between"
+      style={glassActive}
+    >
+      <span className="text-[9px] font-mono text-white/95 tracking-[0.22em]">
+        APPROVED
+      </span>
+      <svg viewBox="0 0 14 14" width="14" height="14" aria-hidden>
+        <path
+          d="M 3 7 L 6 10.5 L 11 4"
+          stroke="rgba(255,255,255,0.95)"
+          strokeWidth="1.6"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+  </div>
+);
+
+/* 03 — Proof, not hope */
+const SafetyVerify: React.FC = () => {
+  const rows = [
+    { label: 'syntax', alpha: 0.95 },
+    { label: 'tests', alpha: 0.9 },
+    { label: 'invariants', alpha: 0.85 },
+  ];
+  return (
+    <div
+      className="w-full max-w-[220px] mx-auto px-3.5 py-2.5 rounded-xl flex flex-col gap-1.5"
+      style={glassBase}
+    >
+      {rows.map((row, i) => (
+        <div key={i} className="flex items-center gap-2.5">
+          <span
+            className="w-1.5 h-1.5 rounded-full"
+            style={{
+              background: `rgba(255,255,255,${row.alpha})`,
+              boxShadow: `0 0 6px rgba(255,255,255,${row.alpha * 0.5})`,
+            }}
+          />
+          <span className="text-[9px] font-mono text-white/55 tracking-[0.16em]">
+            {row.label}
+          </span>
+          <span className="ml-auto text-[9px] font-mono text-white/35 tracking-[0.16em] uppercase">
+            pass
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/* 04 — Small, reviewable steps */
+const SafetyIncremental: React.FC = () => {
+  const steps = [
+    { alpha: 0.95, active: true },
+    { alpha: 0.72, active: false },
+    { alpha: 0.52, active: false },
+    { alpha: 0.32, active: false },
+    { alpha: 0.18, active: false },
+  ];
+  return (
+    <div className="w-full flex items-center justify-center gap-2">
+      {steps.map((s, i) => (
+        <div
+          key={i}
+          className="rounded-md flex items-center justify-center"
+          style={{
+            width: 28,
+            height: 28,
+            background: `linear-gradient(180deg, rgba(255,255,255,${s.alpha * 0.16}) 0%, rgba(0,0,0,0.4) 100%)`,
+            border: `1px solid rgba(255,255,255,${0.05 + s.alpha * 0.16})`,
+            boxShadow: s.active
+              ? 'inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -1px 0 rgba(0,0,0,0.55), 0 5px 10px -3px rgba(0,0,0,0.65), 0 0 14px -4px rgba(255,255,255,0.18)'
+              : 'inset 0 1px 0 rgba(255,255,255,0.05), inset 0 -1px 0 rgba(0,0,0,0.45), 0 4px 8px -3px rgba(0,0,0,0.45)',
+          }}
+        >
+          <span
+            className="text-[8.5px] font-mono tabular-nums tracking-[0.05em]"
+            style={{ color: `rgba(255,255,255,${s.alpha})` }}
+          >
+            {String(i + 1).padStart(2, '0')}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/* 05 — Walk it back */
+const SafetyRollback: React.FC = () => (
+  <div className="relative w-full flex items-center justify-center">
+    {/* Dashed arc trail behind */}
+    <svg
+      viewBox="0 0 160 56"
+      width="180"
+      height="60"
+      className="absolute inset-0 m-auto pointer-events-none"
+      aria-hidden
+    >
+      <path
+        d="M 30 42 Q 80 4 130 42"
+        stroke="rgba(255,255,255,0.16)"
+        strokeWidth="0.8"
+        fill="none"
+        strokeDasharray="3 3"
+      />
+    </svg>
+
+    <div className="relative flex items-center gap-4">
+      {/* prev */}
+      <div
+        className="w-7 h-7 rounded-full flex items-center justify-center"
+        style={glassDim}
+      >
+        <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+      </div>
+
+      {/* center — rollback button */}
+      <div
+        className="w-12 h-12 rounded-full flex items-center justify-center"
+        style={{
+          background:
+            'radial-gradient(circle at 50% 28%, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.55) 75%)',
+          boxShadow:
+            'inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -1px 0 rgba(0,0,0,0.7), 0 8px 18px -4px rgba(0,0,0,0.65), 0 0 22px -6px rgba(255,255,255,0.12)',
+          border: '1px solid rgba(255,255,255,0.1)',
+        }}
+      >
+        <svg viewBox="0 0 22 22" width="20" height="20" aria-hidden>
+          <path
+            d="M 5 8 L 5 4 L 2 7"
+            stroke="rgba(255,255,255,0.95)"
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M 5 8 A 6 6 0 1 1 5 16"
+            stroke="rgba(255,255,255,0.9)"
+            strokeWidth="1.5"
+            fill="none"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+
+      {/* now */}
+      <div
+        className="w-7 h-7 rounded-full flex items-center justify-center"
+        style={glassActive}
+      >
+        <span className="w-1.5 h-1.5 rounded-full bg-white/95 shadow-[0_0_6px_rgba(255,255,255,0.55)]" />
+      </div>
+    </div>
+  </div>
+);
 
 const SafetyVisual: React.FC<{ num: string }> = ({ num }) => {
-  const stroke = 'rgba(255,255,255,0.4)';
-  const bright = 'rgba(255,255,255,0.92)';
-  const dim = 'rgba(255,255,255,0.18)';
-  const veryDim = 'rgba(255,255,255,0.08)';
-  const mono = '"JetBrains Mono", ui-monospace, monospace';
-
   switch (num) {
-    /* 01 — Read-only state diagram: READ filled, WRITE crossed out */
     case '01':
-      return (
-        <svg
-          viewBox="0 0 220 36"
-          className="w-full max-w-[260px] h-auto"
-          aria-hidden
-        >
-          <rect
-            x="2"
-            y="8"
-            width="86"
-            height="22"
-            rx="5"
-            fill="rgba(255,255,255,0.12)"
-            stroke="rgba(255,255,255,0.4)"
-          />
-          <circle cx="14" cy="19" r="2.5" fill={bright} />
-          <text
-            x="58"
-            y="23"
-            textAnchor="middle"
-            fontSize="10"
-            fontFamily={mono}
-            fill={bright}
-            letterSpacing="2"
-          >
-            READ
-          </text>
-
-          <line
-            x1="92"
-            y1="19"
-            x2="124"
-            y2="19"
-            stroke={dim}
-            strokeWidth="0.8"
-            strokeDasharray="3 3"
-          />
-
-          <rect
-            x="128"
-            y="8"
-            width="90"
-            height="22"
-            rx="5"
-            stroke={veryDim}
-            fill="rgba(255,255,255,0.018)"
-          />
-          <text
-            x="173"
-            y="23"
-            textAnchor="middle"
-            fontSize="10"
-            fontFamily={mono}
-            fill="rgba(255,255,255,0.32)"
-            letterSpacing="2"
-          >
-            WRITE
-          </text>
-          <line
-            x1="134"
-            y1="19"
-            x2="212"
-            y2="19"
-            stroke="rgba(255,255,255,0.32)"
-            strokeWidth="1"
-          />
-        </svg>
-      );
-
-    /* 02 — proposed → approved with check */
+      return <SafetyReadOnly />;
     case '02':
-      return (
-        <svg
-          viewBox="0 0 220 36"
-          className="w-full max-w-[260px] h-auto"
-          aria-hidden
-        >
-          <rect
-            x="2"
-            y="8"
-            width="80"
-            height="22"
-            rx="5"
-            fill="rgba(255,255,255,0.03)"
-            stroke={dim}
-          />
-          <text
-            x="42"
-            y="23"
-            textAnchor="middle"
-            fontSize="9"
-            fontFamily={mono}
-            fill="rgba(255,255,255,0.5)"
-            letterSpacing="2"
-          >
-            PROPOSED
-          </text>
-
-          <path
-            d="M 86 19 L 132 19 M 124 14 L 132 19 L 124 24"
-            stroke={stroke}
-            strokeWidth="1"
-            fill="none"
-          />
-
-          <rect
-            x="136"
-            y="8"
-            width="82"
-            height="22"
-            rx="5"
-            fill="rgba(255,255,255,0.14)"
-            stroke="rgba(255,255,255,0.42)"
-          />
-          <text
-            x="170"
-            y="23"
-            textAnchor="middle"
-            fontSize="9"
-            fontFamily={mono}
-            fill={bright}
-            letterSpacing="2"
-          >
-            APPROVED
-          </text>
-          <path
-            d="M 198 16 L 202 21 L 210 12"
-            stroke={bright}
-            strokeWidth="1.4"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      );
-
-    /* 03 — verification stack: 3 rows × {check + label} */
+      return <SafetyApprove />;
     case '03':
-      return (
-        <svg
-          viewBox="0 0 220 60"
-          className="w-full max-w-[260px] h-auto"
-          aria-hidden
-        >
-          {[
-            { y: 12, label: 'syntax' },
-            { y: 30, label: 'tests' },
-            { y: 48, label: 'invariants' },
-          ].map((row, i) => (
-            <g key={i}>
-              <line
-                x1="4"
-                y1={row.y}
-                x2="44"
-                y2={row.y}
-                stroke="rgba(255,255,255,0.18)"
-              />
-              <path
-                d={`M 48 ${row.y - 2} L 52 ${row.y + 3} L 60 ${row.y - 6}`}
-                stroke={bright}
-                strokeWidth="1.4"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <text
-                x="68"
-                y={row.y + 3}
-                fontSize="10"
-                fontFamily={mono}
-                fill="rgba(255,255,255,0.55)"
-                letterSpacing="1"
-              >
-                {row.label}
-              </text>
-              <text
-                x="214"
-                y={row.y + 3}
-                fontSize="9"
-                textAnchor="end"
-                fontFamily={mono}
-                fill="rgba(255,255,255,0.32)"
-                letterSpacing="1"
-              >
-                pass
-              </text>
-            </g>
-          ))}
-        </svg>
-      );
-
-    /* 04 — five incremental nodes, decreasing brightness */
+      return <SafetyVerify />;
     case '04':
-      return (
-        <svg
-          viewBox="0 0 220 36"
-          className="w-full max-w-[260px] h-auto"
-          aria-hidden
-        >
-          {[0, 1, 2, 3, 4].map(i => {
-            const cx = 16 + i * 47;
-            const r = 5;
-            const alpha = 0.95 - i * 0.16;
-            return (
-              <g key={i}>
-                {i < 4 && (
-                  <line
-                    x1={cx + r + 2}
-                    y1="18"
-                    x2={cx + 47 - r - 2}
-                    y2="18"
-                    stroke={dim}
-                    strokeWidth="1"
-                    strokeDasharray={i >= 3 ? '2 2' : undefined}
-                  />
-                )}
-                <circle
-                  cx={cx}
-                  cy="18"
-                  r={r}
-                  fill={`rgba(255,255,255,${alpha})`}
-                  stroke={i === 4 ? 'rgba(255,255,255,0.35)' : undefined}
-                  strokeDasharray={i === 4 ? '1.5 1.5' : undefined}
-                />
-              </g>
-            );
-          })}
-        </svg>
-      );
-
-    /* 05 — rollback loop arrow */
+      return <SafetyIncremental />;
     case '05':
-      return (
-        <svg
-          viewBox="0 0 220 50"
-          className="w-full max-w-[260px] h-auto"
-          aria-hidden
-        >
-          <circle cx="200" cy="36" r="3" fill={bright} />
-          <text
-            x="196"
-            y="32"
-            textAnchor="end"
-            fontSize="9"
-            fontFamily={mono}
-            fill="rgba(255,255,255,0.4)"
-            letterSpacing="1"
-          >
-            now
-          </text>
-
-          <circle
-            cx="20"
-            cy="36"
-            r="3"
-            fill="rgba(255,255,255,0.3)"
-            stroke="rgba(255,255,255,0.45)"
-          />
-          <text
-            x="24"
-            y="32"
-            fontSize="9"
-            fontFamily={mono}
-            fill="rgba(255,255,255,0.4)"
-            letterSpacing="1"
-          >
-            prev
-          </text>
-
-          <path
-            d="M 200 33 C 200 14, 20 14, 20 32"
-            stroke="rgba(255,255,255,0.45)"
-            strokeWidth="1"
-            strokeDasharray="3 3"
-            fill="none"
-          />
-          <path
-            d="M 16 28 L 20 34 L 24 28"
-            stroke={bright}
-            strokeWidth="1.4"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <text
-            x="110"
-            y="11"
-            textAnchor="middle"
-            fontSize="9"
-            fontFamily={mono}
-            fill="rgba(255,255,255,0.5)"
-            letterSpacing="2"
-          >
-            undo
-          </text>
-        </svg>
-      );
-
+      return <SafetyRollback />;
     default:
       return null;
   }
