@@ -3,6 +3,65 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CalendarDays, Tag, User } from 'lucide-react';
 import { getBlogPostBySlug, parseBody, ContentSection } from '../data/posts';
+import useSEO from '../hooks/useSEO';
+
+/* Injects a per-post BlogPosting JSON-LD <script> into <head>.
+ * Helps AI assistants quote the article correctly. */
+function useBlogPostingSchema(
+  post:
+    | {
+        slug: string;
+        title: string;
+        summary: string;
+        publishedAt: string;
+        author: string;
+        tags: string[];
+      }
+    | undefined
+) {
+  useEffect(() => {
+    if (!post) return undefined;
+
+    const ld = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.summary,
+      datePublished: new Date(post.publishedAt).toISOString(),
+      author: {
+        '@type': 'Person',
+        name: post.author,
+        url: 'https://refactron.dev/about',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Refactron',
+        url: 'https://refactron.dev',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://refactron.dev/Refactron-logo-TM.png',
+        },
+      },
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': `https://refactron.dev/blog/${post.slug}`,
+      },
+      url: `https://refactron.dev/blog/${post.slug}`,
+      keywords: post.tags.join(', '),
+      inLanguage: 'en',
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.setAttribute('data-rfn-blog-posting', post.slug);
+    script.textContent = JSON.stringify(ld);
+    document.head.appendChild(script);
+
+    return () => {
+      script.remove();
+    };
+  }, [post]);
+}
 
 function getIcon(industry: string) {
   const attr = {
@@ -228,6 +287,28 @@ const BlogPostPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const post = slug ? getBlogPostBySlug(slug) : undefined;
+
+  /* Per-post meta + canonical (uses the existing site-wide hook). */
+  useSEO({
+    title: post
+      ? `${post.title} · Refactron`
+      : 'Post not found · Refactron Blog',
+    description:
+      post?.summary ??
+      'Browse engineering deep-dives and case studies on the Refactron blog.',
+    keywords: post?.tags.join(', '),
+    canonical: post
+      ? `https://refactron.dev/blog/${post.slug}`
+      : 'https://refactron.dev/blog',
+    ogTitle: post?.title,
+    ogDescription: post?.summary,
+    twitterTitle: post?.title,
+    twitterDescription: post?.summary,
+  });
+
+  /* Per-post BlogPosting JSON-LD — helps AI assistants quote the
+   * article correctly when retrieved. */
+  useBlogPostingSchema(post);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
