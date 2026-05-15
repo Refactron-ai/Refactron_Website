@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import useSEO from '../hooks/useSEO';
@@ -8,12 +8,46 @@ import useSEO from '../hooks/useSEO';
 const eyebrow =
   'text-[10px] font-mono uppercase tracking-[0.28em] text-neutral-500';
 
-const fadeUp = {
-  initial: { opacity: 0, y: 18 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: '-80px' },
-  transition: { duration: 0.55 },
-};
+const MONO = 'ui-monospace, SFMono-Regular, monospace';
+const EMERALD = 'rgba(74, 222, 128, 0.85)';
+const EMERALD_DIM = 'rgba(74, 222, 128, 0.12)';
+const ROSE = 'rgba(244, 63, 94, 0.8)';
+const ROSE_DIM = 'rgba(244, 63, 94, 0.1)';
+
+/* ─── Table of contents ─────────────────────────────────────────── */
+
+const TOC: { id: string; label: string }[] = [
+  { id: 'abstract', label: 'Abstract' },
+  { id: 'why', label: '01 · Why this study' },
+  { id: 'setup', label: '02 · Setup' },
+  { id: 'results', label: '03 · Results' },
+  { id: 'split', label: '04 · The split' },
+  { id: 'discussion', label: '05 · Discussion' },
+  { id: 'limitations', label: '06 · Limitations' },
+  { id: 'how-built', label: '07 · How it was built' },
+  { id: 'references', label: 'References' },
+];
+
+function useActiveSection(ids: string[]): string {
+  const [active, setActive] = useState(ids[0] ?? '');
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: '-15% 0px -75% 0px' },
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, [ids]);
+  return active;
+}
 
 /* ─────────────────────────────────────────────────────────────── */
 
@@ -26,19 +60,21 @@ const ResearchComparison01Page: React.FC = () => {
     robots: 'index, follow',
   });
 
+  const active = useActiveSection(TOC.map((t) => t.id));
+
   return (
     <article
-      className="relative w-full font-space antialiased overflow-x-hidden"
+      className="relative w-full font-space antialiased"
       style={{
         background:
           'radial-gradient(ellipse 80% 45% at 50% 0%, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0) 55%), #050506',
       }}
     >
-      <StaticBeams />
+      <DotGrid />
 
-      {/* ───────────────── HERO ───────────────── */}
+      {/* ═══════════════ HERO (full-width) ═══════════════ */}
       <section className="relative w-full border-b border-white/[0.08]">
-        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-24 lg:py-36">
+        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-24 lg:py-32">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -51,13 +87,11 @@ const ResearchComparison01Page: React.FC = () => {
                 2026-05-15
               </p>
             </div>
-
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[4.6rem] font-semibold tracking-[-0.025em] text-white leading-[1.05] max-w-5xl mb-8">
               Refactron vs the{' '}
               <span className="text-neutral-500">codemod baseline.</span> A
               head-to-head.
             </h1>
-
             <p className="text-base md:text-lg text-neutral-400 leading-[1.8] max-w-2xl">
               Two transforms, four other tools, identical inputs. We measured
               speed, coverage, and safety against the existing
@@ -65,512 +99,394 @@ const ResearchComparison01Page: React.FC = () => {
               the way an honest benchmark should be.
             </p>
           </motion.div>
+        </div>
+      </section>
 
-          {/* Metadata strip */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="mt-14 pt-8 border-t border-white/[0.07] grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-y-5 gap-x-6"
-          >
-            <Meta label="Authors">
-              <a
-                href="https://www.linkedin.com/in/omsherikar0229/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-neutral-200 hover:text-white transition-colors"
+      {/* ═══════════════ BENCHMARK BAND (full-width feature strip) ═══════════════ */}
+      <section className="relative w-full border-b border-white/[0.08] bg-white/[0.015]">
+        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-14 lg:py-16">
+          <p className="text-center text-[11px] font-mono uppercase tracking-[0.24em] text-neutral-500 mb-8">
+            Coverage benchmark ·{' '}
+            <span className="text-neutral-300">var → const/let</span> &amp;{' '}
+            <span className="text-neutral-300">format → f-string</span> · 5
+            tools · identical inputs
+          </p>
+          <ScoreBand />
+        </div>
+      </section>
+
+      {/* ═══════════════ TWO-COLUMN: TOC + PAPER BODY ═══════════════ */}
+      <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-16 lg:py-20">
+        <div className="grid lg:grid-cols-[200px_1fr] gap-x-14">
+          {/* ── Sticky TOC ── */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-28">
+              <p className={`${eyebrow} mb-5`}>Contents</p>
+              <nav className="flex flex-col gap-1">
+                {TOC.map((t) => (
+                  <a
+                    key={t.id}
+                    href={`#${t.id}`}
+                    className={`text-[13px] leading-relaxed py-1 transition-colors border-l-2 pl-3 -ml-px ${
+                      active === t.id
+                        ? 'text-white border-white/60'
+                        : 'text-neutral-500 border-transparent hover:text-neutral-300'
+                    }`}
+                  >
+                    {t.label}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </aside>
+
+          {/* ── Paper body ── */}
+          <div className="min-w-0">
+            {/* Authors box */}
+            <AuthorsBox />
+
+            {/* 00 · Abstract */}
+            <Block id="abstract">
+              <Kicker>00 · Abstract</Kicker>
+              <p className="text-lg md:text-xl text-neutral-300 leading-[1.75] mb-6">
+                Refactron is the slowest tool we measured. It is also the only
+                one that is top-coverage on both transforms while never
+                producing a single unsafe rewrite. The two pure codemod tools
+                that ship no verification step run sub-second and write code
+                that does not compile.
+              </p>
+              <p className="text-base text-neutral-500 leading-[1.8]">
+                That tension is the paper. Speed without verification bought
+                broken code in every cell where it was measured. The benchmark
+                builds on the deterministic-refactoring tradition
+                <Cite n="3" /> — behaviour preservation checked, not assumed.
+              </p>
+            </Block>
+
+            {/* 01 · Why */}
+            <Block id="why">
+              <Kicker>01 · Why this study</Kicker>
+              <H2>The engineering baseline, not the competitors.</H2>
+              <P>
+                jscodeshift and LibCST are codemod <em>frameworks</em> — you
+                author codemods with them. Comby is a structural search/replace
+                DSL. ESLint <Mono>--fix</Mono> is a linter's autofix. None of
+                them is the product a team weighs Refactron against.
+              </P>
+              <P>
+                But they are the existing technology that performs
+                deterministic source-to-source transformation — exactly what
+                Refactron's engine does. A new approach earns credibility by
+                being measured against the established one on identical inputs.
+                This is "transform + verify versus transform only," not "our
+                product versus theirs."
+              </P>
+            </Block>
+
+            {/* 02 · Setup */}
+            <Block id="setup">
+              <Kicker>02 · Setup</Kicker>
+              <H2>Identical inputs, three axes.</H2>
+              <div className="grid sm:grid-cols-3 gap-3 my-8">
+                <FactTile
+                  label="Transforms"
+                  value="2"
+                  sub="var → const/let · format → f-string"
+                />
+                <FactTile
+                  label="Planted sites"
+                  value="234"
+                  sub="126 TypeScript · 108 Python"
+                />
+                <FactTile label="Runs / cell" value="5 + 1" sub="warm-up discarded" />
+              </div>
+              <P>
+                Each tool runs the equivalent codemod, authored the way a
+                competent engineer would and committed to the repo for audit.
+                LibCST uses Instagram's reference{' '}
+                <Mono>ConvertFormatStringCommand</Mono>
+                <Cite n="2" />; ESLint runs its stock{' '}
+                <Mono>prefer-const</Mono> + <Mono>no-var</Mono> rules.
+              </P>
+              <div className="grid sm:grid-cols-3 gap-x-8 gap-y-6 mt-8 text-sm">
+                {[
+                  {
+                    t: 'Speed',
+                    d: "Wall-clock for the whole invocation, process startup included. What a user actually waits for.",
+                  },
+                  {
+                    t: 'Coverage',
+                    d: 'Per-site exact classification — correct, missed, wrong, broken — by stable anchor, not line proximity.',
+                  },
+                  {
+                    t: 'Safety',
+                    d: "tsc --noEmit / py_compile plus the fixture's own test suite, run against the tool's output.",
+                  },
+                ].map((x) => (
+                  <div key={x.t}>
+                    <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-600 mb-2">
+                      {x.t}
+                    </p>
+                    <p className="text-neutral-400 leading-relaxed">{x.d}</p>
+                  </div>
+                ))}
+              </div>
+            </Block>
+
+            {/* 03 · Results */}
+            <Block id="results">
+              <Kicker>03 · Results</Kicker>
+              <H2>Coverage and safety move together.</H2>
+              <Figure
+                caption={
+                  <>
+                    <b>Figure 1.</b> Correct-rewrite coverage per tool. Bar
+                    colour encodes safety — green compiled and passed tests,
+                    red did not.
+                  </>
+                }
               >
-                Om Sherikar
-              </a>
-            </Meta>
-            <Meta label="Affiliation">
-              <span className="text-neutral-200">Refactron</span>
-            </Meta>
-            <Meta label="Published">
-              <span className="text-neutral-200">2026-05-15</span>
-            </Meta>
-            <Meta label="Tools">
-              <span className="text-neutral-200">5 compared</span>
-            </Meta>
-            <Meta label="Hardware">
-              <span className="text-neutral-200">Apple M2</span>
-            </Meta>
-            <Meta label="Code">
-              <a
-                href="https://github.com/Refactron-ai/Refactron_Lib_TS/tree/main/bench/comparison"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-neutral-200 hover:text-white transition-colors underline underline-offset-4 decoration-neutral-700"
+                <CoverageChart />
+              </Figure>
+
+              <h3 className="text-base font-semibold text-white mt-12 mb-1">
+                <Mono>var → const/let</Mono>
+              </h3>
+              <p className="text-sm text-neutral-500 mb-4">
+                TypeScript · 126 planted sites
+              </p>
+              <ResultTable
+                rows={[
+                  { tool: 'Refactron', speed: 5.22, coverage: 100, detail: '126/126', wrong: 0, safe: true, highlight: true },
+                  { tool: 'ESLint --fix', speed: 0.65, coverage: 100, detail: '126/126', wrong: 0, safe: true },
+                  { tool: 'jscodeshift', speed: 0.67, coverage: 46.0, detail: '58/126', wrong: 55, safe: false },
+                  { tool: 'Comby', speed: 0.29, coverage: 47.6, detail: '60/126', wrong: 66, safe: false },
+                ]}
+                speedCap={6}
+              />
+
+              <h3 className="text-base font-semibold text-white mt-10 mb-1">
+                <Mono>format → f-string</Mono>
+              </h3>
+              <p className="text-sm text-neutral-500 mb-4">
+                Python · 108 planted sites
+              </p>
+              <ResultTable
+                rows={[
+                  { tool: 'Refactron', speed: 3.76, coverage: 99.1, detail: '107/108', wrong: 0, safe: true, highlight: true },
+                  { tool: 'LibCST', speed: 2.68, coverage: 57.4, detail: '62/108', wrong: 0, safe: true },
+                  { tool: 'Comby', speed: 4.79, coverage: 15.7, detail: '17/108', wrong: 0, safe: false, brokenNote: '74 broken' },
+                ]}
+                speedCap={6}
+              />
+              <Caption>
+                <b>Table 1.</b> Median of five runs. Refactron and ESLint
+                convert every site correctly and safely; the pure codemod tools
+                emit dozens of wrong rewrites that fail to compile.
+              </Caption>
+            </Block>
+
+            {/* 04 · The split */}
+            <Block id="split">
+              <Kicker>04 · The split</Kicker>
+              <H2>Careful tools are safe. Unguarded tools are fast and broken.</H2>
+              <Figure
+                caption={
+                  <>
+                    <b>Figure 2.</b> Every measured cell, speed against
+                    coverage. Safe results (green) sit in a high-coverage band;
+                    unsafe results (red) sit below 50%.
+                  </>
+                }
               >
-                bench/comparison ↗
-              </a>
-            </Meta>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ───────────────── 00 · ABSTRACT ───────────────── */}
-      <section className="relative w-full border-b border-white/[0.08]">
-        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-20 lg:py-28">
-          <motion.div {...fadeUp}>
-            <p className={`${eyebrow} mb-6`}>00 · Abstract</p>
-            <p className="text-lg md:text-xl text-neutral-300 leading-[1.75] max-w-3xl">
-              Refactron is the slowest tool we measured. It is also the only
-              one that is top-coverage on both transforms while never producing
-              a single unsafe rewrite. The two pure codemod tools that ship no
-              verification step run sub-second and write code that does not
-              compile.
-            </p>
-            <p className="text-base text-neutral-500 leading-[1.8] max-w-2xl mt-6">
-              That tension is the paper. Speed without verification bought
-              broken code in every cell where it was measured.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ───────────────── 01 · WHY ───────────────── */}
-      <section className="relative w-full border-b border-white/[0.08]">
-        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-20 lg:py-28">
-          <motion.div {...fadeUp}>
-            <p className={`${eyebrow} mb-4`}>01 · Why this study</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white max-w-3xl leading-[1.1] mb-6">
-              The engineering baseline, not the competitors.
-            </h2>
-            <p className="text-base text-neutral-400 leading-[1.8] max-w-2xl mb-5">
-              jscodeshift and LibCST are codemod <em>frameworks</em> — you
-              author codemods with them. Comby is a structural search/replace
-              DSL. ESLint <Mono>--fix</Mono> is a linter's autofix. None of
-              them is the product a team weighs Refactron against.
-            </p>
-            <p className="text-base text-neutral-400 leading-[1.8] max-w-2xl">
-              But they are the existing technology that performs deterministic
-              source-to-source transformation — exactly what Refactron's engine
-              does. A new approach earns credibility by being measured against
-              the established one on identical inputs. This is "transform +
-              verify versus transform only," not "our product versus theirs."
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ───────────────── 02 · SETUP ───────────────── */}
-      <section className="relative w-full border-b border-white/[0.08]">
-        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-20 lg:py-28">
-          <motion.div {...fadeUp}>
-            <p className={`${eyebrow} mb-4`}>02 · Setup</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white max-w-3xl leading-[1.1] mb-10">
-              Identical inputs, three axes.
-            </h2>
-
-            <div className="grid md:grid-cols-3 gap-4 mb-10">
-              <FactTile
-                label="Transforms"
-                value="2"
-                sub="var → const/let · format → f-string"
-              />
-              <FactTile
-                label="Planted sites"
-                value="234"
-                sub="126 TypeScript · 108 Python"
-              />
-              <FactTile
-                label="Runs / cell"
-                value="5 + 1"
-                sub="warm-up discarded"
-              />
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-x-10 gap-y-7 text-sm">
-              <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-600 mb-2">
-                  Speed
-                </p>
-                <p className="text-neutral-400 leading-relaxed">
-                  Wall-clock for the whole invocation, process startup
-                  included. What a user actually waits for. Median of five.
-                </p>
+                <ScatterChart />
+              </Figure>
+              <div className="grid sm:grid-cols-2 gap-3 mt-10">
+                <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.03] p-6">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-emerald-400/90 mb-3">
+                    Careful · safe output
+                  </p>
+                  <p className="text-sm text-neutral-400 leading-relaxed">
+                    <span className="text-white">Refactron</span> (verification
+                    gate), <span className="text-white">ESLint</span> (narrow
+                    ruleset), <span className="text-white">LibCST</span>{' '}
+                    (conservative codemod). Every output compiles and passes
+                    tests.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-rose-400/20 bg-rose-400/[0.03] p-6">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-rose-400/90 mb-3">
+                    Unguarded · broken output
+                  </p>
+                  <p className="text-sm text-neutral-400 leading-relaxed">
+                    <span className="text-white">jscodeshift</span> and{' '}
+                    <span className="text-white">Comby</span> transform with no
+                    verification step. Sub-second, and every cell failed
+                    compilation.
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-600 mb-2">
-                  Coverage
-                </p>
-                <p className="text-neutral-400 leading-relaxed">
-                  Per-site exact classification — correct, missed, wrong,
-                  broken — located by stable anchor, not line proximity.
-                </p>
-              </div>
-              <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-600 mb-2">
-                  Safety
-                </p>
-                <p className="text-neutral-400 leading-relaxed">
-                  <Mono>tsc --noEmit</Mono> / <Mono>py_compile</Mono> plus the
-                  fixture's own test suite, run against the tool's output.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+              <P className="mt-8">
+                No cell in this study was fast, high-coverage, and safe at once.
+                Speed without verification bought broken code every time.
+              </P>
+            </Block>
 
-      {/* ───────────────── 03 · RESULTS ───────────────── */}
-      <section className="relative w-full border-b border-white/[0.08]">
-        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-20 lg:py-28">
-          <motion.div {...fadeUp}>
-            <p className={`${eyebrow} mb-4`}>03 · Results</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white max-w-3xl leading-[1.1] mb-10">
-              Coverage and safety move together.
-            </h2>
-
-            {/* Coverage chart */}
-            <CoverageChart />
-            <Caption>
-              <span className="text-neutral-400 not-italic">Figure 1.</span>{' '}
-              Correct-rewrite coverage per tool. Bar colour encodes safety —
-              green bars compiled and passed tests, red bars did not.
-            </Caption>
-
-            <div className="h-14" />
-
-            <h3 className="text-lg font-semibold text-white mb-1">
-              <Mono>var → const/let</Mono>
-            </h3>
-            <p className="text-sm text-neutral-500 mb-5">
-              TypeScript · 126 planted sites · jscodeshift, Comby, ESLint
-              applicable
-            </p>
-            <ResultTable
-              rows={[
-                {
-                  tool: 'Refactron',
-                  speed: 5.22,
-                  coverage: 100,
-                  detail: '126/126',
-                  wrong: 0,
-                  safe: true,
-                  highlight: true,
-                },
-                {
-                  tool: 'ESLint --fix',
-                  speed: 0.65,
-                  coverage: 100,
-                  detail: '126/126',
-                  wrong: 0,
-                  safe: true,
-                },
-                {
-                  tool: 'jscodeshift',
-                  speed: 0.67,
-                  coverage: 46.0,
-                  detail: '58/126',
-                  wrong: 55,
-                  safe: false,
-                },
-                {
-                  tool: 'Comby',
-                  speed: 0.29,
-                  coverage: 47.6,
-                  detail: '60/126',
-                  wrong: 66,
-                  safe: false,
-                },
-              ]}
-              speedCap={6}
-            />
-            <Caption>
-              <span className="text-neutral-400 not-italic">Table 1.</span>{' '}
-              Refactron and ESLint convert every site correctly and safely. The
-              pure codemod tools emit <Mono>const</Mono> on reassigned bindings
-              — dozens of wrong rewrites, output that fails to compile.
-            </Caption>
-
-            <div className="h-14" />
-
-            <h3 className="text-lg font-semibold text-white mb-1">
-              <Mono>format → f-string</Mono>
-            </h3>
-            <p className="text-sm text-neutral-500 mb-5">
-              Python · 108 planted sites · Comby, LibCST applicable
-            </p>
-            <ResultTable
-              rows={[
-                {
-                  tool: 'Refactron',
-                  speed: 3.76,
-                  coverage: 99.1,
-                  detail: '107/108',
-                  wrong: 0,
-                  safe: true,
-                  highlight: true,
-                },
-                {
-                  tool: 'LibCST',
-                  speed: 2.68,
-                  coverage: 57.4,
-                  detail: '62/108',
-                  wrong: 0,
-                  safe: true,
-                },
-                {
-                  tool: 'Comby',
-                  speed: 4.79,
-                  coverage: 15.7,
-                  detail: '17/108',
-                  wrong: 0,
-                  safe: false,
-                  brokenNote: '74 broken',
-                },
-              ]}
-              speedCap={6}
-            />
-            <Caption>
-              <span className="text-neutral-400 not-italic">Table 2.</span>{' '}
-              Refactron converts 107 of 108 (the miss is a nested{' '}
-              <Mono>.format()</Mono>). LibCST is safe but only handles plain{' '}
-              <Mono>%s</Mono>. Comby emits invalid Python at 74 sites.
-            </Caption>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ───────────────── 04 · THE SPLIT ───────────────── */}
-      <section className="relative w-full border-b border-white/[0.08]">
-        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-20 lg:py-28">
-          <motion.div {...fadeUp}>
-            <p className={`${eyebrow} mb-4`}>04 · The split</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white max-w-3xl leading-[1.1] mb-10">
-              Careful tools are safe. Unguarded tools are fast and broken.
-            </h2>
-
-            {/* Speed vs coverage scatter */}
-            <ScatterChart />
-            <Caption>
-              <span className="text-neutral-400 not-italic">Figure 2.</span>{' '}
-              Every measured cell, speed against coverage. Safe results (green)
-              sit in a high-coverage band; unsafe results (red) sit below 50%.
-              Refactron's points are the slowest — and the only ones both safe
-              and above 99%.
-            </Caption>
-
-            <div className="h-12" />
-
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.03] p-7">
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-emerald-400/90 mb-3">
-                  Careful · safe output
-                </p>
-                <p className="text-sm text-neutral-300 leading-relaxed mb-2">
-                  <span className="text-white">Refactron</span> — verification
-                  gate. <span className="text-white">ESLint</span> — narrow,
-                  well-tuned ruleset. <span className="text-white">LibCST</span>{' '}
-                  — conservative codemod.
-                </p>
-                <p className="text-sm text-neutral-500 leading-relaxed">
-                  Every output compiles and passes tests.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-rose-400/20 bg-rose-400/[0.03] p-7">
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-rose-400/90 mb-3">
-                  Unguarded · broken output
-                </p>
-                <p className="text-sm text-neutral-300 leading-relaxed mb-2">
-                  <span className="text-white">jscodeshift</span> and{' '}
-                  <span className="text-white">Comby</span> — transform with no
-                  verification step.
-                </p>
-                <p className="text-sm text-neutral-500 leading-relaxed">
-                  Sub-second, and every cell failed compilation.
-                </p>
-              </div>
-            </div>
-            <p className="text-base text-neutral-400 leading-[1.8] max-w-2xl mt-8">
-              No cell in this study was fast, high-coverage, and safe at once.
-              Speed without verification bought broken code every time it was
-              measured.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ───────────────── 05 · DISCUSSION ───────────────── */}
-      <section className="relative w-full border-b border-white/[0.08]">
-        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-20 lg:py-28">
-          <motion.div {...fadeUp}>
-            <p className={`${eyebrow} mb-4`}>05 · Discussion</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white max-w-3xl leading-[1.1] mb-10">
-              Where Refactron wins, and where it loses.
-            </h2>
-
-            <div className="space-y-4">
-              <div className="rounded-2xl border border-white/[0.07] bg-white/[0.018] p-7">
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-300 mb-3">
-                  Wins · coverage + safety
-                </p>
-                <p className="text-sm text-neutral-400 leading-relaxed">
+            {/* 05 · Discussion */}
+            <Block id="discussion">
+              <Kicker>05 · Discussion</Kicker>
+              <H2>Where Refactron wins, and where it loses.</H2>
+              <div className="space-y-3 my-8">
+                <Panel title="Wins · coverage + safety">
                   Refactron is top-coverage on both transforms — a tie with
                   ESLint at 100% on <Mono>var → const/let</Mono>, an outright
                   win at 99.1% vs LibCST's 57.4% on{' '}
                   <Mono>format → f-string</Mono> — and never emits an unsafe
                   rewrite. No other tool here is top-coverage on both.
-                </p>
-              </div>
-              <div className="rounded-2xl border border-white/[0.07] bg-white/[0.018] p-7">
-                <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-300 mb-3">
-                  Loses · speed
-                </p>
-                <p className="text-sm text-neutral-400 leading-relaxed">
+                </Panel>
+                <Panel title="Loses · speed">
                   Refactron is the slowest tool measured — ~8× slower than
                   ESLint on <Mono>var → const/let</Mono>. This is not an
-                  optimization gap to apologize for; it is the pipeline. ESLint
-                  applies a fix and stops. Refactron applies a transform,
-                  re-parses every changed file, resolves every import, runs the
-                  full test suite on a shadow tree, then writes atomically. The
-                  5.22s figure <em>is</em> that pipeline. The benchmark's safety
-                  column shows what skipping it costs.
-                </p>
+                  optimization gap to apologize for; it is the pipeline.
+                  Refactron applies a transform, re-parses every changed file,
+                  resolves every import, runs the full test suite on a shadow
+                  tree, then writes atomically. The 5.22s figure <em>is</em>{' '}
+                  that pipeline.
+                </Panel>
               </div>
-            </div>
+              <P>
+                The honest claim is not "Refactron is fastest." It is: Refactron
+                is the only tool measured here that never wrote broken code —
+                and that guarantee has a price denominated in seconds.
+              </P>
+            </Block>
 
-            <p className="text-base text-neutral-300 leading-[1.8] max-w-2xl mt-8">
-              The honest claim is not "Refactron is fastest." It is: Refactron
-              is the only tool measured here that never wrote broken code — and
-              that guarantee has a price denominated in seconds.
-            </p>
-          </motion.div>
-        </div>
-      </section>
+            {/* 06 · Limitations */}
+            <Block id="limitations">
+              <Kicker>06 · Limitations</Kicker>
+              <H2>The honest fine print.</H2>
+              <div className="grid sm:grid-cols-2 gap-3 mt-8">
+                <Limitation title="Not a product comparison">
+                  These are frameworks and linters, not Refactron's commercial
+                  alternatives. Cursor, SonarQube, and the LLM tools belong in a
+                  separate, categorical study.
+                </Limitation>
+                <Limitation title="Two transforms, not ten">
+                  Refactron ships ten. These two were chosen for tool overlap,
+                  not because they are the hardest cases.
+                </Limitation>
+                <Limitation title="Synthetic fixtures">
+                  Ten files per transform with planted patterns. Real codebases
+                  are messier. The fixtures are published so the methodology can
+                  be challenged.
+                </Limitation>
+                <Limitation title="Competitor codemods may not be optimal">
+                  We authored them and committed them for audit. If an expert
+                  shows us a better visitor, we rerun and republish.
+                </Limitation>
+              </div>
+            </Block>
 
-      {/* ───────────────── 06 · LIMITATIONS ───────────────── */}
-      <section className="relative w-full border-b border-white/[0.08]">
-        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-20 lg:py-28">
-          <motion.div {...fadeUp}>
-            <p className={`${eyebrow} mb-4`}>06 · What this doesn't claim</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white max-w-3xl leading-[1.1] mb-10">
-              The honest fine print.
-            </h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              <Limitation title="Not a product comparison">
-                These are frameworks and linters, not Refactron's commercial
-                alternatives. Cursor, SonarQube, and the LLM tools belong in a
-                separate, categorical study.
-              </Limitation>
-              <Limitation title="Two transforms, not ten">
-                Refactron ships ten. These two were chosen for tool overlap,
-                not because they are the hardest cases.
-              </Limitation>
-              <Limitation title="Synthetic fixtures">
-                Ten files per transform with planted patterns. Real codebases
-                are messier. The fixtures are published so the methodology can
-                be challenged.
-              </Limitation>
-              <Limitation title="Competitor codemods may not be optimal">
-                We authored them and committed them for audit. If a jscodeshift
-                expert shows us a better visitor, we rerun and republish.
-              </Limitation>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ───────────────── 07 · HOW IT WAS BUILT ───────────────── */}
-      <section className="relative w-full border-b border-white/[0.08]">
-        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-20 lg:py-28">
-          <motion.div {...fadeUp}>
-            <p className={`${eyebrow} mb-4`}>07 · How this benchmark was built</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white max-w-3xl leading-[1.1] mb-6">
-              It embarrassed us first.
-            </h2>
-            <p className="text-base text-neutral-400 leading-[1.8] max-w-2xl mb-8">
-              The first run reported Refactron at 27% coverage on{' '}
-              <Mono>var → const/let</Mono>. Investigation found two real bugs in
-              Refactron's own transform — a scope-unaware reference scan and a
-              missed AST node kind. They were fixed (27% → 100%) before
-              publication. The benchmark also caught a precision flaw in its own
-              checker that was miscounting every tool; that was corrected too.
-              A benchmark you publish should be one that has already embarrassed
-              you in private.
-            </p>
-            <CodeBlock
-              caption="Reproduce on your machine"
-              code={`git clone https://github.com/Refactron-ai/Refactron_Lib_TS
+            {/* 07 · How it was built */}
+            <Block id="how-built">
+              <Kicker>07 · How this benchmark was built</Kicker>
+              <H2>It embarrassed us first.</H2>
+              <P>
+                The first run reported Refactron at 27% coverage on{' '}
+                <Mono>var → const/let</Mono>. Investigation found two real bugs
+                in Refactron's own transform — a scope-unaware reference scan
+                and a missed AST node kind. They were fixed (27% → 100%) before
+                publication
+                <Cite n="4" />. The benchmark also caught a precision flaw in
+                its own checker that was miscounting every tool; that was
+                corrected too. A benchmark you publish should be one that has
+                already embarrassed you in private.
+              </P>
+              <div className="mt-8">
+                <CodeBlock
+                  caption="Reproduce on your machine"
+                  code={`git clone https://github.com/Refactron-ai/Refactron_Lib_TS
 cd Refactron_Lib_TS && npm ci
 bash bench/comparison/harness/run.sh`}
-            />
-          </motion.div>
-        </div>
-      </section>
+                />
+              </div>
+            </Block>
 
-      {/* ───────────────── REFERENCES / FOOTER ───────────────── */}
-      <section className="relative w-full">
-        <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-20">
-          <p className={`${eyebrow} mb-5`}>References &amp; resources</p>
-          <ol className="space-y-3 text-xs text-neutral-500 leading-relaxed">
-            <Ref n="1">
-              Comparison bench — fixtures, per-tool codemods, harness, raw
-              results:{' '}
-              <ExtLink href="https://github.com/Refactron-ai/Refactron_Lib_TS/tree/main/bench/comparison">
-                bench/comparison
-              </ExtLink>
-              .
-            </Ref>
-            <Ref n="2">
-              Refactron 0.2.0 performance report —{' '}
-              <Link
-                to="/research/perf-01"
-                className="text-neutral-400 hover:text-neutral-200 underline underline-offset-2 decoration-neutral-700"
-              >
-                paper #01
-              </Link>
-              .
-            </Ref>
-            <Ref n="3">
-              Instagram / LibCST — <Mono>ConvertFormatStringCommand</Mono>, the
-              reference Python format codemod benchmarked here.
-            </Ref>
-            <Ref n="4">
-              The <Mono>var_to_const_let</Mono> scope-correctness fix and the
-              printf-grammar percent converter:{' '}
-              <ExtLink href="https://github.com/Refactron-ai/Refactron_Lib_TS/pull/27">
-                PR #27
-              </ExtLink>
-              .
-            </Ref>
-          </ol>
+            {/* References */}
+            <Block id="references" last>
+              <Kicker>References</Kicker>
+              <ol className="space-y-4 mt-6">
+                <RefItem n="1">
+                  Comparison bench — fixtures, per-tool codemods, harness, raw
+                  results.{' '}
+                  <ExtLink href="https://github.com/Refactron-ai/Refactron_Lib_TS/tree/main/bench/comparison">
+                    github.com/Refactron-ai · bench/comparison
+                  </ExtLink>
+                </RefItem>
+                <RefItem n="2">
+                  Instagram / LibCST. <em>ConvertFormatStringCommand</em> — the
+                  reference Python format codemod benchmarked here.
+                </RefItem>
+                <RefItem n="3">
+                  Opdyke, W. F. (1992). <em>Refactoring Object-Oriented
+                  Frameworks.</em> PhD thesis, University of Illinois
+                  Urbana-Champaign — the precondition-checking foundation
+                  behaviour-preserving refactoring rests on.
+                </RefItem>
+                <RefItem n="4">
+                  The <em>var_to_const_let</em> scope-correctness fix and the
+                  printf-grammar percent converter.{' '}
+                  <ExtLink href="https://github.com/Refactron-ai/Refactron_Lib_TS/pull/27">
+                    Refactron_Lib_TS · PR #27
+                  </ExtLink>
+                </RefItem>
+                <RefItem n="5">
+                  Refactron 0.2.0 performance report —{' '}
+                  <Link
+                    to="/research/perf-01"
+                    className="text-neutral-300 hover:text-white underline underline-offset-2 decoration-neutral-700"
+                  >
+                    research paper #01
+                  </Link>
+                  .
+                </RefItem>
+              </ol>
 
-          <div className="pt-8 mt-8 border-t border-white/[0.07] flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-neutral-500">
-            <Link
-              to="/research"
-              className="text-neutral-300 hover:text-white transition-colors"
-            >
-              ← All research
-            </Link>
-            <a
-              href="https://docs.refactron.dev"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-neutral-300 hover:text-white transition-colors"
-            >
-              Documentation
-            </a>
-            <a
-              href="https://github.com/Refactron-ai/Refactron_Lib_TS"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-neutral-300 hover:text-white transition-colors"
-            >
-              Source ↗
-            </a>
+              <div className="pt-10 mt-10 border-t border-white/[0.07] flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-neutral-500">
+                <Link
+                  to="/research"
+                  className="text-neutral-300 hover:text-white transition-colors"
+                >
+                  ← All research
+                </Link>
+                <a
+                  href="https://docs.refactron.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral-300 hover:text-white transition-colors"
+                >
+                  Documentation
+                </a>
+                <a
+                  href="https://github.com/Refactron-ai/Refactron_Lib_TS"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-neutral-300 hover:text-white transition-colors"
+                >
+                  Source ↗
+                </a>
+              </div>
+            </Block>
           </div>
         </div>
-      </section>
+      </div>
     </article>
   );
 };
 
-/* ═════════════════ Sub-components ═════════════════════════════════ */
+/* ═════════════════ Layout primitives ═════════════════════════════ */
 
-const StaticBeams: React.FC = () => (
+const DotGrid: React.FC = () => (
   <div
     aria-hidden
     className="pointer-events-none fixed inset-0 z-0"
@@ -586,27 +502,109 @@ const StaticBeams: React.FC = () => (
   />
 );
 
-const Mono: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <code className="font-mono text-[0.88em] text-neutral-300 bg-white/[0.05] px-1.5 py-0.5 rounded border border-white/[0.08]">
+const Block: React.FC<{
+  id: string;
+  last?: boolean;
+  children: React.ReactNode;
+}> = ({ id, last, children }) => (
+  <motion.section
+    id={id}
+    initial={{ opacity: 0, y: 16 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: '-60px' }}
+    transition={{ duration: 0.5 }}
+    className={`scroll-mt-28 ${
+      last ? '' : 'pb-14 mb-14 border-b border-white/[0.07]'
+    }`}
+  >
     {children}
-  </code>
+  </motion.section>
 );
 
-const Caption: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <p className="text-xs text-neutral-500 italic mt-5 pl-4 border-l border-white/[0.08] max-w-2xl leading-relaxed">
+const Kicker: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <p className={`${eyebrow} mb-4`}>{children}</p>
+);
+
+const H2: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <h2 className="text-2xl sm:text-3xl md:text-[2.1rem] font-semibold tracking-[-0.02em] text-white leading-[1.15] mb-5">
+    {children}
+  </h2>
+);
+
+const P: React.FC<{ children: React.ReactNode; className?: string }> = ({
+  children,
+  className = '',
+}) => (
+  <p className={`text-base text-neutral-400 leading-[1.8] mb-4 ${className}`}>
     {children}
   </p>
 );
 
-const Meta: React.FC<{ label: string; children: React.ReactNode }> = ({
-  label,
-  children,
-}) => (
-  <div>
-    <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-600 mb-1.5">
-      {label}
+const Mono: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <code className="font-mono text-[0.85em] text-neutral-300 bg-white/[0.05] px-1.5 py-0.5 rounded border border-white/[0.08]">
+    {children}
+  </code>
+);
+
+const Cite: React.FC<{ n: string }> = ({ n }) => (
+  <a
+    href="#references"
+    className="text-[0.7em] align-super font-mono text-neutral-500 hover:text-white transition-colors ml-0.5"
+  >
+    [{n}]
+  </a>
+);
+
+const Caption: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <p className="text-xs text-neutral-500 italic mt-5 pl-4 border-l border-white/[0.08] leading-relaxed">
+    {children}
+  </p>
+);
+
+const Figure: React.FC<{
+  caption: React.ReactNode;
+  children: React.ReactNode;
+}> = ({ caption, children }) => (
+  <figure className="my-7">
+    {children}
+    <figcaption className="text-xs text-neutral-500 italic mt-3 text-center leading-relaxed">
+      {caption}
+    </figcaption>
+  </figure>
+);
+
+const AuthorsBox: React.FC = () => (
+  <div className="rounded-2xl border border-white/[0.08] bg-white/[0.018] p-6 sm:p-7 mb-14">
+    <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-neutral-500 mb-5">
+      Authors
     </p>
-    <p className="text-sm">{children}</p>
+    <div className="grid sm:grid-cols-2 gap-5">
+      <div>
+        <a
+          href="https://www.linkedin.com/in/omsherikar0229/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-white hover:text-neutral-300 transition-colors"
+        >
+          Om Sherikar ↗
+        </a>
+        <p className="text-xs text-neutral-500 mt-0.5">Founder, Refactron</p>
+      </div>
+      <div className="grid grid-cols-2 gap-5">
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600 mb-1">
+            Published
+          </p>
+          <p className="text-sm text-neutral-300">2026-05-15</p>
+        </div>
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600 mb-1">
+            Hardware
+          </p>
+          <p className="text-sm text-neutral-300">Apple M2</p>
+        </div>
+      </div>
+    </div>
   </div>
 );
 
@@ -626,11 +624,23 @@ const FactTile: React.FC<{ label: string; value: string; sub: string }> = ({
   </div>
 );
 
+const Panel: React.FC<{ title: string; children: React.ReactNode }> = ({
+  title,
+  children,
+}) => (
+  <div className="rounded-2xl border border-white/[0.07] bg-white/[0.018] p-6">
+    <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-300 mb-3">
+      {title}
+    </p>
+    <p className="text-sm text-neutral-400 leading-relaxed">{children}</p>
+  </div>
+);
+
 const Limitation: React.FC<{ title: string; children: React.ReactNode }> = ({
   title,
   children,
 }) => (
-  <div className="rounded-2xl border border-white/[0.07] bg-white/[0.018] p-7">
+  <div className="rounded-2xl border border-white/[0.07] bg-white/[0.018] p-6">
     <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-400 mb-3">
       {title}
     </p>
@@ -638,12 +648,14 @@ const Limitation: React.FC<{ title: string; children: React.ReactNode }> = ({
   </div>
 );
 
-const Ref: React.FC<{ n: string; children: React.ReactNode }> = ({
+const RefItem: React.FC<{ n: string; children: React.ReactNode }> = ({
   n,
   children,
 }) => (
-  <li className="grid grid-cols-[28px_1fr] gap-x-3 items-baseline">
-    <span className="font-mono text-neutral-700 tabular-nums">[{n}]</span>
+  <li className="grid grid-cols-[34px_1fr] gap-x-3 items-baseline text-sm text-neutral-400 leading-relaxed">
+    <span className="font-mono text-xs text-neutral-600 tabular-nums">
+      [{n}]
+    </span>
     <span>{children}</span>
   </li>
 );
@@ -656,7 +668,7 @@ const ExtLink: React.FC<{ href: string; children: React.ReactNode }> = ({
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    className="text-neutral-400 hover:text-neutral-200 underline underline-offset-2 decoration-neutral-700 hover:decoration-neutral-400 transition-colors"
+    className="text-neutral-300 hover:text-white underline underline-offset-2 decoration-neutral-700 hover:decoration-neutral-400 transition-colors"
   >
     {children}
   </a>
@@ -666,7 +678,7 @@ const CodeBlock: React.FC<{ caption: string; code: string }> = ({
   caption,
   code,
 }) => (
-  <div className="rounded-2xl border border-white/[0.07] bg-white/[0.018] overflow-hidden max-w-2xl">
+  <div className="rounded-2xl border border-white/[0.07] bg-white/[0.018] overflow-hidden">
     <div className="px-5 py-3 border-b border-white/[0.08] flex items-center justify-between">
       <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-500">
         {caption}
@@ -683,7 +695,83 @@ const CodeBlock: React.FC<{ caption: string; code: string }> = ({
   </div>
 );
 
-/* ═════════════════ Visual: Result table ══════════════════════════ */
+/* ═════════════════ Benchmark band — compact scorecard ════════════ */
+
+const BAND_ROWS: {
+  transform: string;
+  tool: string;
+  coverage: number;
+  safe: boolean;
+  lead?: boolean;
+}[] = [
+  { transform: 'var → const/let', tool: 'Refactron', coverage: 100, safe: true, lead: true },
+  { transform: 'var → const/let', tool: 'ESLint --fix', coverage: 100, safe: true },
+  { transform: 'var → const/let', tool: 'jscodeshift', coverage: 46.0, safe: false },
+  { transform: 'var → const/let', tool: 'Comby', coverage: 47.6, safe: false },
+  { transform: 'format → f-string', tool: 'Refactron', coverage: 99.1, safe: true, lead: true },
+  { transform: 'format → f-string', tool: 'LibCST', coverage: 57.4, safe: true },
+  { transform: 'format → f-string', tool: 'Comby', coverage: 15.7, safe: false },
+];
+
+const ScoreBand: React.FC = () => (
+  <div className="rounded-2xl border border-white/[0.08] overflow-hidden bg-black/30">
+    <div className="grid grid-cols-[1.3fr_1.1fr_1.7fr_0.7fr] gap-x-4 px-5 py-3 border-b border-white/[0.08] bg-white/[0.02] font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+      <span>Transform</span>
+      <span>Tool</span>
+      <span>Coverage</span>
+      <span className="text-right">Safe</span>
+    </div>
+    {BAND_ROWS.map((r, i) => {
+      const firstOfGroup = i === 0 || BAND_ROWS[i - 1].transform !== r.transform;
+      return (
+        <div
+          key={`${r.transform}-${r.tool}`}
+          className={`grid grid-cols-[1.3fr_1.1fr_1.7fr_0.7fr] gap-x-4 px-5 py-3 items-center ${
+            i < BAND_ROWS.length - 1 ? 'border-b border-white/[0.05]' : ''
+          } ${r.lead ? 'bg-white/[0.022]' : ''}`}
+        >
+          <span className="text-xs font-mono text-neutral-500">
+            {firstOfGroup ? r.transform : ''}
+          </span>
+          <span
+            className={`text-sm ${
+              r.lead ? 'text-white font-medium' : 'text-neutral-300'
+            }`}
+          >
+            {r.tool}
+          </span>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-1.5 rounded-full bg-white/[0.05] overflow-hidden max-w-[160px]">
+              <div
+                className="h-full rounded-full"
+                style={{
+                  width: `${r.coverage}%`,
+                  background: r.safe ? EMERALD : ROSE,
+                }}
+              />
+            </div>
+            <span
+              className="text-sm tabular-nums"
+              style={{ color: r.safe ? EMERALD : ROSE }}
+            >
+              {r.coverage % 1 === 0 ? r.coverage : r.coverage.toFixed(1)}%
+            </span>
+          </div>
+          <span className="text-right">
+            <span
+              className="font-mono text-[10px] uppercase tracking-[0.14em]"
+              style={{ color: r.safe ? EMERALD : ROSE }}
+            >
+              {r.safe ? '✓' : '✗'}
+            </span>
+          </span>
+        </div>
+      );
+    })}
+  </div>
+);
+
+/* ═════════════════ Result table ══════════════════════════════════ */
 
 interface ResultRow {
   tool: string;
@@ -701,8 +789,7 @@ const ResultTable: React.FC<{ rows: ResultRow[]; speedCap: number }> = ({
   speedCap,
 }) => (
   <div className="rounded-2xl border border-white/[0.07] overflow-hidden bg-white/[0.012]">
-    {/* Header */}
-    <div className="grid grid-cols-[1.4fr_1.3fr_1.6fr_0.9fr_0.8fr] gap-x-4 px-5 py-3.5 border-b border-white/[0.08] bg-white/[0.02] font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500">
+    <div className="grid grid-cols-[1.3fr_1.2fr_1.6fr_0.8fr_0.8fr] gap-x-3 px-5 py-3 border-b border-white/[0.08] bg-white/[0.02] font-mono text-[10px] uppercase tracking-[0.18em] text-neutral-500">
       <span>Tool</span>
       <span>Speed</span>
       <span>Coverage</span>
@@ -712,11 +799,10 @@ const ResultTable: React.FC<{ rows: ResultRow[]; speedCap: number }> = ({
     {rows.map((r, i) => (
       <div
         key={r.tool}
-        className={`grid grid-cols-[1.4fr_1.3fr_1.6fr_0.9fr_0.8fr] gap-x-4 px-5 py-5 items-center ${
+        className={`grid grid-cols-[1.3fr_1.2fr_1.6fr_0.8fr_0.8fr] gap-x-3 px-5 py-5 items-center ${
           i < rows.length - 1 ? 'border-b border-white/[0.05]' : ''
         } ${r.highlight ? 'bg-white/[0.022]' : ''}`}
       >
-        {/* Tool */}
         <span
           className={`text-sm font-medium ${
             r.highlight ? 'text-white' : 'text-neutral-300'
@@ -724,8 +810,6 @@ const ResultTable: React.FC<{ rows: ResultRow[]; speedCap: number }> = ({
         >
           {r.tool}
         </span>
-
-        {/* Speed — bar + value */}
         <div>
           <p className="text-sm tabular-nums text-neutral-300 mb-1.5">
             {r.speed.toFixed(2)}s
@@ -737,8 +821,6 @@ const ResultTable: React.FC<{ rows: ResultRow[]; speedCap: number }> = ({
             />
           </div>
         </div>
-
-        {/* Coverage — bar + value */}
         <div>
           <p className="text-sm tabular-nums mb-1.5">
             <span
@@ -759,8 +841,6 @@ const ResultTable: React.FC<{ rows: ResultRow[]; speedCap: number }> = ({
             />
           </div>
         </div>
-
-        {/* Wrong */}
         <span
           className={`text-sm tabular-nums text-right ${
             r.wrong > 0 ? 'text-rose-400/90' : 'text-neutral-500'
@@ -773,11 +853,9 @@ const ResultTable: React.FC<{ rows: ResultRow[]; speedCap: number }> = ({
             </span>
           )}
         </span>
-
-        {/* Safety */}
         <span className="text-right">
           <span
-            className={`font-mono text-[10px] uppercase tracking-[0.16em] px-2 py-1 rounded border ${
+            className={`font-mono text-[10px] uppercase tracking-[0.14em] px-2 py-1 rounded border ${
               r.safe
                 ? 'border-emerald-400/30 bg-emerald-400/[0.06] text-emerald-400/90'
                 : 'border-rose-400/30 bg-rose-400/[0.06] text-rose-400/90'
@@ -792,12 +870,6 @@ const ResultTable: React.FC<{ rows: ResultRow[]; speedCap: number }> = ({
 );
 
 /* ═════════════════ Visual: Coverage bar chart ════════════════════ */
-
-const MONO = 'ui-monospace, SFMono-Regular, monospace';
-const EMERALD = 'rgba(74, 222, 128, 0.85)';
-const EMERALD_DIM = 'rgba(74, 222, 128, 0.12)';
-const ROSE = 'rgba(244, 63, 94, 0.8)';
-const ROSE_DIM = 'rgba(244, 63, 94, 0.1)';
 
 interface CovBar {
   tool: string;
@@ -855,8 +927,6 @@ const CoverageChart: React.FC = () => {
             <stop offset="100%" stopColor={ROSE_DIM} />
           </linearGradient>
         </defs>
-
-        {/* Gridlines + y labels */}
         {[0, 25, 50, 75, 100].map((t) => (
           <g key={t}>
             <line
@@ -879,8 +949,6 @@ const CoverageChart: React.FC = () => {
             </text>
           </g>
         ))}
-
-        {/* Group divider */}
         <line
           x1={padL + groupW}
           x2={padL + groupW}
@@ -890,7 +958,6 @@ const CoverageChart: React.FC = () => {
           strokeWidth="1"
           strokeDasharray="3 4"
         />
-
         {COV_GROUPS.map((group, gi) => {
           const groupStart = padL + gi * groupW;
           const sidePad = 30;
@@ -916,7 +983,6 @@ const CoverageChart: React.FC = () => {
                       strokeOpacity={0.4}
                       strokeWidth="1"
                     />
-                    {/* value */}
                     <text
                       x={x + barW / 2}
                       y={top - 8}
@@ -928,7 +994,6 @@ const CoverageChart: React.FC = () => {
                     >
                       {b.pct % 1 === 0 ? b.pct : b.pct.toFixed(1)}%
                     </text>
-                    {/* tool label, rotated */}
                     <text
                       x={x + barW / 2}
                       y={plotBottom + 14}
@@ -943,7 +1008,6 @@ const CoverageChart: React.FC = () => {
                   </g>
                 );
               })}
-              {/* group label */}
               <text
                 x={groupStart + groupW / 2}
                 y={H - 12}
@@ -1005,7 +1069,6 @@ const ScatterChart: React.FC = () => {
         className="w-full h-auto"
         preserveAspectRatio="xMidYMid meet"
       >
-        {/* "safe band" highlight above 55% */}
         <rect
           x={padL}
           y={yFor(100)}
@@ -1024,8 +1087,6 @@ const ScatterChart: React.FC = () => {
         >
           ALL SAFE RESULTS LAND HERE
         </text>
-
-        {/* Y gridlines + labels */}
         {[0, 25, 50, 75, 100].map((t) => (
           <g key={t}>
             <line
@@ -1048,8 +1109,6 @@ const ScatterChart: React.FC = () => {
             </text>
           </g>
         ))}
-
-        {/* X ticks + labels */}
         {[0, 1, 2, 3, 4, 5].map((s) => (
           <g key={s}>
             <line
@@ -1072,8 +1131,6 @@ const ScatterChart: React.FC = () => {
             </text>
           </g>
         ))}
-
-        {/* Axis titles */}
         <text
           x={padL + plotW / 2}
           y={H - 14}
@@ -1097,8 +1154,6 @@ const ScatterChart: React.FC = () => {
         >
           COVERAGE
         </text>
-
-        {/* Points */}
         {SCATTER_PTS.map((p) => {
           const cx = xFor(p.speed);
           const cy = yFor(p.coverage);
@@ -1128,9 +1183,7 @@ const ScatterChart: React.FC = () => {
           );
         })}
       </svg>
-
-      {/* Legend */}
-      <div className="flex items-center gap-6 mt-4 pt-4 border-t border-white/[0.06]">
+      <div className="flex flex-wrap items-center gap-6 mt-4 pt-4 border-t border-white/[0.06]">
         <span className="flex items-center gap-2 text-xs text-neutral-400">
           <span
             className="h-2.5 w-2.5 rounded-full"
