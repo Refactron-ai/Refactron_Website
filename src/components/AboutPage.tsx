@@ -722,15 +722,17 @@ const HeroChipModule: React.FC = () => (
       .rfn-die-core { animation: rfn-die-pulse 2.6s ease-in-out infinite; }
     `}</style>
 
-    {/* Surrounding mono labels */}
-    <div className="absolute -top-2 left-2 text-[9px] font-mono text-neutral-600 tracking-[0.28em]">
+    {/* Surrounding mono labels — sit OUTSIDE the chip body in the safe
+        gutter. Bumped from neutral-600/700 to neutral-400/500 so they
+        actually read against the page bg instead of disappearing. */}
+    <div className="absolute -top-5 left-2 text-[10px] font-mono text-neutral-400 tracking-[0.28em]">
       FIG · 01
     </div>
-    <div className="absolute -bottom-2 right-2 text-[9px] font-mono text-neutral-600 tracking-[0.28em]">
+    <div className="absolute -bottom-5 right-2 text-[10px] font-mono text-neutral-400 tracking-[0.28em]">
       DETERMINISTIC · V0.5
     </div>
     <div
-      className="absolute top-1/2 -right-3 -translate-y-1/2 text-[8.5px] font-mono text-neutral-700 tracking-[0.34em] hidden xl:block"
+      className="absolute top-1/2 -right-6 -translate-y-1/2 text-[9px] font-mono text-neutral-500 tracking-[0.32em] hidden xl:block"
       style={{ writingMode: 'vertical-rl' }}
     >
       ANALYZE · REFACTOR · VERIFY · DOCUMENT
@@ -793,10 +795,12 @@ const HeroChipModule: React.FC = () => (
         </div>
       </div>
 
-      {/* Bottom-left product label */}
-      <div className="absolute bottom-5 left-5 text-[10.5px] font-mono leading-[1.35] tracking-[0.24em]">
-        <div className="text-white/55">REFACTRON</div>
-        <div className="text-white/35">ENGINE</div>
+      {/* Bottom-left product label. The chip die above is bright on hover
+          of the eye, so labels need real contrast or they get read as part
+          of the dot grid. */}
+      <div className="absolute bottom-5 left-5 text-[10.5px] font-mono leading-[1.4] tracking-[0.24em]">
+        <div className="text-white/85 font-medium">REFACTRON</div>
+        <div className="text-white/55 mt-0.5">ENGINE</div>
       </div>
 
       {/* Bottom-right status LEDs — first one pulses (active) */}
@@ -843,13 +847,21 @@ const AboutPage: React.FC = () => {
   });
 
   return (
-    <div className="relative bg-black font-space antialiased overflow-x-hidden">
+    <div
+      className="relative font-space antialiased overflow-x-hidden"
+      style={{
+        background:
+          'radial-gradient(ellipse 80% 45% at 50% 0%, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0) 55%), #050506',
+      }}
+    >
       {/* ─── Hero ────────────────────────────────────────────────────── */}
-      <section className="relative w-full min-h-[80vh] flex items-center overflow-hidden bg-black">
+      {/* Top padding pushes content clear of the fixed navbar (~5rem tall);
+          bottom padding gives the hero room to breathe before section #2. */}
+      <section className="relative w-full overflow-hidden">
         <AsciiBackdrop maskAt="32% 50%" />
         {sectionFades}
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 py-20 lg:py-0">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 pt-32 sm:pt-36 lg:pt-44 pb-24 lg:pb-32">
           <motion.div
             {...fadeUp}
             className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center"
@@ -1340,7 +1352,7 @@ const AboutPage: React.FC = () => {
       </section>
 
       {/* ─── Contact ─────────────────────────────────────────────── */}
-      <section className="relative w-full py-20 bg-black border-t border-white/[0.06]">
+      <section className="relative w-full py-20 border-t border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <motion.div {...fadeUp} className="space-y-6">
             <p className="text-lg md:text-xl text-neutral-300 font-space">
