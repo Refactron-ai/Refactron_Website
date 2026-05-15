@@ -1040,11 +1040,15 @@ interface ScatterPt {
 }
 
 const SCATTER_PTS: ScatterPt[] = [
-  { label: 'Refactron · var', speed: 5.22, coverage: 100, safe: true, lx: 0, ly: -15, anchor: 'middle' },
+  // Both Refactron points label BELOW — above-the-point would clip the plot
+  // top and collide with the band caption.
+  { label: 'Refactron · var', speed: 5.22, coverage: 100, safe: true, lx: 0, ly: 24, anchor: 'middle' },
+  { label: 'Refactron · fmt', speed: 3.76, coverage: 99.1, safe: true, lx: 0, ly: 24, anchor: 'middle' },
   { label: 'ESLint · var', speed: 0.65, coverage: 100, safe: true, lx: 14, ly: 4, anchor: 'start' },
-  { label: 'jscodeshift · var', speed: 0.67, coverage: 46.0, safe: false, lx: 14, ly: -7, anchor: 'start' },
-  { label: 'Comby · var', speed: 0.29, coverage: 47.6, safe: false, lx: 14, ly: 14, anchor: 'start' },
-  { label: 'Refactron · fmt', speed: 3.76, coverage: 99.1, safe: true, lx: 0, ly: -15, anchor: 'middle' },
+  // The two bottom-left points sit close together — separate their labels
+  // vertically: the higher point (Comby) labels up, the lower (jscodeshift) down.
+  { label: 'Comby · var', speed: 0.29, coverage: 47.6, safe: false, lx: 13, ly: -12, anchor: 'start' },
+  { label: 'jscodeshift · var', speed: 0.67, coverage: 46.0, safe: false, lx: 13, ly: 20, anchor: 'start' },
   { label: 'LibCST · fmt', speed: 2.68, coverage: 57.4, safe: true, lx: 14, ly: 4, anchor: 'start' },
   { label: 'Comby · fmt', speed: 4.79, coverage: 15.7, safe: false, lx: -14, ly: 4, anchor: 'end' },
 ];
@@ -1076,16 +1080,18 @@ const ScatterChart: React.FC = () => {
           height={yFor(55) - yFor(100)}
           fill="rgba(74,222,128,0.035)"
         />
+        {/* Band caption sits in the band's empty middle so it never collides
+            with a data point or its label. */}
         <text
-          x={W - padR - 6}
-          y={yFor(100) + 16}
+          x={padL + plotW / 2}
+          y={yFor(80)}
           fontSize="9.5"
           fontFamily={MONO}
-          letterSpacing="1.5"
-          textAnchor="end"
-          fill="rgba(74,222,128,0.55)"
+          letterSpacing="2"
+          textAnchor="middle"
+          fill="rgba(74,222,128,0.4)"
         >
-          ALL SAFE RESULTS LAND HERE
+          ALL SAFE RESULTS LAND IN THIS BAND
         </text>
         {[0, 25, 50, 75, 100].map((t) => (
           <g key={t}>
