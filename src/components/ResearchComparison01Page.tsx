@@ -219,9 +219,19 @@ const ResearchComparison01Page: React.FC = () => {
         <div className="relative z-10 mx-auto max-w-6xl px-6 lg:px-10 py-20 lg:py-28">
           <motion.div {...fadeUp}>
             <p className={`${eyebrow} mb-4`}>03 · Results</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white max-w-3xl leading-[1.1] mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white max-w-3xl leading-[1.1] mb-10">
               Coverage and safety move together.
             </h2>
+
+            {/* Coverage chart */}
+            <CoverageChart />
+            <Caption>
+              <span className="text-neutral-400 not-italic">Figure 1.</span>{' '}
+              Correct-rewrite coverage per tool. Bar colour encodes safety —
+              green bars compiled and passed tests, red bars did not.
+            </Caption>
+
+            <div className="h-14" />
 
             <h3 className="text-lg font-semibold text-white mb-1">
               <Mono>var → const/let</Mono>
@@ -332,6 +342,19 @@ const ResearchComparison01Page: React.FC = () => {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-[-0.02em] text-white max-w-3xl leading-[1.1] mb-10">
               Careful tools are safe. Unguarded tools are fast and broken.
             </h2>
+
+            {/* Speed vs coverage scatter */}
+            <ScatterChart />
+            <Caption>
+              <span className="text-neutral-400 not-italic">Figure 2.</span>{' '}
+              Every measured cell, speed against coverage. Safe results (green)
+              sit in a high-coverage band; unsafe results (red) sit below 50%.
+              Refactron's points are the slowest — and the only ones both safe
+              and above 99%.
+            </Caption>
+
+            <div className="h-12" />
+
             <div className="grid md:grid-cols-2 gap-4">
               <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.03] p-7">
                 <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-emerald-400/90 mb-3">
@@ -767,5 +790,364 @@ const ResultTable: React.FC<{ rows: ResultRow[]; speedCap: number }> = ({
     ))}
   </div>
 );
+
+/* ═════════════════ Visual: Coverage bar chart ════════════════════ */
+
+const MONO = 'ui-monospace, SFMono-Regular, monospace';
+const EMERALD = 'rgba(74, 222, 128, 0.85)';
+const EMERALD_DIM = 'rgba(74, 222, 128, 0.12)';
+const ROSE = 'rgba(244, 63, 94, 0.8)';
+const ROSE_DIM = 'rgba(244, 63, 94, 0.1)';
+
+interface CovBar {
+  tool: string;
+  pct: number;
+  safe: boolean;
+}
+
+const COV_GROUPS: { label: string; bars: CovBar[] }[] = [
+  {
+    label: 'var → const/let',
+    bars: [
+      { tool: 'Refactron', pct: 100, safe: true },
+      { tool: 'ESLint', pct: 100, safe: true },
+      { tool: 'jscodeshift', pct: 46.0, safe: false },
+      { tool: 'Comby', pct: 47.6, safe: false },
+    ],
+  },
+  {
+    label: 'format → f-string',
+    bars: [
+      { tool: 'Refactron', pct: 99.1, safe: true },
+      { tool: 'LibCST', pct: 57.4, safe: true },
+      { tool: 'Comby', pct: 15.7, safe: false },
+    ],
+  },
+];
+
+const CoverageChart: React.FC = () => {
+  const W = 760;
+  const H = 400;
+  const padL = 46;
+  const padR = 24;
+  const padT = 28;
+  const plotBottom = 308;
+  const plotTop = padT;
+  const plotH = plotBottom - plotTop;
+  const plotW = W - padL - padR;
+  const groupW = plotW / COV_GROUPS.length;
+  const yFor = (p: number) => plotBottom - (p / 100) * plotH;
+
+  return (
+    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.012] p-5 sm:p-7">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="w-full h-auto"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <defs>
+          <linearGradient id="cov-safe" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor={EMERALD} />
+            <stop offset="100%" stopColor={EMERALD_DIM} />
+          </linearGradient>
+          <linearGradient id="cov-unsafe" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor={ROSE} />
+            <stop offset="100%" stopColor={ROSE_DIM} />
+          </linearGradient>
+        </defs>
+
+        {/* Gridlines + y labels */}
+        {[0, 25, 50, 75, 100].map((t) => (
+          <g key={t}>
+            <line
+              x1={padL}
+              x2={W - padR}
+              y1={yFor(t)}
+              y2={yFor(t)}
+              stroke="rgba(255,255,255,0.05)"
+              strokeWidth="1"
+            />
+            <text
+              x={padL - 9}
+              y={yFor(t) + 3.5}
+              fontSize="10"
+              fontFamily={MONO}
+              textAnchor="end"
+              fill="rgba(255,255,255,0.4)"
+            >
+              {t}%
+            </text>
+          </g>
+        ))}
+
+        {/* Group divider */}
+        <line
+          x1={padL + groupW}
+          x2={padL + groupW}
+          y1={plotTop}
+          y2={plotBottom}
+          stroke="rgba(255,255,255,0.07)"
+          strokeWidth="1"
+          strokeDasharray="3 4"
+        />
+
+        {COV_GROUPS.map((group, gi) => {
+          const groupStart = padL + gi * groupW;
+          const sidePad = 30;
+          const gap = 14;
+          const n = group.bars.length;
+          const innerW = groupW - 2 * sidePad;
+          const barW = (innerW - gap * (n - 1)) / n;
+          return (
+            <g key={group.label}>
+              {group.bars.map((b, bi) => {
+                const x = groupStart + sidePad + bi * (barW + gap);
+                const top = yFor(b.pct);
+                return (
+                  <g key={b.tool}>
+                    <rect
+                      x={x}
+                      y={top}
+                      width={barW}
+                      height={plotBottom - top}
+                      rx={3}
+                      fill={b.safe ? 'url(#cov-safe)' : 'url(#cov-unsafe)'}
+                      stroke={b.safe ? EMERALD : ROSE}
+                      strokeOpacity={0.4}
+                      strokeWidth="1"
+                    />
+                    {/* value */}
+                    <text
+                      x={x + barW / 2}
+                      y={top - 8}
+                      fontSize="12"
+                      fontFamily={MONO}
+                      fontWeight="600"
+                      textAnchor="middle"
+                      fill={b.safe ? EMERALD : ROSE}
+                    >
+                      {b.pct % 1 === 0 ? b.pct : b.pct.toFixed(1)}%
+                    </text>
+                    {/* tool label, rotated */}
+                    <text
+                      x={x + barW / 2}
+                      y={plotBottom + 14}
+                      fontSize="10.5"
+                      fontFamily={MONO}
+                      textAnchor="end"
+                      fill="rgba(255,255,255,0.6)"
+                      transform={`rotate(-32 ${x + barW / 2} ${plotBottom + 14})`}
+                    >
+                      {b.tool}
+                    </text>
+                  </g>
+                );
+              })}
+              {/* group label */}
+              <text
+                x={groupStart + groupW / 2}
+                y={H - 12}
+                fontSize="11"
+                fontFamily={MONO}
+                letterSpacing="1.5"
+                textAnchor="middle"
+                fill="rgba(255,255,255,0.78)"
+              >
+                {group.label.toUpperCase()}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+};
+
+/* ═════════════════ Visual: Speed-vs-coverage scatter ══════════════ */
+
+interface ScatterPt {
+  label: string;
+  speed: number;
+  coverage: number;
+  safe: boolean;
+  lx: number;
+  ly: number;
+  anchor: 'start' | 'middle' | 'end';
+}
+
+const SCATTER_PTS: ScatterPt[] = [
+  { label: 'Refactron · var', speed: 5.22, coverage: 100, safe: true, lx: 0, ly: -15, anchor: 'middle' },
+  { label: 'ESLint · var', speed: 0.65, coverage: 100, safe: true, lx: 14, ly: 4, anchor: 'start' },
+  { label: 'jscodeshift · var', speed: 0.67, coverage: 46.0, safe: false, lx: 14, ly: -7, anchor: 'start' },
+  { label: 'Comby · var', speed: 0.29, coverage: 47.6, safe: false, lx: 14, ly: 14, anchor: 'start' },
+  { label: 'Refactron · fmt', speed: 3.76, coverage: 99.1, safe: true, lx: 0, ly: -15, anchor: 'middle' },
+  { label: 'LibCST · fmt', speed: 2.68, coverage: 57.4, safe: true, lx: 14, ly: 4, anchor: 'start' },
+  { label: 'Comby · fmt', speed: 4.79, coverage: 15.7, safe: false, lx: -14, ly: 4, anchor: 'end' },
+];
+
+const ScatterChart: React.FC = () => {
+  const W = 760;
+  const H = 440;
+  const padL = 52;
+  const padR = 40;
+  const padT = 30;
+  const padB = 56;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+  const xMax = 5.6;
+  const xFor = (s: number) => padL + (s / xMax) * plotW;
+  const yFor = (c: number) => padT + (1 - c / 100) * plotH;
+
+  return (
+    <div className="rounded-2xl border border-white/[0.07] bg-white/[0.012] p-5 sm:p-7">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="w-full h-auto"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        {/* "safe band" highlight above 55% */}
+        <rect
+          x={padL}
+          y={yFor(100)}
+          width={plotW}
+          height={yFor(55) - yFor(100)}
+          fill="rgba(74,222,128,0.035)"
+        />
+        <text
+          x={W - padR - 6}
+          y={yFor(100) + 16}
+          fontSize="9.5"
+          fontFamily={MONO}
+          letterSpacing="1.5"
+          textAnchor="end"
+          fill="rgba(74,222,128,0.55)"
+        >
+          ALL SAFE RESULTS LAND HERE
+        </text>
+
+        {/* Y gridlines + labels */}
+        {[0, 25, 50, 75, 100].map((t) => (
+          <g key={t}>
+            <line
+              x1={padL}
+              x2={W - padR}
+              y1={yFor(t)}
+              y2={yFor(t)}
+              stroke="rgba(255,255,255,0.05)"
+              strokeWidth="1"
+            />
+            <text
+              x={padL - 10}
+              y={yFor(t) + 3.5}
+              fontSize="10"
+              fontFamily={MONO}
+              textAnchor="end"
+              fill="rgba(255,255,255,0.4)"
+            >
+              {t}%
+            </text>
+          </g>
+        ))}
+
+        {/* X ticks + labels */}
+        {[0, 1, 2, 3, 4, 5].map((s) => (
+          <g key={s}>
+            <line
+              x1={xFor(s)}
+              x2={xFor(s)}
+              y1={padT}
+              y2={H - padB}
+              stroke="rgba(255,255,255,0.035)"
+              strokeWidth="1"
+            />
+            <text
+              x={xFor(s)}
+              y={H - padB + 18}
+              fontSize="10"
+              fontFamily={MONO}
+              textAnchor="middle"
+              fill="rgba(255,255,255,0.4)"
+            >
+              {s}s
+            </text>
+          </g>
+        ))}
+
+        {/* Axis titles */}
+        <text
+          x={padL + plotW / 2}
+          y={H - 14}
+          fontSize="10"
+          fontFamily={MONO}
+          letterSpacing="2"
+          textAnchor="middle"
+          fill="rgba(255,255,255,0.5)"
+        >
+          SPEED — WALL-CLOCK SECONDS
+        </text>
+        <text
+          x={16}
+          y={padT + plotH / 2}
+          fontSize="10"
+          fontFamily={MONO}
+          letterSpacing="2"
+          textAnchor="middle"
+          fill="rgba(255,255,255,0.5)"
+          transform={`rotate(-90 16 ${padT + plotH / 2})`}
+        >
+          COVERAGE
+        </text>
+
+        {/* Points */}
+        {SCATTER_PTS.map((p) => {
+          const cx = xFor(p.speed);
+          const cy = yFor(p.coverage);
+          const color = p.safe ? EMERALD : ROSE;
+          return (
+            <g key={p.label}>
+              <circle cx={cx} cy={cy} r={11} fill={color} fillOpacity={0.12} />
+              <circle
+                cx={cx}
+                cy={cy}
+                r={6}
+                fill={color}
+                stroke="rgba(0,0,0,0.6)"
+                strokeWidth="1"
+              />
+              <text
+                x={cx + p.lx}
+                y={cy + p.ly}
+                fontSize="11"
+                fontFamily={MONO}
+                textAnchor={p.anchor}
+                fill="rgba(255,255,255,0.82)"
+              >
+                {p.label}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+
+      {/* Legend */}
+      <div className="flex items-center gap-6 mt-4 pt-4 border-t border-white/[0.06]">
+        <span className="flex items-center gap-2 text-xs text-neutral-400">
+          <span
+            className="h-2.5 w-2.5 rounded-full"
+            style={{ background: EMERALD }}
+          />
+          safe — compiles + tests pass
+        </span>
+        <span className="flex items-center gap-2 text-xs text-neutral-400">
+          <span
+            className="h-2.5 w-2.5 rounded-full"
+            style={{ background: ROSE }}
+          />
+          unsafe — failed compilation
+        </span>
+      </div>
+    </div>
+  );
+};
 
 export default ResearchComparison01Page;
