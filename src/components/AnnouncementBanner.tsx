@@ -4,13 +4,18 @@ import { X, ArrowRight } from 'lucide-react';
 
 // ─── Edit announcement here ──────────────────────────────────────────────────
 const ANNOUNCEMENT = {
-  enabled: true,
-  label: 'New',
-  text: 'Refactron is now an npm package — blast radius, temporal safety & multi-language support',
-  href: '/blog/refactron-is-now-a-nodejs-package', // internal path or full URL
-  color: '#C2607F',
+  // The research announcement now lives as an inline pill in the hero
+  // (see HeroSection). This fixed top strip is retired to avoid a
+  // duplicate announcement — flip back to true for future site-wide news.
+  enabled: false,
+  label: 'Research',
+  text: 'Refactron vs the codemod baseline — head-to-head benchmarks on speed, coverage & safety',
+  href: '/research', // internal path or full URL
+  // Subtle dark strip — matches the site's monochrome chrome rather than a
+  // bright colour bar.
+  color: '#0e0e11',
   // Change this key whenever you update the announcement so it reappears for all users
-  storageKey: 'announcement-v1',
+  storageKey: 'announcement-v2',
 };
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -31,7 +36,7 @@ const AnnouncementBanner: React.FC<Props> = ({ onDismiss }) => {
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-9 flex items-center justify-center px-4 z-50"
+      className="fixed top-0 left-0 w-full h-9 flex items-center justify-center px-4 z-50 border-b border-white/[0.08]"
       style={{ background: ANNOUNCEMENT.color }}
     >
       <button

@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { TextGenerateEffect } from './ui/text-generate-effect';
@@ -68,6 +69,29 @@ const HeroSection: React.FC = () => {
       <div className="relative z-10 h-screen px-4 flex items-start pt-16 sm:pt-20">
         <div className="flex flex-col items-center justify-center w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-12 gap-10 lg:gap-14">
           <div className="text-center max-w-4xl w-full">
+            {/* Research announcement — two-segment inline pill */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="flex justify-center mb-6 sm:mb-8"
+            >
+              <Link
+                to="/research"
+                className="group inline-flex items-center rounded-full border border-white/[0.1] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/20 transition-all duration-300 font-space"
+              >
+                <span className="flex items-center gap-1.5 pl-2.5 pr-3 py-1.5 text-[11px] font-medium text-neutral-200">
+                  <span className="h-1.5 w-1.5 rounded-sm bg-white/70" />
+                  Research
+                </span>
+                <span className="h-3.5 w-px bg-white/10" />
+                <span className="flex items-center gap-1.5 pl-3 pr-3 py-1.5 text-[11px] text-neutral-400 group-hover:text-neutral-200 transition-colors">
+                  Refactron vs the codemod baseline: see the benchmarks
+                  <ArrowRight className="w-3 h-3 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" />
+                </span>
+              </Link>
+            </motion.div>
+
             {/* Main Headline - Improved typography with lighter weight */}
             <div className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold mb-3 sm:mb-4 leading-[1.1] tracking-tight font-space">
               <TextGenerateEffect
