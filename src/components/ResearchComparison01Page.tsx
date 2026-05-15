@@ -32,15 +32,15 @@ function useActiveSection(ids: string[]): string {
   const [active, setActive] = useState(ids[0] ?? '');
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
+      entries => {
         const visible = entries
-          .filter((e) => e.isIntersecting)
+          .filter(e => e.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         if (visible[0]) setActive(visible[0].target.id);
       },
-      { rootMargin: '-15% 0px -75% 0px' },
+      { rootMargin: '-15% 0px -75% 0px' }
     );
-    ids.forEach((id) => {
+    ids.forEach(id => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
@@ -53,14 +53,15 @@ function useActiveSection(ids: string[]): string {
 
 const ResearchComparison01Page: React.FC = () => {
   useSEO({
-    title: 'Refactron vs the codemod baseline · A head-to-head study | Research',
+    title:
+      'Refactron vs the codemod baseline · A head-to-head study | Research',
     description:
       'Refactron benchmarked against jscodeshift, Comby, ESLint --fix, and LibCST on var → const/let and format → f-string. Speed, coverage, and safety on identical inputs. Reproducible.',
     canonical: 'https://refactron.dev/research/comparison-01',
     robots: 'index, follow',
   });
 
-  const active = useActiveSection(TOC.map((t) => t.id));
+  const active = useActiveSection(TOC.map(t => t.id));
 
   return (
     <article
@@ -123,7 +124,7 @@ const ResearchComparison01Page: React.FC = () => {
             <div className="sticky top-28">
               <p className={`${eyebrow} mb-5`}>Contents</p>
               <nav className="flex flex-col gap-1">
-                {TOC.map((t) => (
+                {TOC.map(t => (
                   <a
                     key={t.id}
                     href={`#${t.id}`}
@@ -174,12 +175,12 @@ const ResearchComparison01Page: React.FC = () => {
                 them is the product a team weighs Refactron against.
               </P>
               <P>
-                But they are the existing technology that performs
-                deterministic source-to-source transformation — exactly what
-                Refactron's engine does. A new approach earns credibility by
-                being measured against the established one on identical inputs.
-                This is "transform + verify versus transform only," not "our
-                product versus theirs."
+                But they are the existing technology that performs deterministic
+                source-to-source transformation — exactly what Refactron's
+                engine does. A new approach earns credibility by being measured
+                against the established one on identical inputs. This is
+                "transform + verify versus transform only," not "our product
+                versus theirs."
               </P>
             </Block>
 
@@ -198,21 +199,25 @@ const ResearchComparison01Page: React.FC = () => {
                   value="234"
                   sub="126 TypeScript · 108 Python"
                 />
-                <FactTile label="Runs / cell" value="5 + 1" sub="warm-up discarded" />
+                <FactTile
+                  label="Runs / cell"
+                  value="5 + 1"
+                  sub="warm-up discarded"
+                />
               </div>
               <P>
                 Each tool runs the equivalent codemod, authored the way a
                 competent engineer would and committed to the repo for audit.
                 LibCST uses Instagram's reference{' '}
                 <Mono>ConvertFormatStringCommand</Mono>
-                <Cite n="2" />; ESLint runs its stock{' '}
-                <Mono>prefer-const</Mono> + <Mono>no-var</Mono> rules.
+                <Cite n="2" />; ESLint runs its stock <Mono>prefer-const</Mono>{' '}
+                + <Mono>no-var</Mono> rules.
               </P>
               <div className="grid sm:grid-cols-3 gap-x-8 gap-y-6 mt-8 text-sm">
                 {[
                   {
                     t: 'Speed',
-                    d: "Wall-clock for the whole invocation, process startup included. What a user actually waits for.",
+                    d: 'Wall-clock for the whole invocation, process startup included. What a user actually waits for.',
                   },
                   {
                     t: 'Coverage',
@@ -222,7 +227,7 @@ const ResearchComparison01Page: React.FC = () => {
                     t: 'Safety',
                     d: "tsc --noEmit / py_compile plus the fixture's own test suite, run against the tool's output.",
                   },
-                ].map((x) => (
+                ].map(x => (
                   <div key={x.t}>
                     <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-neutral-600 mb-2">
                       {x.t}
@@ -241,8 +246,8 @@ const ResearchComparison01Page: React.FC = () => {
                 caption={
                   <>
                     <b>Figure 1.</b> Correct-rewrite coverage per tool. Bar
-                    colour encodes safety — green compiled and passed tests,
-                    red did not.
+                    colour encodes safety — green compiled and passed tests, red
+                    did not.
                   </>
                 }
               >
@@ -257,10 +262,39 @@ const ResearchComparison01Page: React.FC = () => {
               </p>
               <ResultTable
                 rows={[
-                  { tool: 'Refactron', speed: 5.22, coverage: 100, detail: '126/126', wrong: 0, safe: true, highlight: true },
-                  { tool: 'ESLint --fix', speed: 0.65, coverage: 100, detail: '126/126', wrong: 0, safe: true },
-                  { tool: 'jscodeshift', speed: 0.67, coverage: 46.0, detail: '58/126', wrong: 55, safe: false },
-                  { tool: 'Comby', speed: 0.29, coverage: 47.6, detail: '60/126', wrong: 66, safe: false },
+                  {
+                    tool: 'Refactron',
+                    speed: 5.22,
+                    coverage: 100,
+                    detail: '126/126',
+                    wrong: 0,
+                    safe: true,
+                    highlight: true,
+                  },
+                  {
+                    tool: 'ESLint --fix',
+                    speed: 0.65,
+                    coverage: 100,
+                    detail: '126/126',
+                    wrong: 0,
+                    safe: true,
+                  },
+                  {
+                    tool: 'jscodeshift',
+                    speed: 0.67,
+                    coverage: 46.0,
+                    detail: '58/126',
+                    wrong: 55,
+                    safe: false,
+                  },
+                  {
+                    tool: 'Comby',
+                    speed: 0.29,
+                    coverage: 47.6,
+                    detail: '60/126',
+                    wrong: 66,
+                    safe: false,
+                  },
                 ]}
                 speedCap={6}
               />
@@ -273,9 +307,32 @@ const ResearchComparison01Page: React.FC = () => {
               </p>
               <ResultTable
                 rows={[
-                  { tool: 'Refactron', speed: 3.76, coverage: 99.1, detail: '107/108', wrong: 0, safe: true, highlight: true },
-                  { tool: 'LibCST', speed: 2.68, coverage: 57.4, detail: '62/108', wrong: 0, safe: true },
-                  { tool: 'Comby', speed: 4.79, coverage: 15.7, detail: '17/108', wrong: 0, safe: false, brokenNote: '74 broken' },
+                  {
+                    tool: 'Refactron',
+                    speed: 3.76,
+                    coverage: 99.1,
+                    detail: '107/108',
+                    wrong: 0,
+                    safe: true,
+                    highlight: true,
+                  },
+                  {
+                    tool: 'LibCST',
+                    speed: 2.68,
+                    coverage: 57.4,
+                    detail: '62/108',
+                    wrong: 0,
+                    safe: true,
+                  },
+                  {
+                    tool: 'Comby',
+                    speed: 4.79,
+                    coverage: 15.7,
+                    detail: '17/108',
+                    wrong: 0,
+                    safe: false,
+                    brokenNote: '74 broken',
+                  },
                 ]}
                 speedCap={6}
               />
@@ -289,7 +346,9 @@ const ResearchComparison01Page: React.FC = () => {
             {/* 04 · The split */}
             <Block id="split">
               <Kicker>04 · The split</Kicker>
-              <H2>Careful tools are safe. Unguarded tools are fast and broken.</H2>
+              <H2>
+                Careful tools are safe. Unguarded tools are fast and broken.
+              </H2>
               <Figure
                 caption={
                   <>
@@ -428,10 +487,11 @@ bash bench/comparison/harness/run.sh`}
                   reference Python format codemod benchmarked here.
                 </RefItem>
                 <RefItem n="3">
-                  Opdyke, W. F. (1992). <em>Refactoring Object-Oriented
-                  Frameworks.</em> PhD thesis, University of Illinois
-                  Urbana-Champaign — the precondition-checking foundation
-                  behaviour-preserving refactoring rests on.
+                  Opdyke, W. F. (1992).{' '}
+                  <em>Refactoring Object-Oriented Frameworks.</em> PhD thesis,
+                  University of Illinois Urbana-Champaign — the
+                  precondition-checking foundation behaviour-preserving
+                  refactoring rests on.
                 </RefItem>
                 <RefItem n="4">
                   The <em>var_to_const_let</em> scope-correctness fix and the
@@ -704,13 +764,45 @@ const BAND_ROWS: {
   safe: boolean;
   lead?: boolean;
 }[] = [
-  { transform: 'var → const/let', tool: 'Refactron', coverage: 100, safe: true, lead: true },
-  { transform: 'var → const/let', tool: 'ESLint --fix', coverage: 100, safe: true },
-  { transform: 'var → const/let', tool: 'jscodeshift', coverage: 46.0, safe: false },
+  {
+    transform: 'var → const/let',
+    tool: 'Refactron',
+    coverage: 100,
+    safe: true,
+    lead: true,
+  },
+  {
+    transform: 'var → const/let',
+    tool: 'ESLint --fix',
+    coverage: 100,
+    safe: true,
+  },
+  {
+    transform: 'var → const/let',
+    tool: 'jscodeshift',
+    coverage: 46.0,
+    safe: false,
+  },
   { transform: 'var → const/let', tool: 'Comby', coverage: 47.6, safe: false },
-  { transform: 'format → f-string', tool: 'Refactron', coverage: 99.1, safe: true, lead: true },
-  { transform: 'format → f-string', tool: 'LibCST', coverage: 57.4, safe: true },
-  { transform: 'format → f-string', tool: 'Comby', coverage: 15.7, safe: false },
+  {
+    transform: 'format → f-string',
+    tool: 'Refactron',
+    coverage: 99.1,
+    safe: true,
+    lead: true,
+  },
+  {
+    transform: 'format → f-string',
+    tool: 'LibCST',
+    coverage: 57.4,
+    safe: true,
+  },
+  {
+    transform: 'format → f-string',
+    tool: 'Comby',
+    coverage: 15.7,
+    safe: false,
+  },
 ];
 
 const ScoreBand: React.FC = () => (
@@ -722,7 +814,8 @@ const ScoreBand: React.FC = () => (
       <span className="text-right">Safe</span>
     </div>
     {BAND_ROWS.map((r, i) => {
-      const firstOfGroup = i === 0 || BAND_ROWS[i - 1].transform !== r.transform;
+      const firstOfGroup =
+        i === 0 || BAND_ROWS[i - 1].transform !== r.transform;
       return (
         <div
           key={`${r.transform}-${r.tool}`}
@@ -927,7 +1020,7 @@ const CoverageChart: React.FC = () => {
             <stop offset="100%" stopColor={ROSE_DIM} />
           </linearGradient>
         </defs>
-        {[0, 25, 50, 75, 100].map((t) => (
+        {[0, 25, 50, 75, 100].map(t => (
           <g key={t}>
             <line
               x1={padL}
@@ -1042,15 +1135,71 @@ interface ScatterPt {
 const SCATTER_PTS: ScatterPt[] = [
   // Both Refactron points label BELOW — above-the-point would clip the plot
   // top and collide with the band caption.
-  { label: 'Refactron · var', speed: 5.22, coverage: 100, safe: true, lx: 0, ly: 24, anchor: 'middle' },
-  { label: 'Refactron · fmt', speed: 3.76, coverage: 99.1, safe: true, lx: 0, ly: 24, anchor: 'middle' },
-  { label: 'ESLint · var', speed: 0.65, coverage: 100, safe: true, lx: 14, ly: 4, anchor: 'start' },
+  {
+    label: 'Refactron · var',
+    speed: 5.22,
+    coverage: 100,
+    safe: true,
+    lx: 0,
+    ly: 24,
+    anchor: 'middle',
+  },
+  {
+    label: 'Refactron · fmt',
+    speed: 3.76,
+    coverage: 99.1,
+    safe: true,
+    lx: 0,
+    ly: 24,
+    anchor: 'middle',
+  },
+  {
+    label: 'ESLint · var',
+    speed: 0.65,
+    coverage: 100,
+    safe: true,
+    lx: 14,
+    ly: 4,
+    anchor: 'start',
+  },
   // The two bottom-left points sit close together — separate their labels
   // vertically: the higher point (Comby) labels up, the lower (jscodeshift) down.
-  { label: 'Comby · var', speed: 0.29, coverage: 47.6, safe: false, lx: 13, ly: -12, anchor: 'start' },
-  { label: 'jscodeshift · var', speed: 0.67, coverage: 46.0, safe: false, lx: 13, ly: 20, anchor: 'start' },
-  { label: 'LibCST · fmt', speed: 2.68, coverage: 57.4, safe: true, lx: 14, ly: 4, anchor: 'start' },
-  { label: 'Comby · fmt', speed: 4.79, coverage: 15.7, safe: false, lx: -14, ly: 4, anchor: 'end' },
+  {
+    label: 'Comby · var',
+    speed: 0.29,
+    coverage: 47.6,
+    safe: false,
+    lx: 13,
+    ly: -12,
+    anchor: 'start',
+  },
+  {
+    label: 'jscodeshift · var',
+    speed: 0.67,
+    coverage: 46.0,
+    safe: false,
+    lx: 13,
+    ly: 20,
+    anchor: 'start',
+  },
+  {
+    label: 'LibCST · fmt',
+    speed: 2.68,
+    coverage: 57.4,
+    safe: true,
+    lx: 14,
+    ly: 4,
+    anchor: 'start',
+  },
+  {
+    label: 'Comby · fmt',
+    speed: 4.79,
+    coverage: 15.7,
+    safe: false,
+    lx: -14,
+    ly: 4,
+    anchor: 'end',
+  },
 ];
 
 const ScatterChart: React.FC = () => {
@@ -1093,7 +1242,7 @@ const ScatterChart: React.FC = () => {
         >
           ALL SAFE RESULTS LAND IN THIS BAND
         </text>
-        {[0, 25, 50, 75, 100].map((t) => (
+        {[0, 25, 50, 75, 100].map(t => (
           <g key={t}>
             <line
               x1={padL}
@@ -1115,7 +1264,7 @@ const ScatterChart: React.FC = () => {
             </text>
           </g>
         ))}
-        {[0, 1, 2, 3, 4, 5].map((s) => (
+        {[0, 1, 2, 3, 4, 5].map(s => (
           <g key={s}>
             <line
               x1={xFor(s)}
@@ -1160,7 +1309,7 @@ const ScatterChart: React.FC = () => {
         >
           COVERAGE
         </text>
-        {SCATTER_PTS.map((p) => {
+        {SCATTER_PTS.map(p => {
           const cx = xFor(p.speed);
           const cy = yFor(p.coverage);
           const color = p.safe ? EMERALD : ROSE;

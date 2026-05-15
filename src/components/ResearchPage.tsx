@@ -34,7 +34,8 @@ const PAPERS: Paper[] = [
     no: '01',
     status: 'live',
     date: '2026-05-15',
-    title: 'Refactron 0.2.0. A measured look at deterministic refactoring at scale.',
+    title:
+      'Refactron 0.2.0. A measured look at deterministic refactoring at scale.',
     abstract:
       'Wall-clock benchmarks for analyze, plan, and the 3-gate verifier on synthetic and real Python fixtures. 45% faster on 100k LOC vs the 0.1 baseline. All scripts and raw runs in the public repo.',
     href: '/research/perf-01',
@@ -91,7 +92,6 @@ const ResearchPage: React.FC = () => {
       <DotGridBackdrop />
 
       <div className="relative z-10">
-
         {/* ── Hero ───────────────────────────────────────────────── */}
         <section className="w-full border-b border-white/[0.08]">
           <div className="mx-auto max-w-6xl px-6 lg:px-10 py-24 lg:py-36">
@@ -120,7 +120,9 @@ const ResearchPage: React.FC = () => {
               <div className="mt-14 pt-8 border-t border-white/[0.07] grid grid-cols-3 gap-x-6 max-w-md">
                 <Stat
                   label="Published"
-                  value={PAPERS.filter(p => p.status === 'live').length.toString()}
+                  value={PAPERS.filter(
+                    p => p.status === 'live'
+                  ).length.toString()}
                 />
                 <Stat
                   label="Planned"
@@ -179,10 +181,9 @@ const ResearchPage: React.FC = () => {
                     runs, no proprietary inputs, no mystery hardware.
                   </Rule>
                   <Rule title="Honest">
-                    Each paper has a Discussion section listing what it does
-                    not measure. We'd rather ship a narrow paper with sharp
-                    edges than a broad one with caveats hidden in the small
-                    print.
+                    Each paper has a Discussion section listing what it does not
+                    measure. We'd rather ship a narrow paper with sharp edges
+                    than a broad one with caveats hidden in the small print.
                   </Rule>
                 </ul>
               </div>
@@ -290,9 +291,7 @@ const PaperRow: React.FC<{ paper: Paper; delay: number }> = ({
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.5, delay }}
       className={`grid grid-cols-[60px_1fr_auto] gap-x-6 sm:gap-x-10 py-9 lg:py-12 ${
-        live
-          ? 'group cursor-pointer'
-          : 'opacity-75'
+        live ? 'group cursor-pointer' : 'opacity-75'
       }`}
     >
       {/* Number column */}

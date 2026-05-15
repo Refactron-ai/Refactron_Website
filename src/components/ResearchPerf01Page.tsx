@@ -28,15 +28,15 @@ function useActiveSection(ids: string[]): string {
   const [active, setActive] = useState(ids[0] ?? '');
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
+      entries => {
         const visible = entries
-          .filter((e) => e.isIntersecting)
+          .filter(e => e.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
         if (visible[0]) setActive(visible[0].target.id);
       },
-      { rootMargin: '-15% 0px -75% 0px' },
+      { rootMargin: '-15% 0px -75% 0px' }
     );
-    ids.forEach((id) => {
+    ids.forEach(id => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
@@ -56,7 +56,7 @@ const ResearchPerf01Page: React.FC = () => {
     robots: 'index, follow',
   });
 
-  const active = useActiveSection(TOC.map((t) => t.id));
+  const active = useActiveSection(TOC.map(t => t.id));
 
   return (
     <article
@@ -91,8 +91,8 @@ const ResearchPerf01Page: React.FC = () => {
             <p className="text-base md:text-lg text-neutral-400 leading-[1.8] max-w-2xl">
               We measured Refactron 0.2.0 on the work users actually do —
               analyze a tree, plan a refactor, then verify and apply it. Every
-              number on this page is a wall-clock measurement. Every script
-              that produced it lives in the repo.
+              number on this page is a wall-clock measurement. Every script that
+              produced it lives in the repo.
             </p>
           </motion.div>
         </div>
@@ -118,7 +118,7 @@ const ResearchPerf01Page: React.FC = () => {
             <div className="sticky top-28">
               <p className={`${eyebrow} mb-5`}>Contents</p>
               <nav className="flex flex-col gap-1">
-                {TOC.map((t) => (
+                {TOC.map(t => (
                   <a
                     key={t.id}
                     href={`#${t.id}`}
@@ -144,11 +144,10 @@ const ResearchPerf01Page: React.FC = () => {
               <Kicker>00 · Abstract</Kicker>
               <p className="text-lg md:text-xl text-neutral-300 leading-[1.75] mb-6">
                 Refactron 0.2.0 analyzes a 100k-LOC tree in a median 11.13
-                seconds — 45% faster than 0.1.0-beta.2, with run-to-run
-                variance compressed by 65%. On a real Python project the full
-                analyze → plan → apply loop, including the 3-gate verifier
-                running pytest on a shadow tree, completes in roughly five
-                seconds.
+                seconds — 45% faster than 0.1.0-beta.2, with run-to-run variance
+                compressed by 65%. On a real Python project the full analyze →
+                plan → apply loop, including the 3-gate verifier running pytest
+                on a shadow tree, completes in roughly five seconds.
               </p>
               <p className="text-base text-neutral-500 leading-[1.8]">
                 This report measures the cost of safety-first deterministic
@@ -196,12 +195,16 @@ const ResearchPerf01Page: React.FC = () => {
               <P>
                 Each measurement is the wall-clock real time reported by{' '}
                 <Mono>/usr/bin/time -p</Mono>, captured over five runs after a
-                single warm-up. We report median, min, and max — never a
-                single best case. For the apply step, the fixture is freshly
-                copied per iteration because the command mutates the tree.
+                single warm-up. We report median, min, and max — never a single
+                best case. For the apply step, the fixture is freshly copied per
+                iteration because the command mutates the tree.
               </P>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8">
-                <FactTile label="Hardware" value="Apple M2" sub="8 cores · 8 GB" />
+                <FactTile
+                  label="Hardware"
+                  value="Apple M2"
+                  sub="8 cores · 8 GB"
+                />
                 <FactTile label="OS" value="macOS 26.4" sub="Darwin arm64" />
                 <FactTile label="Runtime" value="Node 24.2" sub="Python 3.13" />
                 <FactTile
@@ -323,16 +326,15 @@ const ResearchPerf01Page: React.FC = () => {
                 Of the 3.38-second apply budget on this fixture, roughly 3s is
                 the test gate — pytest cold-start dominates at 9 files. On
                 larger projects the ratio inverts: the test gate becomes bound
-                by your suite, while plan and verification overhead stay
-                roughly constant.
+                by your suite, while plan and verification overhead stay roughly
+                constant.
               </P>
               <Figure
                 caption={
                   <>
                     <b>Figure 3.</b> Every refactor passes three gates before
-                    any byte is written. Any failure drops to the rejected
-                    state — your tree never changes, so there is nothing to
-                    roll back.
+                    any byte is written. Any failure drops to the rejected state
+                    — your tree never changes, so there is nothing to roll back.
                   </>
                 }
               >
@@ -365,8 +367,8 @@ const ResearchPerf01Page: React.FC = () => {
                   moves into CI.
                 </Limitation>
                 <Limitation title="500k LOC isn't here">
-                  Fixture generation alone takes ~30s and pushes 8 GB. The
-                  bench script supports{' '}
+                  Fixture generation alone takes ~30s and pushes 8 GB. The bench
+                  script supports{' '}
                   <Mono>SIZES=500000 bash bench/run-bench.sh</Mono>; we don't
                   publish until we can run it with headroom.
                 </Limitation>
@@ -378,10 +380,9 @@ const ResearchPerf01Page: React.FC = () => {
               <Kicker>07 · Reproducibility</Kicker>
               <H2>Run it yourself.</H2>
               <P>
-                Both bench scripts ship in the public repo. No special
-                hardware, no proprietary fixtures, no telemetry. If your
-                numbers come out meaningfully different on Apple Silicon,
-                please open an issue.
+                Both bench scripts ship in the public repo. No special hardware,
+                no proprietary fixtures, no telemetry. If your numbers come out
+                meaningfully different on Apple Silicon, please open an issue.
               </P>
               <div className="grid sm:grid-cols-2 gap-3 mt-8">
                 <CodeBlock
@@ -415,10 +416,10 @@ bash bench/run-pipeline-bench.sh`}
                   </ExtLink>
                 </RefItem>
                 <RefItem n="3">
-                  Opdyke, W. F. (1992). <em>Refactoring Object-Oriented
-                  Frameworks.</em> PhD thesis, University of Illinois
-                  Urbana-Champaign — the foundation behaviour-preserving
-                  refactoring rests on.
+                  Opdyke, W. F. (1992).{' '}
+                  <em>Refactoring Object-Oriented Frameworks.</em> PhD thesis,
+                  University of Illinois Urbana-Champaign — the foundation
+                  behaviour-preserving refactoring rests on.
                 </RefItem>
                 <RefItem n="4">
                   Per-file parallelization PR — the source of the 45% win.{' '}
@@ -788,7 +789,7 @@ const ComparisonChart: React.FC = () => {
         </linearGradient>
       </defs>
 
-      {yTicks.map((t) => (
+      {yTicks.map(t => (
         <g key={t}>
           <line
             x1={padL}
@@ -967,8 +968,7 @@ const ResultsTable: React.FC<{ rows: Row[] }> = ({ rows }) => (
               ))}
             </div>
             <p className="text-[10px] text-neutral-500 tabular-nums mt-1.5 text-right">
-              {Math.min(...r.runs).toFixed(2)}–
-              {Math.max(...r.runs).toFixed(2)}s
+              {Math.min(...r.runs).toFixed(2)}–{Math.max(...r.runs).toFixed(2)}s
             </p>
           </div>
           <p
@@ -1014,7 +1014,7 @@ const PipelineHero: React.FC = () => (
         strokeWidth="1.5"
       />
 
-      {[150, 500, 850].map((x) => (
+      {[150, 500, 850].map(x => (
         <line
           key={x}
           x1={x}
@@ -1030,7 +1030,7 @@ const PipelineHero: React.FC = () => (
         { cx: 150, label: 'ANALYZE', median: '0.16s', accent: false },
         { cx: 500, label: 'PLAN', median: '1.70s', accent: false },
         { cx: 850, label: 'APPLY', median: '3.38s', accent: true },
-      ].map((n) => (
+      ].map(n => (
         <g key={n.label}>
           {n.accent && (
             <circle cx={n.cx} cy="120" r="58" fill="url(#rfn-pipe-glow-mono)" />
@@ -1058,7 +1058,9 @@ const PipelineHero: React.FC = () => (
             fontSize="11"
             fontFamily={MONO}
             letterSpacing="3"
-            fill={n.accent ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.55)'}
+            fill={
+              n.accent ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.55)'
+            }
           >
             {n.label}
           </text>
@@ -1107,7 +1109,7 @@ const ThreeGateDiagram: React.FC = () => (
         strokeWidth="2"
       />
 
-      {[330, 540, 750].map((x) => (
+      {[330, 540, 750].map(x => (
         <g key={`fail-${x}`}>
           <path
             d={`M ${x} 150 Q ${x} 200, ${x} 250`}
@@ -1126,19 +1128,19 @@ const ThreeGateDiagram: React.FC = () => (
         { cx: 540, label: 'GATE 02', sub: 'imports', tone: 'normal' },
         { cx: 750, label: 'GATE 03', sub: 'tests', tone: 'normal' },
         { cx: 1000, label: 'WRITE', sub: 'atomic', tone: 'accent' },
-      ].map((n) => {
+      ].map(n => {
         const stroke =
           n.tone === 'accent'
             ? 'rgba(74, 222, 128, 0.85)'
             : n.tone === 'muted'
-            ? 'rgba(255,255,255,0.14)'
-            : 'rgba(255,255,255,0.28)';
+              ? 'rgba(255,255,255,0.14)'
+              : 'rgba(255,255,255,0.28)';
         const labelFill =
           n.tone === 'accent'
             ? 'rgba(74, 222, 128, 0.95)'
             : n.tone === 'muted'
-            ? 'rgba(255,255,255,0.45)'
-            : 'rgba(255,255,255,0.7)';
+              ? 'rgba(255,255,255,0.45)'
+              : 'rgba(255,255,255,0.7)';
         return (
           <g key={n.label}>
             <rect
