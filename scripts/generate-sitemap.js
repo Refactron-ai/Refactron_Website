@@ -19,7 +19,9 @@ const staticRoutes = [
   { url: '/about',           changefreq: 'monthly', priority: 0.6 },
   { url: '/changelog',       changefreq: 'weekly',  priority: 0.7 },
   { url: '/security',        changefreq: 'monthly', priority: 0.5 },
-  { url: '/research',       changefreq: 'monthly', priority: 0.45 },
+  { url: '/research',          changefreq: 'monthly', priority: 0.6 },
+  { url: '/research/perf-01',  changefreq: 'yearly',  priority: 0.5 },
+  { url: '/research/comparison-01', changefreq: 'yearly', priority: 0.5 },
   { url: '/privacy-policy',  changefreq: 'yearly',  priority: 0.3 },
   { url: '/terms-of-service',changefreq: 'yearly',  priority: 0.3 },
   // blog posts added dynamically below

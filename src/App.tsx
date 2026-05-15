@@ -26,12 +26,15 @@ import AuthApp from './components/AuthApp';
 import NotFoundPage from './components/NotFoundPage';
 import ErrorBoundary from './components/ErrorBoundary';
 import SkipToMain from './components/SkipToMain';
+import ScrollToTop from './components/ScrollToTop';
 import usePerformanceMonitoring from './hooks/usePerformanceMonitoring';
 import useAccessibility from './hooks/useAccessibility';
 import PageLayout from './components/PageLayout';
 import Changelog from './components/Changelog';
 import SecurityPage from './components/SecurityPage';
 import ResearchPage from './components/ResearchPage';
+import ResearchPerf01Page from './components/ResearchPerf01Page';
+import ResearchComparison01Page from './components/ResearchComparison01Page';
 import StatusPage from './components/StatusPage';
 
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -91,6 +94,7 @@ function App() {
       <ErrorBoundary>
         <SkipToMain />
         <Router>
+          <ScrollToTop />
           {isDocsHost ? (
             <Routes>
               <Route path="/*" element={<DocsPage />} />
@@ -158,6 +162,22 @@ function App() {
                   element={
                     <PageLayout mainClassName="flex min-h-0 flex-col">
                       <ResearchPage />
+                    </PageLayout>
+                  }
+                />
+                <Route
+                  path="/research/perf-01"
+                  element={
+                    <PageLayout mainClassName="flex min-h-0 flex-col">
+                      <ResearchPerf01Page />
+                    </PageLayout>
+                  }
+                />
+                <Route
+                  path="/research/comparison-01"
+                  element={
+                    <PageLayout mainClassName="flex min-h-0 flex-col">
+                      <ResearchComparison01Page />
                     </PageLayout>
                   }
                 />
