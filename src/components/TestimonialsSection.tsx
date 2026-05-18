@@ -216,11 +216,11 @@ function TestimonialMarqueeColumn({
   return (
     <div className={`${heightClass} overflow-hidden`}>
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 z-[2] h-14 bg-gradient-to-b from-[#f3f3f2] via-[#f3f3f2]/90 to-transparent sm:h-16"
+        className="pointer-events-none absolute inset-x-0 top-0 z-[2] h-14 bg-gradient-to-b from-[#161618] via-[#161618]/90 to-transparent sm:h-16"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-14 bg-gradient-to-t from-[#f3f3f2] via-[#f3f3f2]/90 to-transparent sm:h-16"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-14 bg-gradient-to-t from-[#161618] via-[#161618]/90 to-transparent sm:h-16"
         aria-hidden
       />
 
@@ -249,31 +249,26 @@ const TestimonialsSection: React.FC = () => {
   return (
     <section
       id="testimonials"
-      className="relative w-full overflow-hidden bg-[#f3f3f2] py-24 lg:py-28 text-neutral-900 antialiased font-space"
+      className="relative w-full overflow-hidden bg-[#161618] py-24 lg:py-28 text-neutral-200 antialiased font-space"
       aria-labelledby="testimonials-heading"
     >
       {/* Minimal editorial backdrop — fine grid + a soft neutral vignette */}
       <div aria-hidden className="pointer-events-none absolute inset-0 z-[1]">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(24,24,27,0.028)_1px,transparent_1px),linear-gradient(90deg,rgba(24,24,27,0.028)_1px,transparent_1px)] bg-[length:44px_44px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_72%_52%_at_50%_-18%,rgba(24,24,27,0.04),transparent_58%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_55%_at_50%_108%,rgba(24,24,27,0.035),transparent_52%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[length:44px_44px]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_72%_52%_at_50%_-18%,rgba(255,255,255,0.035),transparent_58%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_85%_55%_at_50%_108%,rgba(255,255,255,0.03),transparent_52%)]" />
       </div>
 
+      {/* Soft edge fades — blend the section into the black sections above and
+          below. z-[5] keeps them under the content (z-10) so only the
+          background edge softens, never the heading or cards. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 z-20 h-32 bg-gradient-to-b from-black to-transparent sm:h-36 lg:h-44"
+        className="pointer-events-none absolute inset-x-0 top-0 z-[5] h-24 bg-gradient-to-b from-black to-transparent sm:h-28"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-36 bg-gradient-to-t from-black to-transparent sm:h-40 lg:h-48"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-y-0 left-0 z-20 w-14 bg-gradient-to-r from-black to-transparent sm:w-20 lg:w-32"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-y-0 right-0 z-20 w-14 bg-gradient-to-l from-black to-transparent sm:w-20 lg:w-32"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[5] h-24 bg-gradient-to-t from-black to-transparent sm:h-28"
       />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -286,11 +281,11 @@ const TestimonialsSection: React.FC = () => {
         >
           <h2
             id="testimonials-heading"
-            className="text-4xl font-semibold tracking-tight text-neutral-950 sm:text-5xl lg:text-[3.25rem] leading-[1.12]"
+            className="text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-[3.25rem] leading-[1.12]"
           >
             Builders love Refactron.
           </h2>
-          <p className="mt-4 text-base text-neutral-600 sm:text-lg leading-relaxed">
+          <p className="mt-4 text-base text-neutral-400 sm:text-lg leading-relaxed">
             And they can&apos;t stop talking about safer refactors and boring,
             reviewable diffs.
           </p>
