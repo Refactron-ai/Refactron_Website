@@ -21,14 +21,14 @@ const STACKS: Record<
     hint: 'Node.js 18+',
     lines: [
       { comment: '# Install', command: 'npm install -g refactron' },
-      { comment: '# Analyze your codebase', command: 'refactron analyze .' },
+      { comment: '# Scan for legacy patterns', command: 'refactron analyze .' },
       {
-        comment: '# Preview refactors',
-        command: 'refactron refactor . --preview',
+        comment: '# Preview the refactor — nothing is written',
+        command: 'refactron run --dry-run .',
       },
       {
-        comment: '# Apply with verification',
-        command: 'refactron refactor . --verify',
+        comment: '# Apply — 3 gates, then atomic write',
+        command: 'refactron run --apply .',
       },
     ],
   },
@@ -37,14 +37,14 @@ const STACKS: Record<
     hint: 'Python 3.8+',
     lines: [
       { comment: '# Install', command: 'pip install refactron' },
-      { comment: '# Analyze your codebase', command: 'refactron analyze .' },
+      { comment: '# Scan for legacy patterns', command: 'refactron analyze .' },
       {
-        comment: '# Preview refactors',
-        command: 'refactron refactor . --preview',
+        comment: '# Preview the refactor — nothing is written',
+        command: 'refactron run --dry-run .',
       },
       {
-        comment: '# Apply with verification',
-        command: 'refactron refactor . --verify',
+        comment: '# Apply — 3 gates, then atomic write',
+        command: 'refactron run --apply .',
       },
     ],
   },
@@ -89,7 +89,7 @@ const QuickstartSection: React.FC = () => {
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-20 pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-black to-transparent z-20 pointer-events-none" />
 
-      <div className="relative z-10 container mx-auto px-4 max-w-7xl">
+      <div className="relative z-30 container mx-auto px-4 max-w-7xl">
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, y: 20 }}
           whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
