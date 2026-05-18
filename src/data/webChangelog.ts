@@ -2,6 +2,110 @@ import { ChangelogEntry } from './changelog';
 
 const webChangelog: ChangelogEntry[] = [
   {
+    version: 'web-1.4.0',
+    date: 'May 2026',
+    title: 'Marketing Redesign & Research',
+    tag: 'new',
+    sections: [
+      {
+        type: 'feat',
+        label: 'New Features',
+        items: [
+          {
+            label: 'Research Section',
+            description:
+              'A new research section presenting the Refactron comparison study, with an academic-paper-style page layout.',
+          },
+          {
+            label: 'Hero Research Pill',
+            description:
+              'An inline announcement pill in the hero links straight to the latest comparison paper.',
+          },
+        ],
+      },
+      {
+        type: 'improvement',
+        label: 'Improvements',
+        items: [
+          {
+            label: 'Marketing Redesign',
+            description:
+              'The marketing pages were refreshed, with LLM/AI-SEO work — an llms.txt index and structured content so AI crawlers can read the site.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    version: 'web-1.3.0',
+    date: 'April 2026',
+    title: 'Blog Launch',
+    tag: 'new',
+    sections: [
+      {
+        type: 'feat',
+        label: 'New Features',
+        items: [
+          {
+            label: 'Blog',
+            description:
+              'A full blog at /blog — a post system with build-time pre-rendering and automated sitemap generation.',
+          },
+          {
+            label: 'Launch Posts',
+            description:
+              'First posts published: a local-first architecture deep-dive and the Refactron npm package announcement.',
+          },
+        ],
+      },
+      {
+        type: 'fix',
+        label: 'Bug Fixes',
+        items: [
+          {
+            label: 'Routing & Sitemap',
+            description:
+              'Legacy /case-studies URLs now redirect, and sitemap route coverage was corrected (a phantom /pricing route removed).',
+          },
+          {
+            label: 'Cookie Handling',
+            description:
+              'Fixed cookie-consent handling alongside the blog rollout.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    version: 'web-1.2.0',
+    date: 'March 2026',
+    title: 'Status Page, Changelog Tabs & Book a Demo',
+    tag: 'new',
+    sections: [
+      {
+        type: 'feat',
+        label: 'New Features',
+        items: [
+          {
+            label: 'Status Page',
+            description:
+              'A public status page for service health, with a status badge in the site footer.',
+          },
+          {
+            label: 'Changelog Tabs',
+            description:
+              'The /changelog page split into Web App and CLI Package tabs so each release stream has its own timeline.',
+          },
+          {
+            label: 'Book a Demo',
+            description:
+              'A "Book a Demo" call-to-action for teams evaluating Refactron.',
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: 'web-1.1.0',
     date: 'March 2026',
     title: 'Team Management, Notifications & Plan Gating',
