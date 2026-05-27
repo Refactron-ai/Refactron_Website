@@ -95,6 +95,543 @@ export function parseBody(body: string): ContentSection[] {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'refactron-v0-2-3-twenty-transforms',
+    title: 'Refactron v0.2.3: We Doubled the Transform Catalog',
+    featured: false,
+    industry: 'Release',
+    accentColor: '#1A7F4B',
+    publishedAt: 'May 27, 2026',
+    author: 'Om Sherikar',
+    tags: [
+      'v0.2.3',
+      'Release',
+      'Python',
+      'TypeScript',
+      'PEP 585',
+      'PEP 604',
+      'Vue',
+    ],
+    views: 0,
+    clicks: 0,
+    summary:
+      'v0.2.3 ships ten new deterministic transforms — six for Python, four for TypeScript — bringing the catalog to twenty. Adds a pythonVersion config so version-gated rewrites can be opted in safely, and fixes a silent engine-composition data-loss bug.',
+    body: `Ten new deterministic transforms in v0.2.3 — six for Python, four for TypeScript — bringing the catalog from ten to twenty. A new pythonVersion configuration key so version-gated rewrites can be opted in safely. An engine composition bug that silently dropped changes in earlier releases, now fixed. This is the largest catalog expansion since the v2.0 rebuild.
+
+## What is new in Python
+
+The six new Python transforms group into three themes: type modernization, stdlib aliases, and micro-cleanups. Each transform has a tight refusal set and is gated on the project's Python version where the language change requires it.
+
+Type modernization. The two transforms here move codebases off the typing-module generic aliases and onto the native syntax that PEP 585 and PEP 604 introduced.
+
+- pep585_generics rewrites typing.List[X] to list[X], typing.Dict[K, V] to dict[K, V], typing.Tuple[...] to tuple[...], and the rest of the typing-module collection generics. Gated on Python 3.9 or higher, or a from __future__ import annotations at the top of the file. Refuses files that use Pydantic v1 or call get_type_hints — both evaluate annotations at runtime and would crash on the new syntax.
+- pep604_optional_union rewrites Optional[X] to X | None and Union[A, B] to A | B. Gated on Python 3.10 or higher, or future-annotations. Refuses the same Pydantic v1 and get_type_hints cases as pep585.
+
+Stdlib aliases. Two narrow rewrites that swap a verbose form for a newer alias the standard library introduced.
+
+- datetime_utc_alias rewrites datetime.timezone.utc to datetime.UTC. Gated on Python 3.11 or higher.
+- lru_cache_to_cache rewrites @functools.lru_cache(maxsize=None) to @functools.cache and fixes the from functools import line to import cache instead of lru_cache where appropriate. Gated on Python 3.9 or higher.
+
+Micro-cleanups. Two transforms that remove redundancy without changing semantics, with one careful exception.
+
+- super_no_args rewrites super(ClassName, self).method(...) to super().method(...). Refuses when the class name passed to super() differs from the enclosing class — that case is MRO-sensitive and changing it would alter method resolution.
+- yield_from_for_loop rewrites for x in y: yield x — when that is the entire body of the loop — to yield from y. Refuses inside an async def, because yield from in an async function is a CPython compile-stage SyntaxError that LibCST's parser does not catch.
+
+## What is new in TypeScript
+
+Four new TypeScript transforms: three type-aware easy wins and one Vue-specific rewrite.
+
+- indexof_to_includes rewrites arr.indexOf(x) !== -1 and its variants to arr.includes(x). Type-aware via ts-morph — the receiver must be a String, Array, or ReadonlyArray. Other types with an indexOf method are refused. Gated on a tsconfig target of ES2016 or higher.
+- object_assign_to_spread rewrites Object.assign({}, a, b) to an object spread expression with a and b spread into a new object literal. The first argument must be an object literal — calls that mutate an existing object are refused. Spread-element sources are refused. Gated on a tsconfig target of ES2018 or higher.
+- string_concat_to_template_literal rewrites a sequence of string-plus-expression concatenations into a template literal. Refuses any operand typed as any, unknown, or a non-primitive — those would change the runtime stringification behavior. Gated on a tsconfig target of ES2015 or higher.
+- vue_set_delete_to_assignment rewrites Vue.set and this.$set to direct property assignment, and Vue.delete and this.$delete to the delete operator. Applies to .js and .ts files only — single-file-component .vue parsing is deferred to v0.4. On Vue 2 codebases this is a semantic change, because Vue.set is required to create new reactive keys on an existing reactive object. The caveat ships in the suggestion text so the reviewer sees it before applying.
+
+## pythonVersion as a first-class config
+
+Four of the new Python transforms — pep585_generics, pep604_optional_union, datetime_utc_alias, and lru_cache_to_cache — need to know the project's target Python version, because the language features they emit are only available from a specific version forward. We introduced pythonVersion as a top-level config key to make this explicit.
+
+When the key is unset, Refactron auto-detects the project's Python version from the requires-python field in pyproject.toml. When neither the key nor a requires-python field is present, the version-gated transforms refuse rather than guess. We would rather decline to refactor than emit code that fails to parse on the target interpreter.
+
+Setting it explicitly is one line:
+
+\`\`\`
+{
+  "pythonVersion": "3.11"
+}
+\`\`\`
+
+Existing .refactronrc.json files without the key continue to work for every non-version-gated transform.
+
+## Engine composition, fixed
+
+When multiple transforms touched the same file in the same run, only one transform's changes survived to disk. The bug shipped silently in v0.2.0 and v0.2.1, was caught during v0.2.3 integration testing on a project where four Python transforms had overlapping file coverage, and is fixed in this release. A full postmortem is in a follow-up post.
+
+## What is not in this release
+
+A few things readers have asked about that did not make this release.
+
+- Single-file-component .vue support is deferred to v0.4. SFC parsing needs a dedicated parser layer that is its own infrastructure, and shipping a half-built version would be worse than waiting.
+- No new language adapters. Go, Ruby, and Java are still not supported. Adding a third adapter is a v2.x roadmap item, not a patch-release item.
+- No TypeScript transforms that require deeper type information. nullish_coalescing, optional_chain, and the any-to-unknown rewrites all need a richer type-info layer than the current ts-morph integration exposes. That layer is planned for v2.2.
+
+## Upgrading
+
+\`\`\`
+npm install -g refactron@0.2.3
+\`\`\`
+
+No breaking changes from v0.2.0, v0.2.1, or v0.2.2. Existing .refactronrc.json files continue to work without modification. The new pythonVersion key is optional — if you set it, the four version-gated Python transforms can run; if you do not, they stay refused on files where the version requirement matters.`,
+  },
+  {
+    slug: 'the-three-gate-safety-model',
+    title:
+      'The Three-Gate Safety Model: Why We Run Your Tests Before Touching Your Code',
+    featured: false,
+    industry: 'Engineering',
+    accentColor: '#3D6B4F',
+    publishedAt: 'May 20, 2026',
+    author: 'Om Sherikar',
+    tags: ['Architecture', 'Verification', 'Safety', 'AST', 'Shadow Tree'],
+    views: 0,
+    clicks: 0,
+    summary:
+      'Every refactor Refactron applies has to clear three gates first: syntax validity, import integrity, and your full test suite, in that order, on a shadow copy of your tree. This is the implementation, the rationale, and what each gate catches that the previous one cannot.',
+    body: `Every existing AI refactoring tool generates code and hopes you catch the bugs in review. Refactron's bet is that you should be able to delete the review step for the refactors it makes, because the engine has already proved they do not break anything. The way you prove that is gates. Three of them, in sequence, each cheaper to run than the last is expensive to recover from. Here is how they work.
+
+## Gate 1: syntax
+
+The syntax gate re-parses every modified file using the language's own AST library — LibCST for Python, the TypeScript Compiler API for .ts and .tsx files. It catches the dumbest failures fastest and runs first because it is the cheapest gate by an order of magnitude.
+
+What it catches: a missing bracket, an unterminated f-string, a malformed import statement, a decorator that lost its closing paren during a rewrite. What it cannot catch: anything that crosses a file boundary. A syntactically valid file can still import a symbol that no longer exists.
+
+This gate exists even though the refactorer claims to round-trip every AST it touches. Round-trip bugs happen. The cost of running a parse is microseconds per file. The cost of writing a broken file and discovering it in CI is hours. We run the gate.
+
+## Gate 2: imports
+
+The imports gate walks the project's import graph and verifies that every import statement, from-import, require call, and TypeScript module specifier still resolves. It walks reverse imports too — if a refactor renamed a symbol, every file that imports that symbol gets checked, not just the file the rename happened in.
+
+This is the gate that catches the cross-file damage the syntax gate cannot see. It runs once per refactor against the shadow tree, after gate 1 passes, before the test runner spins up.
+
+## Gate 3: tests
+
+The tests gate auto-detects the project's test runner by looking for the configuration file that defines it. For Python: pytest.ini, or a [tool.pytest] section in pyproject.toml. For TypeScript: vitest.config.ts, vitest.config.js, jest.config.ts, jest.config.js, or the equivalent fields in package.json. If no runner is detected, the gate short-circuits with an explicit message — it does not silently skip the most important gate in the system.
+
+When a runner is detected, the gate runs the suite twice. First, against the baseline — your project as it exists before any refactor — with up to three retry attempts to absorb flake. Then again, against the shadow tree after the refactor has been applied. The before-and-after split is the only honest way to attribute a failure to the refactor.
+
+If the baseline fails, the refactor aborts. We will not pretend a refactor passed tests when the suite was already broken before we touched the code. If the baseline passes and the shadow run fails, we know with certainty that the refactor introduced the failure, and we tell you which tests started failing.
+
+## The shadow tree
+
+The shadow tree is a hardlinked mirror of your project. On filesystems that support hardlinks — every modern Unix, NTFS — the shadow tree shares inodes with your real files, so creating it is effectively free. Most operations during verification are reads, and reads against a hardlink are reads against the original. The shadow tree only diverges from your real tree when the refactor writes a new file, which happens on a copy-on-write boundary.
+
+On filesystems that do not support hardlinks — older Windows configurations, certain network mounts, FAT — the shadow tree falls back to a full copy. Slower, but functionally equivalent.
+
+The original tree is only touched at the very end, after every gate has passed.
+
+## Atomic batch write
+
+When the three gates pass, the refactor writes its files using the write-file-atomic library and a two-phase rename. Each file is written to a temporary path, fsync'd, and renamed into place. Every file in the batch commits, or none does.
+
+The invariant is: there is no state Refactron can leave your tree in that a git checkout cannot recover from. If Refactron crashes in the middle of a write, you do not end up with half a refactor. You end up with the pre-refactor state. This is non-negotiable.
+
+## What gate 1 alone would miss
+
+Consider pep585_generics, one of the transforms that shipped in v0.2.3. Suppose your file foo.py uses typing.List[str] in a few places and has from typing import List at the top. The transform rewrites every List[X] to list[X] and removes the now-unused from typing import List line. The resulting foo.py is syntactically valid. Gate 1 passes.
+
+But bar.py has from foo import List, because at some point a developer re-exported it. After the refactor, that import no longer resolves. Gate 1 cannot see this — it only parsed foo.py. Gate 2 catches it because it walks the import graph and notices that bar.py is now broken.
+
+## What gate 2 alone would miss
+
+Consider a hypothetical transform that rewrites a SQLAlchemy query expression into a different but supposedly equivalent shape. The rewritten query has the same return type, the same module dependencies, the same imports. Gate 1 passes. Gate 2 passes.
+
+But the rewrite reorders the WHERE clauses in a way that changes the generated SQL string, and there is a test in the suite that pins the generated SQL — perhaps a snapshot test, perhaps an explicit assertEqual on the compiled query. The test fails. Gate 3 catches what gates 1 and 2 cannot.
+
+The point is not that these gates are theoretical. Every refactor we have shipped has been caught by at least one of them during development, and every catch has informed the refusal logic of the transform that produced it.
+
+## Code: example of a gate-3 failure
+
+Here is what a gate-3 failure looks like at the CLI:
+
+\`\`\`
+[gate 1 / syntax]   PASS  3 files
+[gate 2 / imports]  PASS  imports resolve
+[gate 3 / tests]    FAIL  2 failing (was 0)
+                          tests/test_users.py::test_serialize_with_none
+                          tests/test_users.py::test_optional_field
+
+Refactor aborted. Your tree is untouched.
+\`\`\`
+
+Two tests started failing as a direct result of the refactor. Refactron reports them by name, abandons the shadow tree, and exits non-zero. Your working directory is byte-for-byte identical to what it was before you ran the command. There is no cleanup step. There is no "did it actually revert?" anxiety. The original tree was never written to.
+
+## What this costs
+
+A typical refactor on a 10K-LOC Python project runs all three gates in eight to forty-five seconds, depending on the size of the test suite. The test gate dominates that range — gates 1 and 2 finish in under a second on projects up to that size. On larger projects, the test gate scales linearly with the suite.
+
+We do not apologize for the cost. The alternative is a refactor that passes review and fails in staging, or worse, in production. Three gates and a thirty-second wait is the difference between "refactoring is something you do on Friday afternoon before a long weekend" and "refactoring is something you escalate to the senior engineer and put off for a quarter." The test gate is the gate that earns the deletion of the review step. Without it, every other gate is just a faster way to ship a regression.`,
+  },
+  {
+    slug: 'refactron-v0-2-0-launch',
+    title:
+      'Refactron v0.2.0 Is Here: Deterministic Refactoring with a Three-Gate Safety Net',
+    featured: false,
+    industry: 'Release',
+    accentColor: '#DA7756',
+    publishedAt: 'May 15, 2026',
+    author: 'Om Sherikar',
+    tags: [
+      'v0.2.0',
+      'Release',
+      'Determinism',
+      'Safety',
+      'Python',
+      'TypeScript',
+    ],
+    views: 0,
+    clicks: 0,
+    summary:
+      'Refactron v0.2.0 is the first public release of our v2.0 rebuild. Ten deterministic transforms across Python and TypeScript, every change gated by three checks (syntax → imports → tests), and either every file commits or none does. This post is the re-introduction.',
+    body: `Two numbers shaped how we built Refactron. NYU researchers studied 1,692 programs generated with GitHub Copilot and found that roughly 40% contained exploitable vulnerabilities. A separate study presented at ACM AST 2024 found that 92.45% of Copilot-generated tests fail or are otherwise broken when there is no existing test suite to anchor against. These are not edge cases. They are the baseline behavior of statistical code generation when no one is checking the output.
+
+Refactron v0.2.0 is our response. The refactoring engine is fully deterministic — every transform is an AST rewrite with a defined input shape and a defined output shape. The LLM is confined to documentation generation, and only after a refactor has already passed verification. Every change is checked by three gates before any byte hits your disk, and the whole batch either commits atomically or rolls back. This is the first public release of the v2.0 rebuild that replaced our Python prototype.
+
+## What shipped
+
+Ten transforms in this release. Five for Python, parsed and rewritten through LibCST. Five for TypeScript, parsed and rewritten through ts-morph and the TypeScript Compiler API.
+
+- callback_to_async_await (Python) — rewrites a function with a trailing callback parameter into an async def that returns the result directly.
+- format_to_fstring (Python) — converts percent-style formatting and .format() calls into f-strings.
+- manual_typecheck_to_hints (Python) — collapses an isinstance chain that dispatches on a single parameter into a Union annotation.
+- deprecated_api_requests_to_httpx (Python) — rewrites requests imports and call sites to use httpx, refusing files where the API is not a safe drop-in replacement.
+- class_to_dataclass (Python) — converts pure init-assignment classes into dataclasses with the @dataclass decorator.
+- var_to_const_let (TypeScript) — rewrites each var binding to const, or to let if the binding is reassigned.
+- promise_chains_to_async (TypeScript) — flattens .then(...).then(...) chains into async functions using await.
+- implicit_any (TypeScript) — adds explicit parameter types when every call site passes the same primitive.
+- commonjs_to_esm (TypeScript) — converts require and module.exports to ES module import and export.
+- promise_constructor_to_async (TypeScript) — rewrites new Promise((resolve) => resolve(x)) into an async function that returns x.
+
+Each transform has a defined refusal set. When the AST shape does not match the contract, the transform skips the file and says why. There is no fallback to a probabilistic rewrite.
+
+## The three gates
+
+Every refactor passes through three gates in sequence: syntax, imports, tests. The gates run on a shadow copy of your project. Your real tree is not touched until the last gate passes. Failure at any gate aborts the entire refactor and leaves your working directory exactly as it was.
+
+The syntax gate re-parses every modified file using the language's own AST library — LibCST for Python, the TypeScript Compiler API for .ts and .tsx. This catches the cheapest failures first.
+
+The imports gate walks the project's import graph, including reverse imports, and verifies that every import statement still resolves. This catches the cross-file damage the syntax gate cannot see.
+
+The tests gate auto-detects the project's test runner — pytest, vitest, or jest — and runs the suite against the shadow tree. If no runner is detected, the gate short-circuits with a clear message rather than silently skipping.
+
+The order matters. Cheap checks fail fast. Expensive checks only run when they have to.
+
+## Atomic write or rollback
+
+When all three gates pass, the refactor writes its files using write-file-atomic and a two-phase rename. Each file is written to a temporary path and then renamed into place. Every file in the batch commits, or none does. There is no partial state where some files have the new code and others have the old.
+
+If a single file in the batch fails to write — disk full, permission denied, locked by another process — the entire refactor reverts. You do not end up with a half-applied refactor that you have to untangle by hand.
+
+## What does not happen
+
+The LLM does not write your code. The refactoring engine is one hundred percent deterministic AST rewrites. There is no model temperature, no statistical inference, no creative rewrite of your business logic. The LLM is invoked only by the document step, and only against a diff that has already passed all three gates. The code the LLM sees is code that has already been verified to behave the same as before.
+
+## Getting started
+
+Install the CLI, log in once to register your local environment, then analyze, dry-run, and apply.
+
+\`\`\`
+npm install -g refactron@0.2.3
+cd your-project && refactron login
+refactron analyze .
+refactron run --dry-run .
+refactron run --apply .
+\`\`\`
+
+The analyze step is read-only. The dry-run step shows the diff without writing. The apply step runs the three gates and atomically commits if they all pass.
+
+## What is next
+
+The patch series — v0.2.1, v0.2.2, and v0.2.3 — added bordered output, a real rollback command, a much faster document step, and ten more transforms. The deeper engineering writeups that follow this post cover the three-gate model, the rollback journal, and the engine composition bug we fixed in v0.2.3.`,
+  },
+  {
+    slug: 'type-aware-ast-transforms-with-ts-morph',
+    title:
+      'Type-Aware AST Transforms: How ts-morph Keeps indexof_to_includes Honest',
+    featured: false,
+    industry: 'Developer Guide',
+    accentColor: '#2D6A8F',
+    publishedAt: 'May 24, 2026',
+    author: 'Om Sherikar',
+    tags: [
+      'TypeScript',
+      'AST',
+      'ts-morph',
+      'Type Inference',
+      'Developer Guide',
+    ],
+    views: 0,
+    clicks: 0,
+    summary:
+      'The naive version of arr.indexOf(x) !== -1 → arr.includes(x) is a one-liner regex. The version that does not break your code is 40 lines and a type check. Here is why, and how the same pattern applies to two other v0.2.3 transforms.',
+    body: `There is a one-line version of the rewrite arr.indexOf(x) !== -1 to arr.includes(x). It is a regex. It is also wrong.
+
+\`\`\`
+// What the naive rewrite does
+if (s.indexOf("/") > 5) doThing();
+// becomes
+if (s.includes("/")) doThing();
+\`\`\`
+
+The first version checks whether the / character appears past position 5 in the string. The second checks whether the string contains a / at all. Those are not the same condition. The naive rewrite breaks the code, silently, with no error at compile time and a different runtime behavior that may take weeks to surface as a bug report.
+
+This post walks through how Refactron's indexof_to_includes transform avoids that class of failure, and how the same pattern generalizes to the other two type-aware transforms we shipped in v0.2.3.
+
+## The receiver type matters
+
+The first thing the type-aware version checks is the type of the LHS of the indexOf call. We accept only string, Array of T, and ReadonlyArray of T. Anything else is refused with a precondition failure, which means the transform emits no FileChange and the engine moves on.
+
+The check is union-aware. A parameter typed string or Buffer is refused, because Buffer's indexOf returns a different result type and Buffer's includes has different semantics around byte versus character matching. A parameter typed string or Array of string is accepted, because both arms of the union have an includes method with the same membership semantics.
+
+Why getType rather than checking the type annotation in the source: type annotations are often missing from real code, and even when they are present they are not the full type. A function like function f(arr) { return arr.indexOf(x) !== -1 } has no annotation on arr, but the type the compiler infers from call sites might still be string-array. We want the inferred type, not the annotated type. The compiler already does the inference. We just have to ask for it.
+
+## The comparison operator matters too
+
+The transform maps four comparison patterns:
+
+- arr.indexOf(x) !== -1 becomes arr.includes(x)
+- arr.indexOf(x) === -1 becomes !arr.includes(x)
+- arr.indexOf(x) < 0 becomes !arr.includes(x)
+- arr.indexOf(x) >= 0 becomes arr.includes(x)
+
+Anything else is refused. arr.indexOf(x) > 5 is a position check, not a membership check — includes has no equivalent. arr.indexOf(x) + 1 is arithmetic on the position — includes has no equivalent. arr.indexOf(x) === 0 is a "starts-with" check — includes has no equivalent.
+
+The comparison pattern matters because indexOf returns a number, and code can do anything to a number. The transform is correct only for the four patterns where the number is being treated as a boolean ("found" or "not found"). Every other pattern is treating the number as a position, and the transform has nothing useful to say about position checks.
+
+## The ES target matters
+
+Array.prototype.includes is ES2016. String.prototype.includes is ES2015. The transform reads the project's tsconfig.json, resolves the target field — walking the extends chain, including the TypeScript 5+ array-extends form where extends accepts a list of base configs — and refuses the transform if the resolved target is lower than ES2016.
+
+The resolved target is cached per project root for the lifetime of one Refactron run. tsconfig.json does not change during a session, and resolving the extends chain is not free.
+
+Two edge cases worth knowing. First, a missing target field defaults to ES3 in older TypeScript and ES5 in newer TypeScript. We use whatever the TypeScript compiler reports rather than picking a default ourselves. Second, a project with multiple tsconfig files — a tsconfig.build.json plus a tsconfig.test.json, say — gets the nearest tsconfig to the file being transformed. We do not assume tsconfig.json at the project root is the authoritative one.
+
+## Same pattern, two more transforms
+
+object_assign_to_spread rewrites Object.assign({}, a, b) to the spread form { ...a, ...b }. The type check is "is the first argument an object literal" — not just any expression. Object.assign(target, source) mutates target. The spread rewrite produces a new object. Those semantics are not interchangeable when target is anything but a fresh object literal in the call expression itself.
+
+The transform also refuses spread-element sources — Object.assign({}, ...sources) — because the spread literal form does not preserve a runtime-list spread at the same call boundary. You would need a wrapper, and we are not in the business of inserting wrappers.
+
+string_concat_to_template_literal rewrites a chain of string concatenations with the plus operator into a template literal. The type check is "is every operand on the plus chain string-typed per getType". The any and unknown types are refused — they could be objects whose toString method differs from the coercion semantics of string concatenation. Non-primitive operands are refused for the same reason. The transform also escapes any literal backticks and any dollar-brace sequences in string operands when generating the template literal source, because both would break the rewrite if left unescaped.
+
+## The cost
+
+A type-aware ts-morph transform is roughly 4x the lines of code of the naive AST-only version. It is also roughly 1.5x slower per file, because getType is not free — it triggers type checker resolution on demand and the type checker does real work to answer.
+
+That is the cost of not breaking your code. It is also the reason we did not ship these three transforms in v0.2.0. We needed the type-aware infrastructure — the tsconfig resolver, the cached project target, the union-aware type predicates, the precondition refusal path — to be stable first. Shipping three transforms that depend on infrastructure you have not stabilized is how you end up shipping a v0.2.1 patch release with a postmortem in it.
+
+## When to write a type-aware transform
+
+Any time the rewrite is semantically sensitive to the runtime type of an operand. var to const is shape-based — the rewrite is correct regardless of what value is in the var. indexOf to includes is type-based — the rewrite is correct only when the receiver is a string or an array. If you cannot tell from the rewrite shape alone whether the rewrite is safe, you need a type-aware transform.
+
+The corollary: most refactors are shape-based, which is why most refactoring tools get away with AST-only logic. The ones that are not shape-based usually involve method calls on prototype chains where the same method name means different things on different receivers — String, Array, Buffer, Map, Set, Promise, Iterator. Anywhere a method name is overloaded across prototypes, your rewrite needs to know which prototype it is targeting. The compiler already knows. Ask it.`,
+  },
+  {
+    slug: 'the-engine-composition-bug',
+    title: 'The Bug That Silently Dropped Half Your Refactor',
+    featured: false,
+    industry: 'Engineering',
+    accentColor: '#8B6F47',
+    publishedAt: 'May 22, 2026',
+    author: 'Om Sherikar',
+    tags: ['Engineering', 'Bug Fix', 'Architecture', 'Engine Composition'],
+    views: 0,
+    clicks: 0,
+    summary:
+      'When two transforms touched the same file in the same run, only one of their changes survived to disk. The refactor reported success. The diff was a lie. Here is how the bug worked and how PR #38 fixed it.',
+    body: `The symptom in one sentence: run two transforms against the same file, get a success message that says both transforms applied, then open the file and only one of them is there. The transform engine reports success. The journal records both edits. The diff is a lie.
+
+This is the bug we found during v0.2.3 integration testing for the three new type-aware TypeScript transforms. The fix landed in PR #38. Here is the full anatomy.
+
+## How the engine is shaped
+
+Refactron's refactoring engine produces a RefactorPlan containing a list of FileChange records. Each FileChange is a complete new-content blob for one file path — not a diff, not a patch, the whole replacement text. A Refactorer (one per transform) reads the source files it cares about, decides what to change, and emits its own FileChange records into the plan. The apply-orchestrator groups by path and writes the result atomically through the temp-file-then-rename path that every Refactron write goes through.
+
+The shape is deliberate. Whole-file content blobs are easy to verify, easy to back up, easy to roll back, and atomic on the filesystem. Diff patches are none of those things. The choice was not the bug.
+
+## The bug
+
+Each transform built its FileChange by re-reading the original file content from disk and applying its own edits against that original. If two transforms both touched src/foo.ts, the apply-orchestrator received two FileChange records for src/foo.ts. Both records were rebuilt from the original content, before either transform's edits. The orchestrator grouped by path. It wrote the last record per path. The last record was missing the first transform's edits.
+
+The output looked correct at every layer except the file on disk. Each transform reported "applied 1 change" — true, from its own perspective. The journal recorded two FileChanges — true, there were two FileChange records. The verification gates passed — they ran on the final-written content of each file independently, and the final-written content was self-consistent (it just contained only one transform's work). The only place the bug surfaced was the actual content of the file on disk, which contained the work of exactly one of the two transforms — usually whichever one ran second, but order-dependence varied with transform registration order, which made the bug feel non-deterministic.
+
+A user running Refactron with autofix saw a green checkmark and a clean exit. The session journal showed two successful transforms. The before/after diff Refactron printed showed both transforms' edits, because the diff was computed from the FileChange records, not from the written file. Only opening the file in an editor revealed that half the work was missing.
+
+## Why the tests did not catch it
+
+Every existing transform test ran one transform in isolation against a tmp directory. The integration tests had broad coverage of one-transform-per-file scenarios. None of them ran two transforms against the same file.
+
+With ten transforms in the catalog and only a fraction of files attracting multiple transforms in any given run, the bug was statistically rare in fixtures — but on real codebases, multi-transform-per-file is the common case rather than the rare one. A single TypeScript file might be touched by var_to_const_let, indexof_to_includes, and string_concat_to_template_literal in the same session. The bug was waiting for the third transform to land before it had any chance of being triggered by the test suite, and even then only if the integration tests happened to run two of them against the same fixture.
+
+## The fix
+
+PR #38 changed the composition contract. Each touching transform now emits its FileChange carrying the cumulative content — the file content as it stands after all prior transforms in this run have applied to that file. The apply-orchestrator still groups by path and the last record per path is what gets written, but now the last record is the correct cumulative result instead of a stale rebuild from the original.
+
+The public FileChange shape did not change. No consumer of the engine had to update anything. The change was entirely in how the engine produces FileChange records.
+
+The implementation is "thread the current text." Instead of every Refactorer reading source files from disk, the engine maintains an in-memory Map from path to current text, initialized from disk and updated after each Refactorer runs. When the engine asks a Refactorer to consider a file, it passes the current text — the text reflecting every prior transform's edits in this session. Order-stable, no data loss, no shared mutable state visible to the Refactorer beyond the text it is being asked to refactor.
+
+## The integration test that locks it down
+
+A new test in tests/integration/multi-transform-composition-ts.test.ts builds a TypeScript file engineered to hit all three of the v0.2.3 type-aware transforms: indexof_to_includes, object_assign_to_spread, and string_concat_to_template_literal. The test runs the full engine end to end, then reads the written file from disk and asserts that the final content contains the rewrite from every transform — not just one of them.
+
+The test fails against the v0.2.0, v0.2.1, and v0.2.2 engines immediately. It passes against the post-PR-38 engine. It is exactly the test we should have written before shipping v0.2.0.
+
+## The lesson
+
+Every composable system needs a test that exercises the composition, not just the units. Transforms that look pure in isolation can interact through shared state you forgot was shared. In our case the shared state was the file on disk — invisible to the unit tests because each unit test ran in its own tmp directory with its own input file, but very real once the engine ran multiple transforms in one session against one real tree.
+
+The deeper lesson is about contract ambiguity. The public types — RefactorPlan, FileChange — did not change in PR #38. The bug was entirely in the interpretation of FileChange.content. Did "content" mean "the new content this transform proposes against the original" or "the new content this transform proposes against the current state"? The shape was fine. The contract was ambiguous. Tests against the units cannot catch a contract ambiguity, because the units are individually consistent with both interpretations. Only a test that runs the composition can pin the contract down.`,
+  },
+  {
+    slug: 'v0-2-2-rollback-boxes-batched-document',
+    title:
+      'v0.2.2: Rollback, Bordered Output, and a document Step That Finally Scales',
+    featured: false,
+    industry: 'Release',
+    accentColor: '#4A7B6F',
+    publishedAt: 'May 18, 2026',
+    author: 'Om Sherikar',
+    tags: ['v0.2.2', 'Release', 'CLI UX', 'Rollback', 'Documentation'],
+    views: 0,
+    clicks: 0,
+    summary:
+      'v0.2.2 is the quality-of-life release for the analyze → run → document pipeline. Boxed output you can read at a glance, a real rollback command, and a documentation step whose LLM call count no longer blows up on large files.',
+    body: `Three things you will notice the moment you upgrade. Bordered boxes everywhere — analyze, run, and dry-run all render structured output instead of running together. A rollback command that actually undoes an apply. And a document step that finishes in minutes instead of dragging on for half an hour on real codebases. All in one release.
+
+## Bordered output
+
+The analyze command now renders one bordered box per file, followed by boxed tables for TRANSFORMS, BY TRANSFORM, and SUMMARY. The run --dry-run command matches the pattern with a CHANGES table and a four-sided diff box per modified file. The output reads cleanly in a 200-row terminal scrollback, which is where most evaluation happens.
+
+This is not a cosmetic change. Before v0.2.2, the output of a real run on a real codebase blurred into a wall of unstructured text — file paths bled into diffs bled into summaries, and finding the file you cared about meant searching for a specific path. With the bordered output, each file is a visually distinct unit. You can scan the report and locate the file you want without reading every line.
+
+## Rollback
+
+The rollback command finally exists. It performs a journal-based LIFO undo of the most recent run --apply or document --apply operation. Three flags shape its behavior:
+
+- --all reverts every journaled refactor in sequence, walking back to a clean state.
+- --force skips the drift check, which we will explain in a moment.
+- --dry-run shows what rollback would do without writing.
+
+What rollback does not do: replace git. If you have already committed and pushed the refactor, rollback will not unwind your remote. Rollback is for the in-between state — the state where you have applied a refactor, opened the diff, looked at it, and decided to walk it back before commit. That state is where the previous workflow had no good answer, and where rollback now does.
+
+The drift check is the one piece worth flagging. If a file that the refactor touched has been edited since the refactor was applied, rollback refuses by default. The reason is obvious: if you have edited the file by hand and rollback overwrites it with the pre-refactor version, you lose your edits. Pass --force if you have already inspected the situation and want the rollback anyway.
+
+## Live progress on run --apply
+
+The apply step now reports its progress gate by gate, with per-file detail on the verify and apply phases. The refactor runs as a batch first — all files together, all gates together — and falls back to a per-file path only when the batch fails. The per-file fallback isolates the bad file rather than killing the entire refactor over one transform that mis-fired.
+
+The previous behavior was a single spinner that ran for two minutes and then either printed success or a stack trace. The current behavior tells you which gate is running, which file is being verified, and which file just passed apply. When the refactor fails, you know exactly where it failed.
+
+## The silent document bug we fixed
+
+The document step had a bug that produced zero docstrings on large files. The cause was a batch sizer that capped only the input tokens. As long as the prompt stayed under the input budget, the batch was sent. But the model's response — the docstrings for every function in the batch — frequently overran the completion-token cap, and the JSON came back truncated. The truncated JSON failed to parse, the batch was discarded, and the document step moved on to the next batch without writing anything.
+
+The fix has two parts. First, batches are now also capped by the projected response size, so the model is never asked to generate more than it can return in a single completion. Second, when a response is truncated despite the cap — model behavior varies, sometimes the projection is off — the response is salvaged entry by entry rather than discarded wholesale. The entries that parsed cleanly are kept; the truncated tail is dropped and the affected functions are retried in a smaller batch.
+
+## The cost curve
+
+The document step is no longer O(symbols) — one LLM call per function was the original prototype's behavior and it scaled badly. It is now O(source tokens / batch budget) with bounded concurrency and token-aware rate limiting. On a real codebase — LibCST itself, around 50K Python LOC — that change reduces the number of LLM calls by roughly eight times.
+
+The practical effect: documenting a real codebase used to take twenty minutes or more, with frequent rate-limit stalls. It now finishes in two to three minutes on the same hardware against the same API.
+
+## Smaller things you might miss
+
+A handful of fixes and behavior changes that did not warrant their own section:
+
+- analyze now exits with a non-zero status code when it finds issues. Previously it always exited zero, which made CI integration awkward.
+- A full report is saved to .refactron/reports/ after every run, regardless of whether the run was a dry-run or an apply.
+- run --apply now short-circuits cleanly with an explicit message when no test runner is detected. The previous behavior silently skipped the test gate, which violated the safety contract.
+- The document step no longer produces six-quote docstrings on rare edge cases. The bug was a string-escape issue at the boundary of triple-quoted strings; the fix is in the docstring composer.
+- deprecated_api_requests_to_httpx now refuses files where the requests API is not a safe httpx drop-in. The previous version emitted runtime-broken code in those cases.
+- Report and CHANGELOG paths are normalized to forward slashes on Windows, so links in generated artifacts work in any markdown renderer.
+
+## Upgrading
+
+One command:
+
+\`\`\`
+npm install -g refactron@0.2.3
+\`\`\`
+
+Python users can upgrade with pip install --upgrade refactron. There are no breaking changes from v0.2.0 or v0.2.1. Existing configuration files continue to work without modification.`,
+  },
+  {
+    slug: 'v0-2-1-the-scope-blind-bug',
+    title:
+      'v0.2.1: The Scope-Blind Bug That Quietly Killed var_to_const_let on Real Codebases',
+    featured: false,
+    industry: 'Engineering',
+    accentColor: '#5C6E8A',
+    publishedAt: 'May 16, 2026',
+    author: 'Om Sherikar',
+    tags: ['v0.2.1', 'Bug Fix', 'TypeScript', 'AST', 'Scope Analysis'],
+    views: 0,
+    clicks: 0,
+    summary:
+      'Three days after v0.2.0 we shipped a patch — the var_to_const_let transform was matching identifiers by text across the entire file. Scope-blind. Here is what broke, how it was caught, and what we changed.',
+    body: `Three days after v0.2.0 shipped, the first bug report came in. The var_to_const_let transform — supposedly one of the safest, most mechanical TypeScript transforms in the catalog — was dropping entire files from the diff on real codebases. The transform looked at the file, decided every var was reassigned, and refused itself for every binding. Net effect: you ran the transform, you got no changes, no error, no clue why.
+
+A bug that produces no error is the worst kind of bug. There is nothing to grep the logs for. The user runs the command, the command exits zero, the diff is empty, and the only signal that something went wrong is that the work you expected to happen did not happen. We want to be honest about that. v0.2.0 shipped with a transform that silently no-opped on the exact codebases it was supposed to help.
+
+## The bug
+
+The transform needed to answer one question per var binding: is this binding ever reassigned? If yes, rewrite to let. If no, rewrite to const. Simple decision, two outcomes, one input.
+
+Our v0.2.0 implementation answered that question with a textual scan of the file. Find every assignment expression in the source. Check whether the left-hand side identifier text matches the var name we are currently considering. If any match exists anywhere in the file, mark the binding as reassigned.
+
+This works perfectly on fixtures where every variable has a unique name. It falls over the instant a real codebase reuses a common identifier in two unrelated scopes.
+
+\`\`\`
+function a() {
+  var i = 0;     // never reassigned; should become const
+}
+
+function b() {
+  var i = 0;
+  i++;           // reassigned; should become let
+}
+\`\`\`
+
+The old check looked at the whole file, saw the i++ in function b, and concluded that every var named i in the file was reassigned. Both functions came back unchanged. The transform reported success. The diff was empty.
+
+## Why no test caught it
+
+Every unit-test fixture for var_to_const_let used unique identifiers per scope. The fixtures were named things like x, y, result, temp, alpha, beta. Never two scopes with the same identifier. The bug was structurally invisible to the test suite because the test suite did not contain a single name collision.
+
+Real TypeScript codebases reuse i, len, result, data, key, value constantly. Every for-loop counter is i. Every map callback parameter is value. Every reduce accumulator is result. The first time the transform ran on anything that was not a fixture, it hit a name collision in the first file it touched and refused itself out of the diff.
+
+The pattern is worth naming: a test suite that uses unique identifiers per fixture cannot catch scope-blind logic. Add at least one fixture that reuses the same identifier in two unrelated scopes and the bug surfaces immediately. We did not have that fixture. We do now.
+
+## The fix
+
+Scope-correct reference resolution via ts-morph's findReferencesAsNodes. For each var binding, ask the TypeScript compiler for the references to that binding — the ones the compiler resolves to the same symbol. Then check whether any of those references is on the LHS of an assignment. Two unrelated i bindings in two functions have two unrelated symbols. The references for one binding do not include the other.
+
+This is the entire fix. It is fewer lines than the textual scan it replaced. It is also slower per binding because it calls into the type checker, but the slowdown is invisible at the file level because the transform is gated by a cheap precondition before any reference resolution runs.
+
+While we were rewriting the analysis, we found a separate latent bug. The original implementation skipped over var i initializers inside for (var i = 0; ...) headers — the visitor was descending into the for-statement body but not its initializer clause. So even on fixtures where the textual scan would have produced the right answer, the for-loop counters were never considered. Fixed in the same patch.
+
+## While we were in there
+
+Two unrelated bugs landed in the same patch release because they were small and the release was already going out.
+
+- The 32 KB tree-sitter crash. The analyze command crashed on files larger than roughly 32 KB because tree-sitter's native binding rejects oversized string input by default. Parsing now uses the streaming callback-input form, and an unparseable file is skipped with a logged warning rather than aborting the whole run. A large generated file in someone's repo should not take down the entire analysis.
+- format_to_fstring grew up. v0.2.0 handled %s and %d. v0.2.1 adds %.2f, %x, %o, %e, %g, full width and precision specifiers, and the literal %% escape. Mapping %(name)s-style named conversions, non-literal format targets, and dynamic asterisk widths is still conservatively skipped — the transform refuses rather than guesses. Refusing is always a valid outcome for a Refactron transform. Guessing is not.
+
+## The lesson
+
+Text matching is not scope analysis. If you write an AST transform without using your AST library's reference resolver, you have written your own reference resolver — and yours is going to be buggy because the compiler authors have spent years on theirs. The fix is not careful regex. The fix is using the symbol table the compiler has already built and is offering you for free.
+
+We added a regression test that reuses identifiers across scopes and would catch any future scope-blind refactor. Every new transform we ship now has at least one fixture with deliberate name collisions in unrelated scopes. The cost of writing that fixture is roughly five minutes. The cost of not writing it was a patch release.`,
+  },
+  {
     slug: 'i-ran-refactron-on-djangos-codebase',
     title: "I Ran Refactron on Django's Codebase. Here's What It Found.",
     featured: true,

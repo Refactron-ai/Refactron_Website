@@ -51,6 +51,23 @@ function getIcon(industry: string, size = 64) {
     );
   }
 
+  if (lower.includes('developer guide') || lower.includes('type')) {
+    // Angle brackets with T inside — type-parameter glyph
+    return (
+      <svg
+        viewBox="0 0 64 64"
+        width={size}
+        height={size}
+        {...{ stroke: attr.stroke, fill: attr.fill }}
+      >
+        <polyline points="22,16 12,32 22,48" {...attr} />
+        <polyline points="42,16 52,32 42,48" {...attr} />
+        <line x1="26" y1="22" x2="38" y2="22" {...attr} />
+        <line x1="32" y1="22" x2="32" y2="42" {...attr} />
+      </svg>
+    );
+  }
+
   if (lower.includes('guide') || lower.includes('tutorial')) {
     // Wrench — practical how-to / developer guide
     return (
@@ -66,6 +83,25 @@ function getIcon(industry: string, size = 64) {
         />
         <line x1="34" y1="18" x2="44" y2="28" {...attr} />
         <circle cx="15" cy="52" r="2" {...attr} />
+      </svg>
+    );
+  }
+
+  if (lower.includes('ci/cd') || lower.includes('supply chain')) {
+    // Shield with lock — supply-chain / signed publish
+    return (
+      <svg
+        viewBox="0 0 64 64"
+        width={size}
+        height={size}
+        {...{ stroke: attr.stroke, fill: attr.fill }}
+      >
+        <path
+          d="M32 8 L52 16 L52 32 Q52 48 32 56 Q12 48 12 32 L12 16 Z"
+          {...attr}
+        />
+        <rect x="24" y="30" width="16" height="14" rx="2" {...attr} />
+        <path d="M27 30 V25 Q27 21 32 21 Q37 21 37 25 V30" {...attr} />
       </svg>
     );
   }
@@ -287,7 +323,7 @@ function RegularCard({ post, index }: RegularCardProps) {
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.07 }}
       onClick={() => navigate(`/blog/${post.slug}`)}
-      className="group rounded-2xl overflow-hidden cursor-pointer flex flex-col bg-[#111111] hover:bg-[#161616] transition-colors break-inside-avoid mb-4"
+      className="group rounded-2xl overflow-hidden cursor-pointer flex flex-col bg-[#111111] hover:bg-[#161616] transition-colors"
     >
       <div
         className="flex items-center justify-center w-full h-44 flex-shrink-0"
@@ -323,8 +359,20 @@ const BlogPage: React.FC = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
 
+  const byDateDesc = (a: BlogPost, b: BlogPost) =>
+    new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+
+  // Round-robin a date-sorted list into N columns so that the top of each
+  // column reads as the newest N posts (left → right), while each column
+  // stays a tight flex stack with no inter-row gaps.
+  const distribute = <T,>(items: T[], n: number): T[][] => {
+    const cols: T[][] = Array.from({ length: n }, () => []);
+    items.forEach((item, i) => cols[i % n].push(item));
+    return cols;
+  };
+
   const featured = blogPosts.filter(p => p.featured !== false);
-  const rest = blogPosts.filter(p => p.featured === false);
+  const rest = blogPosts.filter(p => p.featured === false).sort(byDateDesc);
   const isSearching = query.trim().length > 0;
 
   const matchPost = (p: BlogPost) => {
@@ -337,7 +385,9 @@ const BlogPage: React.FC = () => {
     );
   };
 
-  const searchResults = isSearching ? blogPosts.filter(matchPost) : [];
+  const searchResults = isSearching
+    ? blogPosts.filter(matchPost).sort(byDateDesc)
+    : [];
 
   return (
     <div className="relative min-h-screen bg-black text-neutral-400 font-space">
@@ -391,11 +441,29 @@ const BlogPage: React.FC = () => {
         {isSearching && (
           <>
             {searchResults.length > 0 ? (
-              <div className="columns-1 md:columns-3 gap-4">
-                {searchResults.map((post, i) => (
-                  <RegularCard key={post.slug} post={post} index={i} />
-                ))}
-              </div>
+              <>
+                {/* Mobile: single column, natural date order */}
+                <div className="md:hidden flex flex-col gap-4">
+                  {searchResults.map((post, i) => (
+                    <RegularCard key={post.slug} post={post} index={i} />
+                  ))}
+                </div>
+                {/* Desktop: 3 tight flex columns, round-robin so top row
+                    reads newest → oldest left → right with no row gaps. */}
+                <div className="hidden md:grid md:grid-cols-3 gap-4 items-start">
+                  {distribute(searchResults, 3).map((col, ci) => (
+                    <div key={ci} className="flex flex-col gap-4">
+                      {col.map((post, i) => (
+                        <RegularCard
+                          key={post.slug}
+                          post={post}
+                          index={ci + i * 3}
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </>
             ) : (
               <p className="text-neutral-500 text-sm">
                 No posts match your search.
@@ -406,11 +474,29 @@ const BlogPage: React.FC = () => {
 
         {/* Regular (non-featured) posts — shown when not searching */}
         {!isSearching && rest.length > 0 && (
-          <div className="columns-1 md:columns-3 gap-4">
-            {rest.map((post, i) => (
-              <RegularCard key={post.slug} post={post} index={i} />
-            ))}
-          </div>
+          <>
+            {/* Mobile: single column, natural date order */}
+            <div className="md:hidden flex flex-col gap-4">
+              {rest.map((post, i) => (
+                <RegularCard key={post.slug} post={post} index={i} />
+              ))}
+            </div>
+            {/* Desktop: 3 tight flex columns, round-robin so top row reads
+                newest → oldest left → right with no row gaps. */}
+            <div className="hidden md:grid md:grid-cols-3 gap-4 items-start">
+              {distribute(rest, 3).map((col, ci) => (
+                <div key={ci} className="flex flex-col gap-4">
+                  {col.map((post, i) => (
+                    <RegularCard
+                      key={post.slug}
+                      post={post}
+                      index={ci + i * 3}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
 

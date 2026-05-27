@@ -124,6 +124,23 @@ function getIcon(industry: string) {
       </svg>
     );
   }
+  if (lower.includes('developer guide') || lower.includes('type')) {
+    return (
+      <svg
+        viewBox="0 0 64 64"
+        width="72"
+        height="72"
+        stroke={attr.stroke}
+        fill={attr.fill}
+      >
+        <polyline points="22,16 12,32 22,48" {...attr} />
+        <polyline points="42,16 52,32 42,48" {...attr} />
+        <line x1="26" y1="22" x2="38" y2="22" {...attr} />
+        <line x1="32" y1="22" x2="32" y2="42" {...attr} />
+      </svg>
+    );
+  }
+
   if (lower.includes('guide') || lower.includes('tutorial')) {
     return (
       <svg
@@ -139,6 +156,25 @@ function getIcon(industry: string) {
         />
         <line x1="34" y1="18" x2="44" y2="28" {...attr} />
         <circle cx="15" cy="52" r="2" {...attr} />
+      </svg>
+    );
+  }
+
+  if (lower.includes('ci/cd') || lower.includes('supply chain')) {
+    return (
+      <svg
+        viewBox="0 0 64 64"
+        width="72"
+        height="72"
+        stroke={attr.stroke}
+        fill={attr.fill}
+      >
+        <path
+          d="M32 8 L52 16 L52 32 Q52 48 32 56 Q12 48 12 32 L12 16 Z"
+          {...attr}
+        />
+        <rect x="24" y="30" width="16" height="14" rx="2" {...attr} />
+        <path d="M27 30 V25 Q27 21 32 21 Q37 21 37 25 V30" {...attr} />
       </svg>
     );
   }
