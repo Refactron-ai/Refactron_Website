@@ -5,6 +5,24 @@ import { ArrowLeft, CalendarDays, Tag, User } from 'lucide-react';
 import { getBlogPostBySlug, parseBody, ContentSection } from '../data/posts';
 import useSEO from '../hooks/useSEO';
 
+/* Clamp text to a max length at a word boundary, appending an ellipsis.
+ * Used to keep meta titles/descriptions within search-engine limits. */
+function clampText(text: string, max: number): string {
+  if (text.length <= max) return text;
+  const slice = text.slice(0, max - 1);
+  const lastSpace = slice.lastIndexOf(' ');
+  return `${(lastSpace > 0 ? slice.slice(0, lastSpace) : slice).trimEnd()}…`;
+}
+
+/* Build a <title> within the 60-char SEO limit, appending the brand suffix
+ * only when there is room for it. */
+function blogTitle(title: string): string {
+  const withBrand = `${title} · Refactron`;
+  if (withBrand.length <= 60) return withBrand;
+  if (title.length <= 60) return title;
+  return clampText(title, 60);
+}
+
 /* Injects a per-post BlogPosting JSON-LD <script> into <head>.
  * Helps AI assistants quote the article correctly. */
 function useBlogPostingSchema(
@@ -27,7 +45,9 @@ function useBlogPostingSchema(
       '@type': 'BlogPosting',
       headline: post.title,
       description: post.summary,
+      image: ['https://refactron.dev/Refactron_Hero.png'],
       datePublished: new Date(post.publishedAt).toISOString(),
+      dateModified: new Date(post.publishedAt).toISOString(),
       author: {
         '@type': 'Person',
         name: post.author,
@@ -326,12 +346,10 @@ const BlogPostPage: React.FC = () => {
 
   /* Per-post meta + canonical (uses the existing site-wide hook). */
   useSEO({
-    title: post
-      ? `${post.title} · Refactron`
-      : 'Post not found · Refactron Blog',
-    description:
-      post?.summary ??
-      'Browse engineering deep-dives and case studies on the Refactron blog.',
+    title: post ? blogTitle(post.title) : 'Post not found · Refactron Blog',
+    description: post
+      ? clampText(post.summary, 160)
+      : 'Browse engineering deep-dives and case studies on the Refactron blog.',
     keywords: post?.tags.join(', '),
     canonical: post
       ? `https://refactron.dev/blog/${post.slug}`

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, ArrowLeft, Menu, X } from 'lucide-react';
 import Footer from './Footer';
+import useSEO from '../hooks/useSEO';
 
 const sections = [
   { id: 'introduction', title: 'Introduction' },
@@ -19,6 +20,13 @@ const sections = [
 const PrivacyPolicy: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [showMobileNav, setShowMobileNav] = useState(false);
+
+  useSEO({
+    title: 'Privacy Policy · Refactron',
+    description:
+      'How Refactron collects, uses, and protects your data — what we store, why, your privacy rights, and our cookie and data-retention practices.',
+    canonical: 'https://refactron.dev/privacy-policy',
+  });
 
   useEffect(() => {
     const handleScroll = () => {

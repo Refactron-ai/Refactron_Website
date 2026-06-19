@@ -31,6 +31,7 @@ const PAGES = [
   '/about',
   '/changelog',
   '/security',
+  '/status',
   '/research',
   '/research/perf-01',
   '/research/comparison-01',

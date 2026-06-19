@@ -53,10 +53,9 @@ function useActiveSection(ids: string[]): string {
 
 const ResearchComparison01Page: React.FC = () => {
   useSEO({
-    title:
-      'Refactron vs the codemod baseline · A head-to-head study | Research',
+    title: 'Refactron vs the Codemod Baseline · Research',
     description:
-      'Refactron benchmarked against jscodeshift, Comby, ESLint --fix, and LibCST on var → const/let and format → f-string. Speed, coverage, and safety on identical inputs. Reproducible.',
+      'Refactron benchmarked against jscodeshift, Comby, ESLint --fix, and LibCST on var → const/let and format → f-string — speed, coverage, and safety, head-to-head.',
     canonical: 'https://refactron.dev/research/comparison-01',
     robots: 'index, follow',
   });

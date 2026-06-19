@@ -98,9 +98,10 @@ Disallow: /
 User-agent: MJ12bot
 Disallow: /
 
-# ─── Sitemaps + LLM index ────────────────────────────────────────
+# ─── Sitemaps ────────────────────────────────────────────────────
+# Only valid XML sitemaps belong in Sitemap: directives. The LLM index
+# lives at https://refactron.dev/llms.txt (linked from the page <head>).
 Sitemap: https://refactron.dev/sitemap.xml
-Sitemap: https://refactron.dev/llms.txt
 
 # Host directive
 Host: refactron.dev

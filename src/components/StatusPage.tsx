@@ -356,9 +356,11 @@ const StatusPage: React.FC = () => {
   useSEO({
     title: 'Status | Refactron',
     description:
-      'Real-time status of Refactron services — Web App, Backend API, and LLM Service.',
+      'Real-time operational status and uptime for Refactron services — the Web App, Backend API, and LLM Service — plus recent incidents and maintenance.',
     canonical: 'https://refactron.dev/status',
-    robots: 'index, follow',
+    // Thin, client-rendered real-time page — keep it out of the index but let
+    // crawlers follow its links. Also excluded from sitemap.xml.
+    robots: 'noindex, follow',
   });
 
   const fetchData = useCallback(async () => {
