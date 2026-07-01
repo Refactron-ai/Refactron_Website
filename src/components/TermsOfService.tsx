@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShieldCheck, ArrowLeft, Menu, X } from 'lucide-react';
 import Footer from './Footer';
+import useSEO from '../hooks/useSEO';
 
 const sections = [
   { id: 'acceptance', title: 'Acceptance of Terms' },
@@ -21,6 +22,13 @@ const sections = [
 const TermsOfService: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [showMobileNav, setShowMobileNav] = useState(false);
+
+  useSEO({
+    title: 'Terms of Service · Refactron',
+    description:
+      'The terms governing your use of Refactron — accounts, acceptable use, intellectual property, payments and subscriptions, warranties, and liability.',
+    canonical: 'https://refactron.dev/terms-of-service',
+  });
 
   useEffect(() => {
     const handleScroll = () => {

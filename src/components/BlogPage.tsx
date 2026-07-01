@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Search } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { blogPosts, BlogPost } from '../data/posts';
+import useSEO from '../hooks/useSEO';
 
 // Minimal line-art SVG icons keyed by industry
 function getIcon(industry: string, size = 64) {
@@ -358,6 +359,13 @@ function RegularCard({ post, index }: RegularCardProps) {
 const BlogPage: React.FC = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
+
+  useSEO({
+    title: 'Refactron Blog: Refactoring Deep-Dives & Case Studies',
+    description:
+      'Engineering deep-dives, release notes, and real-world case studies on deterministic, behavior-preserving refactoring with Refactron.',
+    canonical: 'https://refactron.dev/blog',
+  });
 
   const byDateDesc = (a: BlogPost, b: BlogPost) =>
     new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();

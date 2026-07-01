@@ -19,6 +19,7 @@ const staticRoutes = [
   { url: '/about',           changefreq: 'monthly', priority: 0.6 },
   { url: '/changelog',       changefreq: 'weekly',  priority: 0.7 },
   { url: '/security',        changefreq: 'monthly', priority: 0.5 },
+  // /status is intentionally omitted — it's noindex (thin, client-rendered).
   { url: '/research',          changefreq: 'monthly', priority: 0.6 },
   { url: '/research/perf-01',  changefreq: 'yearly',  priority: 0.5 },
   { url: '/research/comparison-01', changefreq: 'yearly', priority: 0.5 },
