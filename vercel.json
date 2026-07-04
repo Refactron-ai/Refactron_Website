@@ -36,7 +36,7 @@
           "value": "docs.refactron.dev"
         }
       ],
-      "destination": "/index.html"
+      "destination": "/"
     },
     {
       "source": "/(.*)",
@@ -46,7 +46,7 @@
           "value": "app.refactron.dev"
         }
       ],
-      "destination": "/index.html"
+      "destination": "/"
     }
   ],
   "headers": [
