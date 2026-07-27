@@ -5,7 +5,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@gsap/react": "^2.1.2",
-    "@react-three/drei": "^9.122.0",
+    "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^8.18.0",
     "@sentry/react": "^10.31.0",
     "@testing-library/jest-dom": "^5.17.0",
