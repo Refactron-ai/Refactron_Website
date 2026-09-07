@@ -19,7 +19,7 @@
     "autoprefixer": "^10.4.16",
     "clsx": "^2.1.1",
     "dotted-map": "^2.2.3",
-    "framer-motion": "^10.16.16",
+    "framer-motion": "^13.2.0",
     "gsap": "^3.14.2",
     "lucide-react": "^0.294.0",
     "mini-svg-data-uri": "^1.4.4",
