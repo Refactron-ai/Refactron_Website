@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emailjs/browser": "^4.4.1",
+    "@emailjs/browser": "^5.0.3",
     "@gsap/react": "^2.1.2",
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^8.18.0",
